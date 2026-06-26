@@ -105,7 +105,7 @@ const login = async (req, res) => {
     }
 
     // Obtener roles
-    const roles = user.Roles.map(role => role.nombre);
+    const roles = user.roles.map(role => role.nombre);
 
     // Generar token
     const token = generateToken({
@@ -167,7 +167,7 @@ const verify = async (req, res) => {
       });
     }
 
-    const roles = user.Roles.map(role => role.nombre);
+    const roles = user.roles.map(role => role.nombre);
 
     res.json({
       success: true,

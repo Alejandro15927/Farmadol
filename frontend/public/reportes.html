@@ -1,0 +1,839 @@
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      .material-symbols-outlined {
+        font-variation-settings:
+          "FILL" 0,
+          "wght" 400,
+          "GRAD" 0,
+          "opsz" 24;
+      }
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 10px;
+      }
+    </style>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary-fixed": "#dbe1ff",
+              "on-tertiary-fixed": "#360f00",
+              "secondary-fixed-dim": "#bec6e0",
+              "inverse-primary": "#b4c5ff",
+              secondary: "#565e74",
+              "on-secondary-fixed-variant": "#3f465c",
+              "on-tertiary-container": "#ffede6",
+              "on-secondary-container": "#5c647a",
+              "on-error-container": "#93000a",
+              "surface-tint": "#0053db",
+              "on-primary-fixed-variant": "#003ea8",
+              "on-secondary-fixed": "#131b2e",
+              "secondary-fixed": "#dae2fd",
+              "outline-variant": "#c3c6d7",
+              "surface-container-lowest": "#ffffff",
+              tertiary: "#943700",
+              background: "#f8f9ff",
+              "on-secondary": "#ffffff",
+              "surface-dim": "#cbdbf5",
+              primary: "#004ac6",
+              "on-tertiary": "#ffffff",
+              "on-surface-variant": "#434655",
+              "inverse-on-surface": "#eaf1ff",
+              "surface-bright": "#f8f9ff",
+              "surface-container-low": "#eff4ff",
+              error: "#ba1a1a",
+              "tertiary-fixed-dim": "#ffb596",
+              "surface-variant": "#d3e4fe",
+              "surface-container": "#e5eeff",
+              "on-tertiary-fixed-variant": "#7d2d00",
+              "error-container": "#ffdad6",
+              "surface-container-highest": "#d3e4fe",
+              outline: "#737686",
+              surface: "#f8f9ff",
+              "tertiary-container": "#bc4800",
+              "on-background": "#0b1c30",
+              "on-surface": "#0b1c30",
+              "tertiary-fixed": "#ffdbcd",
+              "on-primary": "#ffffff",
+              "secondary-container": "#dae2fd",
+              "primary-container": "#2563eb",
+              "on-primary-fixed": "#00174b",
+              "on-error": "#ffffff",
+              "inverse-surface": "#213145",
+              "surface-container-high": "#dce9ff",
+              "on-primary-container": "#eeefff",
+              "primary-fixed-dim": "#b4c5ff",
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px",
+            },
+            spacing: {
+              "stack-md": "16px",
+              "sidebar-width": "280px",
+              "margin-mobile": "16px",
+              "stack-lg": "24px",
+              "container-max-width": "1440px",
+              "stack-sm": "8px",
+              gutter: "24px",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body
+    class="bg-background text-on-background min-h-screen flex overflow-hidden"
+  >
+    <!-- SideNavBar -->
+    <aside
+      class="fixed left-0 top-0 h-full w-[280px] bg-on-secondary-fixed flex flex-col py-stack-lg border-r border-outline-variant z-50"
+    >
+      <div class="px-6 mb-10">
+        <div class="flex items-center gap-3">
+          <div
+            class="w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center"
+          >
+            <span
+              class="material-symbols-outlined text-white"
+              data-icon="medical_services"
+              >medical_services</span
+            >
+          </div>
+          <div>
+            <h1
+              class="font-headline-md text-headline-md font-black text-surface-container-lowest leading-none"
+            >
+              Farmadol
+            </h1>
+            <p class="font-label-md text-label-md text-secondary-fixed-dim">
+              Pharmacy ERP
+            </p>
+          </div>
+        </div>
+      </div>
+      <nav class="flex-1 px-4 space-y-1">
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="dashboard"
+            >dashboard</span
+          >
+          <span class="font-label-md text-label-md">Dashboard</span>
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="group">group</span>
+          <span class="font-label-md text-label-md">Users</span>
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="inventory_2"
+            >inventory_2</span
+          >
+          <span class="font-label-md text-label-md">Inventory</span>
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="point_of_sale"
+            >point_of_sale</span
+          >
+          <span class="font-label-md text-label-md">Sales</span>
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="shopping_cart"
+            >shopping_cart</span
+          >
+          <span class="font-label-md text-label-md">Purchases</span>
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="person_search"
+            >person_search</span
+          >
+          <span class="font-label-md text-label-md">Clients</span>
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-surface-container-lowest bg-white/5 border-l-4 border-primary-container transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="analytics"
+            >analytics</span
+          >
+          <span class="font-label-md text-label-md">Reports</span>
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="storefront"
+            >storefront</span
+          >
+          <span class="font-label-md text-label-md">Branches</span>
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="settings"
+            >settings</span
+          >
+          <span class="font-label-md text-label-md">Settings</span>
+        </a>
+      </nav>
+      <div class="px-4 mt-auto">
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="logout"
+            >logout</span
+          >
+          <span class="font-label-md text-label-md">Logout</span>
+        </a>
+      </div>
+    </aside>
+    <!-- Main Content Wrapper -->
+    <main class="flex-1 ml-[280px] h-screen overflow-y-auto flex flex-col">
+      <!-- TopNavBar -->
+      <header
+        class="h-16 flex justify-between items-center px-gutter bg-surface-container-lowest border-b border-outline-variant sticky top-0 z-40"
+      >
+        <div class="flex items-center gap-6">
+          <div
+            class="relative flex items-center bg-surface-container-low px-4 py-1.5 rounded-full border border-outline-variant"
+          >
+            <span
+              class="material-symbols-outlined text-outline text-[20px] mr-2"
+              data-icon="search"
+              >search</span
+            >
+            <input
+              class="bg-transparent border-none focus:ring-0 text-body-md font-body-md w-64 placeholder:text-outline"
+              placeholder="Buscar reporte..."
+              type="text"
+            />
+          </div>
+          <div class="flex items-center gap-4">
+        <div
+            class="flex items-center gap-3 border-l border-outline-variant pl-6"
+          >
+            <div class="flex items-center gap-3 pl-2">
+            <div class="text-right">
+              <p
+                class="font-label-md text-label-md text-on-surface leading-none"
+              >
+                Dr. Alejandro Ruiz
+              </p>
+              <p
+                class="text-[11px] text-secondary font-medium uppercase tracking-wider"
+              >
+                Admin Principal
+              </p>
+            </div>
+            <img
+              alt="User profile photo"
+              class="w-10 h-10 rounded-full border-2 border-primary-container/20"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfDh0aDi-mYTTGT0gNhSnLGh4OBKf_o88qJ4izMLFyRHyU87yajEm5NOfmmV-ROb4H-zghVfM0qXVdoiF4mGNAbcha_4mc-C1bBVk0PJIAfFmCUAM0EjQTzCn6f8uW1CT-MBF1g-aeZ4VnV1ezpIc1OzOYU20Xw498A_rMwwgexs4B3T8sPjWFCggYuI3Ui8ZiXxQrHaQHIZcXRbQsbd-eH2fe0s9UNNoHMDji1otRwE7gdYmtVSVkHO8RfM869N5_xr8g0-be17Mk"
+            />
+          </div>
+      </div>
+        </div>
+      </header>
+      <!-- Dashboard Content -->
+      <div
+        class="p-gutter max-w-container-max-width mx-auto w-full space-y-stack-lg"
+      >
+        <!-- Filters Section -->
+        <section
+          class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant flex flex-wrap items-end gap-6"
+        >
+          <div class="flex-1 min-w-[200px]">
+            <label
+              class="block text-label-md font-medium text-on-surface-variant mb-2"
+              >Rango de Fecha</label
+            >
+            <div class="relative">
+              <span
+                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline"
+                data-icon="calendar_today"
+                >calendar_today</span
+              >
+              <select
+                class="w-full pl-10 pr-4 py-2.5 bg-surface-container-low border border-outline-variant rounded-lg text-body-md focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none appearance-none"
+              >
+                <option>Últimos 30 días</option>
+                <option>Este Mes</option>
+                <option>Trimestre Anterior</option>
+                <option>Año Actual</option>
+                <option>Personalizado</option>
+              </select>
+            </div>
+          </div>
+          <div class="flex-1 min-w-[200px]">
+            <label
+              class="block text-label-md font-medium text-on-surface-variant mb-2"
+              >Sucursal</label
+            >
+            <div class="relative">
+              <span
+                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline"
+                data-icon="location_on"
+                >location_on</span
+              >
+              <select
+                class="w-full pl-10 pr-4 py-2.5 bg-surface-container-low border border-outline-variant rounded-lg text-body-md focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none appearance-none"
+              >
+                <option>Todas las Sucursales</option>
+                <option>Sucursal Norte - Centro</option>
+                <option>Sucursal Sur - San Isidro</option>
+                <option>Farmacia Clínica 24/7</option>
+              </select>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <button
+              class="px-6 py-2.5 bg-primary text-white rounded-lg font-title-md hover:bg-primary-container transition-all active:scale-95 flex items-center gap-2"
+            >
+              <span
+                class="material-symbols-outlined text-[20px]"
+                data-icon="filter_list"
+                >filter_list</span
+              >
+              Aplicar Filtros
+            </button>
+            <div class="flex gap-2">
+              <button
+                class="p-2.5 border border-outline-variant rounded-lg hover:bg-surface-container-low text-on-surface-variant transition-colors"
+                title="Exportar a PDF"
+              >
+                <span
+                  class="material-symbols-outlined"
+                  data-icon="picture_as_pdf"
+                  >picture_as_pdf</span
+                >
+              </button>
+              <button
+                class="p-2.5 border border-outline-variant rounded-lg hover:bg-surface-container-low text-on-surface-variant transition-colors"
+                title="Exportar a Excel"
+              >
+                <span class="material-symbols-outlined" data-icon="table_chart"
+                  >table_chart</span
+                >
+              </button>
+            </div>
+          </div>
+        </section>
+        <!-- KPI Cards (Level 1 Surfaces) -->
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div
+            class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant"
+          >
+            <div class="flex justify-between items-start mb-4">
+              <div
+                class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center text-primary"
+              >
+                <span
+                  class="material-symbols-outlined text-[28px]"
+                  data-icon="payments"
+                  >payments</span
+                >
+              </div>
+              <span
+                class="text-label-md font-bold text-green-600 bg-green-50 px-2 py-1 rounded-full"
+                >+12.5%</span
+              >
+            </div>
+            <p class="text-label-md text-on-surface-variant font-medium">
+              Ingresos Totales
+            </p>
+            <h3 class="text-headline-md font-bold text-on-surface mt-1">
+              $42,390.00
+            </h3>
+            <p class="text-[11px] text-outline mt-2 italic">vs. mes anterior</p>
+          </div>
+          <div
+            class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant"
+          >
+            <div class="flex justify-between items-start mb-4">
+              <div
+                class="w-12 h-12 bg-tertiary/10 rounded-lg flex items-center justify-center text-tertiary"
+              >
+                <span
+                  class="material-symbols-outlined text-[28px]"
+                  data-icon="receipt_long"
+                  >receipt_long</span
+                >
+              </div>
+              <span
+                class="text-label-md font-bold text-green-600 bg-green-50 px-2 py-1 rounded-full"
+                >+4.2%</span
+              >
+            </div>
+            <p class="text-label-md text-on-surface-variant font-medium">
+              Transacciones
+            </p>
+            <h3 class="text-headline-md font-bold text-on-surface mt-1">
+              1,842
+            </h3>
+            <p class="text-[11px] text-outline mt-2 italic">
+              Ticket promedio: $23.00
+            </p>
+          </div>
+          <div
+            class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant"
+          >
+            <div class="flex justify-between items-start mb-4">
+              <div
+                class="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center text-secondary"
+              >
+                <span
+                  class="material-symbols-outlined text-[28px]"
+                  data-icon="medication"
+                  >medication</span
+                >
+              </div>
+              <span
+                class="text-label-md font-bold text-error bg-error-container/20 px-2 py-1 rounded-full"
+                >-2.1%</span
+              >
+            </div>
+            <p class="text-label-md text-on-surface-variant font-medium">
+              Productos Vendidos
+            </p>
+            <h3 class="text-headline-md font-bold text-on-surface mt-1">
+              5,209
+            </h3>
+            <p class="text-[11px] text-outline mt-2 italic">
+              86 SKUs sin movimiento
+            </p>
+          </div>
+          <div
+            class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant"
+          >
+            <div class="flex justify-between items-start mb-4">
+              <div
+                class="w-12 h-12 bg-primary-container/10 rounded-lg flex items-center justify-center text-primary-container"
+              >
+                <span
+                  class="material-symbols-outlined text-[28px]"
+                  data-icon="group_add"
+                  >group_add</span
+                >
+              </div>
+              <span
+                class="text-label-md font-bold text-green-600 bg-green-50 px-2 py-1 rounded-full"
+                >+18.3%</span
+              >
+            </div>
+            <p class="text-label-md text-on-surface-variant font-medium">
+              Nuevos Clientes
+            </p>
+            <h3 class="text-headline-md font-bold text-on-surface mt-1">128</h3>
+            <p class="text-[11px] text-outline mt-2 italic">
+              Tasa de retención: 94%
+            </p>
+          </div>
+        </section>
+        <!-- Charts Section (Bento Grid Style) -->
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <!-- Trend Chart (Linear) -->
+          <div
+            class="lg:col-span-8 bg-surface-container-lowest p-8 rounded-xl border border-outline-variant"
+          >
+            <div class="flex justify-between items-center mb-10">
+              <div>
+                <h2 class="text-title-lg font-bold text-on-surface">
+                  Tendencia de Ingresos
+                </h2>
+                <p class="text-body-md text-outline">
+                  Análisis comparativo de ventas diarias
+                </p>
+              </div>
+              <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2">
+                  <span class="w-3 h-3 bg-primary rounded-full"></span>
+                  <span class="text-label-md text-on-surface-variant"
+                    >Mes Actual</span
+                  >
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="w-3 h-3 bg-outline rounded-full"></span>
+                  <span class="text-label-md text-on-surface-variant"
+                    >Mes Anterior</span
+                  >
+                </div>
+              </div>
+            </div>
+            <!-- Line Chart Visualization (Simplified Vector) -->
+            <div class="h-[300px] w-full flex flex-col justify-end">
+              <div
+                class="relative flex-1 flex items-end justify-between px-2 gap-4"
+              >
+                <!-- Grid lines -->
+                <div class="absolute inset-0 flex flex-col justify-between">
+                  <div
+                    class="w-full border-t border-dashed border-outline-variant/30"
+                  ></div>
+                  <div
+                    class="w-full border-t border-dashed border-outline-variant/30"
+                  ></div>
+                  <div
+                    class="w-full border-t border-dashed border-outline-variant/30"
+                  ></div>
+                  <div
+                    class="w-full border-t border-dashed border-outline-variant/30"
+                  ></div>
+                  <div
+                    class="w-full border-t border-dashed border-outline-variant/30"
+                  ></div>
+                </div>
+                <!-- Simulated Chart Line Path (Dashed/Solid) -->
+                <svg
+                  class="absolute inset-0 w-full h-full preserve-3d"
+                  fill="none"
+                  viewbox="0 0 800 300"
+                >
+                  <path
+                    d="M0 250 L100 220 L200 240 L300 180 L400 150 L500 190 L600 120 L700 80 L800 100"
+                    stroke="#004ac6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="3"
+                  ></path>
+                  <path
+                    d="M0 260 L100 250 L200 260 L300 230 L400 220 L500 240 L600 210 L700 200 L800 190"
+                    stroke="#737686"
+                    stroke-dasharray="4 4"
+                    stroke-linecap="round"
+                    stroke-width="2"
+                  ></path>
+                  <circle
+                    class="animate-pulse"
+                    cx="700"
+                    cy="80"
+                    fill="#004ac6"
+                    r="6"
+                  ></circle>
+                </svg>
+              </div>
+              <div class="flex justify-between pt-4 px-2">
+                <span class="text-label-md text-outline">Semana 1</span>
+                <span class="text-label-md text-outline">Semana 2</span>
+                <span class="text-label-md text-outline">Semana 3</span>
+                <span class="text-label-md text-outline">Semana 4</span>
+              </div>
+            </div>
+          </div>
+          <!-- Sales by Category (Bar Chart) -->
+          <div
+            class="lg:col-span-4 bg-surface-container-lowest p-8 rounded-xl border border-outline-variant"
+          >
+            <h2 class="text-title-lg font-bold text-on-surface mb-2">
+              Ventas por Categoría
+            </h2>
+            <p class="text-body-md text-outline mb-8">
+              Rendimiento por línea de producto
+            </p>
+            <div class="space-y-6">
+              <div>
+                <div class="flex justify-between mb-2">
+                  <span class="text-label-md font-bold text-on-surface"
+                    >Medicamentos Genéricos</span
+                  >
+                  <span class="text-label-md text-outline">42%</span>
+                </div>
+                <div
+                  class="w-full bg-surface-container-low h-3 rounded-full overflow-hidden"
+                >
+                  <div
+                    class="bg-primary h-full rounded-full"
+                    style="width: 42%"
+                  ></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between mb-2">
+                  <span class="text-label-md font-bold text-on-surface"
+                    >Cuidado Personal</span
+                  >
+                  <span class="text-label-md text-outline">28%</span>
+                </div>
+                <div
+                  class="w-full bg-surface-container-low h-3 rounded-full overflow-hidden"
+                >
+                  <div
+                    class="bg-primary-container h-full rounded-full"
+                    style="width: 28%"
+                  ></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between mb-2">
+                  <span class="text-label-md font-bold text-on-surface"
+                    >Equipos Médicos</span
+                  >
+                  <span class="text-label-md text-outline">15%</span>
+                </div>
+                <div
+                  class="w-full bg-surface-container-low h-3 rounded-full overflow-hidden"
+                >
+                  <div
+                    class="bg-tertiary h-full rounded-full"
+                    style="width: 15%"
+                  ></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between mb-2">
+                  <span class="text-label-md font-bold text-on-surface"
+                    >Nutrición</span
+                  >
+                  <span class="text-label-md text-outline">10%</span>
+                </div>
+                <div
+                  class="w-full bg-surface-container-low h-3 rounded-full overflow-hidden"
+                >
+                  <div
+                    class="bg-secondary h-full rounded-full"
+                    style="width: 10%"
+                  ></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between mb-2">
+                  <span class="text-label-md font-bold text-on-surface"
+                    >Otros</span
+                  >
+                  <span class="text-label-md text-outline">5%</span>
+                </div>
+                <div
+                  class="w-full bg-surface-container-low h-3 rounded-full overflow-hidden"
+                >
+                  <div
+                    class="bg-outline h-full rounded-full"
+                    style="width: 5%"
+                  ></div>
+                </div>
+              </div>
+            </div>
+            <button
+              class="w-full mt-10 py-3 border border-outline-variant rounded-lg text-primary font-title-md hover:bg-surface-container-low transition-colors flex items-center justify-center gap-2"
+            >
+              Ver detalle completo
+              <span
+                class="material-symbols-outlined text-[18px]"
+                data-icon="chevron_right"
+                >chevron_right</span
+              >
+            </button>
+          </div>
+        </section>
+        <!-- Latest Transactions Table -->
+        <section
+          class="bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden"
+        >
+          <div
+            class="p-6 border-b border-outline-variant flex justify-between items-center"
+          >
+            <h2 class="text-title-lg font-bold text-on-surface">
+              Últimas Transacciones Críticas
+            </h2>
+            <button
+              class="text-primary font-title-md hover:underline flex items-center gap-1"
+            >
+              Ver todo el historial
+              <span
+                class="material-symbols-outlined text-[18px]"
+                data-icon="open_in_new"
+                >open_in_new</span
+              >
+            </button>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left">
+              <thead class="bg-[#F1F5F9] border-b border-outline-variant">
+                <tr>
+                  <th
+                    class="px-6 py-4 text-label-md font-semibold text-on-surface-variant"
+                  >
+                    ID Venta
+                  </th>
+                  <th
+                    class="px-6 py-4 text-label-md font-semibold text-on-surface-variant"
+                  >
+                    Cliente / Entidad
+                  </th>
+                  <th
+                    class="px-6 py-4 text-label-md font-semibold text-on-surface-variant"
+                  >
+                    Fecha &amp; Hora
+                  </th>
+                  <th
+                    class="px-6 py-4 text-label-md font-semibold text-on-surface-variant"
+                  >
+                    Total
+                  </th>
+                  <th
+                    class="px-6 py-4 text-label-md font-semibold text-on-surface-variant"
+                  >
+                    Sucursal
+                  </th>
+                  <th
+                    class="px-6 py-4 text-label-md font-semibold text-on-surface-variant"
+                  >
+                    Estado
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-[#F1F5F9]">
+                <tr
+                  class="hover:bg-primary/5 transition-colors cursor-pointer group"
+                >
+                  <td class="px-6 py-4">
+                    <span class="text-body-md font-bold text-primary"
+                      >#FR-88901</span
+                    >
+                  </td>
+                  <td class="px-6 py-4">
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-primary font-bold text-[10px]"
+                      >
+                        MC
+                      </div>
+                      <span class="text-body-md text-on-surface"
+                        >Martha Cifuentes</span
+                      >
+                    </div>
+                  </td>
+                  <td class="px-6 py-4">
+                    <p class="text-body-md text-on-surface">Hoy, 14:20</p>
+                    <p class="text-[11px] text-outline">Hace 15 min</p>
+                  </td>
+                  <td class="px-6 py-4 font-bold text-on-surface">$124.50</td>
+                  <td class="px-6 py-4 text-body-md text-on-surface-variant">
+                    Sucursal Norte
+                  </td>
+                  <td class="px-6 py-4">
+                    <span
+                      class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-[11px] font-bold uppercase tracking-wider"
+                      >Completado</span
+                    >
+                  </td>
+                </tr>
+                <tr
+                  class="hover:bg-primary/5 transition-colors cursor-pointer group"
+                >
+                  <td class="px-6 py-4">
+                    <span class="text-body-md font-bold text-primary"
+                      >#FR-88899</span
+                    >
+                  </td>
+                  <td class="px-6 py-4">
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center text-secondary font-bold text-[10px]"
+                      >
+                        RE
+                      </div>
+                      <span class="text-body-md text-on-surface"
+                        >Roberto Esquivel</span
+                      >
+                    </div>
+                  </td>
+                  <td class="px-6 py-4">
+                    <p class="text-body-md text-on-surface">Hoy, 13:45</p>
+                    <p class="text-[11px] text-outline">Hace 50 min</p>
+                  </td>
+                  <td class="px-6 py-4 font-bold text-on-surface">$45.00</td>
+                  <td class="px-6 py-4 text-body-md text-on-surface-variant">
+                    Farmacia Clínica
+                  </td>
+                  <td class="px-6 py-4">
+                    <span
+                      class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-[11px] font-bold uppercase tracking-wider"
+                      >Completado</span
+                    >
+                  </td>
+                </tr>
+                <tr
+                  class="hover:bg-primary/5 transition-colors cursor-pointer group"
+                >
+                  <td class="px-6 py-4">
+                    <span class="text-body-md font-bold text-primary"
+                      >#FR-88895</span
+                    >
+                  </td>
+                  <td class="px-6 py-4">
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="w-8 h-8 rounded-full bg-error-container flex items-center justify-center text-error font-bold text-[10px]"
+                      >
+                        LC
+                      </div>
+                      <span class="text-body-md text-on-surface"
+                        >Luis Carranza</span
+                      >
+                    </div>
+                  </td>
+                  <td class="px-6 py-4">
+                    <p class="text-body-md text-on-surface">Hoy, 11:15</p>
+                    <p class="text-[11px] text-outline">Reembolso solicitado</p>
+                  </td>
+                  <td class="px-6 py-4 font-bold text-on-surface">$210.30</td>
+                  <td class="px-6 py-4 text-body-md text-on-surface-variant">
+                    Sucursal Sur
+                  </td>
+                  <td class="px-6 py-4">
+                    <span
+                      class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-[11px] font-bold uppercase tracking-wider"
+                      >Pendiente</span
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </main>
+  </body>
+</html>

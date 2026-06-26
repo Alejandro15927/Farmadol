@@ -1,7 +1,7 @@
 const express = require('express');
 const { body } = require('express-validator');
 const { register, login, verify, getProfile } = require('../controllers/authController');
-const { verifyToken } = require('../utils/jwt');
+const { authMiddleware } = require('../middleware/auth');
 
 const router = express.Router();
 
@@ -23,6 +23,6 @@ router.post('/login', loginValidation, login);
 router.post('/verify', verify);
 
 // Rutas protegidas
-router.get('/profile', verifyToken, getProfile);
+router.get('/profile', authMiddleware, getProfile);
 
 module.exports = router;

@@ -1,0 +1,679 @@
+<!doctype html>
+<html class="light" lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Farmadol - Sales Management / POS</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries">
+    </script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-secondary-fixed": "#131b2e",
+              "surface-container-highest": "#d3e4fe",
+              "surface-variant": "#d3e4fe",
+              "secondary-fixed": "#dae2fd",
+              background: "#f8f9ff",
+              "tertiary-fixed-dim": "#ffb596",
+              "on-tertiary": "#ffffff",
+              "tertiary-fixed": "#ffdbcd",
+              "inverse-primary": "#b4c5ff",
+              primary: "#004ac6",
+              "surface-bright": "#f8f9ff",
+              "primary-container": "#2563eb",
+              surface: "#f8f9ff",
+              "on-background": "#0b1c30",
+              secondary: "#565e74",
+              "on-primary-fixed": "#00174b",
+              "primary-fixed": "#dbe1ff",
+              "on-tertiary-container": "#ffede6",
+              "inverse-on-surface": "#eaf1ff",
+              "surface-dim": "#cbdbf5",
+              "surface-container": "#e5eeff",
+              "on-secondary-fixed-variant": "#3f465c",
+              "surface-container-high": "#dce9ff",
+              outline: "#737686",
+              "error-container": "#ffdad6",
+              "on-secondary": "#ffffff",
+              "on-error-container": "#93000a",
+              "on-tertiary-fixed-variant": "#7d2d00",
+              "on-primary-fixed-variant": "#003ea8",
+              tertiary: "#943700",
+              error: "#ba1a1a",
+              "on-tertiary-fixed": "#360f00",
+              "on-surface-variant": "#434655",
+              "secondary-fixed-dim": "#bec6e0",
+              "on-surface": "#0b1c30",
+              "primary-fixed-dim": "#b4c5ff",
+              "surface-container-low": "#eff4ff",
+              "secondary-container": "#dae2fd",
+              "on-secondary-container": "#5c647a",
+              "on-primary-container": "#eeefff",
+              "on-primary": "#ffffff",
+              "tertiary-container": "#bc4800",
+              "surface-tint": "#0053db",
+              "on-error": "#ffffff",
+              "outline-variant": "#c3c6d7",
+              "inverse-surface": "#213145",
+              "surface-container-lowest": "#ffffff",
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px",
+            },
+            spacing: {
+              "stack-md": "16px",
+              "container-max-width": "1440px",
+              "sidebar-width": "280px",
+              gutter: "24px",
+              "stack-sm": "8px",
+              "stack-lg": "24px",
+              "margin-mobile": "16px",
+            },
+            fontFamily: {
+              "body-md": ["Inter"],
+              "body-lg": ["Inter"],
+              "headline-lg": ["Inter"],
+              "headline-md": ["Inter"],
+              "display-lg": ["Inter"],
+              "label-md": ["Inter"],
+              caption: ["Inter"],
+              "title-lg": ["Inter"],
+              "title-md": ["Inter"],
+            },
+            fontSize: {
+              "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+              "body-lg": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+              "headline-lg": [
+                "28px",
+                {
+                  lineHeight: "36px",
+                  letterSpacing: "-0.01em",
+                  fontWeight: "600",
+                },
+              ],
+              "headline-md": [
+                "24px",
+                { lineHeight: "32px", fontWeight: "600" },
+              ],
+              "display-lg": [
+                "36px",
+                {
+                  lineHeight: "44px",
+                  letterSpacing: "-0.02em",
+                  fontWeight: "700",
+                },
+              ],
+              "label-md": [
+                "13px",
+                {
+                  lineHeight: "18px",
+                  letterSpacing: "0.05em",
+                  fontWeight: "500",
+                },
+              ],
+              caption: ["12px", { lineHeight: "16px", fontWeight: "400" }],
+              "title-lg": ["20px", { lineHeight: "28px", fontWeight: "600" }],
+              "title-md": ["16px", { lineHeight: "24px", fontWeight: "600" }],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        background-color: #f8f9ff;
+        font-family: "Inter", sans-serif;
+      }
+      .material-symbols-outlined {
+        font-variation-settings:
+          "FILL" 0,
+          "wght" 400,
+          "GRAD" 0,
+          "opsz" 24;
+      }
+      .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
+  </head>
+  <body class="overflow-hidden">
+    <!-- SideNavBar -->
+    <aside
+      class="fixed left-0 top-0 h-full w-[280px] bg-on-secondary-fixed flex flex-col py-stack-lg border-r border-outline-variant z-50"
+    >
+      <div class="px-6 mb-10">
+        <div class="flex items-center gap-3">
+          <div
+            class="w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center"
+          >
+            <span
+              class="material-symbols-outlined text-white"
+              data-icon="medical_services"
+              >medical_services</span
+            >
+          </div>
+          <div>
+            <h1
+              class="font-headline-md text-headline-md font-black text-surface-container-lowest leading-none"
+            >
+              Farmadol
+            </h1>
+            <p class="font-label-md text-label-md text-secondary-fixed-dim">
+              Pharmacy ERP
+            </p>
+          </div>
+        </div>
+      </div>
+      <nav class="flex-1 px-4 space-y-1">
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="dashboard"
+            >dashboard</span
+          >
+          <span class="font-label-md text-label-md">Dashboard</span>
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="group">group</span>
+          <span class="font-label-md text-label-md">Users</span>
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="inventory_2"
+            >inventory_2</span
+          >
+          <span class="font-label-md text-label-md">Inventory</span>
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-surface-container-lowest bg-white/5 border-l-4 border-primary-container transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="point_of_sale"
+            >point_of_sale</span
+          >
+          <span class="font-label-md text-label-md">Sales</span>
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="shopping_cart"
+            >shopping_cart</span
+          >
+          <span class="font-label-md text-label-md">Purchases</span>
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="person_search"
+            >person_search</span
+          >
+          <span class="font-label-md text-label-md">Clients</span>
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="analytics"
+            >analytics</span
+          >
+          <span class="font-label-md text-label-md">Reports</span>
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="storefront"
+            >storefront</span
+          >
+          <span class="font-label-md text-label-md">Branches</span>
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="settings"
+            >settings</span
+          >
+          <span class="font-label-md text-label-md">Settings</span>
+        </a>
+      </nav>
+      <div class="px-4 mt-auto">
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="logout"
+            >logout</span
+          >
+          <span class="font-label-md text-label-md">Logout</span>
+        </a>
+      </div>
+    </aside>
+    <!-- TopNavBar -->
+    <header
+      class="bg-surface-container-lowest fixed top-0 right-0 h-16 flex justify-between items-center px-6 border-b border-outline-variant z-40 transition-all"
+      style="left: 280px"
+    >
+      <div class="flex items-center flex-1 max-w-xl">
+        <div class="relative w-full">
+          <span
+            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-body-md"
+            data-icon="search"
+          >search</span>
+          <input
+            class="w-full pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+            placeholder="Buscar medicamentos..."
+            type="text"
+          />
+        </div>
+      </div>
+      <div class="flex items-center space-x-4">
+        <div class="h-8 w-[1px] bg-outline-variant"></div>
+        <div class="flex items-center gap-3 pl-2">
+            <div class="text-right">
+              <p
+                class="font-label-md text-label-md text-on-surface leading-none"
+              >
+                Dr. Alejandro Ruiz
+              </p>
+              <p
+                class="text-[11px] text-secondary font-medium uppercase tracking-wider"
+              >
+                Admin Principal
+              </p>
+            </div>
+            <img
+              alt="User profile photo"
+              class="w-10 h-10 rounded-full border-2 border-primary-container/20"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfDh0aDi-mYTTGT0gNhSnLGh4OBKf_o88qJ4izMLFyRHyU87yajEm5NOfmmV-ROb4H-zghVfM0qXVdoiF4mGNAbcha_4mc-C1bBVk0PJIAfFmCUAM0EjQTzCn6f8uW1CT-MBF1g-aeZ4VnV1ezpIc1OzOYU20Xw498A_rMwwgexs4B3T8sPjWFCggYuI3Ui8ZiXxQrHaQHIZcXRbQsbd-eH2fe0s9UNNoHMDji1otRwE7gdYmtVSVkHO8RfM869N5_xr8g0-be17Mk"
+            />
+          </div>
+      </div>
+    </header>
+    <!-- Main Content Canvas -->
+    <main class="fixed inset-0 pt-16 flex transition-all" style="left: 280px">
+      <!-- Left Side: Product Selection -->
+      <section class="flex-1 flex flex-col bg-background overflow-hidden">
+        <!-- Filter Bar -->
+        <div
+          class="px-6 py-4 flex items-center gap-4 bg-white border-b border-outline-variant overflow-x-auto scrollbar-hide"
+        >
+          <button
+            class="flex items-center gap-2 px-4 py-1.5 bg-primary text-white rounded-full font-label-md text-label-md transition-all"
+          >
+            <span
+              class="material-symbols-outlined text-[18px]"
+              data-icon="category"
+            >category</span>
+            All Categories
+          </button>
+          <button
+            class="flex items-center gap-2 px-4 py-1.5 bg-surface-container text-on-surface-variant hover:bg-surface-container-highest rounded-full font-label-md text-label-md transition-all"
+          >
+            Analgesics
+          </button>
+          <button
+            class="flex items-center gap-2 px-4 py-1.5 bg-surface-container text-on-surface-variant hover:bg-surface-container-highest rounded-full font-label-md text-label-md transition-all"
+          >
+            Antibiotics
+          </button>
+          <button
+            class="flex items-center gap-2 px-4 py-1.5 bg-surface-container text-on-surface-variant hover:bg-surface-container-highest rounded-full font-label-md text-label-md transition-all"
+          >
+            Vitamins
+          </button>
+          <button
+            class="flex items-center gap-2 px-4 py-1.5 bg-surface-container text-on-surface-variant hover:bg-surface-container-highest rounded-full font-label-md text-label-md transition-all"
+          >
+            Skincare
+          </button>
+          <button
+            class="flex items-center gap-2 px-4 py-1.5 bg-surface-container text-on-surface-variant hover:bg-surface-container-highest rounded-full font-label-md text-label-md transition-all"
+          >
+            First Aid
+          </button>
+        </div>
+        <!-- Product Grid -->
+        <div class="flex-1 overflow-y-auto p-6 scrollbar-hide">
+          <div
+            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-[1440px]"
+          >
+            <!-- Product Card 1 -->
+            <div
+              class="bg-white border border-outline-variant rounded-xl p-4 flex flex-col hover:border-primary/40 hover:shadow-lg transition-all group"
+            >
+              <h3
+                class="font-title-md text-title-md text-on-background line-clamp-1"
+              >
+                Amoxicilina 500mg
+              </h3>
+              <p class="text-caption text-secondary mb-3">
+                Antibiótico - Genérico
+              </p>
+              <div class="mt-auto flex items-center justify-between">
+                <span class="font-headline-md text-headline-md text-primary"
+                  >$12.50</span
+                >
+                <button
+                  class="h-10 w-10 bg-primary-container text-white rounded-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-all"
+                >
+                  <span
+                    class="material-symbols-outlined"
+                    data-icon="add_shopping_cart"
+                  >add_shopping_cart</span>
+                </button>
+              </div>
+            </div>
+            <!-- Product Card 2 -->
+            <div
+              class="bg-white border border-outline-variant rounded-xl p-4 flex flex-col hover:border-primary/40 hover:shadow-lg transition-all group"
+            >
+              <h3
+                class="font-title-md text-title-md text-on-background line-clamp-1"
+              >
+                Paracetamol 500mg
+              </h3>
+              <p class="text-caption text-secondary mb-3">Analgésico - Bayer</p>
+              <div class="mt-auto flex items-center justify-between">
+                <span class="font-headline-md text-headline-md text-primary"
+                  >$5.25</span
+                >
+                <button
+                  class="h-10 w-10 bg-primary-container text-white rounded-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-all"
+                >
+                  <span
+                    class="material-symbols-outlined"
+                    data-icon="add_shopping_cart"
+                  >add_shopping_cart</span>
+                </button>
+              </div>
+            </div>
+            <!-- Product Card 3 -->
+            <div
+              class="bg-white border border-outline-variant rounded-xl p-4 flex flex-col hover:border-primary/40 hover:shadow-lg transition-all group"
+            >
+              <h3
+                class="font-title-md text-title-md text-on-background line-clamp-1"
+              >
+                Multivitamínico A-Z
+              </h3>
+              <p class="text-caption text-secondary mb-3">
+                Suplemento - Centrum
+              </p>
+              <div class="mt-auto flex items-center justify-between">
+                <span class="font-headline-md text-headline-md text-primary"
+                  >$28.99</span
+                >
+                <button
+                  class="h-10 w-10 bg-primary-container text-white rounded-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-all"
+                >
+                  <span
+                    class="material-symbols-outlined"
+                    data-icon="add_shopping_cart"
+                  >add_shopping_cart</span>
+                </button>
+              </div>
+            </div>
+            <!-- Product Card 4 -->
+            <div
+              class="bg-white border border-outline-variant rounded-xl p-4 flex flex-col hover:border-primary/40 hover:shadow-lg transition-all group"
+            >
+              <h3
+                class="font-title-md text-title-md text-on-background line-clamp-1"
+              >
+                Nebulizador Portátil
+              </h3>
+              <p class="text-caption text-secondary mb-3">
+                Equipo Médico - Philips
+              </p>
+              <div class="mt-auto flex items-center justify-between">
+                <span class="font-headline-md text-headline-md text-primary"
+                  >$85.00</span
+                >
+                <button
+                  class="h-10 w-10 bg-primary-container text-white rounded-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-all"
+                >
+                  <span
+                    class="material-symbols-outlined"
+                    data-icon="add_shopping_cart"
+                  >add_shopping_cart</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Right Side: Cart/Order Summary -->
+      <section
+        class="w-[400px] flex flex-col bg-white border-l border-outline-variant shadow-2xl relative z-10"
+      >
+        <!-- Customer Selection -->
+        <div
+          class="p-6 border-b border-outline-variant bg-surface-container-low"
+        >
+          <label
+            class="font-label-md text-label-md text-on-surface-variant block mb-2"
+          >Customer / Client</label>
+          <div class="relative group">
+            <select
+              class="w-full pl-4 pr-10 py-3 bg-white border border-outline-variant rounded-xl font-body-md text-body-md appearance-none focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+            >
+              <option>General Public / Walk-in</option>
+              <option>Juan Pérez - ID: 12345678</option>
+              <option>María García - ID: 87654321</option>
+              <option>Carlos Rodriguez - VIP</option>
+            </select>
+            <span
+              class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none"
+              data-icon="arrow_drop_down"
+            >arrow_drop_down</span>
+            <button
+              class="absolute -right-12 top-1/2 -translate-y-1/2 text-primary hover:scale-110 transition-transform"
+            >
+              <span class="material-symbols-outlined" data-icon="person_add">person_add</span>
+            </button>
+          </div>
+        </div>
+        <!-- Cart Items List -->
+        <div class="flex-1 overflow-y-auto p-4 space-y-3 scrollbar-hide">
+          <h2
+            class="px-2 font-title-md text-title-md text-on-background flex items-center justify-between"
+          >
+            Current Cart
+            <span
+              class="text-caption bg-primary-container text-white px-2 py-0.5 rounded-full"
+            >3 Items</span>
+          </h2>
+          <!-- Cart Item 1 -->
+          <div
+            class="flex items-center gap-3 p-3 bg-background border border-outline-variant rounded-xl group hover:border-primary/20 transition-all"
+          >
+            <div
+              class="h-12 w-12 rounded-lg bg-gradient-to-br from-blue-50 to-blue-100 flex-shrink-0 flex items-center justify-center"
+            >
+              <span class="material-symbols-outlined text-primary/40">medication</span>
+            </div>
+            <div class="flex-1 min-w-0">
+              <p
+                class="font-label-md text-label-md text-on-background truncate"
+              >
+                Amoxicilina 500mg
+              </p>
+              <p class="text-caption text-secondary">$12.50 / unit</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded-md border border-outline-variant hover:bg-white active:bg-surface-container transition-all"
+              >
+                <span
+                  class="material-symbols-outlined text-[16px]"
+                  data-icon="remove"
+                >remove</span>
+              </button>
+              <span class="font-title-md text-title-md w-4 text-center">2</span>
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded-md border border-outline-variant hover:bg-white active:bg-surface-container transition-all"
+              >
+                <span
+                  class="material-symbols-outlined text-[16px]"
+                  data-icon="add"
+                >add</span>
+              </button>
+            </div>
+            <div class="text-right ml-2">
+              <p class="font-label-md text-label-md font-bold text-primary">
+                $25.00
+              </p>
+              <button
+                class="text-error opacity-0 group-hover:opacity-100 transition-opacity"
+              >
+                <span
+                  class="material-symbols-outlined text-[18px]"
+                  data-icon="delete"
+                >delete</span>
+              </button>
+            </div>
+          </div>
+          <!-- Cart Item 2 -->
+          <div
+            class="flex items-center gap-3 p-3 bg-background border border-outline-variant rounded-xl group hover:border-primary/20 transition-all"
+          >
+            <div
+              class="h-12 w-12 rounded-lg bg-gradient-to-br from-green-50 to-green-100 flex-shrink-0 flex items-center justify-center"
+            >
+              <span class="material-symbols-outlined text-primary/40">medication</span>
+            </div>
+            <div class="flex-1 min-w-0">
+              <p
+                class="font-label-md text-label-md text-on-background truncate"
+              >
+                Paracetamol 500mg
+              </p>
+              <p class="text-caption text-secondary">$5.25 / unit</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded-md border border-outline-variant hover:bg-white transition-all"
+              >
+                <span
+                  class="material-symbols-outlined text-[16px]"
+                  data-icon="remove"
+                >remove</span>
+              </button>
+              <span class="font-title-md text-title-md w-4 text-center">1</span>
+              <button
+                class="w-7 h-7 flex items-center justify-center rounded-md border border-outline-variant hover:bg-white transition-all"
+              >
+                <span
+                  class="material-symbols-outlined text-[16px]"
+                  data-icon="add"
+                >add</span>
+              </button>
+            </div>
+            <div class="text-right ml-2">
+              <p class="font-label-md text-label-md font-bold text-primary">
+                $5.25
+              </p>
+              <button
+                class="text-error opacity-0 group-hover:opacity-100 transition-opacity"
+              >
+                <span
+                  class="material-symbols-outlined text-[18px]"
+                  data-icon="delete"
+                >delete</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- Summary and Checkout -->
+        <div
+          class="p-6 border-t border-outline-variant space-y-4 shadow-[0_-10px_20px_rgba(0,0,0,0.02)]"
+        >
+          <div class="space-y-2">
+            <div
+              class="flex justify-between items-center text-on-surface-variant"
+            >
+              <span class="font-body-md text-body-md">Subtotal</span>
+              <span class="font-body-md text-body-md font-medium">$30.25</span>
+            </div>
+            <div
+              class="flex justify-between items-center text-on-surface-variant"
+            >
+              <span class="font-body-md text-body-md">IVA (15%)</span>
+              <span class="font-body-md text-body-md font-medium">$4.54</span>
+            </div>
+            <div
+              class="flex justify-between items-center text-on-surface-variant"
+            >
+              <span class="font-body-md text-body-md">Discount</span>
+              <span class="font-body-md text-body-md font-medium text-green-600"
+                >-$0.00</span
+              >
+            </div>
+            <div class="pt-2 flex justify-between items-end">
+              <span
+                class="font-headline-md text-headline-md font-bold text-on-background"
+              >Total</span>
+              <span
+                class="font-display-lg text-display-lg font-black text-primary"
+              >$34.79</span>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <button
+              class="flex flex-col items-center justify-center gap-1 p-3 border border-outline-variant rounded-xl hover:bg-surface-container-low transition-all"
+            >
+              <span
+                class="material-symbols-outlined text-on-surface-variant"
+                data-icon="payments"
+              >payments</span>
+              <span class="text-caption font-bold text-on-surface-variant"
+              >Cash</span>
+            </button>
+            <button
+              class="flex flex-col items-center justify-center gap-1 p-3 border border-primary bg-primary-container/5 rounded-xl hover:bg-primary-container/10 transition-all"
+            >
+              <span
+                class="material-symbols-outlined text-primary"
+                data-icon="credit_card"
+              >credit_card</span>
+              <span class="text-caption font-bold text-primary">Card</span>
+            </button>
+          </div>
+          <button
+            class="w-full py-4 bg-primary text-white font-headline-md text-headline-md rounded-xl hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-3"
+          >
+            Confirmar Venta
+            <span class="material-symbols-outlined" data-icon="check_circle">check_circle</span>
+          </button>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

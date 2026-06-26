@@ -22,7 +22,7 @@ app.get('/health', (req, res) => {
 });
 
 // Sincronizar base de datos
-sequelize.sync({ alter: true })
+sequelize.sync()
   .then(() => {
     console.log('📦 Base de datos sincronizada');
     app.listen(PORT, () => {

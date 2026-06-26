@@ -11,8 +11,8 @@ const User = require('./User')(sequelize);
 const Role = require('./Role')(sequelize);
 
 // Relaciones
-User.belongsToMany(Role, { through: 'usuario_roles', foreignKey: 'usuario_id' });
-Role.belongsToMany(User, { through: 'usuario_roles', foreignKey: 'rol_id' });
+User.belongsToMany(Role, { through: 'usuario_roles', foreignKey: 'usuario_id', timestamps: false });
+Role.belongsToMany(User, { through: 'usuario_roles', foreignKey: 'rol_id', timestamps: false });
 
 module.exports = {
   sequelize,

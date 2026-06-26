@@ -1,0 +1,841 @@
+<!doctype html>
+
+<html class="light" lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-secondary-fixed": "#131b2e",
+              "surface-container-highest": "#d3e4fe",
+              "surface-variant": "#d3e4fe",
+              "secondary-fixed": "#dae2fd",
+              background: "#f8f9ff",
+              "tertiary-fixed-dim": "#ffb596",
+              "on-tertiary": "#ffffff",
+              "tertiary-fixed": "#ffdbcd",
+              "inverse-primary": "#b4c5ff",
+              primary: "#004ac6",
+              "surface-bright": "#f8f9ff",
+              "primary-container": "#2563eb",
+              surface: "#f8f9ff",
+              "on-background": "#0b1c30",
+              secondary: "#565e74",
+              "on-primary-fixed": "#00174b",
+              "primary-fixed": "#dbe1ff",
+              "on-tertiary-container": "#ffede6",
+              "inverse-on-surface": "#eaf1ff",
+              "surface-dim": "#cbdbf5",
+              "surface-container": "#e5eeff",
+              "on-secondary-fixed-variant": "#3f465c",
+              "surface-container-high": "#dce9ff",
+              outline: "#737686",
+              "error-container": "#ffdad6",
+              "on-secondary": "#ffffff",
+              "on-error-container": "#93000a",
+              "on-tertiary-fixed-variant": "#7d2d00",
+              "on-primary-fixed-variant": "#003ea8",
+              tertiary: "#943700",
+              error: "#ba1a1a",
+              "on-tertiary-fixed": "#360f00",
+              "on-surface-variant": "#434655",
+              "secondary-fixed-dim": "#bec6e0",
+              "on-surface": "#0b1c30",
+              "primary-fixed-dim": "#b4c5ff",
+              "surface-container-low": "#eff4ff",
+              "secondary-container": "#dae2fd",
+              "on-secondary-container": "#5c647a",
+              "on-primary-container": "#eeefff",
+              "on-primary": "#ffffff",
+              "tertiary-container": "#bc4800",
+              "surface-tint": "#0053db",
+              "on-error": "#ffffff",
+              "outline-variant": "#c3c6d7",
+              "inverse-surface": "#213145",
+              "surface-container-lowest": "#ffffff",
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px",
+            },
+            spacing: {
+              "stack-md": "16px",
+              "container-max-width": "1440px",
+              "sidebar-width": "280px",
+              gutter: "24px",
+              "stack-sm": "8px",
+              "stack-lg": "24px",
+              "margin-mobile": "16px",
+            },
+            fontFamily: {
+              "body-md": ["Inter"],
+              "body-lg": ["Inter"],
+              "headline-lg": ["Inter"],
+              "headline-md": ["Inter"],
+              "display-lg": ["Inter"],
+              "label-md": ["Inter"],
+              caption: ["Inter"],
+              "title-lg": ["Inter"],
+              "title-md": ["Inter"],
+            },
+            fontSize: {
+              "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+              "body-lg": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+              "headline-lg": [
+                "28px",
+                {
+                  lineHeight: "36px",
+                  letterSpacing: "-0.01em",
+                  fontWeight: "600",
+                },
+              ],
+              "headline-md": [
+                "24px",
+                { lineHeight: "32px", fontWeight: "600" },
+              ],
+              "display-lg": [
+                "36px",
+                {
+                  lineHeight: "44px",
+                  letterSpacing: "-0.02em",
+                  fontWeight: "700",
+                },
+              ],
+              "label-md": [
+                "13px",
+                {
+                  lineHeight: "18px",
+                  letterSpacing: "0.05em",
+                  fontWeight: "500",
+                },
+              ],
+              caption: ["12px", { lineHeight: "16px", fontWeight: "400" }],
+              "title-lg": ["20px", { lineHeight: "28px", fontWeight: "600" }],
+              "title-md": ["16px", { lineHeight: "24px", fontWeight: "600" }],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      .material-symbols-outlined {
+        font-variation-settings:
+          "FILL" 0,
+          "wght" 400,
+          "GRAD" 0,
+          "opsz" 24;
+      }
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #f1f5f9;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 10px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
+    </style>
+  </head>
+  <body class="bg-background font-body-md text-on-background min-h-screen">
+    <!-- SideNavBar -->
+    <aside
+      class="fixed left-0 top-0 h-full w-[280px] bg-on-secondary-fixed flex flex-col py-stack-lg border-r border-outline-variant z-50"
+    >
+      <div class="px-6 mb-10">
+        <div class="flex items-center gap-3">
+          <div
+            class="w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center"
+          >
+            <span
+              class="material-symbols-outlined text-white"
+              data-icon="medical_services"
+              >medical_services</span
+            >
+          </div>
+          <div>
+            <h1
+              class="font-headline-md text-headline-md font-black text-surface-container-lowest leading-none"
+            >
+              Farmadol
+            </h1>
+            <p class="font-label-md text-label-md text-secondary-fixed-dim">
+              Pharmacy ERP
+            </p>
+          </div>
+        </div>
+      </div>
+      <nav class="flex-1 px-4 space-y-1">
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-surface-container-lowest bg-white/5 border-l-4 border-primary-container transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="dashboard"
+            >dashboard</span
+          >
+          <span class="font-label-md text-label-md">Dashboard</span>
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="group">group</span>
+          <span class="font-label-md text-label-md">Users</span>
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="inventory_2"
+            >inventory_2</span
+          >
+          <span class="font-label-md text-label-md">Inventory</span>
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="point_of_sale"
+            >point_of_sale</span
+          >
+          <span class="font-label-md text-label-md">Sales</span>
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="shopping_cart"
+            >shopping_cart</span
+          >
+          <span class="font-label-md text-label-md">Purchases</span>
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="person_search"
+            >person_search</span
+          >
+          <span class="font-label-md text-label-md">Clients</span>
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="analytics"
+            >analytics</span
+          >
+          <span class="font-label-md text-label-md">Reports</span>
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="storefront"
+            >storefront</span
+          >
+          <span class="font-label-md text-label-md">Branches</span>
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="settings"
+            >settings</span
+          >
+          <span class="font-label-md text-label-md">Settings</span>
+        </a>
+      </nav>
+      <div class="px-4 mt-auto">
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="logout"
+            >logout</span
+          >
+          <span class="font-label-md text-label-md">Logout</span>
+        </a>
+      </div>
+    </aside>
+    <!-- Main Content Area -->
+    <main class="ml-[280px] min-h-screen flex flex-col">
+      <!-- TopNavBar -->
+      <header
+        class="h-16 bg-surface-container-lowest sticky top-0 flex justify-between items-center px-gutter border-b border-outline-variant z-40"
+      >
+        <div class="flex items-center flex-1">
+          <div class="relative w-full max-w-md">
+          </div>
+        </div>
+        <div class="flex items-center gap-4">
+          <button
+            class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-low transition-colors text-on-surface-variant"
+          >
+          </button>
+          <div class="h-8 w-[1px] bg-outline-variant mx-2"></div>
+          <div class="flex items-center gap-3 pl-2">
+            <div class="text-right">
+              <p
+                class="font-label-md text-label-md text-on-surface leading-none"
+              >
+                Dr. Alejandro Ruiz
+              </p>
+              <p
+                class="text-[11px] text-secondary font-medium uppercase tracking-wider"
+              >
+                Admin Principal
+              </p>
+            </div>
+            <img
+              alt="User profile photo"
+              class="w-10 h-10 rounded-full border-2 border-primary-container/20"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfDh0aDi-mYTTGT0gNhSnLGh4OBKf_o88qJ4izMLFyRHyU87yajEm5NOfmmV-ROb4H-zghVfM0qXVdoiF4mGNAbcha_4mc-C1bBVk0PJIAfFmCUAM0EjQTzCn6f8uW1CT-MBF1g-aeZ4VnV1ezpIc1OzOYU20Xw498A_rMwwgexs4B3T8sPjWFCggYuI3Ui8ZiXxQrHaQHIZcXRbQsbd-eH2fe0s9UNNoHMDji1otRwE7gdYmtVSVkHO8RfM869N5_xr8g0-be17Mk"
+            />
+          </div>
+        </div>
+      </header>
+      <!-- Page Content -->
+      <div
+        class="p-gutter max-w-container-max-width w-full mx-auto space-y-stack-lg"
+      >
+        <!-- Header Section -->
+        <div class="flex justify-between items-end">
+          <div>
+            <h2 class="font-headline-lg text-headline-lg text-on-surface">
+              Panel de Control
+            </h2>
+            <p class="font-body-md text-body-md text-secondary">
+              Resumen operativo de Farmadol Central - 24 de Octubre, 2023
+            </p>
+          </div>
+          <div class="flex gap-3">
+            <button
+              class="flex items-center gap-2 px-4 py-2 border border-outline-variant rounded-lg bg-white font-label-md text-label-md text-on-surface hover:bg-surface-container-low transition-colors"
+            >
+              <span
+                class="material-symbols-outlined text-[20px]"
+                data-icon="download"
+                >download</span
+              >
+              Exportar Reporte
+            </button>
+            <button
+              class="flex items-center gap-2 px-4 py-2 bg-primary-container rounded-lg font-label-md text-label-md text-white hover:opacity-90 transition-opacity"
+            >
+              <span
+                class="material-symbols-outlined text-[20px]"
+                data-icon="add"
+                >add</span
+              >
+              Nueva Venta
+            </button>
+          </div>
+        </div>
+        <!-- KPI Cards Bento Grid -->
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-stack-md"
+        >
+          <!-- Card 1 -->
+          <div
+            class="bg-white p-5 rounded-xl border border-outline-variant hover:border-primary-container/30 transition-colors"
+          >
+            <div class="flex justify-between items-start mb-4">
+              <div class="p-2 bg-blue-50 text-primary-container rounded-lg">
+                <span class="material-symbols-outlined" data-icon="payments"
+                  >payments</span
+                >
+              </div>
+              <span
+                class="text-[12px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded"
+                >+12%</span
+              >
+            </div>
+            <p
+              class="text-secondary font-label-md text-[12px] uppercase tracking-wide"
+            >
+              Ventas del día
+            </p>
+            <h3 class="text-headline-md font-bold text-on-surface mt-1">
+              $4,250.00
+            </h3>
+          </div>
+          <!-- Card 2 -->
+          <div
+            class="bg-white p-5 rounded-xl border border-outline-variant hover:border-primary-container/30 transition-colors"
+          >
+            <div class="flex justify-between items-start mb-4">
+              <div class="p-2 bg-purple-50 text-purple-600 rounded-lg">
+                <span
+                  class="material-symbols-outlined"
+                  data-icon="calendar_month"
+                  >calendar_month</span
+                >
+              </div>
+              <span
+                class="text-[12px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded"
+                >+5.4%</span
+              >
+            </div>
+            <p
+              class="text-secondary font-label-md text-[12px] uppercase tracking-wide"
+            >
+              Ingresos del mes
+            </p>
+            <h3 class="text-headline-md font-bold text-on-surface mt-1">
+              $128,400
+            </h3>
+          </div>
+          <!-- Card 3 -->
+          <div
+            class="bg-white p-5 rounded-xl border border-outline-variant hover:border-primary-container/30 transition-colors"
+          >
+            <div class="flex justify-between items-start mb-4">
+              <div class="p-2 bg-red-50 text-error rounded-lg">
+                <span class="material-symbols-outlined" data-icon="warning"
+                  >warning</span
+                >
+              </div>
+              <span
+                class="text-[12px] font-bold text-error bg-red-50 px-2 py-0.5 rounded"
+                >Critico</span
+              >
+            </div>
+            <p
+              class="text-secondary font-label-md text-[12px] uppercase tracking-wide"
+            >
+              Stock Crítico
+            </p>
+            <h3 class="text-headline-md font-bold text-on-surface mt-1">
+              24 Items
+            </h3>
+          </div>
+          <!-- Card 4 -->
+          <div
+            class="bg-white p-5 rounded-xl border border-outline-variant hover:border-primary-container/30 transition-colors"
+          >
+            <div class="flex justify-between items-start mb-4">
+              <div class="p-2 bg-orange-50 text-orange-600 rounded-lg">
+                <span
+                  class="material-symbols-outlined"
+                  data-icon="hourglass_empty"
+                  >hourglass_empty</span
+                >
+              </div>
+              <span
+                class="text-[12px] font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded"
+                >Próximos</span
+              >
+            </div>
+            <p
+              class="text-secondary font-label-md text-[12px] uppercase tracking-wide"
+            >
+              Por Vencer
+            </p>
+            <h3 class="text-headline-md font-bold text-on-surface mt-1">
+              12 Meds
+            </h3>
+          </div>
+          <!-- Card 5 -->
+          <div
+            class="bg-white p-5 rounded-xl border border-outline-variant hover:border-primary-container/30 transition-colors"
+          >
+            <div class="flex justify-between items-start mb-4">
+              <div class="p-2 bg-cyan-50 text-cyan-600 rounded-lg">
+                <span
+                  class="material-symbols-outlined"
+                  data-icon="local_shipping"
+                  >local_shipping</span
+                >
+              </div>
+              <span
+                class="text-[12px] font-bold text-cyan-600 bg-cyan-50 px-2 py-0.5 rounded"
+                >Pendiente</span
+              >
+            </div>
+            <p
+              class="text-secondary font-label-md text-[12px] uppercase tracking-wide"
+            >
+              Compras Pendientes
+            </p>
+            <h3 class="text-headline-md font-bold text-on-surface mt-1">
+              08 Pedidos
+            </h3>
+          </div>
+          <!-- Card 6 -->
+          <div
+            class="bg-white p-5 rounded-xl border border-outline-variant hover:border-primary-container/30 transition-colors"
+          >
+            <div class="flex justify-between items-start mb-4">
+              <div class="p-2 bg-emerald-50 text-emerald-600 rounded-lg">
+                <span class="material-symbols-outlined" data-icon="groups"
+                  >groups</span
+                >
+              </div>
+              <span
+                class="text-[12px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded"
+                >+42</span
+              >
+            </div>
+            <p
+              class="text-secondary font-label-md text-[12px] uppercase tracking-wide"
+            >
+              Total Clientes
+            </p>
+            <h3 class="text-headline-md font-bold text-on-surface mt-1">
+              1,240
+            </h3>
+          </div>
+        </div>
+        <!-- Main Charts & Content -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-stack-lg">
+          <!-- Bar Chart: Ventas por mes -->
+          <div
+            class="lg:col-span-8 bg-white p-6 rounded-xl border border-outline-variant"
+          >
+            <div class="flex justify-between items-center mb-8">
+              <div>
+                <h4 class="font-title-md text-title-md text-on-surface">
+                  Ventas por Mes
+                </h4>
+                <p class="text-caption text-secondary">
+                  Evolución de ingresos anuales 2023
+                </p>
+              </div>
+              <select
+                class="text-caption border-outline-variant rounded-lg bg-surface-container-low px-3 py-1"
+              >
+                <option>Año Actual</option>
+                <option>Año Anterior</option>
+              </select>
+            </div>
+            <div class="h-[300px] flex items-end justify-between gap-2 pt-4">
+              <div class="flex-1 flex flex-col items-center gap-2 group">
+                <div
+                  class="w-full bg-primary-container/20 group-hover:bg-primary-container/40 h-[40%] rounded-t-lg transition-all duration-300"
+                ></div>
+                <span class="text-[10px] text-secondary font-bold">ENE</span>
+              </div>
+              <div class="flex-1 flex flex-col items-center gap-2 group">
+                <div
+                  class="w-full bg-primary-container/20 group-hover:bg-primary-container/40 h-[55%] rounded-t-lg transition-all duration-300"
+                ></div>
+                <span class="text-[10px] text-secondary font-bold">FEB</span>
+              </div>
+              <div class="flex-1 flex flex-col items-center gap-2 group">
+                <div
+                  class="w-full bg-primary-container/20 group-hover:bg-primary-container/40 h-[45%] rounded-t-lg transition-all duration-300"
+                ></div>
+                <span class="text-[10px] text-secondary font-bold">MAR</span>
+              </div>
+              <div class="flex-1 flex flex-col items-center gap-2 group">
+                <div
+                  class="w-full bg-primary-container/20 group-hover:bg-primary-container/40 h-[70%] rounded-t-lg transition-all duration-300"
+                ></div>
+                <span class="text-[10px] text-secondary font-bold">ABR</span>
+              </div>
+              <div class="flex-1 flex flex-col items-center gap-2 group">
+                <div
+                  class="w-full bg-primary-container/20 group-hover:bg-primary-container/40 h-[60%] rounded-t-lg transition-all duration-300"
+                ></div>
+                <span class="text-[10px] text-secondary font-bold">MAY</span>
+              </div>
+              <div class="flex-1 flex flex-col items-center gap-2 group">
+                <div
+                  class="w-full bg-primary-container/20 group-hover:bg-primary-container/40 h-[85%] rounded-t-lg transition-all duration-300"
+                ></div>
+                <span class="text-[10px] text-secondary font-bold">JUN</span>
+              </div>
+              <div class="flex-1 flex flex-col items-center gap-2 group">
+                <div
+                  class="w-full bg-primary-container/20 group-hover:bg-primary-container/40 h-[95%] rounded-t-lg transition-all duration-300"
+                ></div>
+                <span class="text-[10px] text-secondary font-bold">JUL</span>
+              </div>
+              <div class="flex-1 flex flex-col items-center gap-2 group">
+                <div
+                  class="w-full bg-primary-container/20 group-hover:bg-primary-container/40 h-[80%] rounded-t-lg transition-all duration-300"
+                ></div>
+                <span class="text-[10px] text-secondary font-bold">AGO</span>
+              </div>
+              <div class="flex-1 flex flex-col items-center gap-2 group">
+                <div
+                  class="w-full bg-primary-container/20 group-hover:bg-primary-container/40 h-[75%] rounded-t-lg transition-all duration-300"
+                ></div>
+                <span class="text-[10px] text-secondary font-bold">SEP</span>
+              </div>
+              <div class="flex-1 flex flex-col items-center gap-2 group">
+                <div
+                  class="w-full bg-primary-container h-[100%] rounded-t-lg transition-all duration-300 shadow-lg shadow-primary-container/20"
+                ></div>
+                <span class="text-[10px] text-primary-container font-bold"
+                  >OCT</span
+                >
+              </div>
+              <div
+                class="flex-1 flex flex-col items-center gap-2 group opacity-40"
+              >
+                <div
+                  class="w-full bg-outline-variant h-[0%] rounded-t-lg border-t-2 border-dashed border-outline"
+                ></div>
+                <span class="text-[10px] text-secondary font-bold">NOV</span>
+              </div>
+              <div
+                class="flex-1 flex flex-col items-center gap-2 group opacity-40"
+              >
+                <div
+                  class="w-full bg-outline-variant h-[0%] rounded-t-lg border-t-2 border-dashed border-outline"
+                ></div>
+                <span class="text-[10px] text-secondary font-bold">DIC</span>
+              </div>
+            </div>
+          </div>
+          <!-- Pie Chart: Distribución por sucursal -->
+          <div
+            class="lg:col-span-4 bg-white p-6 rounded-xl border border-outline-variant"
+          >
+            <h4 class="font-title-md text-title-md text-on-surface mb-6">
+              Ventas por Sucursal
+            </h4>
+            <div class="relative w-48 h-48 mx-auto mb-8">
+              <!-- Custom CSS "Pie" visualization -->
+              <div
+                class="absolute inset-0 rounded-full border-[24px] border-primary-container"
+              ></div>
+              <div
+                class="absolute inset-0 rounded-full border-[24px] border-cyan-400 border-t-transparent border-l-transparent border-r-transparent rotate-[45deg]"
+              ></div>
+              <div
+                class="absolute inset-0 rounded-full border-[24px] border-emerald-400 border-t-transparent border-l-transparent rotate-[210deg]"
+              ></div>
+              <div
+                class="absolute inset-0 flex items-center justify-center flex-col"
+              >
+                <span class="text-headline-md font-bold">100%</span>
+                <span class="text-caption text-secondary">Total Corp.</span>
+              </div>
+            </div>
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span
+                    class="w-3 h-3 rounded-full bg-primary-container"
+                  ></span>
+                  <span class="text-body-md text-secondary"
+                    >Sucursal Centro</span
+                  >
+                </div>
+                <span class="font-bold text-on-surface">54%</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="w-3 h-3 rounded-full bg-cyan-400"></span>
+                  <span class="text-body-md text-secondary"
+                    >Sucursal Norte</span
+                  >
+                </div>
+                <span class="font-bold text-on-surface">28%</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="w-3 h-3 rounded-full bg-emerald-400"></span>
+                  <span class="text-body-md text-secondary">Sucursal Sur</span>
+                </div>
+                <span class="font-bold text-on-surface">18%</span>
+              </div>
+            </div>
+          </div>
+          <!-- Table: Recent Activity -->
+          <div
+            class="lg:col-span-12 bg-white rounded-xl border border-outline-variant overflow-hidden"
+          >
+            <div
+              class="p-6 border-b border-outline-variant flex justify-between items-center"
+            >
+              <h4 class="font-title-md text-title-md text-on-surface">
+                Actividad Reciente y Alertas
+              </h4>
+              <button
+                class="text-primary-container font-label-md hover:underline"
+              >
+                Ver todo el historial
+              </button>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left">
+                <thead class="bg-[#F1F5F9]">
+                  <tr>
+                    <th
+                      class="px-6 py-4 font-semibold text-secondary text-[13px] uppercase tracking-wider"
+                    >
+                      Tipo
+                    </th>
+                    <th
+                      class="px-6 py-4 font-semibold text-secondary text-[13px] uppercase tracking-wider"
+                    >
+                      Descripción
+                    </th>
+                    <th
+                      class="px-6 py-4 font-semibold text-secondary text-[13px] uppercase tracking-wider"
+                    >
+                      Usuario / Cliente
+                    </th>
+                    <th
+                      class="px-6 py-4 font-semibold text-secondary text-[13px] uppercase tracking-wider"
+                    >
+                      Monto / Qty
+                    </th>
+                    <th
+                      class="px-6 py-4 font-semibold text-secondary text-[13px] uppercase tracking-wider"
+                    >
+                      Estado
+                    </th>
+                    <th
+                      class="px-6 py-4 font-semibold text-secondary text-[13px] uppercase tracking-wider"
+                    >
+                      Hora
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-outline-variant">
+                  <tr class="hover:bg-[#EFF6FF] transition-colors">
+                    <td class="px-6 py-4">
+                      <span
+                        class="px-2 py-1 bg-green-50 text-green-700 rounded-lg text-[11px] font-bold uppercase"
+                        >Venta</span
+                      >
+                    </td>
+                    <td class="px-6 py-4 font-medium">
+                      Antibióticos Amoxicilina 500mg
+                    </td>
+                    <td class="px-6 py-4 text-secondary">Juan Carlos Pérez</td>
+                    <td class="px-6 py-4 font-bold text-on-surface">$24.50</td>
+                    <td class="px-6 py-4">
+                      <div class="flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                        <span class="text-body-md">Completado</span>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 text-secondary">14:32</td>
+                  </tr>
+                  <tr class="hover:bg-[#EFF6FF] transition-colors">
+                    <td class="px-6 py-4">
+                      <span
+                        class="px-2 py-1 bg-red-50 text-error rounded-lg text-[11px] font-bold uppercase"
+                        >Alerta</span
+                      >
+                    </td>
+                    <td class="px-6 py-4 font-medium text-error">
+                      Stock Bajo: Paracetamol 1g
+                    </td>
+                    <td class="px-6 py-4 text-secondary">Sistema Automático</td>
+                    <td class="px-6 py-4 font-bold text-error">15 u.</td>
+                    <td class="px-6 py-4">
+                      <div class="flex items-center gap-1.5">
+                        <span
+                          class="w-2 h-2 rounded-full bg-error animate-pulse"
+                        ></span>
+                        <span class="text-body-md text-error">Crítico</span>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 text-secondary">14:15</td>
+                  </tr>
+                  <tr class="hover:bg-[#EFF6FF] transition-colors">
+                    <td class="px-6 py-4">
+                      <span
+                        class="px-2 py-1 bg-blue-50 text-primary-container rounded-lg text-[11px] font-bold uppercase"
+                        >Compra</span
+                      >
+                    </td>
+                    <td class="px-6 py-4 font-medium">
+                      Reposición Multivitamínicos
+                    </td>
+                    <td class="px-6 py-4 text-secondary">Droguería Sanitas</td>
+                    <td class="px-6 py-4 font-bold text-on-surface">
+                      $1,120.00
+                    </td>
+                    <td class="px-6 py-4">
+                      <div class="flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+                        <span class="text-body-md">En Tránsito</span>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 text-secondary">13:50</td>
+                  </tr>
+                  <tr class="hover:bg-[#EFF6FF] transition-colors">
+                    <td class="px-6 py-4">
+                      <span
+                        class="px-2 py-1 bg-green-50 text-green-700 rounded-lg text-[11px] font-bold uppercase"
+                        >Venta</span
+                      >
+                    </td>
+                    <td class="px-6 py-4 font-medium">
+                      Pack Higiene Personal x5
+                    </td>
+                    <td class="px-6 py-4 text-secondary">María Rodríguez</td>
+                    <td class="px-6 py-4 font-bold text-on-surface">$85.20</td>
+                    <td class="px-6 py-4">
+                      <div class="flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                        <span class="text-body-md">Completado</span>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 text-secondary">13:22</td>
+                  </tr>
+                  <tr class="hover:bg-[#EFF6FF] transition-colors">
+                    <td class="px-6 py-4">
+                      <span
+                        class="px-2 py-1 bg-orange-50 text-orange-700 rounded-lg text-[11px] font-bold uppercase"
+                        >Aviso</span
+                      >
+                    </td>
+                    <td class="px-6 py-4 font-medium">
+                      Vencimiento Próximo: Insulina 70/30
+                    </td>
+                    <td class="px-6 py-4 text-secondary">
+                      Farmacéutico Luis G.
+                    </td>
+                    <td class="px-6 py-4 font-bold text-on-surface">30 Días</td>
+                    <td class="px-6 py-4">
+                      <div class="flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-orange-400"></span>
+                        <span class="text-body-md">Pendiente Revisión</span>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 text-secondary">12:45</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <!-- Contextual FAB (Only on Dashboard/Home) -->
+    <button
+      class="fixed bottom-8 right-8 w-14 h-14 bg-primary-container text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-50"
+    >
+      <span class="material-symbols-outlined text-[32px]" data-icon="add"
+        >add</span
+      >
+    </button>
+  </body>
+</html>

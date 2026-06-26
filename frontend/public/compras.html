@@ -1,0 +1,728 @@
+<!doctype html>
+
+<html class="light" lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Farmadol - Gestión de Compras</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary-fixed": "#dbe1ff",
+              "on-tertiary-fixed": "#360f00",
+              "secondary-fixed-dim": "#bec6e0",
+              "inverse-primary": "#b4c5ff",
+              secondary: "#565e74",
+              "on-secondary-fixed-variant": "#3f465c",
+              "on-tertiary-container": "#ffede6",
+              "on-secondary-container": "#5c647a",
+              "on-error-container": "#93000a",
+              "surface-tint": "#0053db",
+              "on-primary-fixed-variant": "#003ea8",
+              "on-secondary-fixed": "#131b2e",
+              "secondary-fixed": "#dae2fd",
+              "outline-variant": "#c3c6d7",
+              "surface-container-lowest": "#ffffff",
+              tertiary: "#943700",
+              background: "#f8f9ff",
+              "on-secondary": "#ffffff",
+              "surface-dim": "#cbdbf5",
+              primary: "#004ac6",
+              "on-tertiary": "#ffffff",
+              "on-surface-variant": "#434655",
+              "inverse-on-surface": "#eaf1ff",
+              "surface-bright": "#f8f9ff",
+              "surface-container-low": "#eff4ff",
+              error: "#ba1a1a",
+              "tertiary-fixed-dim": "#ffb596",
+              "surface-variant": "#d3e4fe",
+              "surface-container": "#e5eeff",
+              "on-tertiary-fixed-variant": "#7d2d00",
+              "error-container": "#ffdad6",
+              "surface-container-highest": "#d3e4fe",
+              outline: "#737686",
+              surface: "#f8f9ff",
+              "tertiary-container": "#bc4800",
+              "on-background": "#0b1c30",
+              "on-surface": "#0b1c30",
+              "tertiary-fixed": "#ffdbcd",
+              "on-primary": "#ffffff",
+              "secondary-container": "#dae2fd",
+              "primary-container": "#2563eb",
+              "on-primary-fixed": "#00174b",
+              "on-error": "#ffffff",
+              "inverse-surface": "#213145",
+              "surface-container-high": "#dce9ff",
+              "on-primary-container": "#eeefff",
+              "primary-fixed-dim": "#b4c5ff",
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px",
+            },
+            spacing: {
+              "stack-md": "16px",
+              "sidebar-width": "280px",
+              "margin-mobile": "16px",
+              "stack-lg": "24px",
+              "container-max-width": "1440px",
+              "stack-sm": "8px",
+              gutter: "24px",
+            },
+            fontFamily: {
+              "title-md": ["Inter"],
+              "headline-lg": ["Inter"],
+              "body-lg": ["Inter"],
+              "display-lg": ["Inter"],
+              caption: ["Inter"],
+              "headline-md": ["Inter"],
+              "body-md": ["Inter"],
+              "title-lg": ["Inter"],
+              "label-md": ["Inter"],
+            },
+            fontSize: {
+              "title-md": ["16px", { lineHeight: "24px", fontWeight: "600" }],
+              "headline-lg": [
+                "28px",
+                {
+                  lineHeight: "36px",
+                  letterSpacing: "-0.01em",
+                  fontWeight: "600",
+                },
+              ],
+              "body-lg": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+              "display-lg": [
+                "36px",
+                {
+                  lineHeight: "44px",
+                  letterSpacing: "-0.02em",
+                  fontWeight: "700",
+                },
+              ],
+              caption: ["12px", { lineHeight: "16px", fontWeight: "400" }],
+              "headline-md": [
+                "24px",
+                { lineHeight: "32px", fontWeight: "600" },
+              ],
+              "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+              "title-lg": ["20px", { lineHeight: "28px", fontWeight: "600" }],
+              "label-md": [
+                "13px",
+                {
+                  lineHeight: "18px",
+                  letterSpacing: "0.05em",
+                  fontWeight: "500",
+                },
+              ],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f8f9ff;
+      }
+      .material-symbols-outlined {
+        font-variation-settings:
+          "FILL" 0,
+          "wght" 400,
+          "GRAD" 0,
+          "opsz" 24;
+      }
+      .sidebar-active {
+        border-left: 4px solid #2563eb;
+        background-color: rgba(255, 255, 255, 0.05);
+        color: #ffffff;
+      }
+    </style>
+  </head>
+  <body class="text-on-surface">
+    <!-- SideNavBar -->
+    <aside
+      class="fixed left-0 top-0 h-full w-[280px] bg-on-secondary-fixed flex flex-col py-stack-lg border-r border-outline-variant z-50"
+    >
+      <div class="px-6 mb-10">
+        <div class="flex items-center gap-3">
+          <div
+            class="w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center"
+          >
+            <span
+              class="material-symbols-outlined text-white"
+              data-icon="medical_services"
+              >medical_services</span
+            >
+          </div>
+          <div>
+            <h1
+              class="font-headline-md text-headline-md font-black text-surface-container-lowest leading-none"
+            >
+              Farmadol
+            </h1>
+            <p class="font-label-md text-label-md text-secondary-fixed-dim">
+              Pharmacy ERP
+            </p>
+          </div>
+        </div>
+      </div>
+      <nav class="flex-1 px-4 space-y-1">
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="dashboard"
+            >dashboard</span
+          >
+          <span class="font-label-md text-label-md">Dashboard</span>
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="group">group</span>
+          <span class="font-label-md text-label-md">Users</span>
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="inventory_2"
+            >inventory_2</span
+          >
+          <span class="font-label-md text-label-md">Inventory</span>
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="point_of_sale"
+            >point_of_sale</span
+          >
+          <span class="font-label-md text-label-md">Sales</span>
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-surface-container-lowest bg-white/5 border-l-4 border-primary-container transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="shopping_cart"
+            >shopping_cart</span
+          >
+          <span class="font-label-md text-label-md">Purchases</span>
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="person_search"
+            >person_search</span
+          >
+          <span class="font-label-md text-label-md">Clients</span>
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="analytics"
+            >analytics</span
+          >
+          <span class="font-label-md text-label-md">Reports</span>
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="storefront"
+            >storefront</span
+          >
+          <span class="font-label-md text-label-md">Branches</span>
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="settings"
+            >settings</span
+          >
+          <span class="font-label-md text-label-md">Settings</span>
+        </a>
+      </nav>
+      <div class="px-4 mt-auto">
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="logout"
+            >logout</span
+          >
+          <span class="font-label-md text-label-md">Logout</span>
+        </a>
+      </div>
+    </aside>
+    <!-- Main Canvas -->
+    <main class="ml-sidebar-width min-h-screen bg-background">
+      <!-- TopNavBar (Authority: JSON) -->
+      <header
+        class="h-16 bg-surface-container-lowest border-b border-outline-variant flex items-center justify-between px-gutter sticky top-0 z-40"
+      >
+        <div class="flex items-center gap-4 flex-1">
+          <div class="relative max-w-md w-full">
+            <span
+              class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-body-md"
+              data-icon="search"
+              >search</span
+            >
+            <input
+              class="w-full pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-body-md focus:ring-2 focus:ring-primary focus:border-primary outline-none"
+              placeholder="Buscar compras..."
+              type="text"
+            />
+          </div>
+        </div>
+        <div class="flex items-center gap-6">
+          <div
+            class="flex items-center gap-3 border-l border-outline-variant pl-6"
+          >
+            <div class="flex items-center gap-3 pl-2">
+            <div class="text-right">
+              <p
+                class="font-label-md text-label-md text-on-surface leading-none"
+              >
+                Dr. Alejandro Ruiz
+              </p>
+              <p
+                class="text-[11px] text-secondary font-medium uppercase tracking-wider"
+              >
+                Admin Principal
+              </p>
+            </div>
+            <img
+              alt="User profile photo"
+              class="w-10 h-10 rounded-full border-2 border-primary-container/20"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfDh0aDi-mYTTGT0gNhSnLGh4OBKf_o88qJ4izMLFyRHyU87yajEm5NOfmmV-ROb4H-zghVfM0qXVdoiF4mGNAbcha_4mc-C1bBVk0PJIAfFmCUAM0EjQTzCn6f8uW1CT-MBF1g-aeZ4VnV1ezpIc1OzOYU20Xw498A_rMwwgexs4B3T8sPjWFCggYuI3Ui8ZiXxQrHaQHIZcXRbQsbd-eH2fe0s9UNNoHMDji1otRwE7gdYmtVSVkHO8RfM869N5_xr8g0-be17Mk"
+            />
+          </div>
+        </div>
+      </header>
+      <!-- Content Area -->
+      <div class="p-stack-lg max-w-container-max-width mx-auto">
+        <!-- Page Header Actions -->
+        <div
+          class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4"
+        >
+          <div>
+            <h2 class="font-headline-lg text-headline-lg text-on-surface">
+              Gestión de Compras
+            </h2>
+            <p class="font-body-md text-body-md text-on-surface-variant">
+              Control centralizado de órdenes y relaciones con proveedores
+              farmacéuticos.
+            </p>
+          </div>
+          <button
+            class="flex items-center justify-center gap-2 bg-primary-container text-on-primary-container px-6 py-3 rounded-lg font-title-md text-title-md hover:bg-primary transition-all active:scale-95 shadow-sm"
+          >
+            <span class="material-symbols-outlined" data-icon="add">add</span>
+            Nueva Orden de Compra
+          </button>
+        </div>
+        <!-- Dashboard Stats Summary (Bento Lite) -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <div
+            class="bg-surface-container-lowest border border-outline-variant p-5 rounded-xl"
+          >
+            <div class="flex items-center justify-between mb-3">
+              <span class="p-2 bg-primary/10 text-primary rounded-lg">
+                <span
+                  class="material-symbols-outlined"
+                  data-icon="shopping_cart_checkout"
+                  >shopping_cart_checkout</span
+                >
+              </span>
+            </div>
+            <p class="font-body-md text-body-md text-on-surface-variant">
+              Órdenes este mes
+            </p>
+            <h3 class="font-display-lg text-display-lg text-on-surface">142</h3>
+          </div>
+          <div
+            class="bg-surface-container-lowest border border-outline-variant p-5 rounded-xl"
+          >
+            <div class="flex items-center justify-between mb-3">
+              <span class="p-2 bg-tertiary/10 text-tertiary rounded-lg">
+                <span
+                  class="material-symbols-outlined"
+                  data-icon="pending_actions"
+                  >pending_actions</span
+                >
+              </span>
+            </div>
+            <p class="font-body-md text-body-md text-on-surface-variant">
+              Pendientes de recibir
+            </p>
+            <h3 class="font-display-lg text-display-lg text-on-surface">28</h3>
+          </div>
+          <div
+            class="bg-surface-container-lowest border border-outline-variant p-5 rounded-xl"
+          >
+            <div class="flex items-center justify-between mb-3">
+              <span class="p-2 bg-secondary/10 text-secondary rounded-lg">
+                <span
+                  class="material-symbols-outlined"
+                  data-icon="local_shipping"
+                  >local_shipping</span
+                >
+              </span>
+            </div>
+            <p class="font-body-md text-body-md text-on-surface-variant">
+              Proveedores activos
+            </p>
+            <h3 class="font-display-lg text-display-lg text-on-surface">45</h3>
+          </div>
+          <div
+            class="bg-surface-container-lowest border border-outline-variant p-5 rounded-xl"
+          >
+            <div class="flex items-center justify-between mb-3">
+              <span class="p-2 bg-primary/10 text-primary rounded-lg">
+                <span class="material-symbols-outlined" data-icon="payments"
+                  >payments</span
+                >
+              </span>
+            </div>
+            <p class="font-body-md text-body-md text-on-surface-variant">
+              Inversión Mensual
+            </p>
+            <h3 class="font-display-lg text-display-lg text-on-surface">
+              $24.5k
+            </h3>
+          </div>
+        </div>
+        <!-- Filters & Data Table Section -->
+        <div
+          class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden"
+        >
+          <!-- Filters Header -->
+          <div
+            class="p-6 border-b border-outline-variant flex flex-col md:flex-row gap-4 items-end"
+          >
+            <div class="flex-1 grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
+              <div>
+                <label
+                  class="font-label-md text-label-md text-on-surface-variant block mb-2"
+                  >Estado de Orden</label
+                >
+                <select
+                  class="w-full bg-surface-container-low border border-outline-variant rounded-lg p-2 font-body-md text-body-md outline-none focus:ring-2 focus:ring-primary"
+                >
+                  <option>Todos los estados</option>
+                  <option>Pendiente</option>
+                  <option>Recibida</option>
+                  <option>Cancelada</option>
+                </select>
+              </div>
+              <div>
+                <label
+                  class="font-label-md text-label-md text-on-surface-variant block mb-2"
+                  >Proveedor</label
+                >
+                <select
+                  class="w-full bg-surface-container-low border border-outline-variant rounded-lg p-2 font-body-md text-body-md outline-none focus:ring-2 focus:ring-primary"
+                >
+                  <option>Todos los proveedores</option>
+                  <option>Farmacéutica Global S.A.</option>
+                  <option>Distribuidora Médica Norte</option>
+                  <option>Laboratorios BioTech</option>
+                </select>
+              </div>
+              <div>
+                <label
+                  class="font-label-md text-label-md text-on-surface-variant block mb-2"
+                  >Rango de Fecha</label
+                >
+                <div
+                  class="flex items-center bg-surface-container-low border border-outline-variant rounded-lg px-2"
+                >
+                  <span
+                    class="material-symbols-outlined text-on-surface-variant scale-75"
+                    data-icon="calendar_today"
+                    >calendar_today</span
+                  >
+                  <input
+                    class="bg-transparent border-none w-full p-2 font-body-md text-body-md focus:ring-0"
+                    placeholder="01/10/23 - 31/10/23"
+                    type="text"
+                  />
+                </div>
+              </div>
+            </div>
+            <button
+              class="bg-surface-container-high text-on-surface px-6 py-2.5 rounded-lg font-title-md text-title-md border border-outline-variant hover:bg-surface-variant transition-colors flex items-center gap-2"
+            >
+              <span class="material-symbols-outlined" data-icon="filter_list"
+                >filter_list</span
+              >
+              Aplicar Filtros
+            </button>
+          </div>
+          <!-- Table -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr
+                  class="bg-surface-container-low text-on-surface-variant font-label-md text-label-md uppercase tracking-wider"
+                >
+                  <th class="px-6 py-4 border-b border-outline-variant">
+                    ID Orden
+                  </th>
+                  <th class="px-6 py-4 border-b border-outline-variant">
+                    Proveedor
+                  </th>
+                  <th class="px-6 py-4 border-b border-outline-variant">
+                    Fecha
+                  </th>
+                  <th
+                    class="px-6 py-4 border-b border-outline-variant text-right"
+                  >
+                    Monto Total
+                  </th>
+                  <th class="px-6 py-4 border-b border-outline-variant">
+                    Estado
+                  </th>
+                  <th
+                    class="px-6 py-4 border-b border-outline-variant text-center"
+                  >
+                    Acciones
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="font-body-md text-body-md">
+                <!-- Row 1 -->
+                <tr
+                  class="hover:bg-primary-fixed/20 transition-colors border-b border-outline-variant group"
+                >
+                  <td class="px-6 py-4 font-title-md text-primary">#PO-8821</td>
+                  <td class="px-6 py-4">
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="w-8 h-8 rounded bg-primary/10 flex items-center justify-center text-primary font-bold"
+                      >
+                        F
+                      </div>
+                      Farmacéutica Global S.A.
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 text-on-surface-variant">
+                    24 Oct, 2023
+                  </td>
+                  <td class="px-6 py-4 text-right font-title-md">$4,250.00</td>
+                  <td class="px-6 py-4">
+                    <span
+                      class="px-3 py-1 rounded-full bg-orange-100 text-orange-700 font-label-md text-xs uppercase font-bold flex items-center gap-1 w-fit"
+                    >
+                      <span
+                        class="w-1.5 h-1.5 bg-orange-500 rounded-full"
+                      ></span>
+                      Pendiente
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 text-center">
+                    <button
+                      class="p-2 text-on-surface-variant hover:text-primary hover:bg-primary/5 rounded-lg"
+                    >
+                      <span
+                        class="material-symbols-outlined"
+                        data-icon="visibility"
+                        >visibility</span
+                      >
+                    </button>
+                  </td>
+                </tr>
+                <!-- Row 2 -->
+                <tr
+                  class="hover:bg-primary-fixed/20 transition-colors border-b border-outline-variant"
+                >
+                  <td class="px-6 py-4 font-title-md text-primary">#PO-8819</td>
+                  <td class="px-6 py-4">
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="w-8 h-8 rounded bg-tertiary/10 flex items-center justify-center text-tertiary font-bold"
+                      >
+                        D
+                      </div>
+                      Distribuidora Médica Norte
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 text-on-surface-variant">
+                    22 Oct, 2023
+                  </td>
+                  <td class="px-6 py-4 text-right font-title-md">$1,120.50</td>
+                  <td class="px-6 py-4">
+                    <span
+                      class="px-3 py-1 rounded-full bg-green-100 text-green-700 font-label-md text-xs uppercase font-bold flex items-center gap-1 w-fit"
+                    >
+                      <span
+                        class="w-1.5 h-1.5 bg-green-500 rounded-full"
+                      ></span>
+                      Recibida
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 text-center">
+                    <button
+                      class="p-2 text-on-surface-variant hover:text-primary hover:bg-primary/5 rounded-lg"
+                    >
+                      <span
+                        class="material-symbols-outlined"
+                        data-icon="visibility"
+                        >visibility</span
+                      >
+                    </button>
+                  </td>
+                </tr>
+                <!-- Row 3 -->
+                <tr
+                  class="hover:bg-primary-fixed/20 transition-colors border-b border-outline-variant"
+                >
+                  <td class="px-6 py-4 font-title-md text-primary">#PO-8818</td>
+                  <td class="px-6 py-4">
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="w-8 h-8 rounded bg-primary/10 flex items-center justify-center text-primary font-bold"
+                      >
+                        B
+                      </div>
+                      Laboratorios BioTech
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 text-on-surface-variant">
+                    20 Oct, 2023
+                  </td>
+                  <td class="px-6 py-4 text-right font-title-md">$8,400.00</td>
+                  <td class="px-6 py-4">
+                    <span
+                      class="px-3 py-1 rounded-full bg-red-100 text-red-700 font-label-md text-xs uppercase font-bold flex items-center gap-1 w-fit"
+                    >
+                      <span class="w-1.5 h-1.5 bg-red-500 rounded-full"></span>
+                      Cancelada
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 text-center">
+                    <button
+                      class="p-2 text-on-surface-variant hover:text-primary hover:bg-primary/5 rounded-lg"
+                    >
+                      <span
+                        class="material-symbols-outlined"
+                        data-icon="visibility"
+                        >visibility</span
+                      >
+                    </button>
+                  </td>
+                </tr>
+                <!-- Row 4 -->
+                <tr
+                  class="hover:bg-primary-fixed/20 transition-colors border-b border-outline-variant"
+                >
+                  <td class="px-6 py-4 font-title-md text-primary">#PO-8815</td>
+                  <td class="px-6 py-4">
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="w-8 h-8 rounded bg-secondary/10 flex items-center justify-center text-secondary font-bold"
+                      >
+                        S
+                      </div>
+                      Suministros Farma Express
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 text-on-surface-variant">
+                    19 Oct, 2023
+                  </td>
+                  <td class="px-6 py-4 text-right font-title-md">$2,890.00</td>
+                  <td class="px-6 py-4">
+                    <span
+                      class="px-3 py-1 rounded-full bg-green-100 text-green-700 font-label-md text-xs uppercase font-bold flex items-center gap-1 w-fit"
+                    >
+                      <span
+                        class="w-1.5 h-1.5 bg-green-500 rounded-full"
+                      ></span>
+                      Recibida
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 text-center">
+                    <button
+                      class="p-2 text-on-surface-variant hover:text-primary hover:bg-primary/5 rounded-lg"
+                    >
+                      <span
+                        class="material-symbols-outlined"
+                        data-icon="visibility"
+                        >visibility</span
+                      >
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- Pagination Footer -->
+          <div
+            class="p-6 flex items-center justify-between border-t border-outline-variant"
+          >
+            <p class="font-body-md text-body-md text-on-surface-variant">
+              Mostrando 1-10 de 142 órdenes
+            </p>
+            <div class="flex items-center gap-2">
+              <button
+                class="p-2 border border-outline-variant rounded-lg hover:bg-surface-container-low transition-colors disabled:opacity-30"
+                disabled=""
+              >
+                <span class="material-symbols-outlined" data-icon="chevron_left"
+                  >chevron_left</span
+                >
+              </button>
+              <button
+                class="w-10 h-10 flex items-center justify-center rounded-lg bg-primary text-on-primary font-title-md"
+              >
+                1
+              </button>
+              <button
+                class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-surface-container-low text-on-surface font-title-md"
+              >
+                2
+              </button>
+              <button
+                class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-surface-container-low text-on-surface font-title-md"
+              >
+                3
+              </button>
+              <button
+                class="p-2 border border-outline-variant rounded-lg hover:bg-surface-container-low transition-colors"
+              >
+                <span
+                  class="material-symbols-outlined"
+                  data-icon="chevron_right"
+                  >chevron_right</span
+                >
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

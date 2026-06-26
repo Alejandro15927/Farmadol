@@ -1,0 +1,460 @@
+<!doctype html>
+
+<html class="light" lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary-fixed": "#dbe1ff",
+              "on-tertiary-fixed": "#360f00",
+              "secondary-fixed-dim": "#bec6e0",
+              "inverse-primary": "#b4c5ff",
+              secondary: "#565e74",
+              "on-secondary-fixed-variant": "#3f465c",
+              "on-tertiary-container": "#ffede6",
+              "on-secondary-container": "#5c647a",
+              "on-error-container": "#93000a",
+              "surface-tint": "#0053db",
+              "on-primary-fixed-variant": "#003ea8",
+              "on-secondary-fixed": "#131b2e",
+              "secondary-fixed": "#dae2fd",
+              "outline-variant": "#c3c6d7",
+              "surface-container-lowest": "#ffffff",
+              tertiary: "#943700",
+              background: "#f8f9ff",
+              "on-secondary": "#ffffff",
+              "surface-dim": "#cbdbf5",
+              primary: "#004ac6",
+              "on-tertiary": "#ffffff",
+              "on-surface-variant": "#434655",
+              "inverse-on-surface": "#eaf1ff",
+              "surface-bright": "#f8f9ff",
+              "surface-container-low": "#eff4ff",
+              error: "#ba1a1a",
+              "tertiary-fixed-dim": "#ffb596",
+              "surface-variant": "#d3e4fe",
+              "surface-container": "#e5eeff",
+              "on-tertiary-fixed-variant": "#7d2d00",
+              "error-container": "#ffdad6",
+              "surface-container-highest": "#d3e4fe",
+              outline: "#737686",
+              surface: "#f8f9ff",
+              "tertiary-container": "#bc4800",
+              "on-background": "#0b1c30",
+              "on-surface": "#0b1c30",
+              "tertiary-fixed": "#ffdbcd",
+              "on-primary": "#ffffff",
+              "secondary-container": "#dae2fd",
+              "primary-container": "#2563eb",
+              "on-primary-fixed": "#00174b",
+              "on-error": "#ffffff",
+              "inverse-surface": "#213145",
+              "surface-container-high": "#dce9ff",
+              "on-primary-container": "#eeefff",
+              "primary-fixed-dim": "#b4c5ff",
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px",
+            },
+            spacing: {
+              "stack-md": "16px",
+              "sidebar-width": "280px",
+              "margin-mobile": "16px",
+              "stack-lg": "24px",
+              "container-max-width": "1440px",
+              "stack-sm": "8px",
+              gutter: "24px",
+            },
+            fontFamily: {
+              "title-md": ["Inter"],
+              "headline-lg": ["Inter"],
+              "body-lg": ["Inter"],
+              "display-lg": ["Inter"],
+              caption: ["Inter"],
+              "headline-md": ["Inter"],
+              "body-md": ["Inter"],
+              "title-lg": ["Inter"],
+              "label-md": ["Inter"],
+            },
+            fontSize: {
+              "title-md": ["16px", { lineHeight: "24px", fontWeight: "600" }],
+              "headline-lg": [
+                "28px",
+                {
+                  lineHeight: "36px",
+                  letterSpacing: "-0.01em",
+                  fontWeight: "600",
+                },
+              ],
+              "body-lg": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+              "display-lg": [
+                "36px",
+                {
+                  lineHeight: "44px",
+                  letterSpacing: "-0.02em",
+                  fontWeight: "700",
+                },
+              ],
+              caption: ["12px", { lineHeight: "16px", fontWeight: "400" }],
+              "headline-md": [
+                "24px",
+                { lineHeight: "32px", fontWeight: "600" },
+              ],
+              "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+              "title-lg": ["20px", { lineHeight: "28px", fontWeight: "600" }],
+              "label-md": [
+                "13px",
+                {
+                  lineHeight: "18px",
+                  letterSpacing: "0.05em",
+                  fontWeight: "500",
+                },
+              ],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      .material-symbols-outlined {
+        font-variation-settings:
+          "FILL" 0,
+          "wght" 400,
+          "GRAD" 0,
+          "opsz" 24;
+      }
+    </style>
+  </head>
+  <body class="bg-background text-on-surface">
+    <!-- SideNavBar -->
+    <aside
+      class="fixed left-0 top-0 h-full w-[280px] bg-on-secondary-fixed flex flex-col py-stack-lg border-r border-outline-variant z-50"
+    >
+      <div class="px-6 mb-10">
+        <div class="flex items-center gap-3">
+          <div
+            class="w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center"
+          >
+            <span
+              class="material-symbols-outlined text-white"
+              data-icon="medical_services"
+              >medical_services</span
+            >
+          </div>
+          <div>
+            <h1
+              class="font-headline-md text-headline-md font-black text-surface-container-lowest leading-none"
+            >
+              Farmadol
+            </h1>
+            <p class="font-label-md text-label-md text-secondary-fixed-dim">
+              Pharmacy ERP
+            </p>
+          </div>
+        </div>
+      </div>
+      <nav class="flex-1 px-4 space-y-1">
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="dashboard"
+            >dashboard</span
+          >
+          <span class="font-label-md text-label-md">Dashboard</span>
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="group">group</span>
+          <span class="font-label-md text-label-md">Users</span>
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="inventory_2"
+            >inventory_2</span
+          >
+          <span class="font-label-md text-label-md">Inventory</span>
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="point_of_sale"
+            >point_of_sale</span
+          >
+          <span class="font-label-md text-label-md">Sales</span>
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="shopping_cart"
+            >shopping_cart</span
+          >
+          <span class="font-label-md text-label-md">Purchases</span>
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="person_search"
+            >person_search</span
+          >
+          <span class="font-label-md text-label-md">Clients</span>
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="analytics"
+            >analytics</span
+          >
+          <span class="font-label-md text-label-md">Reports</span>
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-surface-container-lowest bg-white/5 border-l-4 border-primary-container transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="storefront"
+            >storefront</span
+          >
+          <span class="font-label-md text-label-md">Branches</span>
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="settings"
+            >settings</span
+          >
+          <span class="font-label-md text-label-md">Settings</span>
+        </a>
+      </nav>
+      <div class="px-4 mt-auto">
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="logout"
+            >logout</span
+          >
+          <span class="font-label-md text-label-md">Logout</span>
+        </a>
+      </div>
+    </aside>
+    <!-- Main Content Area -->
+    <div class="ml-sidebar-width min-h-screen flex flex-col">
+      <!-- TopNavBar -->
+      <header
+        class="h-16 bg-surface-container-lowest sticky top-0 flex justify-between items-center px-gutter border-b border-outline-variant z-40"
+      >
+        <div class="flex items-center gap-4 flex-1">
+          <div class="relative w-full max-w-md">
+            <span
+              class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline"
+              data-icon="search"
+              >search</span
+            >
+            <input
+              class="w-full pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+              placeholder="Buscar sucursales..."
+              type="text"
+            />
+          </div>
+        </div>
+        <div class="flex items-center gap-4">
+        <div
+            class="flex items-center gap-3 border-l border-outline-variant pl-6"
+          >
+            <div class="flex items-center gap-3 pl-2">
+            <div class="text-right">
+              <p
+                class="font-label-md text-label-md text-on-surface leading-none"
+              >
+                Dr. Alejandro Ruiz
+              </p>
+              <p
+                class="text-[11px] text-secondary font-medium uppercase tracking-wider"
+              >
+                Admin Principal
+              </p>
+            </div>
+            <img
+              alt="User profile photo"
+              class="w-10 h-10 rounded-full border-2 border-primary-container/20"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfDh0aDi-mYTTGT0gNhSnLGh4OBKf_o88qJ4izMLFyRHyU87yajEm5NOfmmV-ROb4H-zghVfM0qXVdoiF4mGNAbcha_4mc-C1bBVk0PJIAfFmCUAM0EjQTzCn6f8uW1CT-MBF1g-aeZ4VnV1ezpIc1OzOYU20Xw498A_rMwwgexs4B3T8sPjWFCggYuI3Ui8ZiXxQrHaQHIZcXRbQsbd-eH2fe0s9UNNoHMDji1otRwE7gdYmtVSVkHO8RfM869N5_xr8g0-be17Mk"
+            />
+          </div>
+      </div>
+      </header>
+      <!-- Main Canvas -->
+      <main class="p-gutter max-w-container-max-width mx-auto w-full space-y-8">
+        <!-- Page Header -->
+        <div
+          class="flex flex-col md:flex-row md:items-end justify-between gap-4"
+        >
+          <div>
+            <h2 class="font-display-lg text-display-lg text-on-surface">
+              Gestión de Sucursales
+            </h2>
+            <p class="font-body-lg text-body-lg text-on-surface-variant mt-1">
+              Supervisión operativa y logística de la red Farmadol.
+            </p>
+          </div>
+          <div class="flex gap-3">
+            <button
+              class="flex items-center gap-2 bg-primary px-5 py-2.5 rounded-lg font-title-md text-title-md text-on-primary hover:opacity-90 transition-all shadow-sm"
+            >
+              <span class="material-symbols-outlined" data-icon="add">add</span>
+              Añadir Sucursal
+            </button>
+          </div>
+        </div>
+        <!-- Dashboard Stats (Bento Style) -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div
+            class="bg-surface-container-lowest border border-outline-variant p-6 rounded-xl space-y-2"
+          >
+            <p
+              class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider"
+            >
+              Total Sucursales
+            </p>
+            <div class="flex items-baseline gap-2">
+              <span class="font-display-lg text-display-lg text-primary"
+                >12</span
+              >
+            </div>
+          </div>
+        </div>
+        <!-- Branches Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-6">
+          <!-- Branch Card 1 -->
+          <div
+            class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden hover:border-primary/40 transition-colors group"
+          >
+            <div class="h-32 bg-surface-container relative overflow-hidden">
+              <img
+                alt="Pharmacy branch interior"
+                class="w-full h-full object-cover opacity-80"
+                data-alt="Interior of a modern, clinical pharmacy branch with sleek white shelving, organized pharmaceutical products, and bright, cool-toned lighting. The atmosphere is professional, sterile, and highly organized, reflecting a high-end medical environment with blue accents consistent with the brand identity."
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvg85sW10IQ9TYUOdhdYLI-lU8rdtVkv6SliTywLQMKWkMdnJaQygfHAImzvs7iK3zP7H7Wy8odnd4OaMRz9_C8LWGKvWcJAg2XEC24T_9M_dqnicNlksj_Qe7JZiiP2yHBa3N6e3YMUhotVBjEBBvG_0OtxieSukIOKRWEhOlpiIw8Yj4YpICBsWfJwWghounO7KWfAgp97AUxZhGzic1BXNwTnj8bdwYlF26L5VwBI67t_2GSYiFAjTSKbUttvRxOSDpckDxaxpV"
+              />
+            </div>
+            <div class="p-6 space-y-4">
+              <div class="flex justify-between items-start">
+                <div>
+                  <h3 class="font-title-lg text-title-lg text-on-surface">
+                    Sucursal Central Madrid
+                  </h3>
+                  <div class="flex items-center text-on-surface-variant mt-1">
+                    <span
+                      class="material-symbols-outlined text-sm mr-1"
+                      data-icon="location_on"
+                      >location_on</span
+                    >
+                    <span class="font-body-md text-body-md"
+                      >Calle Gran Vía, 12, Madrid</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Branch Card 2 -->
+          <div
+            class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden hover:border-primary/40 transition-colors group"
+          >
+            <div class="h-32 bg-surface-container relative overflow-hidden">
+              <img
+                alt="Pharmacy branch interior"
+                class="w-full h-full object-cover opacity-80"
+                data-alt="A clean and modern pharmacy counter area in a bright metropolitan setting. Large glass windows allow natural light to fill the space. White and light grey surfaces dominate, accented by subtle blue lighting strips. The scene is calm, professional, and reflects a high standard of medical reliability."
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOtGxw4s-T-ILqCVvgz8KyAFxS1uDloTdpjTp8fimHkNElY82l3eCLkqydhCEVMilYRQm1dKOea97Zg-wQjyT5MAkqa_BB5_OTjnkSdysBrs6Bk-mRGoI3ibgQWN5vsGCQ7f3gA22uRSOthGYnn1N34ZW49H6rN7HUyPzGon_X4RWO89QD3yAFYz9x2cGiYXWcC_HJTxiCE1dtp1mH0pgba71D6zY-UmoER4Sso8m3qBsGy0WiwE6ltfvF_uRLKkeaKqXmo_dh8kdz"
+              />
+            </div>
+            <div class="p-6 space-y-4">
+              <div class="flex justify-between items-start">
+                <div>
+                  <h3 class="font-title-lg text-title-lg text-on-surface">
+                    Farmadol Norte - Castellana
+                  </h3>
+                  <div class="flex items-center text-on-surface-variant mt-1">
+                    <span
+                      class="material-symbols-outlined text-sm mr-1"
+                      data-icon="location_on"
+                      >location_on</span
+                    >
+                    <span class="font-body-md text-body-md"
+                      >P. de la Castellana, 120, Madrid</span
+                    >
+                  </div>
+                </div>
+              </div>  
+            </div>
+          </div>
+          <!-- Branch Card 3 -->
+          <div
+            class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden hover:border-primary/40 transition-colors group"
+          >
+            <div class="h-32 bg-surface-container relative overflow-hidden">
+              <img
+                alt="Pharmacy branch interior"
+                class="w-full h-full object-cover opacity-80"
+                data-alt="A wide-angle shot of a state-of-the-art pharmacy laboratory area. Stainless steel equipment and glass containers are arranged on white countertops. The floor is polished light grey. Soft overhead LED lighting creates a professional, high-precision atmosphere with clinical cleanliness and modern pharmaceutical aesthetics."
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuA10R_rICX_r35cqU2yOJ9uMiCX4l9VzJj6vdGGl7r5nzf1p8r9BCkChfW4Oci-AQJvw2CBwrZ-ZtZ88Zl2CqLG0IFx0kc1HaztAj-hxuIMt9cWJlVpSp-ofBlrDHQAZvGzP5OqcitWOApkG8yKdwygOkUQc7RBiiKa-iDhFNta8EcLu_HVn-9ux7BgsPIfUZ3hBkBuU9vZwGvEBcrnxAe4iTLxAa_iro3VE2Dr3NOnjGfShTNiBqNoKSB32nANEWXQ0rDf4FzctHzz"
+              />
+            </div>
+            <div class="p-6 space-y-4">
+              <div class="flex justify-between items-start">
+                <div>
+                  <h3 class="font-title-lg text-title-lg text-on-surface">
+                    Farmacia Aeropuerto T4
+                  </h3>
+                  <div class="flex items-center text-on-surface-variant mt-1">
+                    <span
+                      class="material-symbols-outlined text-sm mr-1"
+                      data-icon="location_on"
+                      >location_on</span
+                    >
+                    <span class="font-body-md text-body-md"
+                      >Terminal 4, Madrid-Barajas</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
