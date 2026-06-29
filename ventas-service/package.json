@@ -1,0 +1,30 @@
+{
+  "name": "ventas-service",
+  "version": "1.0.0",
+  "description": "Servicio de ventas para Farmadol ERP - Task Service",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^16.6.1",
+    "express": "^4.22.2",
+    "express-validator": "^7.3.2",
+    "jsonwebtoken": "^9.0.3",
+    "mysql2": "^3.22.3",
+    "sequelize": "^6.37.8"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  },
+  "keywords": [
+    "farmadol",
+    "erp",
+    "ventas",
+    "microservice"
+  ],
+  "author": "",
+  "license": "ISC"
+}
