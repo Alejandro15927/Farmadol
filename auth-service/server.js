@@ -1,15 +1,21 @@
+// auth-service/server.js
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const { sequelize } = require('./models');
-
 const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Middlewares
-app.use(cors());
+// CORS
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+// Body parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -18,17 +24,29 @@ app.use('/api/auth', authRoutes);
 
 // Health check
 app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'OK', service: 'auth-service' });
+  res.json({
+    status: 'OK',
+    service: 'auth-service',
+    timestamp: new Date().toISOString()
+  });
 });
 
-// Sincronizar base de datos
+// Error handling
+app.use((err, req, res, next) => {
+  console.error('Error:', err);
+  res.status(500).json({
+    success: false,
+    message: 'Error interno del servidor'
+  });
+});
+
+// Iniciar
 sequelize.sync()
   .then(() => {
-    console.log('📦 Base de datos sincronizada');
-    app.listen(PORT, () => {
-      console.log(`🔐 Auth Service corriendo en http://localhost:${PORT}`);
-    });
+    console.log(`🔐 Auth Service en http://localhost:${PORT}`);
+    app.listen(PORT);
   })
-  .catch(error => {
-    console.error('❌ Error al conectar la BD:', error);
+  .catch(err => {
+    console.error('❌ Error DB:', err);
+    process.exit(1);
   });

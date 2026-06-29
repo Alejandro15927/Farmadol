@@ -1,5 +1,6 @@
+// public/js/config.js
 const GATEWAY_PORT = '3000';
-const FRONTEND_PORT = '3002';
+const FRONTEND_PORT = '3010';
 const DEFAULT_GATEWAY_URL = 'http://localhost:3000';
 
 function getApiBase() {
@@ -9,8 +10,10 @@ function getApiBase() {
   }
 
   const port = window.location.port;
+  
+  // Si estamos en el puerto del frontend
   if (port === GATEWAY_PORT || port === FRONTEND_PORT) {
-    return '';
+    return DEFAULT_GATEWAY_URL;
   }
 
   return DEFAULT_GATEWAY_URL;
@@ -33,7 +36,7 @@ function parseJsonResponse(text, contentType) {
 
 function getLoginErrorMessage(response, data) {
   if (response.status === 405) {
-    return 'API no disponible: inicia el API Gateway en el puerto 3000 (y el auth-service en 3001).';
+    return 'API no disponible: inicia el API Gateway en el puerto 3000.';
   }
   if (data && data.message) {
     return data.message;
@@ -42,7 +45,10 @@ function getLoginErrorMessage(response, data) {
     return 'Error del servidor. Intenta de nuevo más tarde.';
   }
   if (response.status === 401 || response.status === 400) {
-    return 'Invalid email or password';
+    return 'Credenciales inválidas';
   }
-  return 'Connection error. Please try again.';
+  return `Error ${response.status}: ${response.statusText}`;
 }
+
+console.log('✅ config.js cargado');
+console.log('📡 API Base:', getApiBase());

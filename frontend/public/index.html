@@ -20,22 +20,12 @@
       .material-symbols-outlined {
         font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
       }
-      .card-shadow {
-        box-shadow: 0px 10px 15px -3px rgba(15, 23, 42, 0.08);
-      }
-      .input-focus-ring:focus {
-        outline: none;
-        border-color: #2563eb;
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-      }
     </style>
   </head>
   <body class="min-h-screen flex items-center justify-center font-body-md text-on-background" style="font-family: Inter, sans-serif; background-color: #f8fafc;">
-    <!-- Login Shell -->
     <main class="w-full max-w-[440px] px-4 md:px-0">
       <div class="bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden">
         <div class="p-6 md:p-10 flex flex-col items-center">
-          <!-- Brand Header -->
           <div class="mb-6 flex flex-col items-center gap-2">
             <div class="text-center">
               <h1 class="text-2xl font-bold text-gray-800 mt-2">Farmadol ERP</h1>
@@ -43,26 +33,23 @@
             </div>
           </div>
           
-          <!-- Alert Space -->
           <div id="alertError" class="w-full mb-4 p-3 bg-red-100 text-red-700 rounded-lg hidden items-center gap-2">
             <span id="errorMessage" class="text-sm">Invalid email or password. Please try again.</span>
           </div>
           
-          <!-- Login Form -->
           <form id="loginForm" class="w-full space-y-4">
-            <!-- Email Field -->
             <div class="flex flex-col gap-1.5">
               <label class="text-sm font-medium text-gray-700 ml-0.5" for="email">Email Address</label>
               <input
                 class="w-full h-12 px-4 bg-white border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
                 id="email"
                 name="email"
-                placeholder="name@farmadol.com"
+                placeholder="admin@farmadol.com"
                 required=""
                 type="email"
+                value="admin@farmadol.com"
               />
             </div>
-            <!-- Password Field -->
             <div class="flex flex-col gap-1.5">
               <div class="flex justify-between items-center px-0.5">
                 <label class="text-sm font-medium text-gray-700" for="password">Password</label>
@@ -75,6 +62,7 @@
                   placeholder="••••••••"
                   required=""
                   type="password"
+                  value="admin123"
                 />
                 <button
                   id="togglePassword"
@@ -85,7 +73,6 @@
                 </button>
               </div>
             </div>
-            <!-- Primary Action -->
             <button
               id="loginBtn"
               class="w-full h-12 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 active:scale-[0.98] transition-all flex items-center justify-center gap-2 mt-2"
@@ -95,15 +82,25 @@
             </button>
           </form>
         </div>
-        <!-- Footer -->
         <div class="bg-gray-50 px-6 py-4 border-t border-gray-200 flex justify-center items-center gap-2">
           <span class="text-xs text-gray-500">© 2026 Farmadol ERP. All rights reserved.</span>
         </div>
       </div>
     </main>
 
-    <script src="js/config.js"></script>
+    <!-- Scripts - Ruta correcta desde public/ -->
+    <script src="/js/config.js"></script>
     <script>
+      // Verificar que config.js se cargó
+      if (typeof getApiBase === 'undefined') {
+        console.error('❌ config.js no se cargó correctamente');
+        document.getElementById('errorMessage').textContent = 'Error de configuración. Recarga la página.';
+        document.getElementById('alertError').classList.remove('hidden');
+      } else {
+        console.log('✅ config.js cargado correctamente');
+        console.log('📡 API Base:', getApiBase());
+      }
+
       const form = document.getElementById('loginForm');
       const emailInput = document.getElementById('email');
       const passwordInput = document.getElementById('password');
@@ -111,20 +108,12 @@
       const alertError = document.getElementById('alertError');
       const errorMessage = document.getElementById('errorMessage');
       const togglePassword = document.getElementById('togglePassword');
-      const rememberMe = document.getElementById('rememberMe');
 
-      // Toggle password
       togglePassword.addEventListener('click', function() {
         const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
         passwordInput.setAttribute('type', type);
         this.textContent = type === 'password' ? '👁️' : '🙈';
       });
-
-      // Cargar email guardado
-      if (localStorage.getItem('rememberedEmail')) {
-        emailInput.value = localStorage.getItem('rememberedEmail');
-        rememberMe.checked = true;
-      }
 
       function showError(message) {
         errorMessage.textContent = message;
@@ -150,11 +139,20 @@
           return;
         }
         
+        if (typeof getApiBase === 'undefined') {
+          showError('Error de configuración. Recarga la página.');
+          return;
+        }
+        
+        const apiBase = getApiBase();
+        console.log('🔍 API Base:', apiBase);
+        console.log('📤 Enviando login para:', email);
+        
         loginBtn.disabled = true;
-        loginBtn.innerHTML = '<span>Signing in...</span>';
+        loginBtn.innerHTML = '<span>⏳ Signing in...</span>';
         
         try {
-          const response = await fetch(`${getApiBase()}/api/auth/login`, {
+          const response = await fetch(`${apiBase}/api/auth/login`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -162,26 +160,26 @@
             body: JSON.stringify({ email, password })
           });
 
+          console.log('📥 Status:', response.status);
+          
           const text = await response.text();
+          console.log('📥 Body:', text.substring(0, 200));
+          
           const data = parseJsonResponse(text, response.headers.get('Content-Type'));
 
           if (response.ok && data && data.success) {
+            console.log('✅ Login exitoso!');
             localStorage.setItem('token', data.token);
             localStorage.setItem('user', JSON.stringify(data.user));
-
-            if (rememberMe.checked) {
-              localStorage.setItem('rememberedEmail', email);
-            } else {
-              localStorage.removeItem('rememberedEmail');
-            }
-
-            window.location.href = 'dashboard.html';
+            
+            window.location.href = '/dashboard.html';
           } else {
-            showError(getLoginErrorMessage(response, data));
+            const msg = getLoginErrorMessage(response, data);
+            showError(msg);
           }
         } catch (error) {
-          console.error('Login error:', error);
-          showError('Connection error. Please try again.');
+          console.error('❌ Login error:', error);
+          showError(`Error: ${error.message}`);
         } finally {
           loginBtn.disabled = false;
           loginBtn.innerHTML = '<span>Sign In</span>';

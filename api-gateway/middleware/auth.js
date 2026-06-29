@@ -25,6 +25,7 @@ const verifyToken = (req, res, next) => {
         message: 'Token expirado' 
       });
     }
+    console.error('Error verificando token:', error.message);
     return res.status(403).json({ 
       success: false, 
       message: 'Token inválido' 

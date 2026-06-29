@@ -1,20 +1,21 @@
 {
   "name": "farmadol-frontend",
   "version": "1.0.0",
-  "description": "Frontend para Farmadol ERP",
+  "description": "Frontend para Farmadol ERP - Sistema de Gestión",
+  "main": "index.html",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js"
+    "start": "npx serve . -p 3010 --single",
+    "dev": "npx serve . -p 3010 --single",
+    "build": "echo 'No build needed'"
   },
-  "dependencies": {
-    "express": "^4.22.2",
-    "http-proxy-middleware": "^2.0.9"
-  },
+  "keywords": [
+    "farmadol",
+    "erp",
+    "frontend"
+  ],
+  "author": "Farmadol Team",
+  "license": "ISC",
   "devDependencies": {
-    "nodemon": "^2.0.22"
-  },
-  "main": "server.js",
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+    "serve": "^14.2.1"
+  }
 }
