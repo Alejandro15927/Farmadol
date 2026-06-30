@@ -1,673 +1,869 @@
-<!doctype html>
-<html class="light" lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-      rel="stylesheet"
-    />
-    <script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              "primary-fixed": "#dbe1ff",
-              "on-tertiary-fixed": "#360f00",
-              "secondary-fixed-dim": "#bec6e0",
-              "inverse-primary": "#b4c5ff",
-              secondary: "#565e74",
-              "on-secondary-fixed-variant": "#3f465c",
-              "on-tertiary-container": "#ffede6",
-              "on-secondary-container": "#5c647a",
-              "on-error-container": "#93000a",
-              "surface-tint": "#0053db",
-              "on-primary-fixed-variant": "#003ea8",
-              "on-secondary-fixed": "#131b2e",
-              "secondary-fixed": "#dae2fd",
-              "outline-variant": "#c3c6d7",
-              "surface-container-lowest": "#ffffff",
-              tertiary: "#943700",
-              background: "#f8f9ff",
-              "on-secondary": "#ffffff",
-              "surface-dim": "#cbdbf5",
-              primary: "#004ac6",
-              "on-tertiary": "#ffffff",
-              "on-surface-variant": "#434655",
-              "inverse-on-surface": "#eaf1ff",
-              "surface-bright": "#f8f9ff",
-              "surface-container-low": "#eff4ff",
-              error: "#ba1a1a",
-              "tertiary-fixed-dim": "#ffb596",
-              "surface-variant": "#d3e4fe",
-              "surface-container": "#e5eeff",
-              "on-tertiary-fixed-variant": "#7d2d00",
-              "error-container": "#ffdad6",
-              "surface-container-highest": "#d3e4fe",
-              outline: "#737686",
-              surface: "#f8f9ff",
-              "tertiary-container": "#bc4800",
-              "on-background": "#0b1c30",
-              "on-surface": "#0b1c30",
-              "tertiary-fixed": "#ffdbcd",
-              "on-primary": "#ffffff",
-              "secondary-container": "#dae2fd",
-              "primary-container": "#2563eb",
-              "on-primary-fixed": "#00174b",
-              "on-error": "#ffffff",
-              "inverse-surface": "#213145",
-              "surface-container-high": "#dce9ff",
-              "on-primary-container": "#eeefff",
-              "primary-fixed-dim": "#b4c5ff",
-            },
-            borderRadius: {
-              DEFAULT: "0.25rem",
-              lg: "0.5rem",
-              xl: "0.75rem",
-              full: "9999px",
-            },
-            spacing: {
-              "stack-md": "16px",
-              "sidebar-width": "280px",
-              "margin-mobile": "16px",
-              "stack-lg": "24px",
-              "container-max-width": "1440px",
-              "stack-sm": "8px",
-              gutter: "24px",
-            },
-            fontFamily: {
-              "title-md": ["Inter"],
-              "headline-lg": ["Inter"],
-              "body-lg": ["Inter"],
-              "display-lg": ["Inter"],
-              caption: ["Inter"],
-              "headline-md": ["Inter"],
-              "body-md": ["Inter"],
-              "title-lg": ["Inter"],
-              "label-md": ["Inter"],
-            },
-            fontSize: {
-              "title-md": ["16px", { lineHeight: "24px", fontWeight: "600" }],
-              "headline-lg": [
-                "28px",
-                {
-                  lineHeight: "36px",
-                  letterSpacing: "-0.01em",
-                  fontWeight: "600",
-                },
-              ],
-              "body-lg": ["16px", { lineHeight: "24px", fontWeight: "400" }],
-              "display-lg": [
-                "36px",
-                {
-                  lineHeight: "44px",
-                  letterSpacing: "-0.02em",
-                  fontWeight: "700",
-                },
-              ],
-              caption: ["12px", { lineHeight: "16px", fontWeight: "400" }],
-              "headline-md": [
-                "24px",
-                { lineHeight: "32px", fontWeight: "600" },
-              ],
-              "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
-              "title-lg": ["20px", { lineHeight: "28px", fontWeight: "600" }],
-              "label-md": [
-                "13px",
-                {
-                  lineHeight: "18px",
-                  letterSpacing: "0.05em",
-                  fontWeight: "500",
-                },
-              ],
-            },
-          },
-        },
-      };
-    </script>
+<!-- frontend/public/clientes.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Farmadol - Clientes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💊</text></svg>" />
     <style>
-      body {
-        font-family: "Inter", sans-serif;
-      }
-      .material-symbols-outlined {
-        font-variation-settings:
-          "FILL" 0,
-          "wght" 400,
-          "GRAD" 0,
-          "opsz" 24;
-      }
-      ::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #f1f5f9;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #cbd5e1;
-        border-radius: 10px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: #94a3b8;
-      }
+        .sidebar-transition {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .sidebar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .modal-transition {
+            animation: modalIn 0.3s ease;
+        }
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .toast-slide {
+            animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #22c55e;
+            display: inline-block;
+            animation: pulse-dot 2s infinite;
+        }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        .tab-active {
+            border-bottom: 2px solid #2563eb;
+            color: #2563eb;
+        }
     </style>
-  </head>
-  <body class="bg-background text-on-background min-h-screen">
-    <!-- SideNavBar -->
-    <aside
-      class="fixed left-0 top-0 h-full w-[280px] bg-on-secondary-fixed flex flex-col py-stack-lg border-r border-outline-variant z-50"
-    >
-      <div class="px-6 mb-10">
-        <div class="flex items-center gap-3">
-          <div
-            class="w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center"
-          >
-            <span
-              class="material-symbols-outlined text-white"
-              data-icon="medical_services"
-              >medical_services</span
-            >
-          </div>
-          <div>
-            <h1
-              class="font-headline-md text-headline-md font-black text-surface-container-lowest leading-none"
-            >
-              Farmadol
-            </h1>
-            <p class="font-label-md text-label-md text-secondary-fixed-dim">
-              Pharmacy ERP
-            </p>
-          </div>
+</head>
+<body>
+
+    <!-- Sidebar Overlay (mobile) -->
+    <div class="fixed inset-0 bg-black/30 backdrop-blur-sm z-40 hidden" id="sidebarOverlay"></div>
+
+    <!-- ============ SIDEBAR ============ -->
+    <aside class="sidebar fixed left-0 top-0 h-full w-[280px] bg-white border-r border-gray-200 flex flex-col z-50 shadow-lg transform -translate-x-full md:translate-x-0 sidebar-transition" id="sidebar">
+        <div class="px-6 py-6 border-b border-gray-100 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-bold text-lg">F</div>
+            <div>
+                <h1 class="text-xl font-bold text-gray-900">Farmadol</h1>
+                <p class="text-xs text-gray-500">Sistema de Gestión</p>
+            </div>
         </div>
-      </div>
-      <nav class="flex-1 px-4 space-y-1">
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="dashboard"
-            >dashboard</span
-          >
-          <span class="font-label-md text-label-md">Dashboard</span>
-        </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="group">group</span>
-          <span class="font-label-md text-label-md">Users</span>
-        </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="inventory_2"
-            >inventory_2</span
-          >
-          <span class="font-label-md text-label-md">Inventory</span>
-        </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="point_of_sale"
-            >point_of_sale</span
-          >
-          <span class="font-label-md text-label-md">Sales</span>
-        </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="shopping_cart"
-            >shopping_cart</span
-          >
-          <span class="font-label-md text-label-md">Purchases</span>
-        </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-surface-container-lowest bg-white/5 border-l-4 border-primary-container transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="person_search"
-            >person_search</span
-          >
-          <span class="font-label-md text-label-md">Clients</span>
-        </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="analytics"
-            >analytics</span
-          >
-          <span class="font-label-md text-label-md">Reports</span>
-        </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="storefront"
-            >storefront</span
-          >
-          <span class="font-label-md text-label-md">Branches</span>
-        </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="settings"
-            >settings</span
-          >
-          <span class="font-label-md text-label-md">Settings</span>
-        </a>
-      </nav>
-      <div class="px-4 mt-auto">
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="logout"
-            >logout</span
-          >
-          <span class="font-label-md text-label-md">Logout</span>
-        </a>
-      </div>
+
+        <nav class="flex-1 px-3 py-4 overflow-y-auto">
+            <p class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Navegación</p>
+            
+            <a href="/dashboard" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
+                <span class="text-lg">📊</span>
+                Dashboard
+            </a>
+            
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
+                <span class="text-lg">💳</span>
+                Ventas
+            </a>
+            
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
+                <span class="text-lg">📦</span>
+                Inventario
+            </a>
+            
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
+                <span class="text-lg">🛒</span>
+                Compras
+            </a>
+            
+            <a href="/clientes" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium bg-blue-50 text-blue-600">
+                <span class="text-lg">👤</span>
+                Clientes
+            </a>
+            
+            <a href="/usuarios" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
+                <span class="text-lg">🔐</span>
+                Usuarios
+            </a>
+            
+            <a href="/sucursales" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
+                <span class="text-lg">🏢</span>
+                Sucursales
+            </a>
+            
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
+                <span class="text-lg">📄</span>
+                Reportes
+            </a>
+        </nav>
+
+        <div class="px-4 py-4 border-t border-gray-100">
+            <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-semibold text-sm" id="userAvatar">A</div>
+                <div>
+                    <p class="text-sm font-semibold text-gray-900" id="userName">Administrador</p>
+                    <p class="text-xs text-gray-500" id="userEmail">admin@farmadol.com</p>
+                    <span class="text-xs text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full inline-block mt-0.5" id="userRole">Administrador</span>
+                </div>
+            </div>
+            <button class="w-full flex items-center gap-2 px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition-all" id="logoutBtn">
+                <span>🚪</span>
+                Cerrar Sesión
+            </button>
+        </div>
     </aside>
-    <!-- Top AppBar -->
-    <header
-      class="fixed top-0 right-0 left-sidebar-width h-16 bg-surface-container-lowest border-b border-outline-variant flex justify-between items-center px-gutter z-40"
-    >
-      <div class="flex items-center gap-4 flex-1">
-        <div class="relative w-full max-w-md">
-          <span
-            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline"
-            >search</span
-          >
-          <input
-            class="w-full bg-surface-container-low border border-outline-variant rounded-lg py-2 pl-10 pr-4 font-body-md text-body-md focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20"
-            placeholder="Buscar clientes por nombre o DNI..."
-            type="text"
-          />
-        </div>
-      </div>
-      <div class="flex items-center gap-4">
-        <div
-            class="flex items-center gap-3 border-l border-outline-variant pl-6"
-          >
-            <div class="flex items-center gap-3 pl-2">
-            <div class="text-right">
-              <p
-                class="font-label-md text-label-md text-on-surface leading-none"
-              >
-                Dr. Alejandro Ruiz
-              </p>
-              <p
-                class="text-[11px] text-secondary font-medium uppercase tracking-wider"
-              >
-                Admin Principal
-              </p>
-            </div>
-            <img
-              alt="User profile photo"
-              class="w-10 h-10 rounded-full border-2 border-primary-container/20"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfDh0aDi-mYTTGT0gNhSnLGh4OBKf_o88qJ4izMLFyRHyU87yajEm5NOfmmV-ROb4H-zghVfM0qXVdoiF4mGNAbcha_4mc-C1bBVk0PJIAfFmCUAM0EjQTzCn6f8uW1CT-MBF1g-aeZ4VnV1ezpIc1OzOYU20Xw498A_rMwwgexs4B3T8sPjWFCggYuI3Ui8ZiXxQrHaQHIZcXRbQsbd-eH2fe0s9UNNoHMDji1otRwE7gdYmtVSVkHO8RfM869N5_xr8g0-be17Mk"
-            />
-          </div>
-      </div>
-    </header>
-    <!-- Main Content Canvas -->
-    <main class="ml-sidebar-width pt-16 min-h-screen px-gutter pb-stack-lg">
-      <div class="max-w-container-max-width mx-auto py-stack-lg">
-        <!-- Page Header -->
-        <div class="flex justify-between items-end mb-stack-lg">
-          <div>
-            <h2 class="font-headline-lg text-headline-lg text-on-surface">
-              Gestión de Clientes
-            </h2>
-            <p class="font-body-md text-body-md text-on-surface-variant">
-              Administre la base de datos de pacientes y clientes fidelizados.
-            </p>
-          </div>
-          <button
-            class="bg-primary hover:bg-primary/90 text-white px-6 py-2.5 rounded-lg flex items-center gap-2 font-title-md text-title-md transition-all active:scale-95 shadow-sm"
-          >
-            <span class="material-symbols-outlined">person_add</span>
-            Nuevo Cliente
-          </button>
-        </div>
-        <!-- Dashboard Style Stats Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-stack-md mb-stack-lg">
-          <div
-            class="bg-white p-5 rounded-xl border border-outline-variant shadow-sm flex items-center gap-4"
-          >
-            <div
-              class="w-12 h-12 bg-primary-fixed text-primary flex items-center justify-center rounded-full"
-            >
-              <span class="material-symbols-outlined">groups</span>
-            </div>
-            <div>
-              <p
-                class="text-on-surface-variant font-label-md text-label-md uppercase tracking-wider"
-              >
-                Total Clientes
-              </p>
-              <p class="text-on-surface font-headline-md text-headline-md">
-                1,284
-              </p>
-            </div>
-          </div>
-          <div
-            class="bg-white p-5 rounded-xl border border-outline-variant shadow-sm flex items-center gap-4"
-          >
-            <div
-              class="w-12 h-12 bg-tertiary-fixed text-tertiary flex items-center justify-center rounded-full"
-            >
-              <span class="material-symbols-outlined">trending_up</span>
-            </div>
-            <div>
-              <p
-                class="text-on-surface-variant font-label-md text-label-md uppercase tracking-wider"
-              >
-                Clientes Activos
-              </p>
-              <p class="text-on-surface font-headline-md text-headline-md">
-                856
-              </p>
-            </div>
-          </div>
-          <div
-            class="bg-white p-5 rounded-xl border border-outline-variant shadow-sm flex items-center gap-4"
-          >
-            <div
-              class="w-12 h-12 bg-surface-variant text-on-surface-variant flex items-center justify-center rounded-full"
-            >
-              <span class="material-symbols-outlined">attach_money</span>
-            </div>
-            <div>
-              <p
-                class="text-on-surface-variant font-label-md text-label-md uppercase tracking-wider"
-              >
-                Ticket Promedio
-              </p>
-              <p class="text-on-surface font-headline-md text-headline-md">
-                €42.50
-              </p>
-            </div>
-          </div>
-        </div>
-        <!-- Table Container -->
-        <div
-          class="bg-white rounded-xl border border-outline-variant shadow-sm overflow-hidden"
-        >
-          <div
-            class="px-6 py-4 border-b border-outline-variant flex justify-between items-center bg-surface-container-lowest"
-          >
-            <h3 class="font-title-lg text-title-lg text-on-surface">
-              Listado de Clientes
-            </h3>
-            <div class="flex gap-2">
-              <button
-                class="p-2 border border-outline-variant rounded hover:bg-surface-container-low text-on-surface-variant transition-colors"
-              >
-                <span class="material-symbols-outlined">filter_list</span>
-              </button>
-              <button
-                class="p-2 border border-outline-variant rounded hover:bg-surface-container-low text-on-surface-variant transition-colors"
-              >
-                <span class="material-symbols-outlined">download</span>
-              </button>
-            </div>
-          </div>
-          <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
-              <thead>
-                <tr class="bg-surface-container-low">
-                  <th
-                    class="px-6 py-4 font-title-md text-title-md text-on-surface-variant"
-                  >
-                    Nombre
-                  </th>
-                  <th
-                    class="px-6 py-4 font-title-md text-title-md text-on-surface-variant"
-                  >
-                    DNI/Identificación
-                  </th>
-                  <th
-                    class="px-6 py-4 font-title-md text-title-md text-on-surface-variant"
-                  >
-                    Última Compra
-                  </th>
-                  <th
-                    class="px-6 py-4 font-title-md text-title-md text-on-surface-variant text-right"
-                  >
-                    Total Gastado
-                  </th>
-                  <th
-                    class="px-6 py-4 font-title-md text-title-md text-on-surface-variant text-right"
-                  >
-                    Acciones
-                  </th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-outline-variant">
-                <!-- Row 1 -->
-                <tr
-                  class="hover:bg-primary-container/5 transition-colors group"
-                >
-                  <td class="px-6 py-4">
-                    <div class="flex items-center gap-3">
-                      <div
-                        class="w-9 h-9 rounded-full bg-surface-container-high flex items-center justify-center font-bold text-primary"
-                      >
-                        AM
-                      </div>
-                      <div>
-                        <p class="font-title-md text-title-md text-on-surface">
-                          Ana Martínez García
-                        </p>
-                        <p
-                          class="font-caption text-caption text-on-surface-variant"
-                        >
-                          ana.martinez@email.com
-                        </p>
-                      </div>
+
+    <!-- ============ MAIN CONTENT ============ -->
+    <div class="md:ml-[280px] min-h-screen bg-gray-50">
+        <header class="bg-white border-b border-gray-200 sticky top-0 z-30">
+            <div class="flex items-center justify-between px-4 md:px-8 py-4">
+                <div class="flex items-center gap-4">
+                    <button class="md:hidden text-2xl text-gray-600" id="hamburgerBtn">☰</button>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900">Clientes</h1>
+                        <p class="text-sm text-gray-500">Gestión de clientes y personas</p>
                     </div>
-                  </td>
-                  <td
-                    class="px-6 py-4 font-body-md text-body-md text-on-surface"
-                  >
-                    53421980X
-                  </td>
-                  <td
-                    class="px-6 py-4 font-body-md text-body-md text-on-surface"
-                  >
-                    Hoy, 10:45 AM
-                  </td>
-                  <td
-                    class="px-6 py-4 font-title-md text-title-md text-on-surface text-right"
-                  >
-                    €2,450.00
-                  </td>
-                  <td class="px-6 py-4 text-right">
-                    <button
-                      class="text-primary hover:bg-primary-container/10 p-2 rounded-lg transition-colors"
-                    >
-                      <span class="material-symbols-outlined">visibility</span>
-                    </button>
-                  </td>
-                </tr>
-                <!-- Row 2 -->
-                <tr
-                  class="hover:bg-primary-container/5 transition-colors group"
-                >
-                  <td class="px-6 py-4">
-                    <div class="flex items-center gap-3">
-                      <div
-                        class="w-9 h-9 rounded-full bg-surface-container-high flex items-center justify-center font-bold text-tertiary"
-                      >
-                        JL
-                      </div>
-                      <div>
-                        <p class="font-title-md text-title-md text-on-surface">
-                          Jose Luis Rodríguez
-                        </p>
-                        <p
-                          class="font-caption text-caption text-on-surface-variant"
-                        >
-                          j.rodriguez@email.com
-                        </p>
-                      </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-2 text-sm text-gray-500">
+                        <span class="status-dot"></span>
+                        <span>Conectado</span>
                     </div>
-                  </td>
-                  <td
-                    class="px-6 py-4 font-body-md text-body-md text-on-surface"
-                  >
-                    22987114K
-                  </td>
-                  <td
-                    class="px-6 py-4 font-body-md text-body-md text-on-surface"
-                  >
-                    12 Oct 2023
-                  </td>
-                  <td
-                    class="px-6 py-4 font-title-md text-title-md text-on-surface text-right"
-                  >
-                    €412.50
-                  </td>
-                  <td class="px-6 py-4 text-right">
-                    <button
-                      class="text-primary hover:bg-primary-container/10 p-2 rounded-lg transition-colors"
-                    >
-                      <span class="material-symbols-outlined">visibility</span>
-                    </button>
-                  </td>
-                </tr>
-                <!-- Row 3 -->
-                <tr
-                  class="hover:bg-primary-container/5 transition-colors group"
-                >
-                  <td class="px-6 py-4">
-                    <div class="flex items-center gap-3">
-                      <div
-                        class="w-9 h-9 rounded-full bg-surface-container-high flex items-center justify-center font-bold text-on-surface-variant"
-                      >
-                        EP
-                      </div>
-                      <div>
-                        <p class="font-title-md text-title-md text-on-surface">
-                          Elena Plaza Sánchez
-                        </p>
-                        <p
-                          class="font-caption text-caption text-on-surface-variant"
-                        >
-                          elena.p@email.com
-                        </p>
-                      </div>
-                    </div>
-                  </td>
-                  <td
-                    class="px-6 py-4 font-body-md text-body-md text-on-surface"
-                  >
-                    44332211M
-                  </td>
-                  <td
-                    class="px-6 py-4 font-body-md text-body-md text-on-surface"
-                  >
-                    Ayer, 18:20 PM
-                  </td>
-                  <td
-                    class="px-6 py-4 font-title-md text-title-md text-on-surface text-right"
-                  >
-                    €5,890.25
-                  </td>
-                  <td class="px-6 py-4 text-right">
-                    <button
-                      class="text-primary hover:bg-primary-container/10 p-2 rounded-lg transition-colors"
-                    >
-                      <span class="material-symbols-outlined">visibility</span>
-                    </button>
-                  </td>
-                </tr>
-                <!-- Row 4 -->
-                <tr
-                  class="hover:bg-primary-container/5 transition-colors group"
-                >
-                  <td class="px-6 py-4">
-                    <div class="flex items-center gap-3">
-                      <div
-                        class="w-9 h-9 rounded-full bg-surface-container-high flex items-center justify-center font-bold text-on-surface-variant"
-                      >
-                        CH
-                      </div>
-                      <div>
-                        <p class="font-title-md text-title-md text-on-surface">
-                          Carlos Herrera
-                        </p>
-                        <p
-                          class="font-caption text-caption text-on-surface-variant"
-                        >
-                          cherrera@email.com
-                        </p>
-                      </div>
-                    </div>
-                  </td>
-                  <td
-                    class="px-6 py-4 font-body-md text-body-md text-on-surface"
-                  >
-                    09887766L
-                  </td>
-                  <td
-                    class="px-6 py-4 font-body-md text-body-md text-on-surface"
-                  >
-                    05 Nov 2023
-                  </td>
-                  <td
-                    class="px-6 py-4 font-title-md text-title-md text-on-surface text-right"
-                  >
-                    €85.00
-                  </td>
-                  <td class="px-6 py-4 text-right">
-                    <button
-                      class="text-primary hover:bg-primary-container/10 p-2 rounded-lg transition-colors"
-                    >
-                      <span class="material-symbols-outlined">visibility</span>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div
-            class="px-6 py-4 border-t border-outline-variant flex justify-between items-center bg-surface-container-lowest"
-          >
-            <p class="font-body-md text-body-md text-on-surface-variant">
-              Mostrando 4 de 1,284 clientes
-            </p>
-            <div class="flex gap-2">
-              <button
-                class="px-4 py-2 border border-outline-variant rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-low transition-colors"
-              >
-                Anterior
-              </button>
-              <button
-                class="px-4 py-2 bg-primary text-white rounded-lg font-label-md text-label-md transition-colors"
-              >
-                Siguiente
-              </button>
+                    <span class="text-sm text-gray-500" id="currentDateTime"></span>
+                </div>
             </div>
-          </div>
+        </header>
+
+        <main class="p-4 md:p-8">
+            <!-- Toolbar -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full sm:w-auto">
+                    <div class="relative flex-1 sm:flex-initial">
+                        <input type="text" id="searchInput" placeholder="Buscar cliente..." oninput="filterClientes()" class="w-full sm:w-72 px-4 py-2.5 pl-10 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white">
+                        <span class="absolute left-3 top-2.5 text-gray-400">🔍</span>
+                    </div>
+                    
+                    <select id="estadoFilter" onchange="filterClientes()" class="w-full sm:w-auto px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white">
+                        <option value="todos">Todos los estados</option>
+                        <option value="1">Activos</option>
+                        <option value="0">Inactivos</option>
+                    </select>
+                    
+                    <select id="nivelFilter" onchange="filterClientes()" class="w-full sm:w-auto px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white">
+                        <option value="todos">Todos los niveles</option>
+                        <option value="bronce">Bronce</option>
+                        <option value="plata">Plata</option>
+                        <option value="oro">Oro</option>
+                        <option value="platino">Platino</option>
+                        <option value="diamante">Diamante</option>
+                    </select>
+                    
+                    <button class="px-4 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg transition-all border border-gray-200" onclick="cargarClientes()">
+                        🔄 Actualizar
+                    </button>
+                </div>
+                <button class="w-full sm:w-auto px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-all flex items-center justify-center gap-2 shadow-sm" onclick="openModal()">
+                    ➕ Nuevo Cliente
+                </button>
+            </div>
+
+            <!-- Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
+                <div class="bg-white rounded-xl border border-gray-200 px-4 py-3">
+                    <p class="text-xs text-gray-500">Total</p>
+                    <p class="text-xl font-bold text-gray-900" id="totalClientes">0</p>
+                </div>
+                <div class="bg-white rounded-xl border border-gray-200 px-4 py-3">
+                    <p class="text-xs text-gray-500">Activos</p>
+                    <p class="text-xl font-bold text-green-600" id="totalActivos">0</p>
+                </div>
+                <div class="bg-white rounded-xl border border-gray-200 px-4 py-3">
+                    <p class="text-xs text-gray-500">Inactivos</p>
+                    <p class="text-xl font-bold text-red-600" id="totalInactivos">0</p>
+                </div>
+                <div class="bg-white rounded-xl border border-gray-200 px-4 py-3">
+                    <p class="text-xs text-gray-500">Nivel Oro+</p>
+                    <p class="text-xl font-bold text-yellow-600" id="totalOro">0</p>
+                </div>
+                <div class="bg-white rounded-xl border border-gray-200 px-4 py-3">
+                    <p class="text-xs text-gray-500">Mostrando</p>
+                    <p class="text-xl font-bold text-blue-600" id="mostrandoCount">0</p>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="bg-gray-50 border-b border-gray-200">
+                                <th class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Documento</th>
+                                <th class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Nombre</th>
+                                <th class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden md:table-cell">Email</th>
+                                <th class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden lg:table-cell">Teléfono</th>
+                                <th class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden xl:table-cell">Compras</th>
+                                <th class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Nivel</th>
+                                <th class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Estado</th>
+                                <th class="text-center px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="clientesTableBody">
+                            <tr>
+                                <td colspan="8" class="text-center py-12 text-gray-400">
+                                    <div class="inline-block w-6 h-6 border-2 border-gray-200 border-t-blue-600 rounded-full animate-spin"></div>
+                                    <p class="mt-2">Cargando clientes...</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ============ MODAL CLIENTE ============ -->
+    <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden items-center justify-center p-4" id="modalOverlay">
+        <div class="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto modal-transition">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100 sticky top-0 bg-white z-10">
+                <h3 class="text-lg font-semibold text-gray-900" id="modalTitle">Nuevo Cliente</h3>
+                <button class="text-gray-400 hover:text-gray-600 text-2xl" onclick="closeModal()">&times;</button>
+            </div>
+            <form id="clienteForm" onsubmit="handleSubmit(event)">
+                <div class="p-6 space-y-4">
+                    <input type="hidden" id="editId" value="" />
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Tipo Documento <span class="text-red-500">*</span></label>
+                            <select id="tipo_documento" required class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="DNI">DNI</option>
+                                <option value="RUC">RUC</option>
+                                <option value="CE">Carnet de Extranjería</option>
+                                <option value="PASAPORTE">Pasaporte</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Número Documento <span class="text-red-500">*</span></label>
+                            <input type="text" id="numero_documento" placeholder="12345678" required class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Nombres <span class="text-red-500">*</span></label>
+                            <input type="text" id="nombres" placeholder="Juan Carlos" required class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Apellidos <span class="text-red-500">*</span></label>
+                            <input type="text" id="apellidos" placeholder="Pérez Gómez" required class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Razón Social</label>
+                        <input type="text" id="razon_social" placeholder="Empresa Farmacias S.A." class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Email <span class="text-red-500">*</span></label>
+                            <input type="email" id="email" placeholder="cliente@email.com" required class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Teléfono <span class="text-red-500">*</span></label>
+                            <input type="text" id="telefono" placeholder="999-999-999" required class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Teléfono Alternativo</label>
+                        <input type="text" id="telefono_alternativo" placeholder="988-888-888" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Fecha Nacimiento</label>
+                            <input type="date" id="fecha_nacimiento" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Género</label>
+                            <select id="genero" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="">Seleccionar...</option>
+                                <option value="M">Masculino</option>
+                                <option value="F">Femenino</option>
+                                <option value="OTRO">Otro</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Estado Civil</label>
+                            <select id="estado_civil" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="">Seleccionar...</option>
+                                <option value="soltero">Soltero/a</option>
+                                <option value="casado">Casado/a</option>
+                                <option value="divorciado">Divorciado/a</option>
+                                <option value="viudo">Viudo/a</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Ocupación</label>
+                            <input type="text" id="ocupacion" placeholder="Ingeniero, Comerciante..." class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Observaciones</label>
+                        <textarea id="observaciones" rows="2" placeholder="Observaciones adicionales..." class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
+                    </div>
+
+                    <div id="estadoGroup" style="display: none;">
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Estado</label>
+                        <select id="estado" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <option value="1">Activo</option>
+                            <option value="0">Inactivo</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex flex-col sm:flex-row justify-end gap-3 px-6 py-4 border-t border-gray-100 sticky bottom-0 bg-white">
+                    <button type="button" class="px-5 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg transition-all" onclick="closeModal()">Cancelar</button>
+                    <button type="submit" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-all shadow-sm" id="submitBtn">Guardar</button>
+                </div>
+            </form>
         </div>
-      </div>
-    </main>
-  </body>
+    </div>
+
+    <!-- ============ MODAL VER CLIENTE ============ -->
+    <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden items-center justify-center p-4" id="viewModalOverlay">
+        <div class="bg-white rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto modal-transition">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100 sticky top-0 bg-white z-10">
+                <h3 class="text-lg font-semibold text-gray-900">👤 Detalles del Cliente</h3>
+                <button class="text-gray-400 hover:text-gray-600 text-2xl" onclick="closeViewModal()">&times;</button>
+            </div>
+            <div class="p-6" id="viewContent">
+                <div class="text-center py-8 text-gray-400">Cargando información...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ TOAST CONTAINER ============ -->
+    <div class="fixed top-4 right-4 z-50 space-y-2" id="toastContainer"></div>
+
+    <script>
+        const API_GATEWAY = "http://localhost:3000/api";
+        let token = localStorage.getItem("token");
+        let clientesData = [];
+        let filteredData = [];
+
+        // ============ HEADERS ============
+        function getHeaders() {
+            return {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            };
+        }
+
+        // ============ VERIFICAR AUTENTICACIÓN ============
+        function checkAuth() {
+            token = localStorage.getItem("token");
+            const user = JSON.parse(localStorage.getItem("user") || "null");
+            if (!token || !user) {
+                window.location.href = "/";
+                return false;
+            }
+            return { token, user };
+        }
+
+        // ============ CARGAR DATOS DEL USUARIO ============
+        function loadUserData() {
+            const auth = checkAuth();
+            if (!auth) return;
+            const { user } = auth;
+            document.getElementById("userName").textContent = user.username || "Usuario";
+            document.getElementById("userEmail").textContent = user.email || "usuario@farmadol.com";
+            document.getElementById("userAvatar").textContent = (user.username || "U")[0].toUpperCase();
+            const roles = user.roles || ["Usuario"];
+            document.getElementById("userRole").textContent = roles.map(r => r.charAt(0).toUpperCase() + r.slice(1).toLowerCase()).join(", ");
+        }
+
+        // ============ RELOJ ============
+        function updateDateTime() {
+            const now = new Date();
+            const options = { weekday: "short", day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" };
+            document.getElementById("currentDateTime").textContent = now.toLocaleDateString("es-ES", options);
+        }
+        setInterval(updateDateTime, 60000);
+        updateDateTime();
+
+        // ============ SIDEBAR TOGGLE ============
+        const sidebar = document.getElementById("sidebar");
+        const overlay = document.getElementById("sidebarOverlay");
+        const hamburger = document.getElementById("hamburgerBtn");
+
+        function toggleSidebar() {
+            sidebar.classList.toggle("translate-x-0");
+            sidebar.classList.toggle("-translate-x-full");
+            overlay.classList.toggle("hidden");
+        }
+        hamburger.addEventListener("click", toggleSidebar);
+        overlay.addEventListener("click", toggleSidebar);
+
+        // ============ CERRAR SESIÓN ============
+        document.getElementById("logoutBtn").addEventListener("click", () => {
+            if (confirm("¿Estás seguro de que deseas cerrar sesión?")) {
+                localStorage.removeItem("token");
+                localStorage.removeItem("user");
+                window.location.href = "/";
+            }
+        });
+
+        // ============ CRUD CLIENTES ============
+
+        async function cargarClientes() {
+            const tbody = document.getElementById("clientesTableBody");
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="8" class="text-center py-12 text-gray-400">
+                        <div class="inline-block w-6 h-6 border-2 border-gray-200 border-t-blue-600 rounded-full animate-spin"></div>
+                        <p class="mt-2">Cargando clientes...</p>
+                    </td>
+                </tr>
+            `;
+
+            try {
+                const response = await fetch(`${API_GATEWAY}/clientes/clientes?incluir_inactivos=true`, { headers: getHeaders() });
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        localStorage.removeItem("token");
+                        window.location.href = "/";
+                        return;
+                    }
+                    throw new Error("Error al cargar clientes");
+                }
+                const data = await response.json();
+                if (data.success) {
+                    clientesData = data.data || [];
+                    clientesData.sort((a, b) => {
+                        if (a.estado === b.estado) return a.apellidos.localeCompare(b.apellidos);
+                        return a.estado ? -1 : 1;
+                    });
+                    filterClientes();
+                } else {
+                    throw new Error(data.message || "Error al cargar clientes");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="text-center py-12 text-red-500">
+                            <p class="text-4xl mb-2">⚠️</p>
+                            <p>Error al cargar los clientes</p>
+                            <button onclick="cargarClientes()" class="mt-3 text-sm text-blue-600 hover:text-blue-800">Reintentar</button>
+                        </td>
+                    </tr>
+                `;
+                mostrarToast("Error al cargar clientes", "error");
+            }
+        }
+
+        function getNivelBadge(nivel) {
+            const niveles = {
+                bronce: 'bg-amber-100 text-amber-700',
+                plata: 'bg-gray-200 text-gray-700',
+                oro: 'bg-yellow-100 text-yellow-700',
+                platino: 'bg-indigo-100 text-indigo-700',
+                diamante: 'bg-purple-100 text-purple-700'
+            };
+            const icons = {
+                bronce: '🥉',
+                plata: '🥈',
+                oro: '🥇',
+                platino: '💎',
+                diamante: '👑'
+            };
+            return {
+                class: niveles[nivel] || niveles.bronce,
+                icon: icons[nivel] || '⭐'
+            };
+        }
+
+        function updateStats(data) {
+            const total = data.length;
+            const activos = data.filter(c => c.estado === true || c.estado === 1).length;
+            const inactivos = data.filter(c => c.estado === false || c.estado === 0).length;
+            const oroPlus = data.filter(c => ['oro', 'platino', 'diamante'].includes(c.nivel)).length;
+            
+            document.getElementById("totalClientes").textContent = total;
+            document.getElementById("totalActivos").textContent = activos;
+            document.getElementById("totalInactivos").textContent = inactivos;
+            document.getElementById("totalOro").textContent = oroPlus;
+            document.getElementById("mostrandoCount").textContent = data.length;
+        }
+
+        function renderClientes(data) {
+            const tbody = document.getElementById("clientesTableBody");
+
+            if (!data || data.length === 0) {
+                const estadoFiltro = document.getElementById("estadoFilter").value;
+                let mensaje = "No hay clientes registrados";
+                if (estadoFiltro === "1") mensaje = "No hay clientes activos";
+                if (estadoFiltro === "0") mensaje = "No hay clientes inactivos";
+                
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="text-center py-12 text-gray-400">
+                            <p class="text-4xl mb-2">👤</p>
+                            <p class="font-medium text-gray-600">${mensaje}</p>
+                        </td>
+                    </tr>
+                `;
+                updateStats(data);
+                return;
+            }
+
+            updateStats(data);
+
+            tbody.innerHTML = data.map(c => {
+                const isActive = c.estado === true || c.estado === 1;
+                const nivelInfo = getNivelBadge(c.nivel);
+                return `
+                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors ${!isActive ? 'opacity-70 bg-gray-50/50' : ''}">
+                    <td class="px-4 py-3.5 font-medium ${isActive ? 'text-gray-900' : 'text-gray-500'}">${c.numero_documento || "-"}</td>
+                    <td class="px-4 py-3.5 ${isActive ? 'text-gray-900' : 'text-gray-500'}">${c.apellidos || ""} ${c.nombres || ""}</td>
+                    <td class="px-4 py-3.5 hidden md:table-cell ${isActive ? 'text-gray-900' : 'text-gray-500'}">${c.email || "-"}</td>
+                    <td class="px-4 py-3.5 hidden lg:table-cell ${isActive ? 'text-gray-900' : 'text-gray-500'}">${c.telefono || "-"}</td>
+                    <td class="px-4 py-3.5 hidden xl:table-cell ${isActive ? 'text-gray-900' : 'text-gray-500'}">${c.total_compras || 0}</td>
+                    <td class="px-4 py-3.5">
+                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium ${nivelInfo.class}">
+                            ${nivelInfo.icon} ${c.nivel || 'bronce'}
+                        </span>
+                    </td>
+                    <td class="px-4 py-3.5">
+                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">
+                            ${isActive ? 'Activo' : 'Inactivo'}
+                        </span>
+                    </td>
+                    <td class="px-4 py-3.5">
+                        <div class="flex items-center justify-center gap-1">
+                            <button onclick="verCliente(${c.id})" class="p-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all" title="Ver detalles">👁️</button>
+                            <button onclick="editarCliente(${c.id})" class="p-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all" title="Editar">✏️</button>
+                            <button onclick="eliminarCliente(${c.id})" class="p-1.5 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all" title="${isActive ? 'Desactivar' : 'Eliminar'}">
+                                ${isActive ? '🔴' : '🗑️'}
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `}).join("");
+        }
+
+        function filterClientes() {
+            const search = document.getElementById("searchInput").value.toLowerCase().trim();
+            const estadoFilter = document.getElementById("estadoFilter").value;
+            const nivelFilter = document.getElementById("nivelFilter").value;
+
+            let filtered = [...clientesData];
+
+            if (estadoFilter !== "todos") {
+                const estadoBool = estadoFilter === "1";
+                filtered = filtered.filter(c => (c.estado === true || c.estado === 1) === estadoBool);
+            }
+
+            if (nivelFilter !== "todos") {
+                filtered = filtered.filter(c => c.nivel === nivelFilter);
+            }
+
+            if (search) {
+                filtered = filtered.filter(c =>
+                    c.nombres?.toLowerCase().includes(search) ||
+                    c.apellidos?.toLowerCase().includes(search) ||
+                    c.numero_documento?.toLowerCase().includes(search) ||
+                    c.email?.toLowerCase().includes(search) ||
+                    c.telefono?.includes(search)
+                );
+            }
+
+            filteredData = filtered;
+            renderClientes(filtered);
+        }
+
+        // ============ VER CLIENTE ============
+        async function verCliente(id) {
+            const overlay = document.getElementById("viewModalOverlay");
+            const content = document.getElementById("viewContent");
+            
+            overlay.classList.add("flex");
+            overlay.classList.remove("hidden");
+            document.body.style.overflow = "hidden";
+
+            content.innerHTML = `
+                <div class="text-center py-8">
+                    <div class="inline-block w-6 h-6 border-2 border-gray-200 border-t-blue-600 rounded-full animate-spin"></div>
+                    <p class="mt-2 text-gray-400">Cargando información del cliente...</p>
+                </div>
+            `;
+
+            try {
+                const response = await fetch(`${API_GATEWAY}/clientes/clientes/${id}`, { headers: getHeaders() });
+                if (!response.ok) throw new Error("Error al cargar el cliente");
+                const data = await response.json();
+                if (data.success) {
+                    const c = data.data;
+                    const nivelInfo = getNivelBadge(c.nivel);
+                    content.innerHTML = `
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Información Personal</h4>
+                                <div class="space-y-2">
+                                    <p><span class="text-gray-500 text-sm">Documento:</span> <span class="font-medium">${c.tipo_documento} - ${c.numero_documento}</span></p>
+                                    <p><span class="text-gray-500 text-sm">Nombre:</span> <span class="font-medium">${c.nombres} ${c.apellidos}</span></p>
+                                    ${c.razon_social ? `<p><span class="text-gray-500 text-sm">Razón Social:</span> <span class="font-medium">${c.razon_social}</span></p>` : ''}
+                                    <p><span class="text-gray-500 text-sm">Email:</span> <span class="font-medium">${c.email}</span></p>
+                                    <p><span class="text-gray-500 text-sm">Teléfono:</span> <span class="font-medium">${c.telefono}</span></p>
+                                    ${c.telefono_alternativo ? `<p><span class="text-gray-500 text-sm">Tel. Alternativo:</span> <span class="font-medium">${c.telefono_alternativo}</span></p>` : ''}
+                                    ${c.fecha_nacimiento ? `<p><span class="text-gray-500 text-sm">Fecha Nacimiento:</span> <span class="font-medium">${new Date(c.fecha_nacimiento).toLocaleDateString('es-ES')}</span></p>` : ''}
+                                    ${c.genero ? `<p><span class="text-gray-500 text-sm">Género:</span> <span class="font-medium">${c.genero === 'M' ? 'Masculino' : c.genero === 'F' ? 'Femenino' : 'Otro'}</span></p>` : ''}
+                                    ${c.estado_civil ? `<p><span class="text-gray-500 text-sm">Estado Civil:</span> <span class="font-medium">${c.estado_civil}</span></p>` : ''}
+                                    ${c.ocupacion ? `<p><span class="text-gray-500 text-sm">Ocupación:</span> <span class="font-medium">${c.ocupacion}</span></p>` : ''}
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Estadísticas</h4>
+                                <div class="space-y-2">
+                                    <p><span class="text-gray-500 text-sm">Nivel:</span> <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium ${nivelInfo.class}">${nivelInfo.icon} ${c.nivel || 'bronce'}</span></p>
+                                    <p><span class="text-gray-500 text-sm">Estado:</span> <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${c.estado ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">${c.estado ? 'Activo' : 'Inactivo'}</span></p>
+                                    <p><span class="text-gray-500 text-sm">Total Compras:</span> <span class="font-medium">${c.total_compras || 0}</span></p>
+                                    <p><span class="text-gray-500 text-sm">Total Gastado:</span> <span class="font-medium">S/ ${parseFloat(c.total_gastado || 0).toFixed(2)}</span></p>
+                                    <p><span class="text-gray-500 text-sm">Promedio Gasto:</span> <span class="font-medium">S/ ${parseFloat(c.promedio_gasto || 0).toFixed(2)}</span></p>
+                                    <p><span class="text-gray-500 text-sm">Puntos:</span> <span class="font-medium">${c.puntos || 0}</span></p>
+                                    ${c.ultima_compra ? `<p><span class="text-gray-500 text-sm">Última Compra:</span> <span class="font-medium">${new Date(c.ultima_compra).toLocaleDateString('es-ES')}</span></p>` : ''}
+                                    <p><span class="text-gray-500 text-sm">Fecha Registro:</span> <span class="font-medium">${new Date(c.fecha_registro).toLocaleDateString('es-ES')}</span></p>
+                                </div>
+                                ${c.observaciones ? `
+                                    <div class="mt-4">
+                                        <h4 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">Observaciones</h4>
+                                        <p class="text-sm text-gray-700 bg-gray-50 p-3 rounded-lg">${c.observaciones}</p>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                content.innerHTML = `
+                    <div class="text-center py-8 text-red-500">
+                        <p class="text-4xl mb-2">⚠️</p>
+                        <p>Error al cargar la información del cliente</p>
+                    </div>
+                `;
+            }
+        }
+
+        function closeViewModal() {
+            document.getElementById("viewModalOverlay").classList.add("hidden");
+            document.getElementById("viewModalOverlay").classList.remove("flex");
+            document.body.style.overflow = "";
+        }
+
+        // ============ MODAL CLIENTE ============
+        function openModal(data = null) {
+            const overlay = document.getElementById("modalOverlay");
+            const title = document.getElementById("modalTitle");
+            const submitBtn = document.getElementById("submitBtn");
+            const estadoGroup = document.getElementById("estadoGroup");
+
+            if (data) {
+                title.textContent = "Editar Cliente";
+                submitBtn.textContent = "Actualizar";
+                estadoGroup.style.display = "block";
+                document.getElementById("editId").value = data.id;
+                document.getElementById("tipo_documento").value = data.tipo_documento || "DNI";
+                document.getElementById("numero_documento").value = data.numero_documento || "";
+                document.getElementById("nombres").value = data.nombres || "";
+                document.getElementById("apellidos").value = data.apellidos || "";
+                document.getElementById("razon_social").value = data.razon_social || "";
+                document.getElementById("email").value = data.email || "";
+                document.getElementById("telefono").value = data.telefono || "";
+                document.getElementById("telefono_alternativo").value = data.telefono_alternativo || "";
+                document.getElementById("fecha_nacimiento").value = data.fecha_nacimiento ? data.fecha_nacimiento.split('T')[0] : "";
+                document.getElementById("genero").value = data.genero || "";
+                document.getElementById("estado_civil").value = data.estado_civil || "";
+                document.getElementById("ocupacion").value = data.ocupacion || "";
+                document.getElementById("observaciones").value = data.observaciones || "";
+                document.getElementById("estado").value = data.estado ? "1" : "0";
+            } else {
+                title.textContent = "Nuevo Cliente";
+                submitBtn.textContent = "Guardar";
+                estadoGroup.style.display = "none";
+                document.getElementById("editId").value = "";
+                document.getElementById("clienteForm").reset();
+                document.getElementById("tipo_documento").value = "DNI";
+                document.getElementById("estado").value = "1";
+            }
+            overlay.classList.add("flex");
+            overlay.classList.remove("hidden");
+            document.body.style.overflow = "hidden";
+        }
+
+        function closeModal() {
+            document.getElementById("modalOverlay").classList.add("hidden");
+            document.getElementById("modalOverlay").classList.remove("flex");
+            document.body.style.overflow = "";
+            document.getElementById("clienteForm").reset();
+            document.getElementById("editId").value = "";
+        }
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") {
+                closeModal();
+                closeViewModal();
+            }
+        });
+        document.getElementById("modalOverlay").addEventListener("click", (e) => {
+            if (e.target === e.currentTarget) closeModal();
+        });
+        document.getElementById("viewModalOverlay").addEventListener("click", (e) => {
+            if (e.target === e.currentTarget) closeViewModal();
+        });
+
+        // ============ GUARDAR CLIENTE ============
+        async function handleSubmit(e) {
+            e.preventDefault();
+            const id = document.getElementById("editId").value;
+            const isEdit = !!id;
+
+            const data = {
+                tipo_documento: document.getElementById("tipo_documento").value,
+                numero_documento: document.getElementById("numero_documento").value.trim(),
+                nombres: document.getElementById("nombres").value.trim(),
+                apellidos: document.getElementById("apellidos").value.trim(),
+                razon_social: document.getElementById("razon_social").value.trim(),
+                email: document.getElementById("email").value.trim(),
+                telefono: document.getElementById("telefono").value.trim(),
+                telefono_alternativo: document.getElementById("telefono_alternativo").value.trim(),
+                fecha_nacimiento: document.getElementById("fecha_nacimiento").value || null,
+                genero: document.getElementById("genero").value || null,
+                estado_civil: document.getElementById("estado_civil").value || null,
+                ocupacion: document.getElementById("ocupacion").value.trim(),
+                observaciones: document.getElementById("observaciones").value.trim(),
+            };
+            if (isEdit) data.estado = document.getElementById("estado").value === "1";
+
+            const submitBtn = document.getElementById("submitBtn");
+            submitBtn.disabled = true;
+            submitBtn.textContent = isEdit ? "Actualizando..." : "Guardando...";
+
+            try {
+                const url = isEdit ? `${API_GATEWAY}/clientes/clientes/${id}` : `${API_GATEWAY}/clientes/clientes`;
+                const method = isEdit ? "PUT" : "POST";
+                const response = await fetch(url, { method, headers: getHeaders(), body: JSON.stringify(data) });
+                const result = await response.json();
+                if (!response.ok) throw new Error(result.message || "Error al guardar el cliente");
+                if (result.success) {
+                    mostrarToast(isEdit ? "Cliente actualizado exitosamente" : "Cliente creado exitosamente", "success");
+                    closeModal();
+                    cargarClientes();
+                } else {
+                    throw new Error(result.message || "Error al guardar el cliente");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                mostrarToast(error.message || "Error al guardar el cliente", "error");
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = isEdit ? "Actualizar" : "Guardar";
+            }
+        }
+
+        // ============ EDITAR CLIENTE ============
+        function editarCliente(id) {
+            const cliente = clientesData.find(c => c.id === id);
+            if (cliente) openModal(cliente);
+            else mostrarToast("Cliente no encontrado", "error");
+        }
+
+        // ============ ELIMINAR/DESACTIVAR CLIENTE ============
+        async function eliminarCliente(id) {
+            const cliente = clientesData.find(c => c.id === id);
+            if (!cliente) { mostrarToast("Cliente no encontrado", "error"); return; }
+
+            const isActive = cliente.estado === true || cliente.estado === 1;
+            const mensaje = isActive 
+                ? `¿Estás seguro de desactivar al cliente "${cliente.nombres} ${cliente.apellidos}"?` 
+                : `¿Estás seguro de eliminar permanentemente al cliente "${cliente.nombres} ${cliente.apellidos}"?`;
+
+            if (!confirm(mensaje)) return;
+
+            try {
+                if (isActive) {
+                    const response = await fetch(`${API_GATEWAY}/clientes/clientes/${id}`, { 
+                        method: "DELETE", 
+                        headers: getHeaders() 
+                    });
+                    const result = await response.json();
+                    if (!response.ok) throw new Error(result.message || "Error al desactivar el cliente");
+                    if (result.success) {
+                        mostrarToast("Cliente desactivado exitosamente", "success");
+                        cargarClientes();
+                    } else {
+                        throw new Error(result.message || "Error al desactivar el cliente");
+                    }
+                } else {
+                    mostrarToast("Este cliente ya está inactivo", "warning");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                mostrarToast(error.message || "Error al procesar la solicitud", "error");
+            }
+        }
+
+        // ============ TOAST ============
+        function mostrarToast(mensaje, tipo = "info") {
+            const container = document.getElementById("toastContainer");
+            const colors = {
+                success: "bg-green-500",
+                error: "bg-red-500",
+                warning: "bg-yellow-500",
+                info: "bg-blue-500"
+            };
+            const icons = { success: "✅", error: "❌", warning: "⚠️", info: "ℹ️" };
+            const toast = document.createElement("div");
+            toast.className = `toast-slide px-5 py-3 rounded-lg text-white text-sm font-medium shadow-lg flex items-center gap-3 min-w-[280px] ${colors[tipo] || colors.info}`;
+            toast.innerHTML = `
+                <span>${icons[tipo] || "ℹ️"}</span>
+                <span>${mensaje}</span>
+                <button class="ml-auto text-white/80 hover:text-white" onclick="this.parentElement.remove()">×</button>
+            `;
+            container.appendChild(toast);
+            setTimeout(() => {
+                if (toast.parentElement) {
+                    toast.style.opacity = "0";
+                    toast.style.transform = "translateX(20px)";
+                    setTimeout(() => toast.remove(), 300);
+                }
+            }, 4000);
+        }
+
+        // ============ INICIALIZAR ============
+        document.addEventListener("DOMContentLoaded", () => {
+            const auth = checkAuth();
+            if (!auth) return;
+            loadUserData();
+            cargarClientes();
+        });
+    </script>
+</body>
 </html>

@@ -67,3 +67,5 @@ npm run seed
 | Auth service  | 3001   |
 | Frontend dev  | 3002   |
 | Live Server   | 5500   |
+
+npx serve . -p 3010

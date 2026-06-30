@@ -1,10 +1,10 @@
-// Módulo de Clientes
+// public/js/modules/clientes.js
 const ClientesModule = {
     render: function(container) {
         container.innerHTML = `
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-2xl font-semibold text-gray-800">Clientes</h2>
-                <button class="btn btn-primary" onclick="ClientesModule.showCreate()">
+                <button class="btn btn-primary" onclick="window.ClientesModule?.showCreate()">
                     <span class="material-symbols-outlined text-sm">person_add</span>
                     Nuevo Cliente
                 </button>
@@ -18,106 +18,83 @@ const ClientesModule = {
     
     loadClientes: async function() {
         try {
-            const data = await apiRequest('/api/clientes/clientes');
             const container = document.getElementById('clientesContent');
+            if (!container) return;
             
-            const headers = ['ID', 'Documento', 'Nombres', 'Apellidos', 'Email', 'Teléfono', 'Nivel'];
-            const actions = (row) => `
-                <button class="btn btn-primary btn-sm" onclick="ClientesModule.edit(${row.id})">
-                    <span class="material-symbols-outlined text-sm">edit</span>
-                </button>
-                <button class="btn btn-danger btn-sm" onclick="ClientesModule.delete(${row.id})">
-                    <span class="material-symbols-outlined text-sm">delete</span>
-                </button>
+            const data = await apiRequest('/api/clientes/clientes');
+            
+            if (!data.data || data.data.length === 0) {
+                container.innerHTML = `
+                    <div class="bg-gray-50 rounded-xl p-8 text-center">
+                        <span class="material-symbols-outlined text-gray-400 text-5xl">people</span>
+                        <p class="text-gray-500 mt-2">No hay clientes registrados</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = `
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Documento</th>
+                                <th>Nombres</th>
+                                <th>Apellidos</th>
+                                <th>Email</th>
+                                <th>Teléfono</th>
+                                <th>Nivel</th>
+                            </tr>
+                        </thead>
+                        <tbody>
             `;
-            
-            container.innerHTML = createTable(headers, data.data || [], actions);
+
+            data.data.forEach(c => {
+                const nivelColors = {
+                    'bronce': 'badge-warning',
+                    'plata': 'badge-info',
+                    'oro': 'badge-success',
+                    'platino': 'badge-primary',
+                    'diamante': 'badge-purple'
+                };
+                const nivelBadge = `<span class="badge ${nivelColors[c.nivel] || 'badge-info'}">${c.nivel || 'bronce'}</span>`;
+                
+                html += `
+                    <tr>
+                        <td><span class="font-mono text-sm">${c.numero_documento}</span></td>
+                        <td><strong>${c.nombres || ''}</strong></td>
+                        <td>${c.apellidos || ''}</td>
+                        <td class="max-w-xs truncate">${c.email || 'N/A'}</td>
+                        <td>${c.telefono || 'N/A'}</td>
+                        <td>${nivelBadge}</td>
+                    </tr>
+                `;
+            });
+
+            html += '</tbody></table></div>';
+            container.innerHTML = html;
         } catch (error) {
-            document.getElementById('clientesContent').innerHTML = `
-                <div class="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
-                    <span class="material-symbols-outlined text-red-500 text-4xl">error</span>
-                    <p class="text-red-700 mt-2">Error al cargar clientes</p>
-                    <p class="text-sm text-red-600">${error.message}</p>
-                </div>
-            `;
+            console.error('Error loading clientes:', error);
+            const container = document.getElementById('clientesContent');
+            if (container) {
+                container.innerHTML = `
+                    <div class="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
+                        <span class="material-symbols-outlined text-red-500 text-4xl">error</span>
+                        <p class="text-red-700 mt-2">Error al cargar clientes</p>
+                        <p class="text-sm text-red-600">${error.message}</p>
+                    </div>
+                `;
+            }
         }
     },
     
     showCreate: function() {
         showModal('Nuevo Cliente', `
-            <form id="createClienteForm" onsubmit="ClientesModule.create(event)">
-                <div class="form-group">
-                    <label>Tipo Documento</label>
-                    <select name="tipo_documento" required>
-                        <option value="DNI">DNI</option>
-                        <option value="RUC">RUC</option>
-                        <option value="CE">CE</option>
-                        <option value="PASAPORTE">Pasaporte</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Número Documento</label>
-                    <input type="text" name="numero_documento" required placeholder="12345678">
-                </div>
-                <div class="form-group">
-                    <label>Nombres</label>
-                    <input type="text" name="nombres" required placeholder="Nombres">
-                </div>
-                <div class="form-group">
-                    <label>Apellidos</label>
-                    <input type="text" name="apellidos" required placeholder="Apellidos">
-                </div>
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" name="email" required placeholder="correo@ejemplo.com">
-                </div>
-                <div class="form-group">
-                    <label>Teléfono</label>
-                    <input type="text" name="telefono" required placeholder="999-999-999">
-                </div>
-                <div class="form-group">
-                    <label>Dirección</label>
-                    <input type="text" name="direccion" placeholder="Dirección completa">
-                </div>
-                <button type="submit" class="btn btn-primary w-full">Crear Cliente</button>
-            </form>
+            <div class="text-center text-gray-500 p-4">
+                <span class="material-symbols-outlined text-4xl">construction</span>
+                <p class="mt-2">Función en desarrollo</p>
+            </div>
         `);
-    },
-    
-    create: async function(event) {
-        event.preventDefault();
-        const form = event.target;
-        const formData = new FormData(form);
-        const data = Object.fromEntries(formData);
-        
-        try {
-            await apiRequest('/api/clientes/clientes', {
-                method: 'POST',
-                body: JSON.stringify(data)
-            });
-            closeModal();
-            showAlert('Cliente creado exitosamente', 'success');
-            this.loadClientes();
-        } catch (error) {
-            showAlert(error.message, 'error');
-        }
-    },
-    
-    edit: function(id) {
-        showModal('Editar Cliente', `
-            <div class="loading"><span class="material-symbols-outlined">refresh</span> Cargando...</div>
-        `);
-    },
-    
-    delete: async function(id) {
-        if (!confirm('¿Estás seguro de eliminar este cliente?')) return;
-        try {
-            await apiRequest(`/api/clientes/clientes/${id}`, { method: 'DELETE' });
-            showAlert('Cliente eliminado exitosamente', 'success');
-            this.loadClientes();
-        } catch (error) {
-            showAlert(error.message, 'error');
-        }
     }
 };
 

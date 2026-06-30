@@ -1,140 +1,520 @@
-<!doctype html>
-<html class="light" lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Farmadol ERP - Dashboard</title>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="/css/dashboard.css" />
-  </head>
-  <body class="font-body-md text-on-background" style="font-family: Inter, sans-serif; background-color: #f1f5f9;">
-    
-    <!-- Sidebar -->
-    <aside id="sidebar" class="sidebar">
-      <div class="sidebar-header">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-lg">
-            F
-          </div>
-          <div>
-            <h1 class="text-lg font-bold text-gray-800">Farmadol ERP</h1>
-            <p class="text-xs text-gray-500">Sistema de Gestión</p>
-          </div>
-        </div>
-      </div>
+<!-- frontend/public/dashboard.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Farmadol - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💊</text></svg>" />
+    <style>
+        .sidebar-transition {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .hover-scale:hover {
+            transform: scale(1.02);
+        }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #22c55e;
+            display: inline-block;
+            animation: pulse-dot 2s infinite;
+        }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        .sidebar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
 
-      <nav class="sidebar-nav">
-        <!-- Dashboard -->
-        <div class="nav-section">
-          <span class="nav-section-title">Principal</span>
-        </div>
-        <a href="#" class="nav-item active" data-module="dashboard">
-          <span class="material-symbols-outlined">dashboard</span>
-          <span>Dashboard</span>
-        </a>
+    <!-- Sidebar Overlay (mobile) -->
+    <div class="fixed inset-0 bg-black/30 backdrop-blur-sm z-40 hidden" id="sidebarOverlay"></div>
 
-        <!-- Módulos -->
-        <div class="nav-section">
-          <span class="nav-section-title">Módulos</span>
-        </div>
-
-        <a href="#" class="nav-item" data-module="ventas">
-          <span class="material-symbols-outlined">shopping_cart</span>
-          <span>Ventas</span>
-        </a>
-
-        <a href="#" class="nav-item" data-module="inventario">
-          <span class="material-symbols-outlined">inventory_2</span>
-          <span>Inventario</span>
-        </a>
-
-        <a href="#" class="nav-item" data-module="compras">
-          <span class="material-symbols-outlined">local_shipping</span>
-          <span>Compras</span>
-        </a>
-
-        <a href="#" class="nav-item" data-module="clientes">
-          <span class="material-symbols-outlined">people</span>
-          <span>Clientes</span>
-        </a>
-
-        <a href="#" class="nav-item" data-module="sucursales">
-          <span class="material-symbols-outlined">storefront</span>
-          <span>Sucursales</span>
-        </a>
-
-        <a href="#" class="nav-item" data-module="reportes">
-          <span class="material-symbols-outlined">assessment</span>
-          <span>Reportes</span>
-        </a>
-
-        <div class="nav-section mt-auto">
-          <span class="nav-section-title">Usuario</span>
+    <!-- ============ SIDEBAR ============ -->
+    <aside class="sidebar fixed left-0 top-0 h-full w-[280px] bg-white border-r border-gray-200 flex flex-col z-50 shadow-lg transform -translate-x-full md:translate-x-0 sidebar-transition" id="sidebar">
+        <!-- Brand -->
+        <div class="px-6 py-6 border-b border-gray-100 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-bold text-lg">F</div>
+            <div>
+                <h1 class="text-xl font-bold text-gray-900">Farmadol</h1>
+                <p class="text-xs text-gray-500">Sistema de Gestión</p>
+            </div>
         </div>
 
-        <a href="#" class="nav-item" id="logoutBtn">
-          <span class="material-symbols-outlined">logout</span>
-          <span>Cerrar Sesión</span>
-        </a>
-      </nav>
+        <!-- Menu -->
+        <nav class="flex-1 px-3 py-4 overflow-y-auto">
+            <p class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Navegación</p>
+            
+            <a href="/dashboard" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all bg-blue-50 text-blue-600">
+                <span class="text-lg">📊</span>
+                Dashboard
+            </a>
+            
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
+                <span class="text-lg">💳</span>
+                Ventas
+                <span class="ml-auto bg-blue-500 text-white text-xs px-2.5 py-0.5 rounded-full" id="ventasBadge">0</span>
+            </a>
+            
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
+                <span class="text-lg">📦</span>
+                Inventario
+                <span class="ml-auto bg-yellow-500 text-white text-xs px-2.5 py-0.5 rounded-full" id="stockBadge">0</span>
+            </a>
+            
+            <a href="/usuarios" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
+                <span class="text-lg">🛒</span>
+                Compras
+            </a>
+            
+            <a href="/clientes" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
+                <span class="text-lg">👤</span>
+                Clientes
+                <span class="ml-auto bg-blue-500 text-white text-xs px-2.5 py-0.5 rounded-full" id="clientesBadge">0</span>
+            </a>
+            
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
+                <span class="text-lg">🔐</span>
+                Usuarios
+            </a>
+            
+            <a href="/sucursales" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
+                <span class="text-lg">🏢</span>
+                Sucursales
+                <span class="ml-auto bg-blue-500 text-white text-xs px-2.5 py-0.5 rounded-full" id="sucursalesBadge">0</span>
+            </a>
+            
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
+                <span class="text-lg">📄</span>
+                Reportes
+            </a>
+        </nav>
 
-      <div class="sidebar-footer">
-        <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
-          <div class="w-9 h-9 bg-blue-600 rounded-full flex items-center justify-center text-white font-semibold" id="userAvatar">
-            U
-          </div>
-          <div class="flex-1 min-w-0">
-            <p class="text-sm font-semibold text-gray-700 truncate" id="userName">Usuario</p>
-            <p class="text-xs text-gray-500 truncate" id="userRole">Cargando...</p>
-          </div>
+        <!-- Footer -->
+        <div class="px-4 py-4 border-t border-gray-100">
+            <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-semibold text-sm" id="userAvatar">A</div>
+                <div>
+                    <p class="text-sm font-semibold text-gray-900" id="userName">Administrador</p>
+                    <p class="text-xs text-gray-500" id="userEmail">admin@farmadol.com</p>
+                    <span class="text-xs text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full inline-block mt-0.5" id="userRole">Administrador</span>
+                </div>
+            </div>
+            <button class="w-full flex items-center gap-2 px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition-all" id="logoutBtn">
+                <span>🚪</span>
+                Cerrar Sesión
+            </button>
         </div>
-      </div>
     </aside>
 
-    <!-- Main Content -->
-    <main class="main-content">
-      <!-- Top Bar -->
-      <header class="top-bar">
-        <div class="flex items-center gap-4">
-          <button id="toggleSidebar" class="lg:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors">
-            <span class="material-symbols-outlined">menu</span>
-          </button>
-          <h2 class="text-xl font-semibold text-gray-800" id="pageTitle">Dashboard</h2>
-        </div>
-        <div class="flex items-center gap-3">
-          <button class="p-2 hover:bg-gray-100 rounded-lg transition-colors relative">
-            <span class="material-symbols-outlined">notifications</span>
-            <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-          </button>
-          <span class="text-sm text-gray-500" id="currentDateTime"></span>
-        </div>
-      </header>
+    <!-- ============ MAIN CONTENT ============ -->
+    <div class="md:ml-[280px] min-h-screen bg-gray-50">
+        <!-- Header -->
+        <header class="bg-white border-b border-gray-200 sticky top-0 z-30">
+            <div class="flex items-center justify-between px-4 md:px-8 py-4">
+                <div class="flex items-center gap-4">
+                    <button class="md:hidden text-2xl text-gray-600" id="hamburgerBtn">☰</button>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900" id="pageTitle">Dashboard</h1>
+                        <p class="text-sm text-gray-500" id="pageSubtitle">Panel de control general</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-2 text-sm text-gray-500">
+                        <span class="status-dot"></span>
+                        <span>Conectado</span>
+                    </div>
+                    <span class="text-sm text-gray-500" id="currentDateTime"></span>
+                </div>
+            </div>
+        </header>
 
-      <!-- Content Area -->
-      <div class="content-area" id="contentArea">
-        <!-- El contenido se carga dinámicamente aquí -->
-      </div>
-    </main>
+        <!-- Content -->
+        <main class="p-4 md:p-8">
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6 mb-6">
+                <div class="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-2xl">💰</span>
+                        <span class="text-xs font-medium text-green-600 bg-green-50 px-2.5 py-1 rounded-full">+12%</span>
+                    </div>
+                    <p class="text-2xl font-bold text-gray-900" id="ventasHoy">S/ 0.00</p>
+                    <p class="text-sm text-gray-500">Ventas Hoy</p>
+                </div>
 
-    <!-- Scripts - Cargar desde el servidor en puerto 3010 -->
-    <script src="/js/config.js"></script>
-    <script src="/js/auth.js"></script>
-    <script src="/js/modules/dashboard.js"></script>
-    <script src="/js/modules/auth.js"></script>
-    <script src="/js/modules/sucursales.js"></script>
-    <script src="/js/modules/inventario.js"></script>
-    <script src="/js/modules/ventas.js"></script>
-    <script src="/js/modules/clientes.js"></script>
-    <script src="/js/modules/compras.js"></script>
-    <script src="/js/modules/reportes.js"></script>
-    <script src="/js/dashboard.js"></script>
-  </body>
+                <div class="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-2xl">📦</span>
+                    </div>
+                    <p class="text-2xl font-bold text-gray-900" id="totalProductos">--</p>
+                    <p class="text-sm text-gray-500">Productos en Stock</p>
+                </div>
+
+                <div class="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-2xl">👤</span>
+                    </div>
+                    <p class="text-2xl font-bold text-gray-900" id="totalClientes">--</p>
+                    <p class="text-sm text-gray-500">Clientes Activos</p>
+                </div>
+
+                <div class="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-2xl">🏢</span>
+                    </div>
+                    <p class="text-2xl font-bold text-gray-900" id="totalSucursales">--</p>
+                    <p class="text-sm text-gray-500">Sucursales</p>
+                </div>
+            </div>
+
+            <!-- Two Column Layout -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Actividad Reciente -->
+                <div class="lg:col-span-2 bg-white rounded-xl border border-gray-200">
+                    <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+                        <h3 class="font-semibold text-gray-900">📋 Actividad Reciente</h3>
+                        <button class="text-sm text-blue-600 hover:text-blue-800 font-medium" onclick="cargarActividadReciente()">🔄 Actualizar</button>
+                    </div>
+                    <div class="p-6" id="actividadReciente">
+                        <div class="text-center py-8 text-gray-400">Cargando actividad...</div>
+                    </div>
+                </div>
+
+                <!-- Panel Derecho -->
+                <div class="bg-white rounded-xl border border-gray-200">
+                    <div class="px-6 py-4 border-b border-gray-100">
+                        <h3 class="font-semibold text-gray-900">⚡ Acciones Rápidas</h3>
+                    </div>
+                    <div class="p-4 space-y-3">
+                        <button class="w-full flex items-center gap-3 px-4 py-3 bg-blue-50 hover:bg-blue-100 rounded-lg transition-all text-left" onclick="alert('Redirigiendo a Ventas...')">
+                            <span class="text-xl">💳</span>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">Nueva Venta</p>
+                                <p class="text-xs text-gray-500">Registrar transacción</p>
+                            </div>
+                        </button>
+
+                        <button class="w-full flex items-center gap-3 px-4 py-3 bg-green-50 hover:bg-green-100 rounded-lg transition-all text-left" onclick="alert('Redirigiendo a Compras...')">
+                            <span class="text-xl">🛒</span>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">Registrar Compra</p>
+                                <p class="text-xs text-gray-500">Ingresar mercadería</p>
+                            </div>
+                        </button>
+
+                        <button class="w-full flex items-center gap-3 px-4 py-3 bg-yellow-50 hover:bg-yellow-100 rounded-lg transition-all text-left" onclick="alert('Redirigiendo a Inventario...')">
+                            <span class="text-xl">📦</span>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">Ver Inventario</p>
+                                <p class="text-xs text-gray-500">Consultar stock</p>
+                            </div>
+                        </button>
+
+                        <button class="w-full flex items-center gap-3 px-4 py-3 bg-purple-50 hover:bg-purple-100 rounded-lg transition-all text-left" onclick="alert('Redirigiendo a Reportes...')">
+                            <span class="text-xl">📄</span>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">Generar Reporte</p>
+                                <p class="text-xs text-gray-500">Análisis y métricas</p>
+                            </div>
+                        </button>
+                    </div>
+
+                    <!-- System Info -->
+                    <div class="px-6 py-4 border-t border-gray-100 space-y-1.5">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-400">🟢 Sistema</span>
+                            <span class="text-green-600 font-medium">Operativo</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-400">📡 API Gateway</span>
+                            <span class="text-green-600 font-medium" id="gatewayStatus">Conectado</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-400">📦 Microservicios</span>
+                            <span class="text-gray-700 font-medium" id="serviciosStatus">7 activos</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-400">📅 Última actualización</span>
+                            <span class="text-gray-700 font-medium" id="ultimaActualizacion">--</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const API_GATEWAY = "http://localhost:3000/api";
+        let token = localStorage.getItem("token");
+
+        // ============ HEADERS ============
+        function getHeaders() {
+            return {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            };
+        }
+
+        // ============ VERIFICAR AUTENTICACIÓN ============
+        function checkAuth() {
+            token = localStorage.getItem("token");
+            const user = JSON.parse(localStorage.getItem("user") || "null");
+            if (!token || !user) {
+                window.location.href = "/";
+                return false;
+            }
+            return { token, user };
+        }
+
+        // ============ CARGAR DATOS DEL USUARIO ============
+        function loadUserData() {
+            const auth = checkAuth();
+            if (!auth) return;
+            const { user } = auth;
+            document.getElementById("userName").textContent = user.username || "Usuario";
+            document.getElementById("userEmail").textContent = user.email || "usuario@farmadol.com";
+            document.getElementById("userAvatar").textContent = (user.username || "U")[0].toUpperCase();
+            const roles = user.roles || ["Usuario"];
+            document.getElementById("userRole").textContent = roles.map(r => r.charAt(0).toUpperCase() + r.slice(1).toLowerCase()).join(", ");
+        }
+
+        // ============ RELOJ ============
+        function updateDateTime() {
+            const now = new Date();
+            const options = { weekday: "short", day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" };
+            document.getElementById("currentDateTime").textContent = now.toLocaleDateString("es-ES", options);
+            const el = document.getElementById("ultimaActualizacion");
+            if (el) el.textContent = now.toLocaleTimeString("es-ES");
+        }
+        setInterval(updateDateTime, 60000);
+        updateDateTime();
+
+        // ============ SIDEBAR TOGGLE ============
+        const sidebar = document.getElementById("sidebar");
+        const overlay = document.getElementById("sidebarOverlay");
+        const hamburger = document.getElementById("hamburgerBtn");
+
+        function toggleSidebar() {
+            sidebar.classList.toggle("translate-x-0");
+            sidebar.classList.toggle("-translate-x-full");
+            overlay.classList.toggle("hidden");
+        }
+        hamburger.addEventListener("click", toggleSidebar);
+        overlay.addEventListener("click", toggleSidebar);
+
+        // ============ CERRAR SESIÓN ============
+        document.getElementById("logoutBtn").addEventListener("click", () => {
+            if (confirm("¿Estás seguro de que deseas cerrar sesión?")) {
+                localStorage.removeItem("token");
+                localStorage.removeItem("user");
+                window.location.href = "/";
+            }
+        });
+
+        // ============ CARGAR DASHBOARD ============
+        async function cargarDashboard() {
+            try {
+                await Promise.all([
+                    cargarVentasHoy(),
+                    cargarProductos(),
+                    cargarClientes(),
+                    cargarSucursales(),
+                    cargarActividadReciente()
+                ]);
+            } catch (error) {
+                console.error("Error cargando dashboard:", error);
+            }
+        }
+
+        // ============ VENTAS HOY ============
+        async function cargarVentasHoy() {
+            try {
+                const response = await fetch(`${API_GATEWAY}/ventas/ventas/dia/resumen`, { headers: getHeaders() });
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success && data.data) {
+                        const total = data.data.resumen?.total_monto || 0;
+                        document.getElementById("ventasHoy").textContent = `S/ ${total.toFixed(2)}`;
+                        document.getElementById("ventasBadge").textContent = data.data.ventas?.length || 0;
+                    }
+                }
+            } catch (error) {
+                console.error("Error cargando ventas:", error);
+                document.getElementById("ventasHoy").textContent = "S/ 0.00";
+            }
+        }
+
+        // ============ PRODUCTOS ============
+        async function cargarProductos() {
+            try {
+                const response = await fetch(`${API_GATEWAY}/inventario/productos`, { headers: getHeaders() });
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success) {
+                        const count = data.data?.length || 0;
+                        document.getElementById("totalProductos").textContent = count;
+                        const stockBajo = data.data?.filter(p => p.stock_minimo && p.stock_actual < p.stock_minimo) || [];
+                        document.getElementById("stockBadge").textContent = stockBajo.length;
+                    }
+                }
+            } catch (error) {
+                console.error("Error cargando productos:", error);
+                document.getElementById("totalProductos").textContent = "--";
+            }
+        }
+
+        // ============ CLIENTES ============
+        async function cargarClientes() {
+            try {
+                const response = await fetch(`${API_GATEWAY}/clientes/clientes?estado=true&limit=1`, { headers: getHeaders() });
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success) {
+                        const total = data.pagination?.total || data.data?.length || 0;
+                        document.getElementById("totalClientes").textContent = total;
+                        document.getElementById("clientesBadge").textContent = total;
+                    }
+                }
+            } catch (error) {
+                console.error("Error cargando clientes:", error);
+                document.getElementById("totalClientes").textContent = "--";
+            }
+        }
+
+        // ============ SUCURSALES ============
+        async function cargarSucursales() {
+            try {
+                const response = await fetch(`${API_GATEWAY}/sucursales/sucursales`, { headers: getHeaders() });
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success) {
+                        const count = data.data?.length || 0;
+                        document.getElementById("totalSucursales").textContent = count;
+                        document.getElementById("sucursalesBadge").textContent = count;
+                    }
+                }
+            } catch (error) {
+                console.error("Error cargando sucursales:", error);
+                document.getElementById("totalSucursales").textContent = "--";
+            }
+        }
+
+        // ============ ACTIVIDAD RECIENTE ============
+        async function cargarActividadReciente() {
+            const container = document.getElementById("actividadReciente");
+            container.innerHTML = `<div class="text-center py-8 text-gray-400">Cargando actividad...</div>`;
+
+            try {
+                const [ventasRes, comprasRes, stockRes] = await Promise.all([
+                    fetch(`${API_GATEWAY}/ventas/ventas?limit=3`, { headers: getHeaders() }),
+                    fetch(`${API_GATEWAY}/compras/compras?estado=pendiente`, { headers: getHeaders() }),
+                    fetch(`${API_GATEWAY}/inventario/stock-bajo`, { headers: getHeaders() })
+                ]);
+
+                let items = [];
+
+                if (ventasRes.ok) {
+                    const data = await ventasRes.json();
+                    if (data.success && data.data) {
+                        data.data.slice(0, 2).forEach(v => {
+                            items.push({
+                                title: `Venta #${v.numero_venta || "N/A"}`,
+                                subtitle: `${v.detalles?.length || 0} productos • ${v.cliente?.nombres || "Cliente general"}`,
+                                value: `S/ ${parseFloat(v.total || 0).toFixed(2)}`,
+                                badge: { text: "Completada", class: "bg-green-100 text-green-700" }
+                            });
+                        });
+                    }
+                }
+
+                if (comprasRes.ok) {
+                    const data = await comprasRes.json();
+                    if (data.success && data.data && data.data.length > 0) {
+                        data.data.slice(0, 1).forEach(c => {
+                            items.push({
+                                title: `Compra ${c.numero_factura || "N/A"}`,
+                                subtitle: `Proveedor: ${c.proveedor?.razon_social || "N/A"}`,
+                                value: `S/ ${parseFloat(c.total || 0).toFixed(2)}`,
+                                badge: { text: "Pendiente", class: "bg-yellow-100 text-yellow-700" }
+                            });
+                        });
+                    }
+                }
+
+                if (stockRes.ok) {
+                    const data = await stockRes.json();
+                    if (data.success && data.data && data.data.length > 0) {
+                        data.data.slice(0, 1).forEach(s => {
+                            items.push({
+                                title: `⚠️ Stock Bajo: ${s.producto?.nombre || "Producto"}`,
+                                subtitle: `Disponible: ${s.cantidad_disponible || 0} unidades`,
+                                value: `Mín: ${s.producto?.stock_minimo || 0}`,
+                                badge: { text: "Crítico", class: "bg-red-100 text-red-700" }
+                            });
+                        });
+                    }
+                }
+
+                if (items.length === 0) {
+                    container.innerHTML = `<div class="text-center py-8 text-gray-400">📭 No hay actividad reciente</div>`;
+                    return;
+                }
+
+                container.innerHTML = items.map(item => `
+                    <div class="flex items-center justify-between py-3 border-b border-gray-100 last:border-0">
+                        <div>
+                            <p class="text-sm font-medium text-gray-900">${item.title}</p>
+                            <p class="text-xs text-gray-500">${item.subtitle}</p>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="text-sm font-semibold text-gray-900">${item.value}</span>
+                            <span class="text-xs px-2.5 py-1 rounded-full font-medium ${item.badge.class}">${item.badge.text}</span>
+                        </div>
+                    </div>
+                `).join("");
+
+            } catch (error) {
+                console.error("Error cargando actividad:", error);
+                container.innerHTML = `
+                    <div class="text-center py-8 text-red-500">
+                        <p>⚠️ Error al cargar la actividad</p>
+                        <button onclick="cargarActividadReciente()" class="mt-2 text-sm text-blue-600 hover:text-blue-800">Reintentar</button>
+                    </div>
+                `;
+            }
+        }
+
+        // ============ VERIFICAR GATEWAY ============
+        async function verificarGateway() {
+            try {
+                const response = await fetch("http://localhost:3000/health");
+                document.getElementById("gatewayStatus").textContent = response.ok ? "Conectado" : "Desconectado";
+                document.getElementById("gatewayStatus").className = response.ok ? "text-green-600 font-medium" : "text-red-600 font-medium";
+            } catch {
+                document.getElementById("gatewayStatus").textContent = "Desconectado";
+                document.getElementById("gatewayStatus").className = "text-red-600 font-medium";
+            }
+        }
+
+        // ============ INICIALIZAR ============
+        document.addEventListener("DOMContentLoaded", () => {
+            const auth = checkAuth();
+            if (!auth) return;
+            loadUserData();
+            verificarGateway();
+            cargarDashboard();
+            setInterval(cargarDashboard, 60000);
+        });
+    </script>
+</body>
 </html>

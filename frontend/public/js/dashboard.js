@@ -1,48 +1,36 @@
+// public/js/dashboard.js
 // Dashboard principal
+
 const modules = {
-    dashboard: {
-        name: 'Dashboard',
-        render: DashboardModule.render
-    },
-    ventas: {
-        name: 'Ventas',
-        render: VentasModule.render
-    },
-    inventario: {
-        name: 'Inventario',
-        render: InventarioModule.render
-    },
-    compras: {
-        name: 'Compras',
-        render: ComprasModule.render
-    },
-    clientes: {
-        name: 'Clientes',
-        render: ClientesModule.render
-    },
-    sucursales: {
-        name: 'Sucursales',
-        render: SucursalesModule.render
-    },
-    reportes: {
-        name: 'Reportes',
-        render: ReportesModule.render
-    }
+    dashboard: DashboardModule,
+    ventas: VentasModule,
+    inventario: InventarioModule,
+    compras: ComprasModule,
+    clientes: ClientesModule,
+    sucursales: SucursalesModule,
+    reportes: ReportesModule
 };
 
 let currentModule = 'dashboard';
 
 // Inicializar dashboard
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', function() {
     if (!requireAuth()) return;
     
     loadUserInfo();
-    loadModule('dashboard');
     setupNavigation();
     setupLogout();
     setupSidebarToggle();
     updateDateTime();
     setInterval(updateDateTime, 1000);
+
+    var initialModule = getModuleFromPath(window.location.pathname) || 'dashboard';
+    loadModule(initialModule, false);
+
+    window.addEventListener('popstate', function(event) {
+        var module = (event.state && event.state.module) ? event.state.module : getModuleFromPath(window.location.pathname) || 'dashboard';
+        loadModule(module, false);
+    });
 });
 
 function loadUserInfo() {
@@ -51,8 +39,7 @@ function loadUserInfo() {
         if (user) {
             document.getElementById('userName').textContent = user.username || 'Usuario';
             document.getElementById('userRole').textContent = user.roles ? user.roles.join(', ') : 'Sin rol';
-            const avatar = document.getElementById('userAvatar');
-            avatar.textContent = user.username ? user.username.charAt(0).toUpperCase() : 'U';
+            document.getElementById('userAvatar').textContent = user.username ? user.username.charAt(0).toUpperCase() : 'U';
         }
     } catch (e) {
         console.error('Error loading user info:', e);
@@ -60,73 +47,50 @@ function loadUserInfo() {
 }
 
 function setupNavigation() {
-    document.querySelectorAll('.nav-item[data-module]').forEach(item => {
-        item.addEventListener('click', (e) => {
+    document.querySelectorAll('.nav-item[data-module]').forEach(function(item) {
+        item.addEventListener('click', function(e) {
             e.preventDefault();
-            const module = item.dataset.module;
+            var module = this.dataset.module;
             if (module && modules[module]) {
-                loadModule(module);
+                loadModule(module, true);
             }
         });
     });
 }
 
 function setupLogout() {
-    document.getElementById('logoutBtn').addEventListener('click', (e) => {
+    document.getElementById('logoutBtn').addEventListener('click', function(e) {
         e.preventDefault();
         logout();
     });
 }
 
 function setupSidebarToggle() {
-    const toggleBtn = document.getElementById('toggleSidebar');
-    if (toggleBtn) {
-        toggleBtn.addEventListener('click', () => {
-            document.getElementById('sidebar').classList.toggle('open');
-        });
-    }
-    
-    // Cerrar sidebar al hacer click fuera en móvil
-    document.addEventListener('click', (e) => {
-        const sidebar = document.getElementById('sidebar');
-        const toggle = document.getElementById('toggleSidebar');
-        if (window.innerWidth < 1024) {
-            if (sidebar && toggle && !sidebar.contains(e.target) && !toggle.contains(e.target)) {
-                sidebar.classList.remove('open');
-            }
-        }
+    document.getElementById('toggleSidebar').addEventListener('click', function() {
+        document.getElementById('sidebar').classList.toggle('open');
     });
 }
 
 function updateDateTime() {
-    const now = new Date();
-    const dateStr = now.toLocaleDateString('es-ES', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    });
-    const timeStr = now.toLocaleTimeString('es-ES', {
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit'
-    });
-    const dateTimeElement = document.getElementById('currentDateTime');
-    if (dateTimeElement) {
-        dateTimeElement.textContent = `${dateStr} - ${timeStr}`;
-    }
+    var now = new Date();
+    document.getElementById('currentDateTime').textContent = now.toLocaleString('es-ES');
 }
 
-function loadModule(moduleName) {
+function getModuleFromPath(pathname) {
+    var match = pathname.match(/\/public\/(\w+)(?:\.html)?\/?$/);
+    return match ? match[1] : null;
+}
+
+function loadModule(moduleName, updateHistory) {
     if (!modules[moduleName]) {
-        console.error(`Módulo ${moduleName} no encontrado`);
+        console.error('Módulo ' + moduleName + ' no encontrado');
         return;
     }
     
     currentModule = moduleName;
     
     // Actualizar navegación
-    document.querySelectorAll('.nav-item').forEach(item => {
+    document.querySelectorAll('.nav-item').forEach(function(item) {
         item.classList.remove('active');
         if (item.dataset.module === moduleName) {
             item.classList.add('active');
@@ -134,25 +98,23 @@ function loadModule(moduleName) {
     });
     
     // Actualizar título
-    const pageTitle = document.getElementById('pageTitle');
-    if (pageTitle) {
-        pageTitle.textContent = modules[moduleName].name;
+    document.getElementById('pageTitle').textContent = modules[moduleName].name;
+    
+    // Actualizar URL
+    if (updateHistory) {
+        var path = '/public/' + moduleName;
+        window.history.pushState({ module: moduleName }, modules[moduleName].name, path);
     }
     
     // Renderizar módulo
-    const contentArea = document.getElementById('contentArea');
-    if (!contentArea) {
-        console.error('Content area no encontrada');
-        return;
-    }
+    var contentArea = document.getElementById('contentArea');
+    if (!contentArea) return;
     
-    contentArea.innerHTML = `<div class="loading"><span class="material-symbols-outlined">refresh</span> Cargando...</div>`;
+    contentArea.innerHTML = '<div class="loading"><span class="material-symbols-outlined">refresh</span> Cargando...</div>';
     
     try {
-        // Verificar que el módulo tiene un método render
-        const module = modules[moduleName];
+        var module = modules[moduleName];
         if (module && typeof module.render === 'function') {
-            // Llamar al render con el contexto del módulo
             module.render.call(module, contentArea);
         } else {
             contentArea.innerHTML = `
@@ -163,52 +125,48 @@ function loadModule(moduleName) {
             `;
         }
     } catch (error) {
-        console.error(`Error loading module ${moduleName}:`, error);
+        console.error('Error loading module ' + moduleName + ':', error);
         contentArea.innerHTML = `
             <div class="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
                 <span class="material-symbols-outlined text-red-500 text-4xl">error</span>
                 <p class="text-red-700 mt-2">Error al cargar el módulo</p>
                 <p class="text-sm text-red-600">${error.message}</p>
-                <button class="btn btn-secondary mt-4" onclick="loadModule('${moduleName}')">Reintentar</button>
+                <button onclick="loadModule('${moduleName}', true)" class="btn btn-primary mt-4">Reintentar</button>
             </div>
         `;
     }
 }
 
-// ============ FUNCIONES GLOBALES ============
-
 // Función para mostrar alertas
-function showAlert(message, type = 'info') {
-    const alertDiv = document.createElement('div');
-    const colors = {
+function showAlert(message, type) {
+    type = type || 'info';
+    var colors = {
         info: 'bg-blue-50 border-blue-200 text-blue-700',
         success: 'bg-green-50 border-green-200 text-green-700',
         warning: 'bg-yellow-50 border-yellow-200 text-yellow-700',
         error: 'bg-red-50 border-red-200 text-red-700'
     };
-    
-    const icons = {
+    var icons = {
         info: 'info',
         success: 'check_circle',
         warning: 'warning',
         error: 'error'
     };
     
-    alertDiv.className = `p-4 rounded-lg border ${colors[type] || colors.info} mb-4 flex items-center gap-3 animate-fade-in`;
+    var alertDiv = document.createElement('div');
+    alertDiv.className = 'p-4 rounded-lg border ' + (colors[type] || colors.info) + ' mb-4 flex items-center gap-3';
     alertDiv.innerHTML = `
         <span class="material-symbols-outlined">${icons[type] || icons.info}</span>
         <span>${message}</span>
         <button class="ml-auto text-gray-400 hover:text-gray-600" onclick="this.parentElement.remove()">✕</button>
     `;
     
-    // Insertar al inicio del content area
-    const contentArea = document.getElementById('contentArea');
+    var contentArea = document.getElementById('contentArea');
     if (contentArea) {
         contentArea.insertBefore(alertDiv, contentArea.firstChild);
     }
     
-    // Auto-eliminar después de 5 segundos
-    setTimeout(() => {
+    setTimeout(function() {
         if (alertDiv.parentElement) {
             alertDiv.remove();
         }
@@ -216,75 +174,41 @@ function showAlert(message, type = 'info') {
 }
 
 // Función para hacer requests a la API
-async function apiRequest(endpoint, options = {}) {
-    const token = getToken();
-    if (!token) {
-        throw new Error('No autenticado');
+async function apiRequest(endpoint, options) {
+    options = options || {};
+    var token = localStorage.getItem('token');
+    if (!token) throw new Error('No autenticado');
+    
+    var baseUrl = (typeof getApiBase === 'function') ? getApiBase() : 'http://localhost:3000';
+    var url = baseUrl + endpoint;
+    
+    var headers = {
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json'
+    };
+    if (options.headers) {
+        Object.assign(headers, options.headers);
     }
     
-    const url = `${getApiBase()}${endpoint}`;
-    const headers = {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-        ...options.headers
-    };
-    
-    const response = await fetch(url, {
-        ...options,
-        headers
+    var response = await fetch(url, {
+        method: options.method || 'GET',
+        headers: headers,
+        body: options.body || undefined
     });
     
     if (!response.ok) {
-        const error = await response.json().catch(() => ({ message: `Error ${response.status}` }));
-        throw new Error(error.message || `Error ${response.status}`);
+        var error = await response.json().catch(function() {
+            return { message: 'Error ' + response.status };
+        });
+        throw new Error(error.message || 'Error ' + response.status);
     }
-    
     return response.json();
 }
 
-// Función para crear tabla
-function createTable(headers, data, actions = null) {
-    let html = `
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        ${headers.map(h => `<th>${h}</th>`).join('')}
-                        ${actions ? '<th>Acciones</th>' : ''}
-                    </tr>
-                </thead>
-                <tbody>
-    `;
-    
-    if (data && data.length > 0) {
-        data.forEach(row => {
-            html += '<tr>';
-            headers.forEach(h => {
-                const value = row[h] !== undefined && row[h] !== null ? row[h] : '-';
-                html += `<td>${value}</td>`;
-            });
-            if (actions) {
-                html += `<td>${typeof actions === 'function' ? actions(row) : actions}</td>`;
-            }
-            html += '</tr>';
-        });
-    } else {
-        html += `
-            <tr>
-                <td colspan="${headers.length + (actions ? 1 : 0)}" class="text-center text-gray-500 py-8">
-                    No hay datos para mostrar
-                </td>
-            </tr>
-        `;
-    }
-    
-    html += '</tbody></table></div>';
-    return html;
-}
-
 // Función para crear tarjeta de estadísticas
-function createStatCard(icon, label, value, color = 'blue') {
-    const colors = {
+function createStatCard(icon, label, value, color) {
+    color = color || 'blue';
+    var colors = {
         blue: { bg: 'bg-blue-50', text: 'text-blue-600' },
         green: { bg: 'bg-green-50', text: 'text-green-600' },
         yellow: { bg: 'bg-yellow-50', text: 'text-yellow-600' },
@@ -293,7 +217,7 @@ function createStatCard(icon, label, value, color = 'blue') {
         indigo: { bg: 'bg-indigo-50', text: 'text-indigo-600' }
     };
     
-    const c = colors[color] || colors.blue;
+    var c = colors[color] || colors.blue;
     
     return `
         <div class="stat-card flex items-center gap-4">
@@ -308,57 +232,10 @@ function createStatCard(icon, label, value, color = 'blue') {
     `;
 }
 
-// ============ FUNCIONES MODALES ============
-
-function showModal(title, content) {
-    // Remover modal existente si hay
-    closeModal();
-    
-    const overlay = document.createElement('div');
-    overlay.className = 'modal-overlay active';
-    overlay.id = 'modalOverlay';
-    
-    overlay.innerHTML = `
-        <div class="modal">
-            <div class="modal-header">
-                <h3>${title}</h3>
-                <button class="modal-close" onclick="closeModal()">✕</button>
-            </div>
-            <div class="modal-body">
-                ${content}
-            </div>
-        </div>
-    `;
-    
-    document.body.appendChild(overlay);
-    
-    // Cerrar al hacer click fuera
-    overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) closeModal();
-    });
-    
-    // Cerrar con Escape
-    document.addEventListener('keydown', handleEscape);
-}
-
-function closeModal() {
-    const overlay = document.getElementById('modalOverlay');
-    if (overlay) overlay.remove();
-    document.removeEventListener('keydown', handleEscape);
-}
-
-function handleEscape(e) {
-    if (e.key === 'Escape') {
-        closeModal();
-    }
-}
-
-// Hacer funciones globales disponibles
+// Hacer funciones globales
 window.showAlert = showAlert;
 window.apiRequest = apiRequest;
-window.createTable = createTable;
 window.createStatCard = createStatCard;
 window.loadModule = loadModule;
-window.showModal = showModal;
-window.closeModal = closeModal;
-window.modules = modules;
+
+console.log('✅ dashboard.js cargado');

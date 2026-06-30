@@ -1,10 +1,10 @@
-// Módulo de Inventario
+// public/js/modules/inventario.js
 const InventarioModule = {
     render: function(container) {
         container.innerHTML = `
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-2xl font-semibold text-gray-800">Inventario</h2>
-                <button class="btn btn-primary" onclick="InventarioModule.showCreate()">
+                <button class="btn btn-primary" onclick="window.InventarioModule?.showCreate()">
                     <span class="material-symbols-outlined text-sm">add</span>
                     Nuevo Producto
                 </button>
@@ -18,120 +18,80 @@ const InventarioModule = {
     
     loadProductos: async function() {
         try {
-            const data = await apiRequest('/api/inventario/productos');
             const container = document.getElementById('inventarioContent');
+            if (!container) return;
             
-            const headers = ['ID', 'Código', 'Nombre', 'Categoría', 'Precio Venta', 'Stock', 'Estado'];
-            const actions = (row) => `
-                <button class="btn btn-primary btn-sm" onclick="InventarioModule.edit(${row.id})">
-                    <span class="material-symbols-outlined text-sm">edit</span>
-                </button>
-                <button class="btn btn-danger btn-sm" onclick="InventarioModule.delete(${row.id})">
-                    <span class="material-symbols-outlined text-sm">delete</span>
-                </button>
+            const data = await apiRequest('/api/inventario/productos');
+            
+            if (!data.data || data.data.length === 0) {
+                container.innerHTML = `
+                    <div class="bg-gray-50 rounded-xl p-8 text-center">
+                        <span class="material-symbols-outlined text-gray-400 text-5xl">inventory_2</span>
+                        <p class="text-gray-500 mt-2">No hay productos registrados</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = `
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Nombre</th>
+                                <th>Categoría</th>
+                                <th>Precio Venta</th>
+                                <th>Stock</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
             `;
-            
-            const formattedData = (data.data || []).map(p => ({
-                id: p.id,
-                codigo: p.codigo,
-                nombre: p.nombre,
-                categoria: p.categoria?.nombre || 'N/A',
-                precio_venta: `S/ ${p.precio_venta}`,
-                stock: p.inventario?.reduce((sum, i) => sum + i.cantidad, 0) || 0,
-                estado: p.estado ? 'Activo' : 'Inactivo'
-            }));
-            
-            container.innerHTML = createTable(headers, formattedData, actions);
+
+            data.data.forEach(p => {
+                const estadoBadge = p.estado 
+                    ? '<span class="badge badge-success">Activo</span>' 
+                    : '<span class="badge badge-danger">Inactivo</span>';
+                
+                const stockTotal = p.inventario?.reduce((sum, i) => sum + i.cantidad, 0) || 0;
+                
+                html += `
+                    <tr>
+                        <td><span class="font-mono text-sm">${p.codigo}</span></td>
+                        <td><strong>${p.nombre}</strong></td>
+                        <td>${p.categoria?.nombre || 'N/A'}</td>
+                        <td>S/ ${parseFloat(p.precio_venta).toFixed(2)}</td>
+                        <td class="text-center">${stockTotal}</td>
+                        <td>${estadoBadge}</td>
+                    </tr>
+                `;
+            });
+
+            html += '</tbody></table></div>';
+            container.innerHTML = html;
         } catch (error) {
-            document.getElementById('inventarioContent').innerHTML = `
-                <div class="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
-                    <span class="material-symbols-outlined text-red-500 text-4xl">error</span>
-                    <p class="text-red-700 mt-2">Error al cargar productos</p>
-                    <p class="text-sm text-red-600">${error.message}</p>
-                </div>
-            `;
+            console.error('Error loading inventario:', error);
+            const container = document.getElementById('inventarioContent');
+            if (container) {
+                container.innerHTML = `
+                    <div class="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
+                        <span class="material-symbols-outlined text-red-500 text-4xl">error</span>
+                        <p class="text-red-700 mt-2">Error al cargar inventario</p>
+                        <p class="text-sm text-red-600">${error.message}</p>
+                    </div>
+                `;
+            }
         }
     },
     
     showCreate: function() {
         showModal('Nuevo Producto', `
-            <form id="createProductoForm" onsubmit="InventarioModule.create(event)">
-                <div class="form-group">
-                    <label>Código</label>
-                    <input type="text" name="codigo" required placeholder="PROD-001">
-                </div>
-                <div class="form-group">
-                    <label>Nombre</label>
-                    <input type="text" name="nombre" required placeholder="Nombre del producto">
-                </div>
-                <div class="form-group">
-                    <label>Descripción</label>
-                    <textarea name="descripcion" placeholder="Descripción del producto"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Categoría</label>
-                    <select name="categoria_id" required>
-                        <option value="">Seleccionar...</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Precio Compra</label>
-                    <input type="number" name="precio_compra" step="0.01" required placeholder="0.00">
-                </div>
-                <div class="form-group">
-                    <label>Precio Venta</label>
-                    <input type="number" name="precio_venta" step="0.01" required placeholder="0.00">
-                </div>
-                <div class="form-group">
-                    <label>Stock Mínimo</label>
-                    <input type="number" name="stock_minimo" required placeholder="10">
-                </div>
-                <div class="form-group">
-                    <label>Requiere Receta</label>
-                    <select name="requiere_receta">
-                        <option value="false">No</option>
-                        <option value="true">Sí</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-primary w-full">Crear Producto</button>
-            </form>
+            <div class="text-center text-gray-500 p-4">
+                <span class="material-symbols-outlined text-4xl">construction</span>
+                <p class="mt-2">Función en desarrollo</p>
+            </div>
         `);
-    },
-    
-    create: async function(event) {
-        event.preventDefault();
-        const form = event.target;
-        const formData = new FormData(form);
-        const data = Object.fromEntries(formData);
-        
-        try {
-            await apiRequest('/api/inventario/productos', {
-                method: 'POST',
-                body: JSON.stringify(data)
-            });
-            closeModal();
-            showAlert('Producto creado exitosamente', 'success');
-            this.loadProductos();
-        } catch (error) {
-            showAlert(error.message, 'error');
-        }
-    },
-    
-    edit: function(id) {
-        showModal('Editar Producto', `
-            <div class="loading"><span class="material-symbols-outlined">refresh</span> Cargando...</div>
-        `);
-    },
-    
-    delete: async function(id) {
-        if (!confirm('¿Estás seguro de eliminar este producto?')) return;
-        try {
-            await apiRequest(`/api/inventario/productos/${id}`, { method: 'DELETE' });
-            showAlert('Producto eliminado exitosamente', 'success');
-            this.loadProductos();
-        } catch (error) {
-            showAlert(error.message, 'error');
-        }
     }
 };
 

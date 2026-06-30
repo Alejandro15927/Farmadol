@@ -5,7 +5,6 @@ const { validationResult } = require('express-validator');
 const getSucursales = async (req, res) => {
   try {
     const sucursales = await Sucursal.findAll({
-      where: { estado: true },
       order: [['nombre', 'ASC']]
     });
 
@@ -21,6 +20,7 @@ const getSucursales = async (req, res) => {
     });
   }
 };
+
 
 // Obtener una sucursal por ID
 const getSucursalById = async (req, res) => {

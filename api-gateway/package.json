@@ -14,7 +14,8 @@
     "express-rate-limit": "^6.11.2",
     "helmet": "^7.2.0",
     "http-proxy-middleware": "^2.0.9",
-    "jsonwebtoken": "^9.0.3"
+    "jsonwebtoken": "^9.0.3",
+    "morgan": "^1.11.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.22"

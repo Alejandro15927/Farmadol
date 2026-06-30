@@ -1,839 +1,1101 @@
-<html lang="es">
+<!doctype html>
+<html class="light" lang="es">
   <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Farmadol ERP - Reportes</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap"
       rel="stylesheet"
     />
     <link
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
       rel="stylesheet"
     />
-    <style>
-      body {
-        font-family: "Inter", sans-serif;
-      }
-      .material-symbols-outlined {
-        font-variation-settings:
-          "FILL" 0,
-          "wght" 400,
-          "GRAD" 0,
-          "opsz" 24;
-      }
-      .custom-scrollbar::-webkit-scrollbar {
-        width: 6px;
-      }
-      .custom-scrollbar::-webkit-scrollbar-track {
-        background: transparent;
-      }
-      .custom-scrollbar::-webkit-scrollbar-thumb {
-        background: #cbd5e1;
-        border-radius: 10px;
-      }
-    </style>
-    <script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              "primary-fixed": "#dbe1ff",
-              "on-tertiary-fixed": "#360f00",
-              "secondary-fixed-dim": "#bec6e0",
-              "inverse-primary": "#b4c5ff",
-              secondary: "#565e74",
-              "on-secondary-fixed-variant": "#3f465c",
-              "on-tertiary-container": "#ffede6",
-              "on-secondary-container": "#5c647a",
-              "on-error-container": "#93000a",
-              "surface-tint": "#0053db",
-              "on-primary-fixed-variant": "#003ea8",
-              "on-secondary-fixed": "#131b2e",
-              "secondary-fixed": "#dae2fd",
-              "outline-variant": "#c3c6d7",
-              "surface-container-lowest": "#ffffff",
-              tertiary: "#943700",
-              background: "#f8f9ff",
-              "on-secondary": "#ffffff",
-              "surface-dim": "#cbdbf5",
-              primary: "#004ac6",
-              "on-tertiary": "#ffffff",
-              "on-surface-variant": "#434655",
-              "inverse-on-surface": "#eaf1ff",
-              "surface-bright": "#f8f9ff",
-              "surface-container-low": "#eff4ff",
-              error: "#ba1a1a",
-              "tertiary-fixed-dim": "#ffb596",
-              "surface-variant": "#d3e4fe",
-              "surface-container": "#e5eeff",
-              "on-tertiary-fixed-variant": "#7d2d00",
-              "error-container": "#ffdad6",
-              "surface-container-highest": "#d3e4fe",
-              outline: "#737686",
-              surface: "#f8f9ff",
-              "tertiary-container": "#bc4800",
-              "on-background": "#0b1c30",
-              "on-surface": "#0b1c30",
-              "tertiary-fixed": "#ffdbcd",
-              "on-primary": "#ffffff",
-              "secondary-container": "#dae2fd",
-              "primary-container": "#2563eb",
-              "on-primary-fixed": "#00174b",
-              "on-error": "#ffffff",
-              "inverse-surface": "#213145",
-              "surface-container-high": "#dce9ff",
-              "on-primary-container": "#eeefff",
-              "primary-fixed-dim": "#b4c5ff",
-            },
-            borderRadius: {
-              DEFAULT: "0.25rem",
-              lg: "0.5rem",
-              xl: "0.75rem",
-              full: "9999px",
-            },
-            spacing: {
-              "stack-md": "16px",
-              "sidebar-width": "280px",
-              "margin-mobile": "16px",
-              "stack-lg": "24px",
-              "container-max-width": "1440px",
-              "stack-sm": "8px",
-              gutter: "24px",
-            },
-          },
-        },
-      };
-    </script>
+    <link rel="stylesheet" href="http://localhost:3010/public/css/dashboard.css" />
   </head>
-  <body
-    class="bg-background text-on-background min-h-screen flex overflow-hidden"
-  >
-    <!-- SideNavBar -->
-    <aside
-      class="fixed left-0 top-0 h-full w-[280px] bg-on-secondary-fixed flex flex-col py-stack-lg border-r border-outline-variant z-50"
-    >
-      <div class="px-6 mb-10">
+  <body class="font-body-md text-on-background" style="font-family: Inter, sans-serif; background-color: #f1f5f9;">
+    
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-header">
         <div class="flex items-center gap-3">
-          <div
-            class="w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center"
-          >
-            <span
-              class="material-symbols-outlined text-white"
-              data-icon="medical_services"
-              >medical_services</span
-            >
-          </div>
+          <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-lg">F</div>
           <div>
-            <h1
-              class="font-headline-md text-headline-md font-black text-surface-container-lowest leading-none"
-            >
-              Farmadol
-            </h1>
-            <p class="font-label-md text-label-md text-secondary-fixed-dim">
-              Pharmacy ERP
-            </p>
+            <h1 class="text-lg font-bold text-gray-800">Farmadol ERP</h1>
+            <p class="text-xs text-gray-500">Sistema de Gestión</p>
           </div>
         </div>
       </div>
-      <nav class="flex-1 px-4 space-y-1">
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="dashboard"
-            >dashboard</span
-          >
-          <span class="font-label-md text-label-md">Dashboard</span>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section"><span class="nav-section-title">Principal</span></div>
+        <a href="http://localhost:3010/public/dashboard.html" class="nav-item">
+          <span class="material-symbols-outlined">dashboard</span>
+          <span>Dashboard</span>
         </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="group">group</span>
-          <span class="font-label-md text-label-md">Users</span>
+
+        <div class="nav-section"><span class="nav-section-title">Módulos</span></div>
+        <a href="http://localhost:3010/public/ventas.html" class="nav-item">
+          <span class="material-symbols-outlined">shopping_cart</span>
+          <span>Ventas</span>
         </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="inventory_2"
-            >inventory_2</span
-          >
-          <span class="font-label-md text-label-md">Inventory</span>
+        <a href="http://localhost:3010/public/inventario.html" class="nav-item">
+          <span class="material-symbols-outlined">inventory_2</span>
+          <span>Inventario</span>
         </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="point_of_sale"
-            >point_of_sale</span
-          >
-          <span class="font-label-md text-label-md">Sales</span>
+        <a href="http://localhost:3010/public/compras.html" class="nav-item">
+          <span class="material-symbols-outlined">local_shipping</span>
+          <span>Compras</span>
         </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="shopping_cart"
-            >shopping_cart</span
-          >
-          <span class="font-label-md text-label-md">Purchases</span>
+        <a href="http://localhost:3010/public/clientes.html" class="nav-item">
+          <span class="material-symbols-outlined">people</span>
+          <span>Clientes</span>
         </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="person_search"
-            >person_search</span
-          >
-          <span class="font-label-md text-label-md">Clients</span>
+        <a href="http://localhost:3010/public/sucursales.html" class="nav-item">
+          <span class="material-symbols-outlined">storefront</span>
+          <span>Sucursales</span>
         </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-surface-container-lowest bg-white/5 border-l-4 border-primary-container transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="analytics"
-            >analytics</span
-          >
-          <span class="font-label-md text-label-md">Reports</span>
+        <a href="http://localhost:3010/public/reportes.html" class="nav-item active">
+          <span class="material-symbols-outlined">assessment</span>
+          <span>Reportes</span>
         </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="storefront"
-            >storefront</span
-          >
-          <span class="font-label-md text-label-md">Branches</span>
-        </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="settings"
-            >settings</span
-          >
-          <span class="font-label-md text-label-md">Settings</span>
+
+        <div class="nav-section mt-auto"><span class="nav-section-title">Usuario</span></div>
+        <a href="#" class="nav-item" id="logoutBtn">
+          <span class="material-symbols-outlined">logout</span>
+          <span>Cerrar Sesión</span>
         </a>
       </nav>
-      <div class="px-4 mt-auto">
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="logout"
-            >logout</span
-          >
-          <span class="font-label-md text-label-md">Logout</span>
-        </a>
+
+      <div class="sidebar-footer">
+        <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
+          <div class="w-9 h-9 bg-blue-600 rounded-full flex items-center justify-center text-white font-semibold" id="userAvatar">U</div>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-semibold text-gray-700 truncate" id="userName">Usuario</p>
+            <p class="text-xs text-gray-500 truncate" id="userRole">Cargando...</p>
+          </div>
+        </div>
       </div>
     </aside>
-    <!-- Main Content Wrapper -->
-    <main class="flex-1 ml-[280px] h-screen overflow-y-auto flex flex-col">
-      <!-- TopNavBar -->
-      <header
-        class="h-16 flex justify-between items-center px-gutter bg-surface-container-lowest border-b border-outline-variant sticky top-0 z-40"
-      >
-        <div class="flex items-center gap-6">
-          <div
-            class="relative flex items-center bg-surface-container-low px-4 py-1.5 rounded-full border border-outline-variant"
-          >
-            <span
-              class="material-symbols-outlined text-outline text-[20px] mr-2"
-              data-icon="search"
-              >search</span
-            >
-            <input
-              class="bg-transparent border-none focus:ring-0 text-body-md font-body-md w-64 placeholder:text-outline"
-              placeholder="Buscar reporte..."
-              type="text"
-            />
-          </div>
-          <div class="flex items-center gap-4">
-        <div
-            class="flex items-center gap-3 border-l border-outline-variant pl-6"
-          >
-            <div class="flex items-center gap-3 pl-2">
-            <div class="text-right">
-              <p
-                class="font-label-md text-label-md text-on-surface leading-none"
-              >
-                Dr. Alejandro Ruiz
-              </p>
-              <p
-                class="text-[11px] text-secondary font-medium uppercase tracking-wider"
-              >
-                Admin Principal
-              </p>
-            </div>
-            <img
-              alt="User profile photo"
-              class="w-10 h-10 rounded-full border-2 border-primary-container/20"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfDh0aDi-mYTTGT0gNhSnLGh4OBKf_o88qJ4izMLFyRHyU87yajEm5NOfmmV-ROb4H-zghVfM0qXVdoiF4mGNAbcha_4mc-C1bBVk0PJIAfFmCUAM0EjQTzCn6f8uW1CT-MBF1g-aeZ4VnV1ezpIc1OzOYU20Xw498A_rMwwgexs4B3T8sPjWFCggYuI3Ui8ZiXxQrHaQHIZcXRbQsbd-eH2fe0s9UNNoHMDji1otRwE7gdYmtVSVkHO8RfM869N5_xr8g0-be17Mk"
-            />
-          </div>
-      </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Top Bar -->
+      <header class="top-bar">
+        <div class="flex items-center gap-4">
+          <button id="toggleSidebar" class="lg:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors">
+            <span class="material-symbols-outlined">menu</span>
+          </button>
+          <h2 class="text-xl font-semibold text-gray-800">Reportes</h2>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-sm text-gray-500" id="currentDateTime"></span>
         </div>
       </header>
-      <!-- Dashboard Content -->
-      <div
-        class="p-gutter max-w-container-max-width mx-auto w-full space-y-stack-lg"
-      >
-        <!-- Filters Section -->
-        <section
-          class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant flex flex-wrap items-end gap-6"
-        >
-          <div class="flex-1 min-w-[200px]">
-            <label
-              class="block text-label-md font-medium text-on-surface-variant mb-2"
-              >Rango de Fecha</label
-            >
-            <div class="relative">
-              <span
-                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline"
-                data-icon="calendar_today"
-                >calendar_today</span
-              >
-              <select
-                class="w-full pl-10 pr-4 py-2.5 bg-surface-container-low border border-outline-variant rounded-lg text-body-md focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none appearance-none"
-              >
-                <option>Últimos 30 días</option>
-                <option>Este Mes</option>
-                <option>Trimestre Anterior</option>
-                <option>Año Actual</option>
-                <option>Personalizado</option>
-              </select>
+
+      <!-- Content Area -->
+      <div class="content-area">
+        <!-- Tabs -->
+        <div class="flex border-b border-gray-200 mb-6">
+          <button class="px-4 py-2 text-sm font-medium text-blue-600 border-b-2 border-blue-600" id="tabGenerar" onclick="switchTab('generar')">
+            <span class="material-symbols-outlined text-sm align-middle">description</span>
+            Generar Reportes
+          </button>
+          <button class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent" id="tabHistorial" onclick="switchTab('historial')">
+            <span class="material-symbols-outlined text-sm align-middle">history</span>
+            Historial
+          </button>
+          <button class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent" id="tabAlertas" onclick="switchTab('alertas')">
+            <span class="material-symbols-outlined text-sm align-middle">notifications</span>
+            Alertas
+          </button>
+        </div>
+
+        <!-- Tab: Generar Reportes -->
+        <div id="tabContentGenerar">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Reporte: Ventas Diarias -->
+            <div class="stat-card cursor-pointer hover:shadow-md transition-all" onclick="showGenerarReporte('ventas-diarias')">
+              <div class="flex items-center gap-3">
+                <div class="stat-icon bg-blue-50 text-blue-600">
+                  <span class="material-symbols-outlined">trending_up</span>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-gray-700">Ventas Diarias</h4>
+                  <p class="text-sm text-gray-500">Reporte de ventas del día</p>
+                </div>
+              </div>
+              <div class="mt-3 text-xs text-gray-400">
+                <span class="material-symbols-outlined text-xs align-middle">schedule</span> Generación rápida
+              </div>
+            </div>
+
+            <!-- Reporte: Productos Más Vendidos -->
+            <div class="stat-card cursor-pointer hover:shadow-md transition-all" onclick="showGenerarReporte('productos-mas-vendidos')">
+              <div class="flex items-center gap-3">
+                <div class="stat-icon bg-green-50 text-green-600">
+                  <span class="material-symbols-outlined">local_fire_department</span>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-gray-700">Productos Más Vendidos</h4>
+                  <p class="text-sm text-gray-500">Top productos más vendidos</p>
+                </div>
+              </div>
+              <div class="mt-3 text-xs text-gray-400">
+                <span class="material-symbols-outlined text-xs align-middle">calendar_month</span> Rango de fechas
+              </div>
+            </div>
+
+            <!-- Reporte: Stock Bajo -->
+            <div class="stat-card cursor-pointer hover:shadow-md transition-all" onclick="showGenerarReporte('stock-bajo')">
+              <div class="flex items-center gap-3">
+                <div class="stat-icon bg-yellow-50 text-yellow-600">
+                  <span class="material-symbols-outlined">warning</span>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-gray-700">Stock Bajo</h4>
+                  <p class="text-sm text-gray-500">Productos con stock crítico</p>
+                </div>
+              </div>
+              <div class="mt-3 text-xs text-gray-400">
+                <span class="material-symbols-outlined text-xs align-middle">storefront</span> Por sucursal
+              </div>
+            </div>
+
+            <!-- Reporte: Próximos a Vencer -->
+            <div class="stat-card cursor-pointer hover:shadow-md transition-all" onclick="showGenerarReporte('proximos-vencer')">
+              <div class="flex items-center gap-3">
+                <div class="stat-icon bg-red-50 text-red-600">
+                  <span class="material-symbols-outlined">event</span>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-gray-700">Próximos a Vencer</h4>
+                  <p class="text-sm text-gray-500">Productos por vencer</p>
+                </div>
+              </div>
+              <div class="mt-3 text-xs text-gray-400">
+                <span class="material-symbols-outlined text-xs align-middle">calendar_today</span> Días de anticipación
+              </div>
+            </div>
+
+            <!-- Reporte: Clientes Frecuentes -->
+            <div class="stat-card cursor-pointer hover:shadow-md transition-all" onclick="showGenerarReporte('clientes-frecuentes')">
+              <div class="flex items-center gap-3">
+                <div class="stat-icon bg-purple-50 text-purple-600">
+                  <span class="material-symbols-outlined">people</span>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-gray-700">Clientes Frecuentes</h4>
+                  <p class="text-sm text-gray-500">Clientes con más compras</p>
+                </div>
+              </div>
+              <div class="mt-3 text-xs text-gray-400">
+                <span class="material-symbols-outlined text-xs align-middle">filter_list</span> Filtros personalizados
+              </div>
+            </div>
+
+            <!-- Reporte: Resumen General -->
+            <div class="stat-card cursor-pointer hover:shadow-md transition-all" onclick="showGenerarReporte('resumen-general')">
+              <div class="flex items-center gap-3">
+                <div class="stat-icon bg-indigo-50 text-indigo-600">
+                  <span class="material-symbols-outlined">dashboard</span>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-gray-700">Resumen General</h4>
+                  <p class="text-sm text-gray-500">Reporte completo del negocio</p>
+                </div>
+              </div>
+              <div class="mt-3 text-xs text-gray-400">
+                <span class="material-symbols-outlined text-xs align-middle">data_usage</span> Consolidado
+              </div>
             </div>
           </div>
-          <div class="flex-1 min-w-[200px]">
-            <label
-              class="block text-label-md font-medium text-on-surface-variant mb-2"
-              >Sucursal</label
-            >
-            <div class="relative">
-              <span
-                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline"
-                data-icon="location_on"
-                >location_on</span
-              >
-              <select
-                class="w-full pl-10 pr-4 py-2.5 bg-surface-container-low border border-outline-variant rounded-lg text-body-md focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none appearance-none"
-              >
-                <option>Todas las Sucursales</option>
-                <option>Sucursal Norte - Centro</option>
-                <option>Sucursal Sur - San Isidro</option>
-                <option>Farmacia Clínica 24/7</option>
-              </select>
-            </div>
+
+          <div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
+            <p class="text-sm text-blue-700">
+              <span class="material-symbols-outlined text-sm align-middle">info</span>
+              Selecciona un reporte para generarlo. Puedes descargarlo en formato JSON, CSV o HTML.
+            </p>
           </div>
-          <div class="flex items-center gap-3">
-            <button
-              class="px-6 py-2.5 bg-primary text-white rounded-lg font-title-md hover:bg-primary-container transition-all active:scale-95 flex items-center gap-2"
-            >
-              <span
-                class="material-symbols-outlined text-[20px]"
-                data-icon="filter_list"
-                >filter_list</span
-              >
-              Aplicar Filtros
-            </button>
+        </div>
+
+        <!-- Tab: Historial -->
+        <div id="tabContentHistorial" class="hidden">
+          <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
+            <div class="flex flex-wrap gap-3">
+              <button onclick="loadHistorial()" class="btn btn-secondary">
+                <span class="material-symbols-outlined text-sm">refresh</span>
+                Actualizar
+              </button>
+            </div>
             <div class="flex gap-2">
-              <button
-                class="p-2.5 border border-outline-variant rounded-lg hover:bg-surface-container-low text-on-surface-variant transition-colors"
-                title="Exportar a PDF"
-              >
-                <span
-                  class="material-symbols-outlined"
-                  data-icon="picture_as_pdf"
-                  >picture_as_pdf</span
-                >
+              <select id="tipoReporteFilter" onchange="filterHistorial()" class="px-4 py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none">
+                <option value="">Todos los tipos</option>
+                <option value="ventas_diarias">Ventas Diarias</option>
+                <option value="productos_mas_vendidos">Productos Más Vendidos</option>
+                <option value="stock_bajo">Stock Bajo</option>
+                <option value="productos_vencer">Próximos a Vencer</option>
+                <option value="clientes_frecuentes">Clientes Frecuentes</option>
+                <option value="resumen_general">Resumen General</option>
+              </select>
+              <select id="estadoReporteFilter" onchange="filterHistorial()" class="px-4 py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none">
+                <option value="">Todos los estados</option>
+                <option value="completado">Completado</option>
+                <option value="generando">Generando</option>
+                <option value="fallido">Fallido</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="historialContent">
+            <div class="loading"><span class="material-symbols-outlined">refresh</span> Cargando historial...</div>
+          </div>
+        </div>
+
+        <!-- Tab: Alertas -->
+        <div id="tabContentAlertas" class="hidden">
+          <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
+            <div class="flex flex-wrap gap-3">
+              <button onclick="loadAlertas()" class="btn btn-secondary">
+                <span class="material-symbols-outlined text-sm">refresh</span>
+                Actualizar
               </button>
-              <button
-                class="p-2.5 border border-outline-variant rounded-lg hover:bg-surface-container-low text-on-surface-variant transition-colors"
-                title="Exportar a Excel"
-              >
-                <span class="material-symbols-outlined" data-icon="table_chart"
-                  >table_chart</span
-                >
+              <button onclick="showCreateAlerta()" class="btn btn-primary">
+                <span class="material-symbols-outlined text-sm">add</span>
+                Nueva Alerta
               </button>
             </div>
-          </div>
-        </section>
-        <!-- KPI Cards (Level 1 Surfaces) -->
-        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div
-            class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant"
-          >
-            <div class="flex justify-between items-start mb-4">
-              <div
-                class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center text-primary"
-              >
-                <span
-                  class="material-symbols-outlined text-[28px]"
-                  data-icon="payments"
-                  >payments</span
-                >
-              </div>
-              <span
-                class="text-label-md font-bold text-green-600 bg-green-50 px-2 py-1 rounded-full"
-                >+12.5%</span
-              >
-            </div>
-            <p class="text-label-md text-on-surface-variant font-medium">
-              Ingresos Totales
-            </p>
-            <h3 class="text-headline-md font-bold text-on-surface mt-1">
-              $42,390.00
-            </h3>
-            <p class="text-[11px] text-outline mt-2 italic">vs. mes anterior</p>
-          </div>
-          <div
-            class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant"
-          >
-            <div class="flex justify-between items-start mb-4">
-              <div
-                class="w-12 h-12 bg-tertiary/10 rounded-lg flex items-center justify-center text-tertiary"
-              >
-                <span
-                  class="material-symbols-outlined text-[28px]"
-                  data-icon="receipt_long"
-                  >receipt_long</span
-                >
-              </div>
-              <span
-                class="text-label-md font-bold text-green-600 bg-green-50 px-2 py-1 rounded-full"
-                >+4.2%</span
-              >
-            </div>
-            <p class="text-label-md text-on-surface-variant font-medium">
-              Transacciones
-            </p>
-            <h3 class="text-headline-md font-bold text-on-surface mt-1">
-              1,842
-            </h3>
-            <p class="text-[11px] text-outline mt-2 italic">
-              Ticket promedio: $23.00
-            </p>
-          </div>
-          <div
-            class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant"
-          >
-            <div class="flex justify-between items-start mb-4">
-              <div
-                class="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center text-secondary"
-              >
-                <span
-                  class="material-symbols-outlined text-[28px]"
-                  data-icon="medication"
-                  >medication</span
-                >
-              </div>
-              <span
-                class="text-label-md font-bold text-error bg-error-container/20 px-2 py-1 rounded-full"
-                >-2.1%</span
-              >
-            </div>
-            <p class="text-label-md text-on-surface-variant font-medium">
-              Productos Vendidos
-            </p>
-            <h3 class="text-headline-md font-bold text-on-surface mt-1">
-              5,209
-            </h3>
-            <p class="text-[11px] text-outline mt-2 italic">
-              86 SKUs sin movimiento
-            </p>
-          </div>
-          <div
-            class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant"
-          >
-            <div class="flex justify-between items-start mb-4">
-              <div
-                class="w-12 h-12 bg-primary-container/10 rounded-lg flex items-center justify-center text-primary-container"
-              >
-                <span
-                  class="material-symbols-outlined text-[28px]"
-                  data-icon="group_add"
-                  >group_add</span
-                >
-              </div>
-              <span
-                class="text-label-md font-bold text-green-600 bg-green-50 px-2 py-1 rounded-full"
-                >+18.3%</span
-              >
-            </div>
-            <p class="text-label-md text-on-surface-variant font-medium">
-              Nuevos Clientes
-            </p>
-            <h3 class="text-headline-md font-bold text-on-surface mt-1">128</h3>
-            <p class="text-[11px] text-outline mt-2 italic">
-              Tasa de retención: 94%
-            </p>
-          </div>
-        </section>
-        <!-- Charts Section (Bento Grid Style) -->
-        <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          <!-- Trend Chart (Linear) -->
-          <div
-            class="lg:col-span-8 bg-surface-container-lowest p-8 rounded-xl border border-outline-variant"
-          >
-            <div class="flex justify-between items-center mb-10">
-              <div>
-                <h2 class="text-title-lg font-bold text-on-surface">
-                  Tendencia de Ingresos
-                </h2>
-                <p class="text-body-md text-outline">
-                  Análisis comparativo de ventas diarias
-                </p>
-              </div>
-              <div class="flex items-center gap-4">
-                <div class="flex items-center gap-2">
-                  <span class="w-3 h-3 bg-primary rounded-full"></span>
-                  <span class="text-label-md text-on-surface-variant"
-                    >Mes Actual</span
-                  >
-                </div>
-                <div class="flex items-center gap-2">
-                  <span class="w-3 h-3 bg-outline rounded-full"></span>
-                  <span class="text-label-md text-on-surface-variant"
-                    >Mes Anterior</span
-                  >
-                </div>
-              </div>
-            </div>
-            <!-- Line Chart Visualization (Simplified Vector) -->
-            <div class="h-[300px] w-full flex flex-col justify-end">
-              <div
-                class="relative flex-1 flex items-end justify-between px-2 gap-4"
-              >
-                <!-- Grid lines -->
-                <div class="absolute inset-0 flex flex-col justify-between">
-                  <div
-                    class="w-full border-t border-dashed border-outline-variant/30"
-                  ></div>
-                  <div
-                    class="w-full border-t border-dashed border-outline-variant/30"
-                  ></div>
-                  <div
-                    class="w-full border-t border-dashed border-outline-variant/30"
-                  ></div>
-                  <div
-                    class="w-full border-t border-dashed border-outline-variant/30"
-                  ></div>
-                  <div
-                    class="w-full border-t border-dashed border-outline-variant/30"
-                  ></div>
-                </div>
-                <!-- Simulated Chart Line Path (Dashed/Solid) -->
-                <svg
-                  class="absolute inset-0 w-full h-full preserve-3d"
-                  fill="none"
-                  viewbox="0 0 800 300"
-                >
-                  <path
-                    d="M0 250 L100 220 L200 240 L300 180 L400 150 L500 190 L600 120 L700 80 L800 100"
-                    stroke="#004ac6"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="3"
-                  ></path>
-                  <path
-                    d="M0 260 L100 250 L200 260 L300 230 L400 220 L500 240 L600 210 L700 200 L800 190"
-                    stroke="#737686"
-                    stroke-dasharray="4 4"
-                    stroke-linecap="round"
-                    stroke-width="2"
-                  ></path>
-                  <circle
-                    class="animate-pulse"
-                    cx="700"
-                    cy="80"
-                    fill="#004ac6"
-                    r="6"
-                  ></circle>
-                </svg>
-              </div>
-              <div class="flex justify-between pt-4 px-2">
-                <span class="text-label-md text-outline">Semana 1</span>
-                <span class="text-label-md text-outline">Semana 2</span>
-                <span class="text-label-md text-outline">Semana 3</span>
-                <span class="text-label-md text-outline">Semana 4</span>
-              </div>
+            <div class="flex gap-2">
+              <select id="tipoAlertaFilter" onchange="filterAlertas()" class="px-4 py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none">
+                <option value="">Todos los tipos</option>
+                <option value="stock_bajo">Stock Bajo</option>
+                <option value="producto_vencer">Producto a Vencer</option>
+                <option value="producto_vencido">Producto Vencido</option>
+                <option value="venta_alta">Venta Alta</option>
+                <option value="venta_baja">Venta Baja</option>
+                <option value="sistema">Sistema</option>
+              </select>
+              <select id="nivelAlertaFilter" onchange="filterAlertas()" class="px-4 py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none">
+                <option value="">Todos los niveles</option>
+                <option value="info">Info</option>
+                <option value="warning">Advertencia</option>
+                <option value="error">Error</option>
+                <option value="critical">Crítico</option>
+              </select>
+              <select id="estadoAlertaFilter" onchange="filterAlertas()" class="px-4 py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none">
+                <option value="">Todos los estados</option>
+                <option value="activa">Activa</option>
+                <option value="resuelta">Resuelta</option>
+                <option value="ignorada">Ignorada</option>
+              </select>
             </div>
           </div>
-          <!-- Sales by Category (Bar Chart) -->
-          <div
-            class="lg:col-span-4 bg-surface-container-lowest p-8 rounded-xl border border-outline-variant"
-          >
-            <h2 class="text-title-lg font-bold text-on-surface mb-2">
-              Ventas por Categoría
-            </h2>
-            <p class="text-body-md text-outline mb-8">
-              Rendimiento por línea de producto
-            </p>
-            <div class="space-y-6">
-              <div>
-                <div class="flex justify-between mb-2">
-                  <span class="text-label-md font-bold text-on-surface"
-                    >Medicamentos Genéricos</span
-                  >
-                  <span class="text-label-md text-outline">42%</span>
-                </div>
-                <div
-                  class="w-full bg-surface-container-low h-3 rounded-full overflow-hidden"
-                >
-                  <div
-                    class="bg-primary h-full rounded-full"
-                    style="width: 42%"
-                  ></div>
-                </div>
-              </div>
-              <div>
-                <div class="flex justify-between mb-2">
-                  <span class="text-label-md font-bold text-on-surface"
-                    >Cuidado Personal</span
-                  >
-                  <span class="text-label-md text-outline">28%</span>
-                </div>
-                <div
-                  class="w-full bg-surface-container-low h-3 rounded-full overflow-hidden"
-                >
-                  <div
-                    class="bg-primary-container h-full rounded-full"
-                    style="width: 28%"
-                  ></div>
-                </div>
-              </div>
-              <div>
-                <div class="flex justify-between mb-2">
-                  <span class="text-label-md font-bold text-on-surface"
-                    >Equipos Médicos</span
-                  >
-                  <span class="text-label-md text-outline">15%</span>
-                </div>
-                <div
-                  class="w-full bg-surface-container-low h-3 rounded-full overflow-hidden"
-                >
-                  <div
-                    class="bg-tertiary h-full rounded-full"
-                    style="width: 15%"
-                  ></div>
-                </div>
-              </div>
-              <div>
-                <div class="flex justify-between mb-2">
-                  <span class="text-label-md font-bold text-on-surface"
-                    >Nutrición</span
-                  >
-                  <span class="text-label-md text-outline">10%</span>
-                </div>
-                <div
-                  class="w-full bg-surface-container-low h-3 rounded-full overflow-hidden"
-                >
-                  <div
-                    class="bg-secondary h-full rounded-full"
-                    style="width: 10%"
-                  ></div>
-                </div>
-              </div>
-              <div>
-                <div class="flex justify-between mb-2">
-                  <span class="text-label-md font-bold text-on-surface"
-                    >Otros</span
-                  >
-                  <span class="text-label-md text-outline">5%</span>
-                </div>
-                <div
-                  class="w-full bg-surface-container-low h-3 rounded-full overflow-hidden"
-                >
-                  <div
-                    class="bg-outline h-full rounded-full"
-                    style="width: 5%"
-                  ></div>
-                </div>
-              </div>
-            </div>
-            <button
-              class="w-full mt-10 py-3 border border-outline-variant rounded-lg text-primary font-title-md hover:bg-surface-container-low transition-colors flex items-center justify-center gap-2"
-            >
-              Ver detalle completo
-              <span
-                class="material-symbols-outlined text-[18px]"
-                data-icon="chevron_right"
-                >chevron_right</span
-              >
-            </button>
+
+          <div id="alertasContent">
+            <div class="loading"><span class="material-symbols-outlined">refresh</span> Cargando alertas...</div>
           </div>
-        </section>
-        <!-- Latest Transactions Table -->
-        <section
-          class="bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden"
-        >
-          <div
-            class="p-6 border-b border-outline-variant flex justify-between items-center"
-          >
-            <h2 class="text-title-lg font-bold text-on-surface">
-              Últimas Transacciones Críticas
-            </h2>
-            <button
-              class="text-primary font-title-md hover:underline flex items-center gap-1"
-            >
-              Ver todo el historial
-              <span
-                class="material-symbols-outlined text-[18px]"
-                data-icon="open_in_new"
-                >open_in_new</span
-              >
-            </button>
-          </div>
-          <div class="overflow-x-auto">
-            <table class="w-full text-left">
-              <thead class="bg-[#F1F5F9] border-b border-outline-variant">
-                <tr>
-                  <th
-                    class="px-6 py-4 text-label-md font-semibold text-on-surface-variant"
-                  >
-                    ID Venta
-                  </th>
-                  <th
-                    class="px-6 py-4 text-label-md font-semibold text-on-surface-variant"
-                  >
-                    Cliente / Entidad
-                  </th>
-                  <th
-                    class="px-6 py-4 text-label-md font-semibold text-on-surface-variant"
-                  >
-                    Fecha &amp; Hora
-                  </th>
-                  <th
-                    class="px-6 py-4 text-label-md font-semibold text-on-surface-variant"
-                  >
-                    Total
-                  </th>
-                  <th
-                    class="px-6 py-4 text-label-md font-semibold text-on-surface-variant"
-                  >
-                    Sucursal
-                  </th>
-                  <th
-                    class="px-6 py-4 text-label-md font-semibold text-on-surface-variant"
-                  >
-                    Estado
-                  </th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-[#F1F5F9]">
-                <tr
-                  class="hover:bg-primary/5 transition-colors cursor-pointer group"
-                >
-                  <td class="px-6 py-4">
-                    <span class="text-body-md font-bold text-primary"
-                      >#FR-88901</span
-                    >
-                  </td>
-                  <td class="px-6 py-4">
-                    <div class="flex items-center gap-3">
-                      <div
-                        class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-primary font-bold text-[10px]"
-                      >
-                        MC
-                      </div>
-                      <span class="text-body-md text-on-surface"
-                        >Martha Cifuentes</span
-                      >
-                    </div>
-                  </td>
-                  <td class="px-6 py-4">
-                    <p class="text-body-md text-on-surface">Hoy, 14:20</p>
-                    <p class="text-[11px] text-outline">Hace 15 min</p>
-                  </td>
-                  <td class="px-6 py-4 font-bold text-on-surface">$124.50</td>
-                  <td class="px-6 py-4 text-body-md text-on-surface-variant">
-                    Sucursal Norte
-                  </td>
-                  <td class="px-6 py-4">
-                    <span
-                      class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-[11px] font-bold uppercase tracking-wider"
-                      >Completado</span
-                    >
-                  </td>
-                </tr>
-                <tr
-                  class="hover:bg-primary/5 transition-colors cursor-pointer group"
-                >
-                  <td class="px-6 py-4">
-                    <span class="text-body-md font-bold text-primary"
-                      >#FR-88899</span
-                    >
-                  </td>
-                  <td class="px-6 py-4">
-                    <div class="flex items-center gap-3">
-                      <div
-                        class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center text-secondary font-bold text-[10px]"
-                      >
-                        RE
-                      </div>
-                      <span class="text-body-md text-on-surface"
-                        >Roberto Esquivel</span
-                      >
-                    </div>
-                  </td>
-                  <td class="px-6 py-4">
-                    <p class="text-body-md text-on-surface">Hoy, 13:45</p>
-                    <p class="text-[11px] text-outline">Hace 50 min</p>
-                  </td>
-                  <td class="px-6 py-4 font-bold text-on-surface">$45.00</td>
-                  <td class="px-6 py-4 text-body-md text-on-surface-variant">
-                    Farmacia Clínica
-                  </td>
-                  <td class="px-6 py-4">
-                    <span
-                      class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-[11px] font-bold uppercase tracking-wider"
-                      >Completado</span
-                    >
-                  </td>
-                </tr>
-                <tr
-                  class="hover:bg-primary/5 transition-colors cursor-pointer group"
-                >
-                  <td class="px-6 py-4">
-                    <span class="text-body-md font-bold text-primary"
-                      >#FR-88895</span
-                    >
-                  </td>
-                  <td class="px-6 py-4">
-                    <div class="flex items-center gap-3">
-                      <div
-                        class="w-8 h-8 rounded-full bg-error-container flex items-center justify-center text-error font-bold text-[10px]"
-                      >
-                        LC
-                      </div>
-                      <span class="text-body-md text-on-surface"
-                        >Luis Carranza</span
-                      >
-                    </div>
-                  </td>
-                  <td class="px-6 py-4">
-                    <p class="text-body-md text-on-surface">Hoy, 11:15</p>
-                    <p class="text-[11px] text-outline">Reembolso solicitado</p>
-                  </td>
-                  <td class="px-6 py-4 font-bold text-on-surface">$210.30</td>
-                  <td class="px-6 py-4 text-body-md text-on-surface-variant">
-                    Sucursal Sur
-                  </td>
-                  <td class="px-6 py-4">
-                    <span
-                      class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-[11px] font-bold uppercase tracking-wider"
-                      >Pendiente</span
-                    >
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
+        </div>
       </div>
     </main>
+
+    <!-- Modal -->
+    <div id="modalOverlay" class="modal-overlay">
+      <div class="modal modal-lg">
+        <div class="modal-header">
+          <h3 id="modalTitle">Modal</h3>
+          <button class="modal-close" onclick="closeModal()">✕</button>
+        </div>
+        <div class="modal-body" id="modalBody">
+          <!-- Contenido dinámico -->
+        </div>
+      </div>
+    </div>
+
+    <script src="http://localhost:3010/public/js/config.js"></script>
+    <script src="http://localhost:3010/public/js/auth.js"></script>
+    <script>
+      // ============ VARIABLES GLOBALES ============
+      let historialData = [];
+      let alertasData = [];
+      let currentTab = 'generar';
+      let sucursalesData = [];
+
+      // ============ INICIALIZACIÓN ============
+      document.addEventListener('DOMContentLoaded', () => {
+        if (!requireAuth()) return;
+        loadUserInfo();
+        loadHistorial();
+        loadAlertas();
+        loadSucursales();
+        setupLogout();
+        setupSidebarToggle();
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+      });
+
+      // ============ FUNCIONES DE USUARIO ============
+      function loadUserInfo() {
+        try {
+          const user = JSON.parse(localStorage.getItem('user'));
+          if (user) {
+            document.getElementById('userName').textContent = user.username || 'Usuario';
+            document.getElementById('userRole').textContent = user.roles ? user.roles.join(', ') : 'Sin rol';
+            document.getElementById('userAvatar').textContent = user.username ? user.username.charAt(0).toUpperCase() : 'U';
+          }
+        } catch (e) {
+          console.error('Error loading user info:', e);
+        }
+      }
+
+      function setupLogout() {
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+          e.preventDefault();
+          logout();
+        });
+      }
+
+      function setupSidebarToggle() {
+        document.getElementById('toggleSidebar').addEventListener('click', () => {
+          document.getElementById('sidebar').classList.toggle('open');
+        });
+      }
+
+      function updateDateTime() {
+        const now = new Date();
+        document.getElementById('currentDateTime').textContent = now.toLocaleString('es-ES');
+      }
+
+      function switchTab(tab) {
+        currentTab = tab;
+        const tabs = ['generar', 'historial', 'alertas'];
+        tabs.forEach(t => {
+          document.getElementById(`tabContent${t.charAt(0).toUpperCase() + t.slice(1)}`).classList.toggle('hidden', t !== tab);
+          const btn = document.getElementById(`tab${t.charAt(0).toUpperCase() + t.slice(1)}`);
+          if (btn) {
+            btn.className = t === tab 
+              ? 'px-4 py-2 text-sm font-medium text-blue-600 border-b-2 border-blue-600'
+              : 'px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent';
+          }
+        });
+        
+        if (tab === 'historial') loadHistorial();
+        if (tab === 'alertas') loadAlertas();
+      }
+
+      // ============ FUNCIONES API ============
+      async function apiRequest(endpoint, options = {}) {
+        const token = localStorage.getItem('token');
+        if (!token) throw new Error('No autenticado');
+
+        const url = `${getApiBase()}${endpoint}`;
+        const headers = {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          ...options.headers
+        };
+
+        const response = await fetch(url, { ...options, headers });
+        if (!response.ok) {
+          const error = await response.json().catch(() => ({ message: `Error ${response.status}` }));
+          throw new Error(error.message || `Error ${response.status}`);
+        }
+        return response.json();
+      }
+
+      // ============ LOAD SUCURSALES ============
+      async function loadSucursales() {
+        try {
+          const data = await apiRequest('/api/sucursales/sucursales');
+          sucursalesData = data.data || [];
+        } catch (error) {
+          console.warn('Error loading sucursales:', error);
+        }
+      }
+
+      // ============ GENERAR REPORTES ============
+      function showGenerarReporte(tipo) {
+        const titulos = {
+          'ventas-diarias': 'Ventas Diarias',
+          'productos-mas-vendidos': 'Productos Más Vendidos',
+          'stock-bajo': 'Stock Bajo',
+          'proximos-vencer': 'Próximos a Vencer',
+          'clientes-frecuentes': 'Clientes Frecuentes',
+          'resumen-general': 'Resumen General'
+        };
+
+        const sucursalesOptions = sucursalesData
+          .filter(s => s.estado)
+          .map(s => `<option value="${s.id}">${s.nombre}</option>`)
+          .join('');
+
+        let camposAdicionales = '';
+
+        switch(tipo) {
+          case 'ventas-diarias':
+            camposAdicionales = `
+              <div class="form-group">
+                <label>Fecha *</label>
+                <input type="date" name="fecha" required value="${new Date().toISOString().split('T')[0]}">
+              </div>
+            `;
+            break;
+          case 'productos-mas-vendidos':
+            camposAdicionales = `
+              <div class="grid grid-cols-2 gap-4">
+                <div class="form-group">
+                  <label>Fecha Inicio</label>
+                  <input type="date" name="fecha_inicio" value="${new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString().split('T')[0]}">
+                </div>
+                <div class="form-group">
+                  <label>Fecha Fin</label>
+                  <input type="date" name="fecha_fin" value="${new Date().toISOString().split('T')[0]}">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Cantidad de Productos</label>
+                <input type="number" name="limit" value="10" min="1" max="100">
+              </div>
+            `;
+            break;
+          case 'stock-bajo':
+            camposAdicionales = `
+              <div class="form-group">
+                <label>Sucursal</label>
+                <select name="sucursal_id">
+                  <option value="">Todas</option>
+                  ${sucursalesOptions}
+                </select>
+              </div>
+            `;
+            break;
+          case 'proximos-vencer':
+            camposAdicionales = `
+              <div class="form-group">
+                <label>Días de Anticipación</label>
+                <input type="number" name="dias" value="30" min="1" max="365">
+              </div>
+              <div class="form-group">
+                <label>Sucursal</label>
+                <select name="sucursal_id">
+                  <option value="">Todas</option>
+                  ${sucursalesOptions}
+                </select>
+              </div>
+            `;
+            break;
+          case 'clientes-frecuentes':
+            camposAdicionales = `
+              <div class="grid grid-cols-2 gap-4">
+                <div class="form-group">
+                  <label>Cantidad de Clientes</label>
+                  <input type="number" name="limit" value="10" min="1" max="100">
+                </div>
+                <div class="form-group">
+                  <label>Mínimo de Compras</label>
+                  <input type="number" name="min_compras" value="3" min="1">
+                </div>
+              </div>
+            `;
+            break;
+          case 'resumen-general':
+            camposAdicionales = `
+              <div class="grid grid-cols-2 gap-4">
+                <div class="form-group">
+                  <label>Fecha Inicio</label>
+                  <input type="date" name="fecha_inicio" value="${new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString().split('T')[0]}">
+                </div>
+                <div class="form-group">
+                  <label>Fecha Fin</label>
+                  <input type="date" name="fecha_fin" value="${new Date().toISOString().split('T')[0]}">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Sucursal</label>
+                <select name="sucursal_id">
+                  <option value="">Todas</option>
+                  ${sucursalesOptions}
+                </select>
+              </div>
+            `;
+            break;
+          default:
+            camposAdicionales = '';
+        }
+
+        showModal(`Generar Reporte - ${titulos[tipo] || tipo}`, `
+          <form id="reporteForm" onsubmit="generarReporte(event, '${tipo}')">
+            ${camposAdicionales}
+            <div class="form-group">
+              <label>Formato</label>
+              <select name="formato" required>
+                <option value="json">JSON</option>
+                <option value="csv">CSV</option>
+                <option value="html">HTML</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary w-full">Generar Reporte</button>
+          </form>
+        `);
+      }
+
+      async function generarReporte(event, tipo) {
+        event.preventDefault();
+        const form = event.target;
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData);
+
+        // Mapear tipo de reporte al endpoint correcto
+        const endpointMap = {
+          'ventas-diarias': '/api/reportes/reportes/ventas-diarias',
+          'productos-mas-vendidos': '/api/reportes/reportes/productos-mas-vendidos',
+          'stock-bajo': '/api/reportes/reportes/stock-bajo',
+          'proximos-vencer': '/api/reportes/reportes/proximos-vencer',
+          'clientes-frecuentes': '/api/reportes/reportes/clientes-frecuentes',
+          'resumen-general': '/api/reportes/reportes/resumen-general'
+        };
+
+        const endpoint = endpointMap[tipo];
+        if (!endpoint) {
+          showToast('❌ Tipo de reporte no válido', 'error');
+          return;
+        }
+
+        // Convertir valores numéricos
+        if (data.limit) data.limit = parseInt(data.limit);
+        if (data.dias) data.dias = parseInt(data.dias);
+        if (data.min_compras) data.min_compras = parseInt(data.min_compras);
+        if (data.sucursal_id) data.sucursal_id = parseInt(data.sucursal_id);
+
+        try {
+          const result = await apiRequest(endpoint, {
+            method: 'POST',
+            body: JSON.stringify(data)
+          });
+          closeModal();
+          showToast('✅ Reporte generado exitosamente', 'success');
+          loadHistorial();
+          
+          // Si el reporte está completado, ofrecer descargar
+          if (result.data && result.data.estado === 'completado' && result.data.ruta_archivo) {
+            setTimeout(() => {
+              if (confirm('¿Deseas descargar el reporte ahora?')) {
+                descargarReporte(result.data.id);
+              }
+            }, 1000);
+          }
+        } catch (error) {
+          showToast('❌ ' + error.message, 'error');
+        }
+      }
+
+      // ============ HISTORIAL ============
+      async function loadHistorial() {
+        const container = document.getElementById('historialContent');
+        container.innerHTML = `<div class="loading"><span class="material-symbols-outlined">refresh</span> Cargando historial...</div>`;
+
+        try {
+          const data = await apiRequest('/api/reportes/reportes?limit=50');
+          historialData = data.data || [];
+          renderHistorial(historialData);
+        } catch (error) {
+          console.error('Error loading historial:', error);
+          container.innerHTML = `
+            <div class="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
+              <span class="material-symbols-outlined text-red-500 text-4xl">error</span>
+              <p class="text-red-700 mt-2">Error al cargar historial</p>
+              <p class="text-sm text-red-600">${error.message}</p>
+            </div>
+          `;
+        }
+      }
+
+      function renderHistorial(data) {
+        const container = document.getElementById('historialContent');
+        
+        if (!data || data.length === 0) {
+          container.innerHTML = `
+            <div class="bg-gray-50 rounded-xl p-8 text-center">
+              <span class="material-symbols-outlined text-gray-400 text-5xl">history</span>
+              <p class="text-gray-500 mt-2">No hay reportes generados</p>
+              <p class="text-sm text-gray-400">Genera tu primer reporte desde la pestaña "Generar Reportes"</p>
+            </div>
+          `;
+          return;
+        }
+
+        let html = `
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Tipo</th>
+                  <th>Formato</th>
+                  <th>Registros</th>
+                  <th>Estado</th>
+                  <th>Fecha</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+        `;
+
+        data.forEach(r => {
+          const estadoColors = {
+            'completado': 'badge-success',
+            'generando': 'badge-warning',
+            'fallido': 'badge-danger',
+            'cancelado': 'badge-danger'
+          };
+          const estadoBadge = `<span class="badge ${estadoColors[r.estado] || 'badge-info'}">${r.estado}</span>`;
+          
+          const tipoLabels = {
+            'ventas_diarias': 'Ventas Diarias',
+            'productos_mas_vendidos': 'Productos Más Vendidos',
+            'stock_bajo': 'Stock Bajo',
+            'productos_vencer': 'Próximos a Vencer',
+            'clientes_frecuentes': 'Clientes Frecuentes',
+            'resumen_general': 'Resumen General'
+          };
+
+          html += `
+            <tr>
+              <td><strong>${r.nombre}</strong></td>
+              <td>${tipoLabels[r.tipo] || r.tipo}</td>
+              <td><span class="font-mono text-sm">${r.formato.toUpperCase()}</span></td>
+              <td class="text-center">${r.total_registros || 0}</td>
+              <td>${estadoBadge}</td>
+              <td>${new Date(r.fecha_generacion).toLocaleString()}</td>
+              <td>
+                ${r.estado === 'completado' && r.ruta_archivo ? `
+                  <button class="btn btn-primary btn-sm" onclick="descargarReporte(${r.id})">
+                    <span class="material-symbols-outlined text-sm">download</span>
+                  </button>
+                ` : ''}
+                <button class="btn btn-secondary btn-sm" onclick="verDetalleReporte(${r.id})">
+                  <span class="material-symbols-outlined text-sm">visibility</span>
+                </button>
+              </td>
+            </tr>
+          `;
+        });
+
+        html += '</tbody></table></div>';
+        container.innerHTML = html;
+      }
+
+      function filterHistorial() {
+        const tipo = document.getElementById('tipoReporteFilter').value;
+        const estado = document.getElementById('estadoReporteFilter').value;
+        
+        let filtered = historialData.filter(r => {
+          const matchTipo = !tipo || r.tipo === tipo;
+          const matchEstado = !estado || r.estado === estado;
+          return matchTipo && matchEstado;
+        });
+        
+        renderHistorial(filtered);
+      }
+
+      async function descargarReporte(id) {
+        try {
+          // Abrir en nueva pestaña para descargar
+          const token = localStorage.getItem('token');
+          const url = `${getApiBase()}/api/reportes/reportes/${id}/descargar`;
+          
+          // Crear un enlace temporal
+          const link = document.createElement('a');
+          link.href = url;
+          link.target = '_blank';
+          link.setAttribute('Authorization', `Bearer ${token}`);
+          
+          // Abrir en nueva ventana
+          window.open(url, '_blank');
+          
+          showToast('✅ Descargando reporte...', 'success');
+        } catch (error) {
+          showToast('❌ ' + error.message, 'error');
+        }
+      }
+
+      function verDetalleReporte(id) {
+        const reporte = historialData.find(r => r.id === id);
+        if (!reporte) {
+          showToast('❌ Reporte no encontrado', 'error');
+          return;
+        }
+
+        const tipoLabels = {
+          'ventas_diarias': 'Ventas Diarias',
+          'productos_mas_vendidos': 'Productos Más Vendidos',
+          'stock_bajo': 'Stock Bajo',
+          'productos_vencer': 'Próximos a Vencer',
+          'clientes_frecuentes': 'Clientes Frecuentes',
+          'resumen_general': 'Resumen General'
+        };
+
+        let paramsHtml = '';
+        if (reporte.parametros) {
+          paramsHtml = '<div class="mt-2 p-3 bg-gray-50 rounded-lg">';
+          paramsHtml += '<p class="text-sm font-semibold text-gray-700">Parámetros:</p>';
+          Object.entries(reporte.parametros).forEach(([key, value]) => {
+            paramsHtml += `<p class="text-sm text-gray-600"><span class="font-medium">${key}:</span> ${value}</p>`;
+          });
+          paramsHtml += '</div>';
+        }
+
+        showModal(`Detalle de Reporte`, `
+          <div class="grid grid-cols-2 gap-4 mb-4">
+            <div class="p-3 bg-gray-50 rounded-lg">
+              <p class="text-sm text-gray-500">Nombre</p>
+              <p class="font-semibold">${reporte.nombre}</p>
+            </div>
+            <div class="p-3 bg-gray-50 rounded-lg">
+              <p class="text-sm text-gray-500">Tipo</p>
+              <p class="font-semibold">${tipoLabels[reporte.tipo] || reporte.tipo}</p>
+            </div>
+            <div class="p-3 bg-gray-50 rounded-lg">
+              <p class="text-sm text-gray-500">Formato</p>
+              <p class="font-semibold">${reporte.formato.toUpperCase()}</p>
+            </div>
+            <div class="p-3 bg-gray-50 rounded-lg">
+              <p class="text-sm text-gray-500">Estado</p>
+              <p><span class="badge ${reporte.estado === 'completado' ? 'badge-success' : reporte.estado === 'generando' ? 'badge-warning' : 'badge-danger'}">${reporte.estado}</span></p>
+            </div>
+            <div class="p-3 bg-gray-50 rounded-lg">
+              <p class="text-sm text-gray-500">Registros</p>
+              <p class="font-semibold">${reporte.total_registros || 0}</p>
+            </div>
+            <div class="p-3 bg-gray-50 rounded-lg">
+              <p class="text-sm text-gray-500">Fecha Generación</p>
+              <p class="font-semibold">${new Date(reporte.fecha_generacion).toLocaleString()}</p>
+            </div>
+          </div>
+          ${paramsHtml}
+          ${reporte.observaciones ? `
+            <div class="mt-4 p-3 bg-gray-50 rounded-lg">
+              <p class="text-sm font-semibold text-gray-700">Observaciones:</p>
+              <p class="text-sm text-gray-600">${reporte.observaciones}</p>
+            </div>
+          ` : ''}
+          ${reporte.ruta_archivo && reporte.estado === 'completado' ? `
+            <button class="btn btn-primary w-full mt-4" onclick="descargarReporte(${reporte.id})">
+              <span class="material-symbols-outlined text-sm">download</span>
+              Descargar Reporte
+            </button>
+          ` : ''}
+        `);
+      }
+
+      // ============ ALERTAS ============
+      async function loadAlertas() {
+        const container = document.getElementById('alertasContent');
+        container.innerHTML = `<div class="loading"><span class="material-symbols-outlined">refresh</span> Cargando alertas...</div>`;
+
+        try {
+          const data = await apiRequest('/api/reportes/alertas?limit=50');
+          alertasData = data.data || [];
+          renderAlertas(alertasData);
+        } catch (error) {
+          console.error('Error loading alertas:', error);
+          container.innerHTML = `
+            <div class="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
+              <span class="material-symbols-outlined text-red-500 text-4xl">error</span>
+              <p class="text-red-700 mt-2">Error al cargar alertas</p>
+              <p class="text-sm text-red-600">${error.message}</p>
+            </div>
+          `;
+        }
+      }
+
+      function renderAlertas(data) {
+        const container = document.getElementById('alertasContent');
+        
+        if (!data || data.length === 0) {
+          container.innerHTML = `
+            <div class="bg-gray-50 rounded-xl p-8 text-center">
+              <span class="material-symbols-outlined text-gray-400 text-5xl">notifications_off</span>
+              <p class="text-gray-500 mt-2">No hay alertas</p>
+              <p class="text-sm text-gray-400">Todas las alertas han sido resueltas o no hay registros</p>
+            </div>
+          `;
+          return;
+        }
+
+        let html = `
+          <div class="space-y-3">
+        `;
+
+        data.forEach(a => {
+          const nivelColors = {
+            'info': 'border-blue-200 bg-blue-50',
+            'warning': 'border-yellow-200 bg-yellow-50',
+            'error': 'border-orange-200 bg-orange-50',
+            'critical': 'border-red-200 bg-red-50'
+          };
+          const nivelIcons = {
+            'info': 'info',
+            'warning': 'warning',
+            'error': 'error',
+            'critical': 'error'
+          };
+          const nivelTextColors = {
+            'info': 'text-blue-500',
+            'warning': 'text-yellow-500',
+            'error': 'text-orange-500',
+            'critical': 'text-red-500'
+          };
+
+          const estadoBadge = a.estado === 'activa' 
+            ? '<span class="badge badge-warning">Activa</span>'
+            : a.estado === 'resuelta'
+              ? '<span class="badge badge-success">Resuelta</span>'
+              : '<span class="badge badge-danger">Ignorada</span>';
+
+          const leidaBadge = a.leida
+            ? '<span class="badge badge-info">Leída</span>'
+            : '<span class="badge badge-warning">No leída</span>';
+
+          html += `
+            <div class="p-4 rounded-lg border ${nivelColors[a.nivel] || 'border-gray-200 bg-gray-50'}">
+              <div class="flex items-start justify-between">
+                <div class="flex items-start gap-3">
+                  <span class="material-symbols-outlined ${nivelTextColors[a.nivel] || 'text-gray-500'}">
+                    ${nivelIcons[a.nivel] || 'info'}
+                  </span>
+                  <div>
+                    <div class="flex items-center gap-2 flex-wrap">
+                      <h4 class="font-semibold text-gray-700">${a.titulo}</h4>
+                      ${estadoBadge}
+                      ${leidaBadge}
+                    </div>
+                    <p class="text-sm text-gray-600 mt-1">${a.mensaje}</p>
+                    <div class="flex items-center gap-4 mt-2 text-xs text-gray-400">
+                      <span>Tipo: ${a.tipo}</span>
+                      <span>Nivel: ${a.nivel}</span>
+                      <span>Fecha: ${new Date(a.fecha_creacion).toLocaleString()}</span>
+                      ${a.sucursal_id ? `<span>Sucursal: ${a.sucursal_id}</span>` : ''}
+                    </div>
+                  </div>
+                </div>
+                <div class="flex gap-2">
+                  ${!a.leida ? `
+                    <button class="btn btn-secondary btn-sm" onclick="marcarLeida(${a.id})">
+                      <span class="material-symbols-outlined text-sm">check</span>
+                    </button>
+                  ` : ''}
+                  ${a.estado === 'activa' ? `
+                    <button class="btn btn-success btn-sm" onclick="resolverAlerta(${a.id})">
+                      <span class="material-symbols-outlined text-sm">done_all</span>
+                    </button>
+                  ` : ''}
+                </div>
+              </div>
+            </div>
+          `;
+        });
+
+        html += '</div>';
+        container.innerHTML = html;
+      }
+
+      function filterAlertas() {
+        const tipo = document.getElementById('tipoAlertaFilter').value;
+        const nivel = document.getElementById('nivelAlertaFilter').value;
+        const estado = document.getElementById('estadoAlertaFilter').value;
+        
+        let filtered = alertasData.filter(a => {
+          const matchTipo = !tipo || a.tipo === tipo;
+          const matchNivel = !nivel || a.nivel === nivel;
+          const matchEstado = !estado || a.estado === estado;
+          return matchTipo && matchNivel && matchEstado;
+        });
+        
+        renderAlertas(filtered);
+      }
+
+      async function marcarLeida(id) {
+        try {
+          await apiRequest(`/api/reportes/alertas/${id}/leida`, {
+            method: 'PUT'
+          });
+          showToast('✅ Alerta marcada como leída', 'success');
+          loadAlertas();
+        } catch (error) {
+          showToast('❌ ' + error.message, 'error');
+        }
+      }
+
+      async function resolverAlerta(id) {
+        const observaciones = prompt('Observaciones de la resolución:');
+        if (observaciones === null) return;
+        
+        try {
+          await apiRequest(`/api/reportes/alertas/${id}/resolver`, {
+            method: 'PUT',
+            body: JSON.stringify({ observaciones: observaciones || 'Resuelta por el usuario' })
+          });
+          showToast('✅ Alerta resuelta', 'success');
+          loadAlertas();
+        } catch (error) {
+          showToast('❌ ' + error.message, 'error');
+        }
+      }
+
+      function showCreateAlerta() {
+        const sucursalesOptions = sucursalesData
+          .filter(s => s.estado)
+          .map(s => `<option value="${s.id}">${s.nombre}</option>`)
+          .join('');
+
+        showModal('Nueva Alerta', `
+          <form id="alertaForm" onsubmit="createAlerta(event)">
+            <div class="grid grid-cols-2 gap-4">
+              <div class="form-group">
+                <label>Tipo *</label>
+                <select name="tipo" required>
+                  <option value="">Seleccionar...</option>
+                  <option value="stock_bajo">Stock Bajo</option>
+                  <option value="producto_vencer">Producto a Vencer</option>
+                  <option value="producto_vencido">Producto Vencido</option>
+                  <option value="venta_alta">Venta Alta</option>
+                  <option value="venta_baja">Venta Baja</option>
+                  <option value="sistema">Sistema</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Nivel *</label>
+                <select name="nivel" required>
+                  <option value="info">Info</option>
+                  <option value="warning">Advertencia</option>
+                  <option value="error">Error</option>
+                  <option value="critical">Crítico</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Título *</label>
+              <input type="text" name="titulo" required placeholder="Título de la alerta">
+            </div>
+            <div class="form-group">
+              <label>Mensaje *</label>
+              <textarea name="mensaje" required placeholder="Descripción detallada de la alerta"></textarea>
+            </div>
+            <div class="form-group">
+              <label>Sucursal</label>
+              <select name="sucursal_id">
+                <option value="">General</option>
+                ${sucursalesOptions}
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary w-full">Crear Alerta</button>
+          </form>
+        `);
+      }
+
+      async function createAlerta(event) {
+        event.preventDefault();
+        const form = event.target;
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData);
+
+        try {
+          await apiRequest('/api/reportes/alertas', {
+            method: 'POST',
+            body: JSON.stringify(data)
+          });
+          closeModal();
+          showToast('✅ Alerta creada exitosamente', 'success');
+          loadAlertas();
+        } catch (error) {
+          showToast('❌ ' + error.message, 'error');
+        }
+      }
+
+      // ============ TOAST NOTIFICATIONS ============
+      function showToast(message, type = 'info') {
+        const colors = {
+          success: 'bg-green-50 border-green-200 text-green-700',
+          error: 'bg-red-50 border-red-200 text-red-700',
+          warning: 'bg-yellow-50 border-yellow-200 text-yellow-700',
+          info: 'bg-blue-50 border-blue-200 text-blue-700'
+        };
+        const icons = {
+          success: 'check_circle',
+          error: 'error',
+          warning: 'warning',
+          info: 'info'
+        };
+
+        const toast = document.createElement('div');
+        toast.className = `fixed top-4 right-4 p-4 rounded-lg border shadow-lg ${colors[type] || colors.info} flex items-center gap-3 z-50 max-w-md animate-slide-in`;
+        toast.innerHTML = `
+          <span class="material-symbols-outlined">${icons[type] || icons.info}</span>
+          <span>${message}</span>
+          <button onclick="this.parentElement.remove()" class="ml-auto text-gray-400 hover:text-gray-600">✕</button>
+        `;
+
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 5000);
+      }
+
+      // ============ MODAL ============
+      function showModal(title, content) {
+        document.getElementById('modalTitle').textContent = title;
+        document.getElementById('modalBody').innerHTML = content;
+        document.getElementById('modalOverlay').classList.add('active');
+        document.querySelector('.modal').classList.add('modal-lg');
+      }
+
+      function closeModal() {
+        document.getElementById('modalOverlay').classList.remove('active');
+      }
+
+      document.getElementById('modalOverlay').addEventListener('click', (e) => {
+        if (e.target === e.currentTarget) closeModal();
+      });
+
+      // ============ ESTILOS ADICIONALES ============
+      const style = document.createElement('style');
+      style.textContent = `
+        .animate-slide-in {
+          animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn {
+          from { transform: translateX(100%); opacity: 0; }
+          to { transform: translateX(0); opacity: 1; }
+        }
+        .modal-lg {
+          max-width: 700px !important;
+        }
+        .badge-orange {
+          background: #ffedd5;
+          color: #9a3412;
+        }
+        .badge-purple {
+          background: #ede9fe;
+          color: #5b21b6;
+        }
+        .btn-info {
+          background: #0ea5e9;
+          color: white;
+        }
+        .btn-info:hover {
+          background: #0284c7;
+        }
+        .border-orange-200 {
+          border-color: #fed7aa;
+        }
+        .bg-orange-50 {
+          background: #fff7ed;
+        }
+        .text-orange-500 {
+          color: #f97316;
+        }
+      `;
+      document.head.appendChild(style);
+    </script>
   </body>
 </html>

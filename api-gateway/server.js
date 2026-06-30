@@ -1,161 +1,243 @@
 // api-gateway/server.js
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
+const morgan = require('morgan');
+const rateLimit = require('express-rate-limit');
 const { createProxyMiddleware } = require('http-proxy-middleware');
+const { authMiddleware } = require('./middleware/auth');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
-// URLs de los microservicios
-const AUTH_URL = 'http://localhost:3001';
-const SUCURSAL_URL = 'http://localhost:3002';
-const COMPRA_URL = 'http://localhost:3003';
-const INVENTARIO_URL = 'http://localhost:3004';
-const VENTAS_URL = 'http://localhost:3005';
-const CLIENTE_URL = 'http://localhost:3006';
-const REPORTES_URL = 'http://localhost:3007';
+// ==================== CONFIGURACIÓN DE SEGURIDAD ====================
 
-// CORS
-app.use(cors({
-  origin: '*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: "cross-origin" }
 }));
 
-// Logging
-app.use((req, res, next) => {
-  console.log(`📡 ${req.method} ${req.url}`);
-  next();
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  message: {
+    success: false,
+    message: 'Demasiadas solicitudes, por favor intenta más tarde'
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
 });
 
-// Body parser
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use('/api', limiter);
 
-// ============ PROXIES PARA TODOS LOS MICROSERVICIOS ============
-
-// 1. Auth Service (público)
-app.use('/api/auth', createProxyMiddleware({
-  target: AUTH_URL,
-  changeOrigin: true,
-  pathRewrite: { '^/api/auth': '/api/auth' },
-  onProxyReq: (proxyReq, req, res) => {
-    console.log(`🔄 Auth: ${req.method} ${req.url}`);
-    if (req.body && Object.keys(req.body).length > 0) {
-      const bodyData = JSON.stringify(req.body);
-      proxyReq.setHeader('Content-Type', 'application/json');
-      proxyReq.setHeader('Content-Length', Buffer.byteLength(bodyData));
-      proxyReq.write(bodyData);
+// ==================== CORS (CORREGIDO) ====================
+// ✅ Configuración CORS más permisiva para desarrollo
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Permitir solicitudes sin origin (como herramientas de API)
+    if (!origin) return callback(null, true);
+    
+    // Lista de orígenes permitidos
+    const allowedOrigins = [
+      'http://localhost:3010',
+      'http://127.0.0.1:3010',
+      'http://localhost:3000',
+      'http://127.0.0.1:3000',
+      process.env.FRONTEND_URL
+    ].filter(Boolean);
+    
+    // En desarrollo, permitir todos los orígenes
+    if (process.env.NODE_ENV === 'development' || !origin) {
+      return callback(null, true);
+    }
+    
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      console.warn(`🔒 Origen bloqueado por CORS: ${origin}`);
+      callback(new Error('Origen no permitido por CORS'));
     }
   },
-  onError: (err, req, res) => {
-    console.error('❌ Auth Error:', err.message);
-    res.status(503).json({ success: false, message: 'Auth Service no disponible' });
-  }
-}));
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin', 'X-User-Id', 'X-User-Roles', 'X-User-Username'],
+  exposedHeaders: ['Content-Range', 'X-Content-Range', 'X-Service'],
+  maxAge: 86400 // 24 horas
+};
 
-// 2. Sucursal Service
-app.use('/api/sucursales', createProxyMiddleware({
-  target: SUCURSAL_URL,
-  changeOrigin: true,
-  pathRewrite: { '^/api/sucursales': '/api/sucursales' },
-  onProxyReq: (proxyReq, req, res) => {
-    console.log(`🔄 Sucursal: ${req.method} ${req.url}`);
-  },
-  onError: (err, req, res) => {
-    console.error('❌ Sucursal Error:', err.message);
-    res.status(503).json({ success: false, message: 'Sucursal Service no disponible' });
-  }
-}));
+// ✅ Aplicar CORS a todas las rutas
+app.use(cors(corsOptions));
 
-// 3. Compra Service
-app.use('/api/compras', createProxyMiddleware({
-  target: COMPRA_URL,
-  changeOrigin: true,
-  pathRewrite: { '^/api/compras': '/api/compras' },
-  onProxyReq: (proxyReq, req, res) => {
-    console.log(`🔄 Compra: ${req.method} ${req.url}`);
-  },
-  onError: (err, req, res) => {
-    console.error('❌ Compra Error:', err.message);
-    res.status(503).json({ success: false, message: 'Compra Service no disponible' });
-  }
-}));
+// ✅ Manejar explícitamente las solicitudes OPTIONS (preflight)
+app.options('*', cors(corsOptions));
 
-// 4. Inventario Service
-app.use('/api/inventario', createProxyMiddleware({
-  target: INVENTARIO_URL,
-  changeOrigin: true,
-  pathRewrite: { '^/api/inventario': '/api/inventario' },
-  onProxyReq: (proxyReq, req, res) => {
-    console.log(`🔄 Inventario: ${req.method} ${req.url}`);
-  },
-  onError: (err, req, res) => {
-    console.error('❌ Inventario Error:', err.message);
-    res.status(503).json({ success: false, message: 'Inventario Service no disponible' });
-  }
-}));
+// ==================== LOGGING ====================
+app.use(morgan('combined'));
 
-// 5. Ventas Service
-app.use('/api/ventas', createProxyMiddleware({
-  target: VENTAS_URL,
-  changeOrigin: true,
-  pathRewrite: { '^/api/ventas': '/api/ventas' },
-  onProxyReq: (proxyReq, req, res) => {
-    console.log(`🔄 Ventas: ${req.method} ${req.url}`);
-  },
-  onError: (err, req, res) => {
-    console.error('❌ Ventas Error:', err.message);
-    res.status(503).json({ success: false, message: 'Ventas Service no disponible' });
-  }
-}));
+// ==================== MIDDLEWARE DE AUTENTICACIÓN GLOBAL ====================
+app.use('/api', authMiddleware);
 
-// 6. Cliente Service
-app.use('/api/clientes', createProxyMiddleware({
-  target: CLIENTE_URL,
-  changeOrigin: true,
-  pathRewrite: { '^/api/clientes': '/api/clientes' },
-  onProxyReq: (proxyReq, req, res) => {
-    console.log(`🔄 Cliente: ${req.method} ${req.url}`);
-  },
-  onError: (err, req, res) => {
-    console.error('❌ Cliente Error:', err.message);
-    res.status(503).json({ success: false, message: 'Cliente Service no disponible' });
-  }
-}));
-
-// 7. Reportes Service
-app.use('/api/reportes', createProxyMiddleware({
-  target: REPORTES_URL,
-  changeOrigin: true,
-  pathRewrite: { '^/api/reportes': '/api/reportes' },
-  onProxyReq: (proxyReq, req, res) => {
-    console.log(`🔄 Reportes: ${req.method} ${req.url}`);
-  },
-  onError: (err, req, res) => {
-    console.error('❌ Reportes Error:', err.message);
-    res.status(503).json({ success: false, message: 'Reportes Service no disponible' });
-  }
-}));
-
-// ============ HEALTH CHECK ============
+// ==================== RUTAS PÚBLICAS ====================
 app.get('/health', (req, res) => {
-  res.json({
+  res.status(200).json({
     status: 'OK',
     service: 'api-gateway',
-    timestamp: new Date().toISOString()
+    version: '1.0.0',
+    timestamp: new Date().toISOString(),
+    services: {
+      auth: process.env.AUTH_SERVICE_URL,
+      sucursal: process.env.SUCURSAL_SERVICE_URL,
+      compra: process.env.COMPRA_SERVICE_URL,
+      inventario: process.env.INVENTARIO_SERVICE_URL,
+      ventas: process.env.VENTAS_SERVICE_URL,
+      cliente: process.env.CLIENTE_SERVICE_URL,
+      reportes: process.env.REPORTES_SERVICE_URL
+    }
   });
 });
 
-// ============ INICIAR ============
+app.get('/', (req, res) => {
+  res.status(200).json({
+    message: 'API Gateway - Farmadol SOA',
+    version: '1.0.0',
+    status: 'Operational',
+    endpoints: {
+      auth: '/api/auth',
+      sucursal: '/api/sucursales',
+      compra: '/api/compras',
+      inventario: '/api/inventario',
+      ventas: '/api/ventas',
+      cliente: '/api/clientes',
+      reportes: '/api/reportes'
+    }
+  });
+});
+
+// ==================== PROXY CONFIGURACIÓN ====================
+
+// Función para crear proxies con manejo de errores
+const createServiceProxy = (target, pathRewrite = {}) => {
+  return createProxyMiddleware({
+    target,
+    changeOrigin: true,
+    pathRewrite,
+    logLevel: 'debug',
+    onError: (err, req, res) => {
+      console.error(`❌ Error en proxy ${target}:`, err.message);
+      res.status(503).json({
+        success: false,
+        message: 'Servicio no disponible temporalmente',
+        error: err.message
+      });
+    },
+    onProxyReq: (proxyReq, req) => {
+      console.log(`🔄 Proxy: ${req.method} ${req.originalUrl} -> ${target}${req.path}`);
+      if (req.headers.authorization) {
+        proxyReq.setHeader('Authorization', req.headers.authorization);
+      }
+      if (req.user) {
+        proxyReq.setHeader('X-User-Id', req.user.id);
+        proxyReq.setHeader('X-User-Roles', JSON.stringify(req.user.roles || []));
+        proxyReq.setHeader('X-User-Username', req.user.username || '');
+      }
+    },
+    onProxyRes: (proxyRes) => {
+      proxyRes.headers['X-Service'] = target;
+    }
+  });
+};
+
+// ==================== SERVICIOS ====================
+
+// Auth Service (puerto 3001)
+app.use('/api/auth', createServiceProxy(process.env.AUTH_SERVICE_URL, {
+  '^/api/auth': '/auth'
+}));
+
+// Sucursal Service (puerto 3002)
+app.use('/api/sucursales', createServiceProxy(process.env.SUCURSAL_SERVICE_URL, {
+  '^/api/sucursales': '/api/sucursales'
+}));
+
+// Compra Service (puerto 3003)
+app.use('/api/compras', createServiceProxy(process.env.COMPRA_SERVICE_URL, {
+  '^/api/compras': '/api/compras'
+}));
+
+// Inventario Service (puerto 3004)
+app.use('/api/inventario', createServiceProxy(process.env.INVENTARIO_SERVICE_URL, {
+  '^/api/inventario': '/api/inventario'
+}));
+
+// Ventas Service (puerto 3005)
+app.use('/api/ventas', createServiceProxy(process.env.VENTAS_SERVICE_URL, {
+  '^/api/ventas': '/api/ventas'
+}));
+
+// Cliente Service (puerto 3006)
+app.use('/api/clientes', createServiceProxy(process.env.CLIENTE_SERVICE_URL, {
+  '^/api/clientes': '/api/clientes'
+}));
+
+// Reportes Service (puerto 3007)
+app.use('/api/reportes', createServiceProxy(process.env.REPORTES_SERVICE_URL, {
+  '^/api/reportes': '/api/reportes'
+}));
+
+// ==================== MANEJO DE ERRORES ====================
+
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: 'Ruta no encontrada',
+    path: req.originalUrl,
+    method: req.method
+  });
+});
+
+app.use((err, req, res, next) => {
+  console.error('❌ Error en API Gateway:', err);
+  
+  if (err.message === 'Origen no permitido por CORS') {
+    return res.status(403).json({
+      success: false,
+      message: 'Origen no permitido por CORS'
+    });
+  }
+
+  res.status(err.status || 500).json({
+    success: false,
+    message: err.message || 'Error interno del servidor',
+    ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
+  });
+});
+
+// ==================== INICIO DEL SERVIDOR ====================
 app.listen(PORT, () => {
-  console.log(`🚀 API Gateway en http://localhost:${PORT}`);
-  console.log(`📋 Proxies configurados:`);
-  console.log(`  🔐 Auth: http://localhost:${PORT}/api/auth → ${AUTH_URL}/api/auth`);
-  console.log(`  🏢 Sucursal: http://localhost:${PORT}/api/sucursales → ${SUCURSAL_URL}/api/sucursales`);
-  console.log(`  🛒 Compra: http://localhost:${PORT}/api/compras → ${COMPRA_URL}/api/compras`);
-  console.log(`  📦 Inventario: http://localhost:${PORT}/api/inventario → ${INVENTARIO_URL}/api/inventario`);
-  console.log(`  💳 Ventas: http://localhost:${PORT}/api/ventas → ${VENTAS_URL}/api/ventas`);
-  console.log(`  👤 Cliente: http://localhost:${PORT}/api/clientes → ${CLIENTE_URL}/api/clientes`);
-  console.log(`  📊 Reportes: http://localhost:${PORT}/api/reportes → ${REPORTES_URL}/api/reportes`);
+  console.log('========================================');
+  console.log('🌉 API GATEWAY - FARMADOL SOA');
+  console.log('========================================');
+  console.log(`🚀 Servidor corriendo en: http://localhost:${PORT}`);
+  console.log('📋 Servicios registrados:');
+  console.log(`  🔐 Auth       → ${process.env.AUTH_SERVICE_URL}`);
+  console.log(`  🏢 Sucursal   → ${process.env.SUCURSAL_SERVICE_URL}`);
+  console.log(`  🛒 Compra     → ${process.env.COMPRA_SERVICE_URL}`);
+  console.log(`  📦 Inventario → ${process.env.INVENTARIO_SERVICE_URL}`);
+  console.log(`  💳 Ventas     → ${process.env.VENTAS_SERVICE_URL}`);
+  console.log(`  👤 Cliente    → ${process.env.CLIENTE_SERVICE_URL}`);
+  console.log(`  📊 Reportes   → ${process.env.REPORTES_SERVICE_URL}`);
+  console.log('========================================');
+  console.log(`🌐 CORS habilitado para frontend en puerto 3010`);
+  console.log(`🔒 Rate limiting: 100 requests/15min`);
+  console.log('========================================');
+});
+
+process.on('SIGTERM', () => {
+  console.log('SIGTERM recibido, cerrando servidor...');
+  process.exit(0);
+});
+
+process.on('SIGINT', () => {
+  console.log('SIGINT recibido, cerrando servidor...');
+  process.exit(0);
 });

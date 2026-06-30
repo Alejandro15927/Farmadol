@@ -3,9 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Farmadol - Sales Management / POS</title>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries">
-    </script>
+    <title>Farmadol ERP - Ventas</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap"
       rel="stylesheet"
@@ -14,666 +13,765 @@
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
       rel="stylesheet"
     />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-      rel="stylesheet"
-    />
-    <script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              "on-secondary-fixed": "#131b2e",
-              "surface-container-highest": "#d3e4fe",
-              "surface-variant": "#d3e4fe",
-              "secondary-fixed": "#dae2fd",
-              background: "#f8f9ff",
-              "tertiary-fixed-dim": "#ffb596",
-              "on-tertiary": "#ffffff",
-              "tertiary-fixed": "#ffdbcd",
-              "inverse-primary": "#b4c5ff",
-              primary: "#004ac6",
-              "surface-bright": "#f8f9ff",
-              "primary-container": "#2563eb",
-              surface: "#f8f9ff",
-              "on-background": "#0b1c30",
-              secondary: "#565e74",
-              "on-primary-fixed": "#00174b",
-              "primary-fixed": "#dbe1ff",
-              "on-tertiary-container": "#ffede6",
-              "inverse-on-surface": "#eaf1ff",
-              "surface-dim": "#cbdbf5",
-              "surface-container": "#e5eeff",
-              "on-secondary-fixed-variant": "#3f465c",
-              "surface-container-high": "#dce9ff",
-              outline: "#737686",
-              "error-container": "#ffdad6",
-              "on-secondary": "#ffffff",
-              "on-error-container": "#93000a",
-              "on-tertiary-fixed-variant": "#7d2d00",
-              "on-primary-fixed-variant": "#003ea8",
-              tertiary: "#943700",
-              error: "#ba1a1a",
-              "on-tertiary-fixed": "#360f00",
-              "on-surface-variant": "#434655",
-              "secondary-fixed-dim": "#bec6e0",
-              "on-surface": "#0b1c30",
-              "primary-fixed-dim": "#b4c5ff",
-              "surface-container-low": "#eff4ff",
-              "secondary-container": "#dae2fd",
-              "on-secondary-container": "#5c647a",
-              "on-primary-container": "#eeefff",
-              "on-primary": "#ffffff",
-              "tertiary-container": "#bc4800",
-              "surface-tint": "#0053db",
-              "on-error": "#ffffff",
-              "outline-variant": "#c3c6d7",
-              "inverse-surface": "#213145",
-              "surface-container-lowest": "#ffffff",
-            },
-            borderRadius: {
-              DEFAULT: "0.25rem",
-              lg: "0.5rem",
-              xl: "0.75rem",
-              full: "9999px",
-            },
-            spacing: {
-              "stack-md": "16px",
-              "container-max-width": "1440px",
-              "sidebar-width": "280px",
-              gutter: "24px",
-              "stack-sm": "8px",
-              "stack-lg": "24px",
-              "margin-mobile": "16px",
-            },
-            fontFamily: {
-              "body-md": ["Inter"],
-              "body-lg": ["Inter"],
-              "headline-lg": ["Inter"],
-              "headline-md": ["Inter"],
-              "display-lg": ["Inter"],
-              "label-md": ["Inter"],
-              caption: ["Inter"],
-              "title-lg": ["Inter"],
-              "title-md": ["Inter"],
-            },
-            fontSize: {
-              "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
-              "body-lg": ["16px", { lineHeight: "24px", fontWeight: "400" }],
-              "headline-lg": [
-                "28px",
-                {
-                  lineHeight: "36px",
-                  letterSpacing: "-0.01em",
-                  fontWeight: "600",
-                },
-              ],
-              "headline-md": [
-                "24px",
-                { lineHeight: "32px", fontWeight: "600" },
-              ],
-              "display-lg": [
-                "36px",
-                {
-                  lineHeight: "44px",
-                  letterSpacing: "-0.02em",
-                  fontWeight: "700",
-                },
-              ],
-              "label-md": [
-                "13px",
-                {
-                  lineHeight: "18px",
-                  letterSpacing: "0.05em",
-                  fontWeight: "500",
-                },
-              ],
-              caption: ["12px", { lineHeight: "16px", fontWeight: "400" }],
-              "title-lg": ["20px", { lineHeight: "28px", fontWeight: "600" }],
-              "title-md": ["16px", { lineHeight: "24px", fontWeight: "600" }],
-            },
-          },
-        },
-      };
-    </script>
-    <style>
-      body {
-        background-color: #f8f9ff;
-        font-family: "Inter", sans-serif;
-      }
-      .material-symbols-outlined {
-        font-variation-settings:
-          "FILL" 0,
-          "wght" 400,
-          "GRAD" 0,
-          "opsz" 24;
-      }
-      .scrollbar-hide::-webkit-scrollbar {
-        display: none;
-      }
-    </style>
+    <link rel="stylesheet" href="http://localhost:3010/public/css/dashboard.css" />
   </head>
-  <body class="overflow-hidden">
-    <!-- SideNavBar -->
-    <aside
-      class="fixed left-0 top-0 h-full w-[280px] bg-on-secondary-fixed flex flex-col py-stack-lg border-r border-outline-variant z-50"
-    >
-      <div class="px-6 mb-10">
+  <body class="font-body-md text-on-background" style="font-family: Inter, sans-serif; background-color: #f1f5f9;">
+    
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-header">
         <div class="flex items-center gap-3">
-          <div
-            class="w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center"
-          >
-            <span
-              class="material-symbols-outlined text-white"
-              data-icon="medical_services"
-              >medical_services</span
-            >
-          </div>
+          <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-lg">F</div>
           <div>
-            <h1
-              class="font-headline-md text-headline-md font-black text-surface-container-lowest leading-none"
-            >
-              Farmadol
-            </h1>
-            <p class="font-label-md text-label-md text-secondary-fixed-dim">
-              Pharmacy ERP
-            </p>
+            <h1 class="text-lg font-bold text-gray-800">Farmadol ERP</h1>
+            <p class="text-xs text-gray-500">Sistema de Gestión</p>
           </div>
         </div>
       </div>
-      <nav class="flex-1 px-4 space-y-1">
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="dashboard"
-            >dashboard</span
-          >
-          <span class="font-label-md text-label-md">Dashboard</span>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section"><span class="nav-section-title">Principal</span></div>
+        <a href="http://localhost:3010/public/dashboard.html" class="nav-item">
+          <span class="material-symbols-outlined">dashboard</span>
+          <span>Dashboard</span>
         </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="group">group</span>
-          <span class="font-label-md text-label-md">Users</span>
+
+        <div class="nav-section"><span class="nav-section-title">Módulos</span></div>
+        <a href="http://localhost:3010/public/ventas.html" class="nav-item active">
+          <span class="material-symbols-outlined">shopping_cart</span>
+          <span>Ventas</span>
         </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="inventory_2"
-            >inventory_2</span
-          >
-          <span class="font-label-md text-label-md">Inventory</span>
+        <a href="http://localhost:3010/public/inventario.html" class="nav-item">
+          <span class="material-symbols-outlined">inventory_2</span>
+          <span>Inventario</span>
         </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-surface-container-lowest bg-white/5 border-l-4 border-primary-container transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="point_of_sale"
-            >point_of_sale</span
-          >
-          <span class="font-label-md text-label-md">Sales</span>
+        <a href="http://localhost:3010/public/compras.html" class="nav-item">
+          <span class="material-symbols-outlined">local_shipping</span>
+          <span>Compras</span>
         </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="shopping_cart"
-            >shopping_cart</span
-          >
-          <span class="font-label-md text-label-md">Purchases</span>
+        <a href="http://localhost:3010/public/clientes.html" class="nav-item">
+          <span class="material-symbols-outlined">people</span>
+          <span>Clientes</span>
         </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="person_search"
-            >person_search</span
-          >
-          <span class="font-label-md text-label-md">Clients</span>
+        <a href="http://localhost:3010/public/sucursales.html" class="nav-item">
+          <span class="material-symbols-outlined">storefront</span>
+          <span>Sucursales</span>
         </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="analytics"
-            >analytics</span
-          >
-          <span class="font-label-md text-label-md">Reports</span>
+        <a href="http://localhost:3010/public/reportes.html" class="nav-item">
+          <span class="material-symbols-outlined">assessment</span>
+          <span>Reportes</span>
         </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="storefront"
-            >storefront</span
-          >
-          <span class="font-label-md text-label-md">Branches</span>
-        </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="settings"
-            >settings</span
-          >
-          <span class="font-label-md text-label-md">Settings</span>
+
+        <div class="nav-section mt-auto"><span class="nav-section-title">Usuario</span></div>
+        <a href="#" class="nav-item" id="logoutBtn">
+          <span class="material-symbols-outlined">logout</span>
+          <span>Cerrar Sesión</span>
         </a>
       </nav>
-      <div class="px-4 mt-auto">
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="logout"
-            >logout</span
-          >
-          <span class="font-label-md text-label-md">Logout</span>
-        </a>
+
+      <div class="sidebar-footer">
+        <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
+          <div class="w-9 h-9 bg-blue-600 rounded-full flex items-center justify-center text-white font-semibold" id="userAvatar">U</div>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-semibold text-gray-700 truncate" id="userName">Usuario</p>
+            <p class="text-xs text-gray-500 truncate" id="userRole">Cargando...</p>
+          </div>
+        </div>
       </div>
     </aside>
-    <!-- TopNavBar -->
-    <header
-      class="bg-surface-container-lowest fixed top-0 right-0 h-16 flex justify-between items-center px-6 border-b border-outline-variant z-40 transition-all"
-      style="left: 280px"
-    >
-      <div class="flex items-center flex-1 max-w-xl">
-        <div class="relative w-full">
-          <span
-            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-body-md"
-            data-icon="search"
-          >search</span>
-          <input
-            class="w-full pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
-            placeholder="Buscar medicamentos..."
-            type="text"
-          />
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Top Bar -->
+      <header class="top-bar">
+        <div class="flex items-center gap-4">
+          <button id="toggleSidebar" class="lg:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors">
+            <span class="material-symbols-outlined">menu</span>
+          </button>
+          <h2 class="text-xl font-semibold text-gray-800">Ventas</h2>
         </div>
-      </div>
-      <div class="flex items-center space-x-4">
-        <div class="h-8 w-[1px] bg-outline-variant"></div>
-        <div class="flex items-center gap-3 pl-2">
-            <div class="text-right">
-              <p
-                class="font-label-md text-label-md text-on-surface leading-none"
-              >
-                Dr. Alejandro Ruiz
-              </p>
-              <p
-                class="text-[11px] text-secondary font-medium uppercase tracking-wider"
-              >
-                Admin Principal
-              </p>
+        <div class="flex items-center gap-3">
+          <span class="text-sm text-gray-500" id="currentDateTime"></span>
+        </div>
+      </header>
+
+      <!-- Content Area -->
+      <div class="content-area">
+        <!-- Resumen del día -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6" id="resumenDia">
+          <div class="stat-card flex items-center gap-4">
+            <div class="stat-icon bg-blue-50 text-blue-600">
+              <span class="material-symbols-outlined">receipt</span>
             </div>
-            <img
-              alt="User profile photo"
-              class="w-10 h-10 rounded-full border-2 border-primary-container/20"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfDh0aDi-mYTTGT0gNhSnLGh4OBKf_o88qJ4izMLFyRHyU87yajEm5NOfmmV-ROb4H-zghVfM0qXVdoiF4mGNAbcha_4mc-C1bBVk0PJIAfFmCUAM0EjQTzCn6f8uW1CT-MBF1g-aeZ4VnV1ezpIc1OzOYU20Xw498A_rMwwgexs4B3T8sPjWFCggYuI3Ui8ZiXxQrHaQHIZcXRbQsbd-eH2fe0s9UNNoHMDji1otRwE7gdYmtVSVkHO8RfM869N5_xr8g0-be17Mk"
+            <div>
+              <p class="text-sm text-gray-500">Ventas Hoy</p>
+              <p class="text-2xl font-bold text-gray-800" id="totalVentasHoy">-</p>
+            </div>
+          </div>
+          <div class="stat-card flex items-center gap-4">
+            <div class="stat-icon bg-green-50 text-green-600">
+              <span class="material-symbols-outlined">payments</span>
+            </div>
+            <div>
+              <p class="text-sm text-gray-500">Monto Total</p>
+              <p class="text-2xl font-bold text-gray-800" id="montoTotalHoy">S/ -</p>
+            </div>
+          </div>
+          <div class="stat-card flex items-center gap-4">
+            <div class="stat-icon bg-purple-50 text-purple-600">
+              <span class="material-symbols-outlined">shopping_bag</span>
+            </div>
+            <div>
+              <p class="text-sm text-gray-500">Productos Vendidos</p>
+              <p class="text-2xl font-bold text-gray-800" id="productosVendidosHoy">-</p>
+            </div>
+          </div>
+          <div class="stat-card flex items-center gap-4">
+            <div class="stat-icon bg-yellow-50 text-yellow-600">
+              <span class="material-symbols-outlined">trending_up</span>
+            </div>
+            <div>
+              <p class="text-sm text-gray-500">Promedio por Venta</p>
+              <p class="text-2xl font-bold text-gray-800" id="promedioVentaHoy">S/ -</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Acciones -->
+        <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
+          <div class="flex flex-wrap gap-3">
+            <button onclick="showCreateVenta()" class="btn btn-primary">
+              <span class="material-symbols-outlined text-sm">add</span>
+              Nueva Venta
+            </button>
+            <button onclick="loadVentas()" class="btn btn-secondary">
+              <span class="material-symbols-outlined text-sm">refresh</span>
+              Actualizar
+            </button>
+          </div>
+          <div class="flex gap-2">
+            <select id="estadoFilter" onchange="filterVentas()" class="px-4 py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none">
+              <option value="">Todos los estados</option>
+              <option value="completada">Completada</option>
+              <option value="anulada">Anulada</option>
+              <option value="pendiente">Pendiente</option>
+            </select>
+            <input 
+              type="date" 
+              id="fechaInicioFilter" 
+              class="px-4 py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none"
+              onchange="filterVentas()"
+            />
+            <input 
+              type="date" 
+              id="fechaFinFilter" 
+              class="px-4 py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none"
+              onchange="filterVentas()"
+            />
+            <input 
+              type="text" 
+              id="searchVentaInput" 
+              placeholder="Buscar venta..." 
+              class="px-4 py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none w-48"
+              onkeyup="filterVentas()"
             />
           </div>
+        </div>
+
+        <!-- Tabla de Ventas -->
+        <div id="ventasContent">
+          <div class="loading"><span class="material-symbols-outlined">refresh</span> Cargando ventas...</div>
+        </div>
       </div>
-    </header>
-    <!-- Main Content Canvas -->
-    <main class="fixed inset-0 pt-16 flex transition-all" style="left: 280px">
-      <!-- Left Side: Product Selection -->
-      <section class="flex-1 flex flex-col bg-background overflow-hidden">
-        <!-- Filter Bar -->
-        <div
-          class="px-6 py-4 flex items-center gap-4 bg-white border-b border-outline-variant overflow-x-auto scrollbar-hide"
-        >
-          <button
-            class="flex items-center gap-2 px-4 py-1.5 bg-primary text-white rounded-full font-label-md text-label-md transition-all"
-          >
-            <span
-              class="material-symbols-outlined text-[18px]"
-              data-icon="category"
-            >category</span>
-            All Categories
-          </button>
-          <button
-            class="flex items-center gap-2 px-4 py-1.5 bg-surface-container text-on-surface-variant hover:bg-surface-container-highest rounded-full font-label-md text-label-md transition-all"
-          >
-            Analgesics
-          </button>
-          <button
-            class="flex items-center gap-2 px-4 py-1.5 bg-surface-container text-on-surface-variant hover:bg-surface-container-highest rounded-full font-label-md text-label-md transition-all"
-          >
-            Antibiotics
-          </button>
-          <button
-            class="flex items-center gap-2 px-4 py-1.5 bg-surface-container text-on-surface-variant hover:bg-surface-container-highest rounded-full font-label-md text-label-md transition-all"
-          >
-            Vitamins
-          </button>
-          <button
-            class="flex items-center gap-2 px-4 py-1.5 bg-surface-container text-on-surface-variant hover:bg-surface-container-highest rounded-full font-label-md text-label-md transition-all"
-          >
-            Skincare
-          </button>
-          <button
-            class="flex items-center gap-2 px-4 py-1.5 bg-surface-container text-on-surface-variant hover:bg-surface-container-highest rounded-full font-label-md text-label-md transition-all"
-          >
-            First Aid
-          </button>
-        </div>
-        <!-- Product Grid -->
-        <div class="flex-1 overflow-y-auto p-6 scrollbar-hide">
-          <div
-            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-[1440px]"
-          >
-            <!-- Product Card 1 -->
-            <div
-              class="bg-white border border-outline-variant rounded-xl p-4 flex flex-col hover:border-primary/40 hover:shadow-lg transition-all group"
-            >
-              <h3
-                class="font-title-md text-title-md text-on-background line-clamp-1"
-              >
-                Amoxicilina 500mg
-              </h3>
-              <p class="text-caption text-secondary mb-3">
-                Antibiótico - Genérico
-              </p>
-              <div class="mt-auto flex items-center justify-between">
-                <span class="font-headline-md text-headline-md text-primary"
-                  >$12.50</span
-                >
-                <button
-                  class="h-10 w-10 bg-primary-container text-white rounded-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-all"
-                >
-                  <span
-                    class="material-symbols-outlined"
-                    data-icon="add_shopping_cart"
-                  >add_shopping_cart</span>
-                </button>
-              </div>
-            </div>
-            <!-- Product Card 2 -->
-            <div
-              class="bg-white border border-outline-variant rounded-xl p-4 flex flex-col hover:border-primary/40 hover:shadow-lg transition-all group"
-            >
-              <h3
-                class="font-title-md text-title-md text-on-background line-clamp-1"
-              >
-                Paracetamol 500mg
-              </h3>
-              <p class="text-caption text-secondary mb-3">Analgésico - Bayer</p>
-              <div class="mt-auto flex items-center justify-between">
-                <span class="font-headline-md text-headline-md text-primary"
-                  >$5.25</span
-                >
-                <button
-                  class="h-10 w-10 bg-primary-container text-white rounded-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-all"
-                >
-                  <span
-                    class="material-symbols-outlined"
-                    data-icon="add_shopping_cart"
-                  >add_shopping_cart</span>
-                </button>
-              </div>
-            </div>
-            <!-- Product Card 3 -->
-            <div
-              class="bg-white border border-outline-variant rounded-xl p-4 flex flex-col hover:border-primary/40 hover:shadow-lg transition-all group"
-            >
-              <h3
-                class="font-title-md text-title-md text-on-background line-clamp-1"
-              >
-                Multivitamínico A-Z
-              </h3>
-              <p class="text-caption text-secondary mb-3">
-                Suplemento - Centrum
-              </p>
-              <div class="mt-auto flex items-center justify-between">
-                <span class="font-headline-md text-headline-md text-primary"
-                  >$28.99</span
-                >
-                <button
-                  class="h-10 w-10 bg-primary-container text-white rounded-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-all"
-                >
-                  <span
-                    class="material-symbols-outlined"
-                    data-icon="add_shopping_cart"
-                  >add_shopping_cart</span>
-                </button>
-              </div>
-            </div>
-            <!-- Product Card 4 -->
-            <div
-              class="bg-white border border-outline-variant rounded-xl p-4 flex flex-col hover:border-primary/40 hover:shadow-lg transition-all group"
-            >
-              <h3
-                class="font-title-md text-title-md text-on-background line-clamp-1"
-              >
-                Nebulizador Portátil
-              </h3>
-              <p class="text-caption text-secondary mb-3">
-                Equipo Médico - Philips
-              </p>
-              <div class="mt-auto flex items-center justify-between">
-                <span class="font-headline-md text-headline-md text-primary"
-                  >$85.00</span
-                >
-                <button
-                  class="h-10 w-10 bg-primary-container text-white rounded-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-all"
-                >
-                  <span
-                    class="material-symbols-outlined"
-                    data-icon="add_shopping_cart"
-                  >add_shopping_cart</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      <!-- Right Side: Cart/Order Summary -->
-      <section
-        class="w-[400px] flex flex-col bg-white border-l border-outline-variant shadow-2xl relative z-10"
-      >
-        <!-- Customer Selection -->
-        <div
-          class="p-6 border-b border-outline-variant bg-surface-container-low"
-        >
-          <label
-            class="font-label-md text-label-md text-on-surface-variant block mb-2"
-          >Customer / Client</label>
-          <div class="relative group">
-            <select
-              class="w-full pl-4 pr-10 py-3 bg-white border border-outline-variant rounded-xl font-body-md text-body-md appearance-none focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-            >
-              <option>General Public / Walk-in</option>
-              <option>Juan Pérez - ID: 12345678</option>
-              <option>María García - ID: 87654321</option>
-              <option>Carlos Rodriguez - VIP</option>
-            </select>
-            <span
-              class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none"
-              data-icon="arrow_drop_down"
-            >arrow_drop_down</span>
-            <button
-              class="absolute -right-12 top-1/2 -translate-y-1/2 text-primary hover:scale-110 transition-transform"
-            >
-              <span class="material-symbols-outlined" data-icon="person_add">person_add</span>
-            </button>
-          </div>
-        </div>
-        <!-- Cart Items List -->
-        <div class="flex-1 overflow-y-auto p-4 space-y-3 scrollbar-hide">
-          <h2
-            class="px-2 font-title-md text-title-md text-on-background flex items-center justify-between"
-          >
-            Current Cart
-            <span
-              class="text-caption bg-primary-container text-white px-2 py-0.5 rounded-full"
-            >3 Items</span>
-          </h2>
-          <!-- Cart Item 1 -->
-          <div
-            class="flex items-center gap-3 p-3 bg-background border border-outline-variant rounded-xl group hover:border-primary/20 transition-all"
-          >
-            <div
-              class="h-12 w-12 rounded-lg bg-gradient-to-br from-blue-50 to-blue-100 flex-shrink-0 flex items-center justify-center"
-            >
-              <span class="material-symbols-outlined text-primary/40">medication</span>
-            </div>
-            <div class="flex-1 min-w-0">
-              <p
-                class="font-label-md text-label-md text-on-background truncate"
-              >
-                Amoxicilina 500mg
-              </p>
-              <p class="text-caption text-secondary">$12.50 / unit</p>
-            </div>
-            <div class="flex items-center gap-2">
-              <button
-                class="w-7 h-7 flex items-center justify-center rounded-md border border-outline-variant hover:bg-white active:bg-surface-container transition-all"
-              >
-                <span
-                  class="material-symbols-outlined text-[16px]"
-                  data-icon="remove"
-                >remove</span>
-              </button>
-              <span class="font-title-md text-title-md w-4 text-center">2</span>
-              <button
-                class="w-7 h-7 flex items-center justify-center rounded-md border border-outline-variant hover:bg-white active:bg-surface-container transition-all"
-              >
-                <span
-                  class="material-symbols-outlined text-[16px]"
-                  data-icon="add"
-                >add</span>
-              </button>
-            </div>
-            <div class="text-right ml-2">
-              <p class="font-label-md text-label-md font-bold text-primary">
-                $25.00
-              </p>
-              <button
-                class="text-error opacity-0 group-hover:opacity-100 transition-opacity"
-              >
-                <span
-                  class="material-symbols-outlined text-[18px]"
-                  data-icon="delete"
-                >delete</span>
-              </button>
-            </div>
-          </div>
-          <!-- Cart Item 2 -->
-          <div
-            class="flex items-center gap-3 p-3 bg-background border border-outline-variant rounded-xl group hover:border-primary/20 transition-all"
-          >
-            <div
-              class="h-12 w-12 rounded-lg bg-gradient-to-br from-green-50 to-green-100 flex-shrink-0 flex items-center justify-center"
-            >
-              <span class="material-symbols-outlined text-primary/40">medication</span>
-            </div>
-            <div class="flex-1 min-w-0">
-              <p
-                class="font-label-md text-label-md text-on-background truncate"
-              >
-                Paracetamol 500mg
-              </p>
-              <p class="text-caption text-secondary">$5.25 / unit</p>
-            </div>
-            <div class="flex items-center gap-2">
-              <button
-                class="w-7 h-7 flex items-center justify-center rounded-md border border-outline-variant hover:bg-white transition-all"
-              >
-                <span
-                  class="material-symbols-outlined text-[16px]"
-                  data-icon="remove"
-                >remove</span>
-              </button>
-              <span class="font-title-md text-title-md w-4 text-center">1</span>
-              <button
-                class="w-7 h-7 flex items-center justify-center rounded-md border border-outline-variant hover:bg-white transition-all"
-              >
-                <span
-                  class="material-symbols-outlined text-[16px]"
-                  data-icon="add"
-                >add</span>
-              </button>
-            </div>
-            <div class="text-right ml-2">
-              <p class="font-label-md text-label-md font-bold text-primary">
-                $5.25
-              </p>
-              <button
-                class="text-error opacity-0 group-hover:opacity-100 transition-opacity"
-              >
-                <span
-                  class="material-symbols-outlined text-[18px]"
-                  data-icon="delete"
-                >delete</span>
-              </button>
-            </div>
-          </div>
-        </div>
-        <!-- Summary and Checkout -->
-        <div
-          class="p-6 border-t border-outline-variant space-y-4 shadow-[0_-10px_20px_rgba(0,0,0,0.02)]"
-        >
-          <div class="space-y-2">
-            <div
-              class="flex justify-between items-center text-on-surface-variant"
-            >
-              <span class="font-body-md text-body-md">Subtotal</span>
-              <span class="font-body-md text-body-md font-medium">$30.25</span>
-            </div>
-            <div
-              class="flex justify-between items-center text-on-surface-variant"
-            >
-              <span class="font-body-md text-body-md">IVA (15%)</span>
-              <span class="font-body-md text-body-md font-medium">$4.54</span>
-            </div>
-            <div
-              class="flex justify-between items-center text-on-surface-variant"
-            >
-              <span class="font-body-md text-body-md">Discount</span>
-              <span class="font-body-md text-body-md font-medium text-green-600"
-                >-$0.00</span
-              >
-            </div>
-            <div class="pt-2 flex justify-between items-end">
-              <span
-                class="font-headline-md text-headline-md font-bold text-on-background"
-              >Total</span>
-              <span
-                class="font-display-lg text-display-lg font-black text-primary"
-              >$34.79</span>
-            </div>
-          </div>
-          <div class="grid grid-cols-2 gap-3">
-            <button
-              class="flex flex-col items-center justify-center gap-1 p-3 border border-outline-variant rounded-xl hover:bg-surface-container-low transition-all"
-            >
-              <span
-                class="material-symbols-outlined text-on-surface-variant"
-                data-icon="payments"
-              >payments</span>
-              <span class="text-caption font-bold text-on-surface-variant"
-              >Cash</span>
-            </button>
-            <button
-              class="flex flex-col items-center justify-center gap-1 p-3 border border-primary bg-primary-container/5 rounded-xl hover:bg-primary-container/10 transition-all"
-            >
-              <span
-                class="material-symbols-outlined text-primary"
-                data-icon="credit_card"
-              >credit_card</span>
-              <span class="text-caption font-bold text-primary">Card</span>
-            </button>
-          </div>
-          <button
-            class="w-full py-4 bg-primary text-white font-headline-md text-headline-md rounded-xl hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-3"
-          >
-            Confirmar Venta
-            <span class="material-symbols-outlined" data-icon="check_circle">check_circle</span>
-          </button>
-        </div>
-      </section>
     </main>
+
+    <!-- Modal -->
+    <div id="modalOverlay" class="modal-overlay">
+      <div class="modal modal-lg">
+        <div class="modal-header">
+          <h3 id="modalTitle">Modal</h3>
+          <button class="modal-close" onclick="closeModal()">✕</button>
+        </div>
+        <div class="modal-body" id="modalBody">
+          <!-- Contenido dinámico -->
+        </div>
+      </div>
+    </div>
+
+    <script src="http://localhost:3010/public/js/config.js"></script>
+    <script src="http://localhost:3010/public/js/auth.js"></script>
+    <script>
+      // ============ VARIABLES GLOBALES ============
+      let ventasData = [];
+      let clientesData = [];
+      let productosData = [];
+      let metodosPagoData = [];
+      let sucursalesData = [];
+
+      // ============ INICIALIZACIÓN ============
+      document.addEventListener('DOMContentLoaded', () => {
+        if (!requireAuth()) return;
+        loadUserInfo();
+        loadVentas();
+        loadResumenDia();
+        loadClientes();
+        loadProductos();
+        loadMetodosPago();
+        loadSucursales();
+        setupLogout();
+        setupSidebarToggle();
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+      });
+
+      // ============ FUNCIONES DE USUARIO ============
+      function loadUserInfo() {
+        try {
+          const user = JSON.parse(localStorage.getItem('user'));
+          if (user) {
+            document.getElementById('userName').textContent = user.username || 'Usuario';
+            document.getElementById('userRole').textContent = user.roles ? user.roles.join(', ') : 'Sin rol';
+            document.getElementById('userAvatar').textContent = user.username ? user.username.charAt(0).toUpperCase() : 'U';
+          }
+        } catch (e) {
+          console.error('Error loading user info:', e);
+        }
+      }
+
+      function setupLogout() {
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+          e.preventDefault();
+          logout();
+        });
+      }
+
+      function setupSidebarToggle() {
+        document.getElementById('toggleSidebar').addEventListener('click', () => {
+          document.getElementById('sidebar').classList.toggle('open');
+        });
+      }
+
+      function updateDateTime() {
+        const now = new Date();
+        document.getElementById('currentDateTime').textContent = now.toLocaleString('es-ES');
+      }
+
+      // ============ FUNCIONES API ============
+      async function apiRequest(endpoint, options = {}) {
+        const token = localStorage.getItem('token');
+        if (!token) throw new Error('No autenticado');
+
+        const url = `${getApiBase()}${endpoint}`;
+        const headers = {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          ...options.headers
+        };
+
+        const response = await fetch(url, { ...options, headers });
+        if (!response.ok) {
+          const error = await response.json().catch(() => ({ message: `Error ${response.status}` }));
+          throw new Error(error.message || `Error ${response.status}`);
+        }
+        return response.json();
+      }
+
+      // ============ LOAD DATOS ============
+      async function loadClientes() {
+        try {
+          const data = await apiRequest('/api/ventas/clientes');
+          clientesData = data.data || [];
+        } catch (error) {
+          console.warn('Error loading clientes:', error);
+        }
+      }
+
+      async function loadProductos() {
+        try {
+          const data = await apiRequest('/api/inventario/productos');
+          productosData = data.data || [];
+        } catch (error) {
+          console.warn('Error loading productos:', error);
+        }
+      }
+
+      async function loadMetodosPago() {
+        try {
+          const data = await apiRequest('/api/ventas/metodos-pago');
+          metodosPagoData = data.data || [];
+        } catch (error) {
+          console.warn('Error loading metodos pago:', error);
+        }
+      }
+
+      async function loadSucursales() {
+        try {
+          const data = await apiRequest('/api/sucursales/sucursales');
+          sucursalesData = data.data || [];
+        } catch (error) {
+          console.warn('Error loading sucursales:', error);
+        }
+      }
+
+      // ============ RESUMEN DEL DÍA ============
+      async function loadResumenDia() {
+        try {
+          const data = await apiRequest('/api/ventas/ventas/dia/resumen');
+          const resumen = data.data?.resumen || {};
+          
+          document.getElementById('totalVentasHoy').textContent = resumen.total_ventas || 0;
+          document.getElementById('montoTotalHoy').textContent = `S/ ${(resumen.total_monto || 0).toFixed(2)}`;
+          document.getElementById('productosVendidosHoy').textContent = resumen.total_productos || 0;
+          document.getElementById('promedioVentaHoy').textContent = `S/ ${(resumen.promedio_venta || 0).toFixed(2)}`;
+        } catch (error) {
+          console.warn('Error loading resumen dia:', error);
+          document.getElementById('totalVentasHoy').textContent = 'N/A';
+          document.getElementById('montoTotalHoy').textContent = 'S/ N/A';
+          document.getElementById('productosVendidosHoy').textContent = 'N/A';
+          document.getElementById('promedioVentaHoy').textContent = 'S/ N/A';
+        }
+      }
+
+      // ============ LOAD VENTAS ============
+      async function loadVentas() {
+        const container = document.getElementById('ventasContent');
+        container.innerHTML = `<div class="loading"><span class="material-symbols-outlined">refresh</span> Cargando ventas...</div>`;
+
+        try {
+          const data = await apiRequest('/api/ventas/ventas');
+          ventasData = data.data || [];
+          renderVentas(ventasData);
+        } catch (error) {
+          console.error('Error loading ventas:', error);
+          container.innerHTML = `
+            <div class="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
+              <span class="material-symbols-outlined text-red-500 text-4xl">error</span>
+              <p class="text-red-700 mt-2">Error al cargar ventas</p>
+              <p class="text-sm text-red-600">${error.message}</p>
+              <button onclick="loadVentas()" class="btn btn-primary mt-4">Reintentar</button>
+            </div>
+          `;
+        }
+      }
+
+      function renderVentas(data) {
+        const container = document.getElementById('ventasContent');
+        
+        if (!data || data.length === 0) {
+          container.innerHTML = `
+            <div class="bg-gray-50 rounded-xl p-8 text-center">
+              <span class="material-symbols-outlined text-gray-400 text-5xl">receipt_long</span>
+              <p class="text-gray-500 mt-2">No hay ventas registradas</p>
+              <button onclick="showCreateVenta()" class="btn btn-primary mt-4">Registrar primera venta</button>
+            </div>
+          `;
+          return;
+        }
+
+        let html = `
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>N° Venta</th>
+                  <th>Cliente</th>
+                  <th>Método Pago</th>
+                  <th>Subtotal</th>
+                  <th>IGV</th>
+                  <th>Total</th>
+                  <th>Estado</th>
+                  <th>Fecha</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+        `;
+
+        data.forEach(v => {
+          const estadoColors = {
+            'completada': 'badge-success',
+            'anulada': 'badge-danger',
+            'pendiente': 'badge-warning'
+          };
+          const estadoBadge = `<span class="badge ${estadoColors[v.estado] || 'badge-info'}">${v.estado}</span>`;
+          
+          html += `
+            <tr>
+              <td><span class="font-mono text-sm font-medium">${v.numero_venta}</span></td>
+              <td>${v.cliente ? `${v.cliente.nombres} ${v.cliente.apellidos}` : 'Cliente General'}</td>
+              <td>${v.metodo_pago?.nombre || 'N/A'}</td>
+              <td class="text-right">S/ ${parseFloat(v.subtotal).toFixed(2)}</td>
+              <td class="text-right">S/ ${parseFloat(v.igv).toFixed(2)}</td>
+              <td class="text-right font-bold">S/ ${parseFloat(v.total).toFixed(2)}</td>
+              <td>${estadoBadge}</td>
+              <td>${new Date(v.fecha_venta).toLocaleDateString()}</td>
+              <td>
+                <button class="btn btn-primary btn-sm" onclick="showDetalleVenta(${v.id})">
+                  <span class="material-symbols-outlined text-sm">visibility</span>
+                </button>
+                ${v.estado === 'completada' ? `
+                  <button class="btn btn-danger btn-sm" onclick="anularVenta(${v.id})">
+                    <span class="material-symbols-outlined text-sm">close</span>
+                  </button>
+                ` : ''}
+              </td>
+            </tr>
+          `;
+        });
+
+        html += '</tbody></table></div>';
+        container.innerHTML = html;
+      }
+
+      function filterVentas() {
+        const search = document.getElementById('searchVentaInput').value.toLowerCase();
+        const estado = document.getElementById('estadoFilter').value;
+        const fechaInicio = document.getElementById('fechaInicioFilter').value;
+        const fechaFin = document.getElementById('fechaFinFilter').value;
+        
+        let filtered = ventasData.filter(v => {
+          const matchSearch = 
+            v.numero_venta?.toLowerCase().includes(search) ||
+            v.cliente?.nombres?.toLowerCase().includes(search) ||
+            v.cliente?.apellidos?.toLowerCase().includes(search);
+          
+          const matchEstado = !estado || v.estado === estado;
+          
+          let matchFecha = true;
+          if (fechaInicio) {
+            const fechaVenta = new Date(v.fecha_venta).toISOString().split('T')[0];
+            matchFecha = matchFecha && fechaVenta >= fechaInicio;
+          }
+          if (fechaFin) {
+            const fechaVenta = new Date(v.fecha_venta).toISOString().split('T')[0];
+            matchFecha = matchFecha && fechaVenta <= fechaFin;
+          }
+          
+          return matchSearch && matchEstado && matchFecha;
+        });
+        
+        renderVentas(filtered);
+      }
+
+      // ============ CREAR VENTA ============
+      function showCreateVenta() {
+        const clientesOptions = clientesData
+          .filter(c => c.estado)
+          .map(c => `<option value="${c.id}">${c.nombres} ${c.apellidos} - ${c.numero_documento}</option>`)
+          .join('');
+
+        const metodosOptions = metodosPagoData
+          .filter(m => m.estado)
+          .map(m => `<option value="${m.id}">${m.nombre}</option>`)
+          .join('');
+
+        const sucursalesOptions = sucursalesData
+          .filter(s => s.estado)
+          .map(s => `<option value="${s.id}">${s.nombre}</option>`)
+          .join('');
+
+        const productosOptions = productosData
+          .filter(p => p.estado)
+          .map(p => `<option value="${p.id}">${p.codigo} - ${p.nombre}</option>`)
+          .join('');
+
+        showModal('Nueva Venta', `
+          <form id="ventaForm" onsubmit="createVenta(event)">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="form-group">
+                <label>Sucursal *</label>
+                <select name="sucursal_id" required>
+                  <option value="">Seleccionar...</option>
+                  ${sucursalesOptions}
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Cliente</label>
+                <select name="cliente_id">
+                  <option value="">Cliente General</option>
+                  ${clientesOptions}
+                </select>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="form-group">
+                <label>Método de Pago *</label>
+                <select name="metodo_pago_id" required>
+                  <option value="">Seleccionar...</option>
+                  ${metodosOptions}
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Descuento</label>
+                <input type="number" name="descuento" step="0.01" placeholder="0.00" value="0">
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label>Productos *</label>
+              <div id="productosList">
+                <div class="grid grid-cols-6 gap-2 mb-2">
+                  <select name="producto_id[]" class="col-span-2" required>
+                    <option value="">Seleccionar...</option>
+                    ${productosOptions}
+                  </select>
+                  <input type="number" name="cantidad[]" placeholder="Cant" class="col-span-1" required min="1" value="1">
+                  <input type="number" name="precio_unitario[]" placeholder="Precio" class="col-span-1" required step="0.01" value="0">
+                  <input type="number" name="descuento_producto[]" placeholder="Desc" class="col-span-1" step="0.01" value="0">
+                  <button type="button" class="btn btn-danger btn-sm col-span-1" onclick="this.parentElement.remove()">✕</button>
+                </div>
+              </div>
+              <button type="button" class="btn btn-secondary btn-sm mt-2" onclick="addProductoRow()">
+                <span class="material-symbols-outlined text-sm">add</span> Agregar Producto
+              </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="form-group">
+                <label>Monto Recibido</label>
+                <input type="number" name="monto_recibido" step="0.01" placeholder="0.00">
+              </div>
+              <div class="form-group">
+                <label>Observaciones</label>
+                <textarea name="observaciones" placeholder="Observaciones de la venta"></textarea>
+              </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary w-full">Registrar Venta</button>
+          </form>
+        `);
+      }
+
+      function addProductoRow() {
+        const list = document.getElementById('productosList');
+        const div = document.createElement('div');
+        div.className = 'grid grid-cols-6 gap-2 mb-2';
+        
+        const productosOptions = productosData
+          .filter(p => p.estado)
+          .map(p => `<option value="${p.id}">${p.codigo} - ${p.nombre}</option>`)
+          .join('');
+        
+        div.innerHTML = `
+          <select name="producto_id[]" class="col-span-2" required>
+            <option value="">Seleccionar...</option>
+            ${productosOptions}
+          </select>
+          <input type="number" name="cantidad[]" placeholder="Cant" class="col-span-1" required min="1" value="1">
+          <input type="number" name="precio_unitario[]" placeholder="Precio" class="col-span-1" required step="0.01" value="0">
+          <input type="number" name="descuento_producto[]" placeholder="Desc" class="col-span-1" step="0.01" value="0">
+          <button type="button" class="btn btn-danger btn-sm col-span-1" onclick="this.parentElement.remove()">✕</button>
+        `;
+        list.appendChild(div);
+      }
+
+      async function createVenta(event) {
+        event.preventDefault();
+        const form = event.target;
+        const formData = new FormData(form);
+        
+        const data = {
+          sucursal_id: parseInt(formData.get('sucursal_id')),
+          cliente_id: formData.get('cliente_id') ? parseInt(formData.get('cliente_id')) : null,
+          metodo_pago_id: parseInt(formData.get('metodo_pago_id')),
+          descuento: parseFloat(formData.get('descuento')) || 0,
+          monto_recibido: formData.get('monto_recibido') ? parseFloat(formData.get('monto_recibido')) : null,
+          observaciones: formData.get('observaciones'),
+          detalles: []
+        };
+
+        const productoIds = formData.getAll('producto_id[]');
+        const cantidades = formData.getAll('cantidad[]');
+        const precios = formData.getAll('precio_unitario[]');
+        const descuentos = formData.getAll('descuento_producto[]');
+
+        for (let i = 0; i < productoIds.length; i++) {
+          if (!productoIds[i]) continue;
+          data.detalles.push({
+            producto_id: parseInt(productoIds[i]),
+            inventario_id: 1, // Esto debería ser dinámico con el lote
+            cantidad: parseInt(cantidades[i]),
+            precio_unitario: parseFloat(precios[i]),
+            descuento: parseFloat(descuentos[i]) || 0
+          });
+        }
+
+        if (data.detalles.length === 0) {
+          showToast('❌ Debes agregar al menos un producto', 'error');
+          return;
+        }
+
+        try {
+          const result = await apiRequest('/api/ventas/ventas', {
+            method: 'POST',
+            body: JSON.stringify(data)
+          });
+          closeModal();
+          showToast('✅ Venta registrada exitosamente', 'success');
+          loadVentas();
+          loadResumenDia();
+        } catch (error) {
+          showToast('❌ ' + error.message, 'error');
+        }
+      }
+
+      // ============ DETALLE VENTA ============
+      function showDetalleVenta(id) {
+        const venta = ventasData.find(v => v.id === id);
+        if (!venta) {
+          showToast('❌ Venta no encontrada', 'error');
+          return;
+        }
+
+        let detallesHtml = '';
+        if (venta.detalles && venta.detalles.length > 0) {
+          detallesHtml = `
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unit.</th>
+                    <th>Descuento</th>
+                    <th>Subtotal</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+          `;
+          venta.detalles.forEach(d => {
+            detallesHtml += `
+              <tr>
+                <td>${d.producto_id}</td>
+                <td class="text-center">${d.cantidad}</td>
+                <td class="text-right">S/ ${parseFloat(d.precio_unitario).toFixed(2)}</td>
+                <td class="text-right">S/ ${parseFloat(d.descuento || 0).toFixed(2)}</td>
+                <td class="text-right">S/ ${parseFloat(d.subtotal).toFixed(2)}</td>
+                <td class="text-right font-bold">S/ ${parseFloat(d.total).toFixed(2)}</td>
+              </tr>
+            `;
+          });
+          detallesHtml += '</tbody></table></div>';
+        } else {
+          detallesHtml = '<p class="text-gray-500 text-center py-4">No hay detalles disponibles</p>';
+        }
+
+        showModal(`Detalle de Venta - ${venta.numero_venta}`, `
+          <div class="grid grid-cols-2 gap-4 mb-4">
+            <div class="p-3 bg-gray-50 rounded-lg">
+              <p class="text-sm text-gray-500">Cliente</p>
+              <p class="font-semibold">${venta.cliente ? `${venta.cliente.nombres} ${venta.cliente.apellidos}` : 'Cliente General'}</p>
+            </div>
+            <div class="p-3 bg-gray-50 rounded-lg">
+              <p class="text-sm text-gray-500">Método de Pago</p>
+              <p class="font-semibold">${venta.metodo_pago?.nombre || 'N/A'}</p>
+            </div>
+            <div class="p-3 bg-gray-50 rounded-lg">
+              <p class="text-sm text-gray-500">Estado</p>
+              <p><span class="badge ${venta.estado === 'completada' ? 'badge-success' : venta.estado === 'anulada' ? 'badge-danger' : 'badge-warning'}">${venta.estado}</span></p>
+            </div>
+            <div class="p-3 bg-gray-50 rounded-lg">
+              <p class="text-sm text-gray-500">Total</p>
+              <p class="text-xl font-bold text-blue-600">S/ ${parseFloat(venta.total).toFixed(2)}</p>
+            </div>
+          </div>
+          <div class="mb-4">
+            <p class="text-sm text-gray-500">Observaciones</p>
+            <p class="text-gray-700">${venta.observaciones || 'Sin observaciones'}</p>
+          </div>
+          <h4 class="font-semibold text-gray-700 mb-2">Productos</h4>
+          ${detallesHtml}
+        `);
+      }
+
+      // ============ ANULAR VENTA ============
+      async function anularVenta(id) {
+        if (!confirm('¿Estás seguro de anular esta venta? Esta acción no se puede deshacer.')) return;
+        
+        const motivo = prompt('Motivo de la anulación:');
+        if (motivo === null) return;
+
+        try {
+          const result = await apiRequest(`/api/ventas/ventas/${id}/anular`, {
+            method: 'PUT',
+            body: JSON.stringify({ observaciones: motivo || 'Anulada por el usuario' })
+          });
+          showToast('✅ Venta anulada exitosamente', 'success');
+          loadVentas();
+          loadResumenDia();
+        } catch (error) {
+          showToast('❌ ' + error.message, 'error');
+        }
+      }
+
+      // ============ TOAST NOTIFICATIONS ============
+      function showToast(message, type = 'info') {
+        const colors = {
+          success: 'bg-green-50 border-green-200 text-green-700',
+          error: 'bg-red-50 border-red-200 text-red-700',
+          warning: 'bg-yellow-50 border-yellow-200 text-yellow-700',
+          info: 'bg-blue-50 border-blue-200 text-blue-700'
+        };
+        const icons = {
+          success: 'check_circle',
+          error: 'error',
+          warning: 'warning',
+          info: 'info'
+        };
+
+        const toast = document.createElement('div');
+        toast.className = `fixed top-4 right-4 p-4 rounded-lg border shadow-lg ${colors[type] || colors.info} flex items-center gap-3 z-50 max-w-md animate-slide-in`;
+        toast.innerHTML = `
+          <span class="material-symbols-outlined">${icons[type] || icons.info}</span>
+          <span>${message}</span>
+          <button onclick="this.parentElement.remove()" class="ml-auto text-gray-400 hover:text-gray-600">✕</button>
+        `;
+
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 5000);
+      }
+
+      // ============ MODAL ============
+      function showModal(title, content) {
+        document.getElementById('modalTitle').textContent = title;
+        document.getElementById('modalBody').innerHTML = content;
+        document.getElementById('modalOverlay').classList.add('active');
+        document.querySelector('.modal').classList.add('modal-lg');
+      }
+
+      function closeModal() {
+        document.getElementById('modalOverlay').classList.remove('active');
+      }
+
+      document.getElementById('modalOverlay').addEventListener('click', (e) => {
+        if (e.target === e.currentTarget) closeModal();
+      });
+
+      // ============ ESTILOS ADICIONALES ============
+      const style = document.createElement('style');
+      style.textContent = `
+        .animate-slide-in {
+          animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn {
+          from { transform: translateX(100%); opacity: 0; }
+          to { transform: translateX(0); opacity: 1; }
+        }
+        .modal-lg {
+          max-width: 900px !important;
+        }
+        .grid-cols-6 {
+          grid-template-columns: repeat(6, 1fr);
+        }
+        .col-span-2 {
+          grid-column: span 2;
+        }
+        .col-span-1 {
+          grid-column: span 1;
+        }
+      `;
+      document.head.appendChild(style);
+    </script>
   </body>
 </html>

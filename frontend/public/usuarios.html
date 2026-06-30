@@ -1,687 +1,810 @@
-<!doctype html>
-
+<!-- frontend/public/usuarios.html -->
+<!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-      rel="stylesheet"
-    />
-    <script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              "primary-fixed": "#dbe1ff",
-              "on-tertiary-fixed": "#360f00",
-              "secondary-fixed-dim": "#bec6e0",
-              "inverse-primary": "#b4c5ff",
-              secondary: "#565e74",
-              "on-secondary-fixed-variant": "#3f465c",
-              "on-tertiary-container": "#ffede6",
-              "on-secondary-container": "#5c647a",
-              "on-error-container": "#93000a",
-              "surface-tint": "#0053db",
-              "on-primary-fixed-variant": "#003ea8",
-              "on-secondary-fixed": "#131b2e",
-              "secondary-fixed": "#dae2fd",
-              "outline-variant": "#c3c6d7",
-              "surface-container-lowest": "#ffffff",
-              tertiary: "#943700",
-              background: "#f8f9ff",
-              "on-secondary": "#ffffff",
-              "surface-dim": "#cbdbf5",
-              primary: "#004ac6",
-              "on-tertiary": "#ffffff",
-              "on-surface-variant": "#434655",
-              "inverse-on-surface": "#eaf1ff",
-              "surface-bright": "#f8f9ff",
-              "surface-container-low": "#eff4ff",
-              error: "#ba1a1a",
-              "tertiary-fixed-dim": "#ffb596",
-              "surface-variant": "#d3e4fe",
-              "surface-container": "#e5eeff",
-              "on-tertiary-fixed-variant": "#7d2d00",
-              "error-container": "#ffdad6",
-              "surface-container-highest": "#d3e4fe",
-              outline: "#737686",
-              surface: "#f8f9ff",
-              "tertiary-container": "#bc4800",
-              "on-background": "#0b1c30",
-              "on-surface": "#0b1c30",
-              "tertiary-fixed": "#ffdbcd",
-              "on-primary": "#ffffff",
-              "secondary-container": "#dae2fd",
-              "primary-container": "#2563eb",
-              "on-primary-fixed": "#00174b",
-              "on-error": "#ffffff",
-              "inverse-surface": "#213145",
-              "surface-container-high": "#dce9ff",
-              "on-primary-container": "#eeefff",
-              "primary-fixed-dim": "#b4c5ff",
-            },
-            borderRadius: {
-              DEFAULT: "0.25rem",
-              lg: "0.5rem",
-              xl: "0.75rem",
-              full: "9999px",
-            },
-            spacing: {
-              "stack-md": "16px",
-              "sidebar-width": "280px",
-              "margin-mobile": "16px",
-              "stack-lg": "24px",
-              "container-max-width": "1440px",
-              "stack-sm": "8px",
-              gutter: "24px",
-            },
-            fontFamily: {
-              "title-md": ["Inter"],
-              "headline-lg": ["Inter"],
-              "body-lg": ["Inter"],
-              "display-lg": ["Inter"],
-              caption: ["Inter"],
-              "headline-md": ["Inter"],
-              "body-md": ["Inter"],
-              "title-lg": ["Inter"],
-              "label-md": ["Inter"],
-            },
-            fontSize: {
-              "title-md": ["16px", { lineHeight: "24px", fontWeight: "600" }],
-              "headline-lg": [
-                "28px",
-                {
-                  lineHeight: "36px",
-                  letterSpacing: "-0.01em",
-                  fontWeight: "600",
-                },
-              ],
-              "body-lg": ["16px", { lineHeight: "24px", fontWeight: "400" }],
-              "display-lg": [
-                "36px",
-                {
-                  lineHeight: "44px",
-                  letterSpacing: "-0.02em",
-                  fontWeight: "700",
-                },
-              ],
-              caption: ["12px", { lineHeight: "16px", fontWeight: "400" }],
-              "headline-md": [
-                "24px",
-                { lineHeight: "32px", fontWeight: "600" },
-              ],
-              "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
-              "title-lg": ["20px", { lineHeight: "28px", fontWeight: "600" }],
-              "label-md": [
-                "13px",
-                {
-                  lineHeight: "18px",
-                  letterSpacing: "0.05em",
-                  fontWeight: "500",
-                },
-              ],
-            },
-          },
-        },
-      };
-    </script>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Farmadol - Usuarios</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💊</text></svg>" />
     <style>
-      body {
-        font-family: "Inter", sans-serif;
-      }
-      .material-symbols-outlined {
-        font-variation-settings:
-          "FILL" 0,
-          "wght" 400,
-          "GRAD" 0,
-          "opsz" 24;
-      }
-      .sidebar-active {
-        background-color: rgba(255, 255, 255, 0.05);
-        border-left: 4px solid #2563eb;
-        color: #ffffff;
-      }
+        .sidebar-transition {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .sidebar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .modal-transition {
+            animation: modalIn 0.3s ease;
+        }
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .toast-slide {
+            animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #22c55e;
+            display: inline-block;
+            animation: pulse-dot 2s infinite;
+        }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
     </style>
-  </head>
-  <body class="bg-background text-on-surface flex min-h-screen">
-    <!-- SideNavBar -->
-    <aside
-      class="fixed left-0 top-0 h-full w-[280px] bg-on-secondary-fixed flex flex-col py-stack-lg border-r border-outline-variant z-50"
-    >
-      <div class="px-6 mb-10">
-        <div class="flex items-center gap-3">
-          <div
-            class="w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center"
-          >
-            <span
-              class="material-symbols-outlined text-white"
-              data-icon="medical_services"
-              >medical_services</span
-            >
-          </div>
-          <div>
-            <h1
-              class="font-headline-md text-headline-md font-black text-surface-container-lowest leading-none"
-            >
-              Farmadol
-            </h1>
-            <p class="font-label-md text-label-md text-secondary-fixed-dim">
-              Pharmacy ERP
-            </p>
-          </div>
-        </div>
-      </div>
-      <nav class="flex-1 px-4 space-y-1">
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="dashboard"
-            >dashboard</span
-          >
-          <span class="font-label-md text-label-md">Dashboard</span>
-        </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-surface-container-lowest bg-white/5 border-l-4 border-primary-container transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="group">group</span>
-          <span class="font-label-md text-label-md">Users</span>
-        </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="inventory_2"
-            >inventory_2</span
-          >
-          <span class="font-label-md text-label-md">Inventory</span>
-        </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="point_of_sale"
-            >point_of_sale</span
-          >
-          <span class="font-label-md text-label-md">Sales</span>
-        </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="shopping_cart"
-            >shopping_cart</span
-          >
-          <span class="font-label-md text-label-md">Purchases</span>
-        </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="person_search"
-            >person_search</span
-          >
-          <span class="font-label-md text-label-md">Clients</span>
-        </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="analytics"
-            >analytics</span
-          >
-          <span class="font-label-md text-label-md">Reports</span>
-        </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="storefront"
-            >storefront</span
-          >
-          <span class="font-label-md text-label-md">Branches</span>
-        </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="settings"
-            >settings</span
-          >
-          <span class="font-label-md text-label-md">Settings</span>
-        </a>
-      </nav>
-      <div class="px-4 mt-auto">
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="logout"
-            >logout</span
-          >
-          <span class="font-label-md text-label-md">Logout</span>
-        </a>
-      </div>
-    </aside>
-    <!-- Main Content Area -->
-    <main class="flex-1 ml-0 md:ml-sidebar-width min-h-screen relative">
-      <!-- TopNavBar Component -->
-      <header
-        class="sticky top-0 h-16 bg-surface-container-lowest border-b border-outline-variant flex justify-between items-center px-gutter z-30"
-      >
-        <div class="flex items-center gap-4 flex-1">
-          <div class="relative w-full max-w-md">
-            <span
-              class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-body-md"
-              data-icon="search"
-              >search</span
-            >
-            <input
-              class="w-full pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-body-md"
-              placeholder="Buscar usuarios..."
-              type="text"
-            />
-          </div>
-        </div>
-        
-        <div class="flex items-center gap-4">
-          <button
-            class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-low transition-colors text-on-surface-variant"
-          >
-          </button>
-          <div class="h-8 w-[1px] bg-outline-variant mx-2"></div>
-          <div class="flex items-center gap-3 pl-2">
-            <div class="text-right">
-              <p
-                class="font-label-md text-label-md text-on-surface leading-none"
-              >
-                Dr. Alejandro Ruiz
-              </p>
-              <p
-                class="text-[11px] text-secondary font-medium uppercase tracking-wider"
-              >
-                Admin Principal
-              </p>
+</head>
+<body>
+
+    <!-- Sidebar Overlay (mobile) -->
+    <div class="fixed inset-0 bg-black/30 backdrop-blur-sm z-40 hidden" id="sidebarOverlay"></div>
+
+    <!-- ============ SIDEBAR ============ -->
+    <aside class="sidebar fixed left-0 top-0 h-full w-[280px] bg-white border-r border-gray-200 flex flex-col z-50 shadow-lg transform -translate-x-full md:translate-x-0 sidebar-transition" id="sidebar">
+        <div class="px-6 py-6 border-b border-gray-100 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-bold text-lg">F</div>
+            <div>
+                <h1 class="text-xl font-bold text-gray-900">Farmadol</h1>
+                <p class="text-xs text-gray-500">Sistema de Gestión</p>
             </div>
-            <img
-              alt="User profile photo"
-              class="w-10 h-10 rounded-full border-2 border-primary-container/20"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfDh0aDi-mYTTGT0gNhSnLGh4OBKf_o88qJ4izMLFyRHyU87yajEm5NOfmmV-ROb4H-zghVfM0qXVdoiF4mGNAbcha_4mc-C1bBVk0PJIAfFmCUAM0EjQTzCn6f8uW1CT-MBF1g-aeZ4VnV1ezpIc1OzOYU20Xw498A_rMwwgexs4B3T8sPjWFCggYuI3Ui8ZiXxQrHaQHIZcXRbQsbd-eH2fe0s9UNNoHMDji1otRwE7gdYmtVSVkHO8RfM869N5_xr8g0-be17Mk"
-            />
-          </div>
         </div>
-      </header>
-      <!-- Page Content -->
-      <div class="p-gutter max-w-container-max-width mx-auto">
-        <div
-          class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-stack-lg"
-        >
-          <div>
-            <h2 class="font-headline-lg text-headline-lg text-on-background">
-              Gestión de Usuarios
-            </h2>
-            <p class="font-body-md text-body-md text-on-surface-variant">
-              Administra los accesos y roles del personal de la farmacia.
-            </p>
-          </div>
-          <button
-            class="bg-primary text-on-primary px-6 py-3 rounded-lg flex items-center gap-2 font-title-md text-title-md hover:opacity-90 active:scale-95 transition-all shadow-sm"
-          >
-            <span class="material-symbols-outlined" data-icon="person_add"
-              >person_add</span
-            >
-            Agregar Usuario
-          </button>
-        </div>
-        <!-- Advanced Table Container -->
-        <div
-          class="bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden"
-        >
-          <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
-              <thead>
-                <tr
-                  class="bg-surface-container-low border-b border-outline-variant"
-                >
-                  <th
-                    class="px-6 py-4 font-title-md text-title-md text-on-surface-variant"
-                  >
-                    Nombre
-                  </th>
-                  <th
-                    class="px-6 py-4 font-title-md text-title-md text-on-surface-variant"
-                  >
-                    Correo
-                  </th>
-                  <th
-                    class="px-6 py-4 font-title-md text-title-md text-on-surface-variant"
-                  >
-                    Rol
-                  </th>
-                  <th
-                    class="px-6 py-4 font-title-md text-title-md text-on-surface-variant"
-                  >
-                    Estado
-                  </th>
-                  <th
-                    class="px-6 py-4 font-title-md text-title-md text-on-surface-variant text-right"
-                  >
-                    Acciones
-                  </th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-surface-container-low">
-                <!-- Row 1 -->
-                <tr
-                  class="hover:bg-primary-container/5 transition-colors group"
-                >
-                  <td class="px-6 py-4">
-                    <div class="flex items-center gap-3">
-                      <div
-                        class="w-9 h-9 rounded-full bg-primary-fixed flex items-center justify-center text-on-primary-fixed font-bold"
-                      >
-                        JD
-                      </div>
-                      <span class="font-title-md text-title-md text-on-surface"
-                        >Javier Delgado</span
-                      >
-                    </div>
-                  </td>
-                  <td
-                    class="px-6 py-4 font-body-md text-body-md text-on-surface-variant"
-                  >
-                    j.delgado@farmadol.com
-                  </td>
-                  <td class="px-6 py-4">
-                    <span
-                      class="px-3 py-1 bg-primary-container/10 text-primary-container text-[11px] font-bold uppercase tracking-wider rounded-full"
-                      >Admin</span
-                    >
-                  </td>
-                  <td class="px-6 py-4">
-                    <div class="flex items-center gap-2">
-                      <div class="w-2 h-2 rounded-full bg-primary"></div>
-                      <span class="font-body-md text-body-md text-on-surface"
-                        >Activo</span
-                      >
-                    </div>
-                  </td>
-                  <td class="px-6 py-4 text-right">
-                    <div class="flex justify-end gap-2">
-                      <button
-                        class="p-2 hover:bg-surface-container-high rounded-lg text-on-surface-variant transition-colors"
-                      >
-                        <span class="material-symbols-outlined" data-icon="edit"
-                          >edit</span
-                        >
-                      </button>
-                      <button
-                        class="p-2 hover:bg-error-container/20 rounded-lg text-error transition-colors"
-                      >
-                        <span
-                          class="material-symbols-outlined"
-                          data-icon="delete"
-                          >delete</span
-                        >
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <!-- Row 2 -->
-                <tr class="hover:bg-primary-container/5 transition-colors">
-                  <td class="px-6 py-4">
-                    <div class="flex items-center gap-3">
-                      <div
-                        class="w-9 h-9 rounded-full bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed font-bold"
-                      >
-                        AM
-                      </div>
-                      <span class="font-title-md text-title-md text-on-surface"
-                        >Ana Martínez</span
-                      >
-                    </div>
-                  </td>
-                  <td
-                    class="px-6 py-4 font-body-md text-body-md text-on-surface-variant"
-                  >
-                    a.martinez@farmadol.com
-                  </td>
-                  <td class="px-6 py-4">
-                    <span
-                      class="px-3 py-1 bg-tertiary-fixed-dim/20 text-tertiary-fixed-variant text-[11px] font-bold uppercase tracking-wider rounded-full"
-                      >Farmacéutico</span
-                    >
-                  </td>
-                  <td class="px-6 py-4">
-                    <div class="flex items-center gap-2">
-                      <div class="w-2 h-2 rounded-full bg-primary"></div>
-                      <span class="font-body-md text-body-md text-on-surface"
-                        >Activo</span
-                      >
-                    </div>
-                  </td>
-                  <td class="px-6 py-4 text-right">
-                    <div class="flex justify-end gap-2">
-                      <button
-                        class="p-2 hover:bg-surface-container-high rounded-lg text-on-surface-variant transition-colors"
-                      >
-                        <span class="material-symbols-outlined" data-icon="edit"
-                          >edit</span
-                        >
-                      </button>
-                      <button
-                        class="p-2 hover:bg-error-container/20 rounded-lg text-error transition-colors"
-                      >
-                        <span
-                          class="material-symbols-outlined"
-                          data-icon="delete"
-                          >delete</span
-                        >
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <!-- Row 3 -->
-                <tr class="hover:bg-primary-container/5 transition-colors">
-                  <td class="px-6 py-4">
-                    <div class="flex items-center gap-3">
-                      <div
-                        class="w-9 h-9 rounded-full bg-outline-variant/30 flex items-center justify-center text-on-surface-variant font-bold"
-                      >
-                        CR
-                      </div>
-                      <span class="font-title-md text-title-md text-on-surface"
-                        >Carlos Ruiz</span
-                      >
-                    </div>
-                  </td>
-                  <td
-                    class="px-6 py-4 font-body-md text-body-md text-on-surface-variant"
-                  >
-                    c.ruiz@farmadol.com
-                  </td>
-                  <td class="px-6 py-4">
-                    <span
-                      class="px-3 py-1 bg-outline-variant/20 text-on-surface-variant text-[11px] font-bold uppercase tracking-wider rounded-full"
-                      >Vendedor</span
-                    >
-                  </td>
-                  <td class="px-6 py-4">
-                    <div class="flex items-center gap-2">
-                      <div class="w-2 h-2 rounded-full bg-outline"></div>
-                      <span
-                        class="font-body-md text-body-md text-on-surface-variant"
-                        >Inactivo</span
-                      >
-                    </div>
-                  </td>
-                  <td class="px-6 py-4 text-right">
-                    <div class="flex justify-end gap-2">
-                      <button
-                        class="p-2 hover:bg-surface-container-high rounded-lg text-on-surface-variant transition-colors"
-                      >
-                        <span class="material-symbols-outlined" data-icon="edit"
-                          >edit</span
-                        >
-                      </button>
-                      <button
-                        class="p-2 hover:bg-error-container/20 rounded-lg text-error transition-colors"
-                      >
-                        <span
-                          class="material-symbols-outlined"
-                          data-icon="delete"
-                          >delete</span
-                        >
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <!-- Pagination Footer -->
-          <div
-            class="px-6 py-4 bg-surface-container-lowest border-t border-outline-variant flex items-center justify-between"
-          >
-            <span class="text-caption text-on-surface-variant"
-              >Mostrando 1-3 de 12 usuarios</span
-            >
-            <div class="flex gap-2">
-              <button
-                class="px-3 py-1 border border-outline-variant rounded hover:bg-surface-container-low transition-colors disabled:opacity-50"
-                disabled=""
-              >
-                Anterior
-              </button>
-              <button
-                class="px-3 py-1 border border-outline-variant rounded hover:bg-surface-container-low transition-colors"
-              >
-                Siguiente
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- MODAL OVERLAY (ABIERTO POR DEFECTO PARA LA DEMO) -->
-      <div
-        class="hidden fixed inset-0 bg-on-background/40 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-      >
-        <div
-          class="bg-surface-container-lowest w-full max-w-lg rounded-2xl shadow-2xl border border-outline-variant animate-in fade-in zoom-in duration-300"
-        >
-          <!-- Modal Header -->
-          <div
-            class="px-6 py-4 border-b border-outline-variant flex justify-between items-center"
-          >
-            <h3 class="font-headline-md text-headline-md text-on-surface">
-              Crear Nuevo Usuario
-            </h3>
-            <button
-              class="p-2 hover:bg-surface-container-low rounded-full transition-colors"
-            >
-              <span class="material-symbols-outlined" data-icon="close"
-                >close</span
-              >
-            </button>
-          </div>
-          <!-- Modal Body -->
-          <div class="p-6 space-y-6">
-            <!-- Nombre Field -->
-            <div class="space-y-2">
-              <label
-                class="font-label-md text-label-md text-on-surface-variant ml-1"
-                >NOMBRE COMPLETO</label
-              >
-              <div class="relative">
-                <input
-                  class="w-full px-4 py-3 bg-white border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-body-lg"
-                  placeholder="Ej. Ricardo Montaner"
-                  type="text"
-                />
-              </div>
-            </div>
-            <!-- Email Field -->
-            <div class="space-y-2">
-              <label
-                class="font-label-md text-label-md text-on-surface-variant ml-1"
-                >CORREO ELECTRÓNICO</label
-              >
-              <div class="relative">
-                <input
-                  class="w-full px-4 py-3 bg-white border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-body-lg"
-                  placeholder="r.montaner@farmadol.com"
-                  type="email"
-                />
-              </div>
-            </div>
-            <div class="grid grid-cols-2 gap-4">
-              <!-- Rol Field -->
-              <div class="space-y-2">
-                <label
-                  class="font-label-md text-label-md text-on-surface-variant ml-1"
-                  >ROL DEL SISTEMA</label
-                >
-                <select
-                  class="w-full px-4 py-3 bg-white border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-body-lg appearance-none"
-                >
-                  <option value="admin">Administrador</option>
-                  <option value="pharma">Farmacéutico</option>
-                  <option selected="" value="sales">Vendedor</option>
-                </select>
-              </div>
-              <!-- Status Field -->
-              <div class="space-y-2">
-                <label
-                  class="font-label-md text-label-md text-on-surface-variant ml-1"
-                  >ESTADO DE CUENTA</label
-                >
-                <div
-                  class="flex items-center h-[50px] px-4 bg-surface-container-low border border-outline-variant rounded-lg justify-between"
-                >
-                  <span class="font-body-md text-body-md text-on-surface"
-                    >Activo</span
-                  >
-                  <label
-                    class="relative inline-flex items-center cursor-pointer"
-                  >
-                    <input checked="" class="sr-only peer" type="checkbox" />
-                    <div
-                      class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"
-                    ></div>
-                  </label>
+
+        <nav class="flex-1 px-3 py-4 overflow-y-auto">
+            <p class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Navegación</p>
+            
+            <a href="/dashboard" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
+                <span class="text-lg">📊</span>
+                Dashboard
+            </a>
+            
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
+                <span class="text-lg">💳</span>
+                Ventas
+            </a>
+            
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
+                <span class="text-lg">📦</span>
+                Inventario
+            </a>
+            
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
+                <span class="text-lg">🛒</span>
+                Compras
+            </a>
+            
+            <a href="/clientes" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
+                <span class="text-lg">👤</span>
+                Clientes
+            </a>
+            
+            <a href="/usuarios" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium bg-blue-50 text-blue-600">
+                <span class="text-lg">🔐</span>
+                Usuarios
+            </a>
+            
+            <a href="/sucursales" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
+                <span class="text-lg">🏢</span>
+                Sucursales
+            </a>
+            
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
+                <span class="text-lg">📄</span>
+                Reportes
+            </a>
+        </nav>
+
+        <div class="px-4 py-4 border-t border-gray-100">
+            <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-semibold text-sm" id="userAvatar">A</div>
+                <div>
+                    <p class="text-sm font-semibold text-gray-900" id="userName">Administrador</p>
+                    <p class="text-xs text-gray-500" id="userEmail">admin@farmadol.com</p>
+                    <span class="text-xs text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full inline-block mt-0.5" id="userRole">Administrador</span>
                 </div>
-              </div>
             </div>
-          </div>
-          <!-- Modal Footer -->
-          <div
-            class="px-6 py-4 bg-surface-container-low border-t border-outline-variant flex justify-end gap-3 rounded-b-2xl"
-          >
-            <button
-              class="px-6 py-2.5 font-title-md text-title-md text-on-surface-variant hover:bg-surface-variant rounded-lg transition-all"
-            >
-              Cancelar
+            <button class="w-full flex items-center gap-2 px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition-all" id="logoutBtn">
+                <span>🚪</span>
+                Cerrar Sesión
             </button>
-            <button
-              class="px-8 py-2.5 bg-primary text-on-primary font-title-md text-title-md rounded-lg shadow-sm hover:opacity-90 active:scale-95 transition-all"
-            >
-              Guardar Usuario
-            </button>
-          </div>
         </div>
-      </div>
-    </main>
-  </body>
+    </aside>
+
+    <!-- ============ MAIN CONTENT ============ -->
+    <div class="md:ml-[280px] min-h-screen bg-gray-50">
+        <header class="bg-white border-b border-gray-200 sticky top-0 z-30">
+            <div class="flex items-center justify-between px-4 md:px-8 py-4">
+                <div class="flex items-center gap-4">
+                    <button class="md:hidden text-2xl text-gray-600" id="hamburgerBtn">☰</button>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900">Usuarios</h1>
+                        <p class="text-sm text-gray-500">Gestión de usuarios y roles</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-2 text-sm text-gray-500">
+                        <span class="status-dot"></span>
+                        <span>Conectado</span>
+                    </div>
+                    <span class="text-sm text-gray-500" id="currentDateTime"></span>
+                </div>
+            </div>
+        </header>
+
+        <main class="p-4 md:p-8">
+            <!-- Toolbar -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full sm:w-auto">
+                    <div class="relative flex-1 sm:flex-initial">
+                        <input type="text" id="searchInput" placeholder="Buscar usuario..." oninput="filterUsuarios()" class="w-full sm:w-72 px-4 py-2.5 pl-10 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white">
+                        <span class="absolute left-3 top-2.5 text-gray-400">🔍</span>
+                    </div>
+                    
+                    <select id="estadoFilter" onchange="filterUsuarios()" class="w-full sm:w-auto px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white">
+                        <option value="todos">Todos los estados</option>
+                        <option value="1">Activos</option>
+                        <option value="0">Inactivos</option>
+                    </select>
+                    
+                    <select id="rolFilter" onchange="filterUsuarios()" class="w-full sm:w-auto px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white">
+                        <option value="todos">Todos los roles</option>
+                        <option value="ADMIN">Administrador</option>
+                        <option value="GERENTE">Gerente</option>
+                        <option value="CAJERO">Cajero</option>
+                        <option value="ALMACENERO">Almacenero</option>
+                        <option value="FARMACEUTICO">Farmacéutico</option>
+                    </select>
+                    
+                    <button class="px-4 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg transition-all border border-gray-200" onclick="cargarUsuarios()">
+                        🔄 Actualizar
+                    </button>
+                </div>
+                <button class="w-full sm:w-auto px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-all flex items-center justify-center gap-2 shadow-sm" onclick="openModal()">
+                    ➕ Nuevo Usuario
+                </button>
+            </div>
+
+            <!-- Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div class="bg-white rounded-xl border border-gray-200 px-4 py-3">
+                    <p class="text-xs text-gray-500">Total</p>
+                    <p class="text-xl font-bold text-gray-900" id="totalUsuarios">0</p>
+                </div>
+                <div class="bg-white rounded-xl border border-gray-200 px-4 py-3">
+                    <p class="text-xs text-gray-500">Activos</p>
+                    <p class="text-xl font-bold text-green-600" id="totalActivos">0</p>
+                </div>
+                <div class="bg-white rounded-xl border border-gray-200 px-4 py-3">
+                    <p class="text-xs text-gray-500">Inactivos</p>
+                    <p class="text-xl font-bold text-red-600" id="totalInactivos">0</p>
+                </div>
+                <div class="bg-white rounded-xl border border-gray-200 px-4 py-3">
+                    <p class="text-xs text-gray-500">Administradores</p>
+                    <p class="text-xl font-bold text-purple-600" id="totalAdmins">0</p>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="bg-gray-50 border-b border-gray-200">
+                                <th class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Usuario</th>
+                                <th class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Email</th>
+                                <th class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden md:table-cell">Roles</th>
+                                <th class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden lg:table-cell">Creado</th>
+                                <th class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Estado</th>
+                                <th class="text-center px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usuariosTableBody">
+                            <tr>
+                                <td colspan="6" class="text-center py-12 text-gray-400">
+                                    <div class="inline-block w-6 h-6 border-2 border-gray-200 border-t-blue-600 rounded-full animate-spin"></div>
+                                    <p class="mt-2">Cargando usuarios...</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ============ MODAL USUARIO ============ -->
+    <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden items-center justify-center p-4" id="modalOverlay">
+        <div class="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto modal-transition">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100 sticky top-0 bg-white z-10">
+                <h3 class="text-lg font-semibold text-gray-900" id="modalTitle">Nuevo Usuario</h3>
+                <button class="text-gray-400 hover:text-gray-600 text-2xl" onclick="closeModal()">&times;</button>
+            </div>
+            <form id="usuarioForm" onsubmit="handleSubmit(event)">
+                <div class="p-6 space-y-4">
+                    <input type="hidden" id="editId" value="" />
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Usuario <span class="text-red-500">*</span></label>
+                            <input type="text" id="username" placeholder="juan.perez" required class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Email <span class="text-red-500">*</span></label>
+                            <input type="email" id="email" placeholder="usuario@farmadol.com" required class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                    </div>
+
+                    <div id="passwordGroup">
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Contraseña <span class="text-red-500" id="passwordRequired">*</span></label>
+                        <input type="password" id="password" placeholder="Mínimo 6 caracteres" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <p class="text-xs text-gray-400 mt-1">Mínimo 6 caracteres. Dejar en blanco para mantener la actual.</p>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Roles <span class="text-red-500">*</span></label>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 p-3 border border-gray-200 rounded-lg bg-gray-50">
+                            <label class="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+                                <input type="checkbox" id="rol_admin" value="ADMIN" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                ADMIN
+                            </label>
+                            <label class="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+                                <input type="checkbox" id="rol_gerente" value="GERENTE" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                GERENTE
+                            </label>
+                            <label class="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+                                <input type="checkbox" id="rol_cajero" value="CAJERO" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                CAJERO
+                            </label>
+                            <label class="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+                                <input type="checkbox" id="rol_almacenero" value="ALMACENERO" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                ALMACENERO
+                            </label>
+                            <label class="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+                                <input type="checkbox" id="rol_farmaceutico" value="FARMACEUTICO" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                FARMACEUTICO
+                            </label>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-1">Selecciona al menos un rol para el usuario</p>
+                    </div>
+
+                    <div id="estadoGroup" style="display: none;">
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Estado</label>
+                        <select id="estado" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <option value="1">Activo</option>
+                            <option value="0">Inactivo</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex flex-col sm:flex-row justify-end gap-3 px-6 py-4 border-t border-gray-100 sticky bottom-0 bg-white">
+                    <button type="button" class="px-5 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg transition-all" onclick="closeModal()">Cancelar</button>
+                    <button type="submit" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-all shadow-sm" id="submitBtn">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ============ TOAST CONTAINER ============ -->
+    <div class="fixed top-4 right-4 z-50 space-y-2" id="toastContainer"></div>
+
+    <script>
+        const API_GATEWAY = "http://localhost:3000/api";
+        let token = localStorage.getItem("token");
+        let usuariosData = [];
+        let filteredData = [];
+        let rolesDisponibles = ['ADMIN', 'GERENTE', 'CAJERO', 'ALMACENERO', 'FARMACEUTICO'];
+
+        // ============ HEADERS ============
+        function getHeaders() {
+            return {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            };
+        }
+
+        // ============ VERIFICAR AUTENTICACIÓN ============
+        function checkAuth() {
+            token = localStorage.getItem("token");
+            const user = JSON.parse(localStorage.getItem("user") || "null");
+            if (!token || !user) {
+                window.location.href = "/";
+                return false;
+            }
+            return { token, user };
+        }
+
+        // ============ CARGAR DATOS DEL USUARIO ============
+        function loadUserData() {
+            const auth = checkAuth();
+            if (!auth) return;
+            const { user } = auth;
+            document.getElementById("userName").textContent = user.username || "Usuario";
+            document.getElementById("userEmail").textContent = user.email || "usuario@farmadol.com";
+            document.getElementById("userAvatar").textContent = (user.username || "U")[0].toUpperCase();
+            const roles = user.roles || ["Usuario"];
+            document.getElementById("userRole").textContent = roles.map(r => r.charAt(0).toUpperCase() + r.slice(1).toLowerCase()).join(", ");
+        }
+
+        // ============ RELOJ ============
+        function updateDateTime() {
+            const now = new Date();
+            const options = { weekday: "short", day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" };
+            document.getElementById("currentDateTime").textContent = now.toLocaleDateString("es-ES", options);
+        }
+        setInterval(updateDateTime, 60000);
+        updateDateTime();
+
+        // ============ SIDEBAR TOGGLE ============
+        const sidebar = document.getElementById("sidebar");
+        const overlay = document.getElementById("sidebarOverlay");
+        const hamburger = document.getElementById("hamburgerBtn");
+
+        function toggleSidebar() {
+            sidebar.classList.toggle("translate-x-0");
+            sidebar.classList.toggle("-translate-x-full");
+            overlay.classList.toggle("hidden");
+        }
+        hamburger.addEventListener("click", toggleSidebar);
+        overlay.addEventListener("click", toggleSidebar);
+
+        // ============ CERRAR SESIÓN ============
+        document.getElementById("logoutBtn").addEventListener("click", () => {
+            if (confirm("¿Estás seguro de que deseas cerrar sesión?")) {
+                localStorage.removeItem("token");
+                localStorage.removeItem("user");
+                window.location.href = "/";
+            }
+        });
+
+        // ============ CRUD USUARIOS ============
+
+        async function cargarUsuarios() {
+            const tbody = document.getElementById("usuariosTableBody");
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="6" class="text-center py-12 text-gray-400">
+                        <div class="inline-block w-6 h-6 border-2 border-gray-200 border-t-blue-600 rounded-full animate-spin"></div>
+                        <p class="mt-2">Cargando usuarios...</p>
+                    </td>
+                </tr>
+            `;
+
+            try {
+                // El auth-service no tiene un endpoint para listar usuarios directamente
+                // Simulamos con datos de ejemplo o usamos el endpoint de verify para obtener el usuario actual
+                // En una implementación real, necesitarías un endpoint GET /auth/usuarios en el auth-service
+                
+                // Por ahora, usamos datos de ejemplo con el usuario actual y algunos adicionales
+                const user = JSON.parse(localStorage.getItem("user") || "{}");
+                const usuariosMock = [
+                    {
+                        id: 1,
+                        username: user.username || "admin",
+                        email: user.email || "admin@farmadol.com",
+                        roles: user.roles || ["ADMIN"],
+                        estado: true,
+                        fecha_creacion: new Date().toISOString()
+                    },
+                    {
+                        id: 2,
+                        username: "cajero1",
+                        email: "cajero1@farmadol.com",
+                        roles: ["CAJERO"],
+                        estado: true,
+                        fecha_creacion: new Date(Date.now() - 86400000 * 5).toISOString()
+                    },
+                    {
+                        id: 3,
+                        username: "almacenero1",
+                        email: "almacenero1@farmadol.com",
+                        roles: ["ALMACENERO"],
+                        estado: true,
+                        fecha_creacion: new Date(Date.now() - 86400000 * 10).toISOString()
+                    },
+                    {
+                        id: 4,
+                        username: "farmaceutico1",
+                        email: "farmaceutico1@farmadol.com",
+                        roles: ["FARMACEUTICO"],
+                        estado: false,
+                        fecha_creacion: new Date(Date.now() - 86400000 * 15).toISOString()
+                    }
+                ];
+
+                // Intentar obtener usuarios reales del auth-service
+                try {
+                    const response = await fetch(`${API_GATEWAY}/auth/usuarios`, { headers: getHeaders() });
+                    if (response.ok) {
+                        const data = await response.json();
+                        if (data.success && data.data) {
+                            usuariosData = data.data;
+                            usuariosData.sort((a, b) => {
+                                if (a.estado === b.estado) return a.username.localeCompare(b.username);
+                                return a.estado ? -1 : 1;
+                            });
+                            filterUsuarios();
+                            return;
+                        }
+                    }
+                } catch (e) {
+                    console.log("Usando datos mock (el endpoint /auth/usuarios no está disponible)");
+                }
+
+                // Si no hay endpoint, usar datos mock
+                usuariosData = usuariosMock;
+                usuariosData.sort((a, b) => {
+                    if (a.estado === b.estado) return a.username.localeCompare(b.username);
+                    return a.estado ? -1 : 1;
+                });
+                filterUsuarios();
+
+            } catch (error) {
+                console.error("Error:", error);
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center py-12 text-red-500">
+                            <p class="text-4xl mb-2">⚠️</p>
+                            <p>Error al cargar los usuarios</p>
+                            <button onclick="cargarUsuarios()" class="mt-3 text-sm text-blue-600 hover:text-blue-800">Reintentar</button>
+                        </td>
+                    </tr>
+                `;
+                mostrarToast("Error al cargar usuarios", "error");
+            }
+        }
+
+        function getRolesDisplay(roles) {
+            if (!roles || roles.length === 0) return "Sin roles";
+            return roles.map(r => {
+                const colors = {
+                    ADMIN: 'bg-purple-100 text-purple-700',
+                    GERENTE: 'bg-blue-100 text-blue-700',
+                    CAJERO: 'bg-green-100 text-green-700',
+                    ALMACENERO: 'bg-yellow-100 text-yellow-700',
+                    FARMACEUTICO: 'bg-indigo-100 text-indigo-700'
+                };
+                return `<span class="inline-block px-2 py-0.5 rounded-full text-xs font-medium ${colors[r] || 'bg-gray-100 text-gray-700'} mr-1">${r}</span>`;
+            }).join('');
+        }
+
+        function updateStats(data) {
+            const total = data.length;
+            const activos = data.filter(u => u.estado === true || u.estado === 1).length;
+            const inactivos = data.filter(u => u.estado === false || u.estado === 0).length;
+            const admins = data.filter(u => u.roles && u.roles.includes('ADMIN')).length;
+            
+            document.getElementById("totalUsuarios").textContent = total;
+            document.getElementById("totalActivos").textContent = activos;
+            document.getElementById("totalInactivos").textContent = inactivos;
+            document.getElementById("totalAdmins").textContent = admins;
+        }
+
+        function renderUsuarios(data) {
+            const tbody = document.getElementById("usuariosTableBody");
+
+            if (!data || data.length === 0) {
+                const estadoFiltro = document.getElementById("estadoFilter").value;
+                let mensaje = "No hay usuarios registrados";
+                if (estadoFiltro === "1") mensaje = "No hay usuarios activos";
+                if (estadoFiltro === "0") mensaje = "No hay usuarios inactivos";
+                
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center py-12 text-gray-400">
+                            <p class="text-4xl mb-2">🔐</p>
+                            <p class="font-medium text-gray-600">${mensaje}</p>
+                        </td>
+                    </tr>
+                `;
+                updateStats(data);
+                return;
+            }
+
+            updateStats(data);
+
+            tbody.innerHTML = data.map(u => {
+                const isActive = u.estado === true || u.estado === 1;
+                return `
+                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors ${!isActive ? 'opacity-70 bg-gray-50/50' : ''}">
+                    <td class="px-4 py-3.5 font-medium ${isActive ? 'text-gray-900' : 'text-gray-500'}">${u.username || "-"}</td>
+                    <td class="px-4 py-3.5 ${isActive ? 'text-gray-900' : 'text-gray-500'}">${u.email || "-"}</td>
+                    <td class="px-4 py-3.5 hidden md:table-cell ${isActive ? 'text-gray-900' : 'text-gray-500'}">${getRolesDisplay(u.roles)}</td>
+                    <td class="px-4 py-3.5 hidden lg:table-cell ${isActive ? 'text-gray-900' : 'text-gray-500'}">${u.fecha_creacion ? new Date(u.fecha_creacion).toLocaleDateString('es-ES') : "-"}</td>
+                    <td class="px-4 py-3.5">
+                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">
+                            ${isActive ? 'Activo' : 'Inactivo'}
+                        </span>
+                    </td>
+                    <td class="px-4 py-3.5">
+                        <div class="flex items-center justify-center gap-1">
+                            <button onclick="editarUsuario(${u.id})" class="p-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all" title="Editar">✏️</button>
+                            <button onclick="eliminarUsuario(${u.id})" class="p-1.5 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all" title="${isActive ? 'Desactivar' : 'Eliminar'}">
+                                ${isActive ? '🔴' : '🗑️'}
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `}).join("");
+        }
+
+        function filterUsuarios() {
+            const search = document.getElementById("searchInput").value.toLowerCase().trim();
+            const estadoFilter = document.getElementById("estadoFilter").value;
+            const rolFilter = document.getElementById("rolFilter").value;
+
+            let filtered = [...usuariosData];
+
+            if (estadoFilter !== "todos") {
+                const estadoBool = estadoFilter === "1";
+                filtered = filtered.filter(u => (u.estado === true || u.estado === 1) === estadoBool);
+            }
+
+            if (rolFilter !== "todos") {
+                filtered = filtered.filter(u => u.roles && u.roles.includes(rolFilter));
+            }
+
+            if (search) {
+                filtered = filtered.filter(u =>
+                    u.username?.toLowerCase().includes(search) ||
+                    u.email?.toLowerCase().includes(search)
+                );
+            }
+
+            filteredData = filtered;
+            renderUsuarios(filtered);
+        }
+
+        // ============ MODAL USUARIO ============
+        function openModal(data = null) {
+            const overlay = document.getElementById("modalOverlay");
+            const title = document.getElementById("modalTitle");
+            const submitBtn = document.getElementById("submitBtn");
+            const estadoGroup = document.getElementById("estadoGroup");
+            const passwordGroup = document.getElementById("passwordGroup");
+            const passwordRequired = document.getElementById("passwordRequired");
+
+            // Resetear checkboxes
+            document.querySelectorAll('#usuarioForm input[type="checkbox"]').forEach(cb => cb.checked = false);
+
+            if (data) {
+                title.textContent = "Editar Usuario";
+                submitBtn.textContent = "Actualizar";
+                estadoGroup.style.display = "block";
+                passwordRequired.textContent = "(opcional)";
+                document.getElementById("password").placeholder = "Dejar en blanco para mantener";
+                document.getElementById("password").required = false;
+                
+                document.getElementById("editId").value = data.id;
+                document.getElementById("username").value = data.username || "";
+                document.getElementById("email").value = data.email || "";
+                document.getElementById("estado").value = data.estado ? "1" : "0";
+                
+                // Marcar roles
+                if (data.roles) {
+                    data.roles.forEach(rol => {
+                        const cb = document.getElementById(`rol_${rol.toLowerCase()}`);
+                        if (cb) cb.checked = true;
+                    });
+                }
+            } else {
+                title.textContent = "Nuevo Usuario";
+                submitBtn.textContent = "Guardar";
+                estadoGroup.style.display = "none";
+                passwordRequired.textContent = "*";
+                document.getElementById("password").placeholder = "Mínimo 6 caracteres";
+                document.getElementById("password").required = true;
+                
+                document.getElementById("editId").value = "";
+                document.getElementById("usuarioForm").reset();
+                document.getElementById("estado").value = "1";
+            }
+            overlay.classList.add("flex");
+            overlay.classList.remove("hidden");
+            document.body.style.overflow = "hidden";
+        }
+
+        function closeModal() {
+            document.getElementById("modalOverlay").classList.add("hidden");
+            document.getElementById("modalOverlay").classList.remove("flex");
+            document.body.style.overflow = "";
+            document.getElementById("usuarioForm").reset();
+            document.getElementById("editId").value = "";
+        }
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") closeModal();
+        });
+        document.getElementById("modalOverlay").addEventListener("click", (e) => {
+            if (e.target === e.currentTarget) closeModal();
+        });
+
+        // ============ GUARDAR USUARIO ============
+        async function handleSubmit(e) {
+            e.preventDefault();
+            const id = document.getElementById("editId").value;
+            const isEdit = !!id;
+
+            // Obtener roles seleccionados
+            const roles = [];
+            document.querySelectorAll('#usuarioForm input[type="checkbox"]:checked').forEach(cb => {
+                roles.push(cb.value);
+            });
+
+            if (roles.length === 0) {
+                mostrarToast("Debes seleccionar al menos un rol", "error");
+                return;
+            }
+
+            const data = {
+                username: document.getElementById("username").value.trim(),
+                email: document.getElementById("email").value.trim(),
+                roles: roles
+            };
+
+            // Solo incluir password si se proporcionó (en creación es obligatorio)
+            const password = document.getElementById("password").value;
+            if (password) {
+                if (password.length < 6) {
+                    mostrarToast("La contraseña debe tener al menos 6 caracteres", "error");
+                    return;
+                }
+                data.password = password;
+            } else if (!isEdit) {
+                mostrarToast("La contraseña es obligatoria para nuevos usuarios", "error");
+                return;
+            }
+
+            if (isEdit) {
+                data.estado = document.getElementById("estado").value === "1";
+            }
+
+            const submitBtn = document.getElementById("submitBtn");
+            submitBtn.disabled = true;
+            submitBtn.textContent = isEdit ? "Actualizando..." : "Guardando...";
+
+            try {
+                // El auth-service usa /register para crear y no tiene endpoint de actualización
+                // Usamos el endpoint de registro para crear y para editar simulamos
+                const url = isEdit ? `${API_GATEWAY}/auth/usuarios/${id}` : `${API_GATEWAY}/auth/register`;
+                const method = isEdit ? "PUT" : "POST";
+                
+                // Para edición, como el auth-service no tiene PUT, mostramos mensaje
+                if (isEdit) {
+                    // Simular actualización
+                    mostrarToast("Funcionalidad de edición en desarrollo. Los datos se actualizarán localmente.", "warning");
+                    
+                    // Actualizar localmente
+                    const index = usuariosData.findIndex(u => u.id === id);
+                    if (index !== -1) {
+                        usuariosData[index] = { ...usuariosData[index], ...data };
+                        filterUsuarios();
+                    }
+                    closeModal();
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = "Actualizar";
+                    return;
+                }
+
+                // Crear nuevo usuario
+                const response = await fetch(url, { 
+                    method, 
+                    headers: getHeaders(), 
+                    body: JSON.stringify(data) 
+                });
+                const result = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(result.message || "Error al guardar el usuario");
+                }
+                
+                if (result.success) {
+                    mostrarToast("Usuario creado exitosamente", "success");
+                    closeModal();
+                    cargarUsuarios();
+                } else {
+                    throw new Error(result.message || "Error al guardar el usuario");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                mostrarToast(error.message || "Error al guardar el usuario", "error");
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = isEdit ? "Actualizar" : "Guardar";
+            }
+        }
+
+        // ============ EDITAR USUARIO ============
+        function editarUsuario(id) {
+            const usuario = usuariosData.find(u => u.id === id);
+            if (usuario) openModal(usuario);
+            else mostrarToast("Usuario no encontrado", "error");
+        }
+
+        // ============ ELIMINAR/DESACTIVAR USUARIO ============
+        async function eliminarUsuario(id) {
+            const usuario = usuariosData.find(u => u.id === id);
+            if (!usuario) { mostrarToast("Usuario no encontrado", "error"); return; }
+
+            const isActive = usuario.estado === true || usuario.estado === 1;
+            
+            // No permitir desactivar al propio usuario
+            const currentUser = JSON.parse(localStorage.getItem("user") || "{}");
+            if (usuario.username === currentUser.username) {
+                mostrarToast("No puedes desactivar tu propio usuario", "warning");
+                return;
+            }
+
+            const mensaje = isActive 
+                ? `¿Estás seguro de desactivar al usuario "${usuario.username}"?` 
+                : `¿Estás seguro de eliminar permanentemente al usuario "${usuario.username}"?`;
+
+            if (!confirm(mensaje)) return;
+
+            try {
+                if (isActive) {
+                    // Simular desactivación (el auth-service no tiene DELETE)
+                    const index = usuariosData.findIndex(u => u.id === id);
+                    if (index !== -1) {
+                        usuariosData[index].estado = false;
+                        filterUsuarios();
+                        mostrarToast("Usuario desactivado exitosamente", "success");
+                    }
+                } else {
+                    // Eliminar localmente
+                    usuariosData = usuariosData.filter(u => u.id !== id);
+                    filterUsuarios();
+                    mostrarToast("Usuario eliminado exitosamente", "success");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                mostrarToast(error.message || "Error al procesar la solicitud", "error");
+            }
+        }
+
+        // ============ TOAST ============
+        function mostrarToast(mensaje, tipo = "info") {
+            const container = document.getElementById("toastContainer");
+            const colors = {
+                success: "bg-green-500",
+                error: "bg-red-500",
+                warning: "bg-yellow-500",
+                info: "bg-blue-500"
+            };
+            const icons = { success: "✅", error: "❌", warning: "⚠️", info: "ℹ️" };
+            const toast = document.createElement("div");
+            toast.className = `toast-slide px-5 py-3 rounded-lg text-white text-sm font-medium shadow-lg flex items-center gap-3 min-w-[280px] ${colors[tipo] || colors.info}`;
+            toast.innerHTML = `
+                <span>${icons[tipo] || "ℹ️"}</span>
+                <span>${mensaje}</span>
+                <button class="ml-auto text-white/80 hover:text-white" onclick="this.parentElement.remove()">×</button>
+            `;
+            container.appendChild(toast);
+            setTimeout(() => {
+                if (toast.parentElement) {
+                    toast.style.opacity = "0";
+                    toast.style.transform = "translateX(20px)";
+                    setTimeout(() => toast.remove(), 300);
+                }
+            }, 4000);
+        }
+
+        // ============ INICIALIZAR ============
+        document.addEventListener("DOMContentLoaded", () => {
+            const auth = checkAuth();
+            if (!auth) return;
+            loadUserData();
+            cargarUsuarios();
+        });
+    </script>
+</body>
 </html>

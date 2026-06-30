@@ -1,10 +1,9 @@
 <!doctype html>
-
-<html class="light" lang="en">
+<html class="light" lang="es">
   <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Farmadol - Inventory Management</title>
+    <title>Farmadol ERP - Inventario</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap"
@@ -14,939 +13,1184 @@
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
       rel="stylesheet"
     />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-      rel="stylesheet"
-    />
-    <script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              "on-secondary-fixed": "#131b2e",
-              "surface-container-highest": "#d3e4fe",
-              "surface-variant": "#d3e4fe",
-              "secondary-fixed": "#dae2fd",
-              background: "#f8f9ff",
-              "tertiary-fixed-dim": "#ffb596",
-              "on-tertiary": "#ffffff",
-              "tertiary-fixed": "#ffdbcd",
-              "inverse-primary": "#b4c5ff",
-              primary: "#004ac6",
-              "surface-bright": "#f8f9ff",
-              "primary-container": "#2563eb",
-              surface: "#f8f9ff",
-              "on-background": "#0b1c30",
-              secondary: "#565e74",
-              "on-primary-fixed": "#00174b",
-              "primary-fixed": "#dbe1ff",
-              "on-tertiary-container": "#ffede6",
-              "inverse-on-surface": "#eaf1ff",
-              "surface-dim": "#cbdbf5",
-              "surface-container": "#e5eeff",
-              "on-secondary-fixed-variant": "#3f465c",
-              "surface-container-high": "#dce9ff",
-              outline: "#737686",
-              "error-container": "#ffdad6",
-              "on-secondary": "#ffffff",
-              "on-error-container": "#93000a",
-              "on-tertiary-fixed-variant": "#7d2d00",
-              "on-primary-fixed-variant": "#003ea8",
-              tertiary: "#943700",
-              error: "#ba1a1a",
-              "on-tertiary-fixed": "#360f00",
-              "on-surface-variant": "#434655",
-              "secondary-fixed-dim": "#bec6e0",
-              "on-surface": "#0b1c30",
-              "primary-fixed-dim": "#b4c5ff",
-              "surface-container-low": "#eff4ff",
-              "secondary-container": "#dae2fd",
-              "on-secondary-container": "#5c647a",
-              "on-primary-container": "#eeefff",
-              "on-primary": "#ffffff",
-              "tertiary-container": "#bc4800",
-              "surface-tint": "#0053db",
-              "on-error": "#ffffff",
-              "outline-variant": "#c3c6d7",
-              "inverse-surface": "#213145",
-              "surface-container-lowest": "#ffffff",
-            },
-            borderRadius: {
-              DEFAULT: "0.25rem",
-              lg: "0.5rem",
-              xl: "0.75rem",
-              full: "9999px",
-            },
-            spacing: {
-              "stack-md": "16px",
-              "container-max-width": "1440px",
-              "sidebar-width": "280px",
-              gutter: "24px",
-              "stack-sm": "8px",
-              "stack-lg": "24px",
-              "margin-mobile": "16px",
-            },
-            fontFamily: {
-              "body-md": ["Inter"],
-              "body-lg": ["Inter"],
-              "headline-lg": ["Inter"],
-              "headline-md": ["Inter"],
-              "display-lg": ["Inter"],
-              "label-md": ["Inter"],
-              caption: ["Inter"],
-              "title-lg": ["Inter"],
-              "title-md": ["Inter"],
-            },
-            fontSize: {
-              "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
-              "body-lg": ["16px", { lineHeight: "24px", fontWeight: "400" }],
-              "headline-lg": [
-                "28px",
-                {
-                  lineHeight: "36px",
-                  letterSpacing: "-0.01em",
-                  fontWeight: "600",
-                },
-              ],
-              "headline-md": [
-                "24px",
-                { lineHeight: "32px", fontWeight: "600" },
-              ],
-              "display-lg": [
-                "36px",
-                {
-                  lineHeight: "44px",
-                  letterSpacing: "-0.02em",
-                  fontWeight: "700",
-                },
-              ],
-              "label-md": [
-                "13px",
-                {
-                  lineHeight: "18px",
-                  letterSpacing: "0.05em",
-                  fontWeight: "500",
-                },
-              ],
-              caption: ["12px", { lineHeight: "16px", fontWeight: "400" }],
-              "title-lg": ["20px", { lineHeight: "28px", fontWeight: "600" }],
-              "title-md": ["16px", { lineHeight: "24px", fontWeight: "600" }],
-            },
-          },
-        },
-      };
-    </script>
-    <style>
-      .material-symbols-outlined {
-        font-variation-settings:
-          "FILL" 0,
-          "wght" 400,
-          "GRAD" 0,
-          "opsz" 24;
-      }
-      body {
-        font-family: "Inter", sans-serif;
-        background-color: #f8f9ff;
-      }
-    </style>
+    <link rel="stylesheet" href="http://localhost:3010/public/css/dashboard.css" />
   </head>
-  <body class="flex min-h-screen">
-    <!-- SideNavBar -->
-    <aside
-      class="fixed left-0 top-0 h-full w-[280px] bg-on-secondary-fixed flex flex-col py-stack-lg border-r border-outline-variant z-50"
-    >
-      <div class="px-6 mb-10">
+  <body class="font-body-md text-on-background" style="font-family: Inter, sans-serif; background-color: #f1f5f9;">
+    
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-header">
         <div class="flex items-center gap-3">
-          <div
-            class="w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center"
-          >
-            <span
-              class="material-symbols-outlined text-white"
-              data-icon="medical_services"
-              >medical_services</span
-            >
-          </div>
+          <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-lg">F</div>
           <div>
-            <h1
-              class="font-headline-md text-headline-md font-black text-surface-container-lowest leading-none"
-            >
-              Farmadol
-            </h1>
-            <p class="font-label-md text-label-md text-secondary-fixed-dim">
-              Pharmacy ERP
-            </p>
+            <h1 class="text-lg font-bold text-gray-800">Farmadol ERP</h1>
+            <p class="text-xs text-gray-500">Sistema de Gestión</p>
           </div>
         </div>
       </div>
-      <nav class="flex-1 px-4 space-y-1">
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="dashboard"
-            >dashboard</span
-          >
-          <span class="font-label-md text-label-md">Dashboard</span>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section"><span class="nav-section-title">Principal</span></div>
+        <a href="http://localhost:3010/public/dashboard.html" class="nav-item">
+          <span class="material-symbols-outlined">dashboard</span>
+          <span>Dashboard</span>
         </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="group">group</span>
-          <span class="font-label-md text-label-md">Users</span>
+
+        <div class="nav-section"><span class="nav-section-title">Módulos</span></div>
+        <a href="http://localhost:3010/public/ventas.html" class="nav-item">
+          <span class="material-symbols-outlined">shopping_cart</span>
+          <span>Ventas</span>
         </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-surface-container-lowest bg-white/5 border-l-4 border-primary-container transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="inventory_2"
-            >inventory_2</span
-          >
-          <span class="font-label-md text-label-md">Inventory</span>
+        <a href="http://localhost:3010/public/inventario.html" class="nav-item active">
+          <span class="material-symbols-outlined">inventory_2</span>
+          <span>Inventario</span>
         </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="point_of_sale"
-            >point_of_sale</span
-          >
-          <span class="font-label-md text-label-md">Sales</span>
+        <a href="http://localhost:3010/public/compras.html" class="nav-item">
+          <span class="material-symbols-outlined">local_shipping</span>
+          <span>Compras</span>
         </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="shopping_cart"
-            >shopping_cart</span
-          >
-          <span class="font-label-md text-label-md">Purchases</span>
+        <a href="http://localhost:3010/public/clientes.html" class="nav-item">
+          <span class="material-symbols-outlined">people</span>
+          <span>Clientes</span>
         </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="person_search"
-            >person_search</span
-          >
-          <span class="font-label-md text-label-md">Clients</span>
+        <a href="http://localhost:3010/public/sucursales.html" class="nav-item">
+          <span class="material-symbols-outlined">storefront</span>
+          <span>Sucursales</span>
         </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="analytics"
-            >analytics</span
-          >
-          <span class="font-label-md text-label-md">Reports</span>
+        <a href="http://localhost:3010/public/reportes.html" class="nav-item">
+          <span class="material-symbols-outlined">assessment</span>
+          <span>Reportes</span>
         </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="storefront"
-            >storefront</span
-          >
-          <span class="font-label-md text-label-md">Branches</span>
-        </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="settings"
-            >settings</span
-          >
-          <span class="font-label-md text-label-md">Settings</span>
+
+        <div class="nav-section mt-auto"><span class="nav-section-title">Usuario</span></div>
+        <a href="#" class="nav-item" id="logoutBtn">
+          <span class="material-symbols-outlined">logout</span>
+          <span>Cerrar Sesión</span>
         </a>
       </nav>
-      <div class="px-4 mt-auto">
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="logout"
-            >logout</span
-          >
-          <span class="font-label-md text-label-md">Logout</span>
-        </a>
+
+      <div class="sidebar-footer">
+        <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
+          <div class="w-9 h-9 bg-blue-600 rounded-full flex items-center justify-center text-white font-semibold" id="userAvatar">U</div>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-semibold text-gray-700 truncate" id="userName">Usuario</p>
+            <p class="text-xs text-gray-500 truncate" id="userRole">Cargando...</p>
+          </div>
+        </div>
       </div>
     </aside>
-    <!-- Main Content Wrapper -->
-    <main class="flex-1 ml-sidebar-width flex flex-col min-h-screen">
-      <!-- TopNavBar -->
-      <header
-        class="h-16 bg-surface-container-lowest sticky top-0 z-10 flex justify-between items-center px-gutter border-b border-outline-variant"
-      >
-        <div class="flex items-center gap-4 flex-1">
-          <div class="relative w-full max-w-md">
-            <span
-              class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-body-md"
-              data-icon="search"
-              >search</span
-            >
-            <input
-              class="w-full pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-body-md"
-              placeholder="Buscar medicamentos..."
-              type="text"
-            />
-          </div>
-        </div>
-        
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Top Bar -->
+      <header class="top-bar">
         <div class="flex items-center gap-4">
-          <button
-            class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-low transition-colors text-on-surface-variant"
-          >
+          <button id="toggleSidebar" class="lg:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors">
+            <span class="material-symbols-outlined">menu</span>
           </button>
-          <div class="h-8 w-[1px] bg-outline-variant mx-2"></div>
-          <div class="flex items-center gap-3 pl-2">
-            <div class="text-right">
-              <p
-                class="font-label-md text-label-md text-on-surface leading-none"
-              >
-                Dr. Alejandro Ruiz
-              </p>
-              <p
-                class="text-[11px] text-secondary font-medium uppercase tracking-wider"
-              >
-                Admin Principal
-              </p>
-            </div>
-            <img
-              alt="User profile photo"
-              class="w-10 h-10 rounded-full border-2 border-primary-container/20"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfDh0aDi-mYTTGT0gNhSnLGh4OBKf_o88qJ4izMLFyRHyU87yajEm5NOfmmV-ROb4H-zghVfM0qXVdoiF4mGNAbcha_4mc-C1bBVk0PJIAfFmCUAM0EjQTzCn6f8uW1CT-MBF1g-aeZ4VnV1ezpIc1OzOYU20Xw498A_rMwwgexs4B3T8sPjWFCggYuI3Ui8ZiXxQrHaQHIZcXRbQsbd-eH2fe0s9UNNoHMDji1otRwE7gdYmtVSVkHO8RfM869N5_xr8g0-be17Mk"
-            />
-          </div>
+          <h2 class="text-xl font-semibold text-gray-800">Inventario</h2>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-sm text-gray-500" id="currentDateTime"></span>
         </div>
       </header>
+
       <!-- Content Area -->
-      <div
-        class="p-gutter space-y-stack-lg max-w-container-max-width mx-auto w-full"
-      >
-        <!-- Action Bar & Stats -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-gutter">
-          <div
-            class="bg-surface-container-lowest p-stack-md rounded-xl border border-outline-variant flex items-center gap-4"
-          >
-            <div
-              class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary"
-            >
-              <span class="material-symbols-outlined" data-icon="inventory"
-                >inventory</span
-              >
+      <div class="content-area">
+        <!-- Tabs -->
+        <div class="flex border-b border-gray-200 mb-6">
+          <button class="px-4 py-2 text-sm font-medium text-blue-600 border-b-2 border-blue-600" id="tabProductos" onclick="switchTab('productos')">
+            <span class="material-symbols-outlined text-sm align-middle">inventory_2</span>
+            Productos
+          </button>
+          <button class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent" id="tabCategorias" onclick="switchTab('categorias')">
+            <span class="material-symbols-outlined text-sm align-middle">category</span>
+            Categorías
+          </button>
+          <button class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent" id="tabStock" onclick="switchTab('stock')">
+            <span class="material-symbols-outlined text-sm align-middle">warehouse</span>
+            Stock por Sucursal
+          </button>
+          <button class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent" id="tabMovimientos" onclick="switchTab('movimientos')">
+            <span class="material-symbols-outlined text-sm align-middle">history</span>
+            Movimientos
+          </button>
+        </div>
+
+        <!-- Tab: Productos -->
+        <div id="tabContentProductos">
+          <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
+            <div class="flex flex-wrap gap-3">
+              <button onclick="showCreateProducto()" class="btn btn-primary">
+                <span class="material-symbols-outlined text-sm">add</span>
+                Nuevo Producto
+              </button>
+              <button onclick="loadProductos()" class="btn btn-secondary">
+                <span class="material-symbols-outlined text-sm">refresh</span>
+                Actualizar
+              </button>
             </div>
-            <div>
-              <p class="text-caption font-caption text-on-surface-variant">
-                Total Products
-              </p>
-              <h3 class="text-title-lg font-title-lg font-bold">1,284</h3>
-            </div>
-          </div>
-          <div
-            class="bg-surface-container-lowest p-stack-md rounded-xl border border-outline-variant flex items-center gap-4"
-          >
-            <div
-              class="w-12 h-12 rounded-lg bg-yellow-500/10 flex items-center justify-center text-yellow-600"
-            >
-              <span class="material-symbols-outlined" data-icon="warning"
-                >warning</span
-              >
-            </div>
-            <div>
-              <p class="text-caption font-caption text-on-surface-variant">
-                Low Stock
-              </p>
-              <h3 class="text-title-lg font-title-lg font-bold">18</h3>
-            </div>
-          </div>
-          <div
-            class="bg-surface-container-lowest p-stack-md rounded-xl border border-outline-variant flex items-center gap-4"
-          >
-            <div
-              class="w-12 h-12 rounded-lg bg-error/10 flex items-center justify-center text-error"
-            >
-              <span class="material-symbols-outlined" data-icon="event_busy"
-                >event_busy</span
-              >
-            </div>
-            <div>
-              <p class="text-caption font-caption text-on-surface-variant">
-                Expired Items
-              </p>
-              <h3 class="text-title-lg font-title-lg font-bold">5</h3>
+            <div class="flex gap-2">
+              <select id="categoriaFilter" onchange="filterProductos()" class="px-4 py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none">
+                <option value="">Todas las categorías</option>
+              </select>
+              <input 
+                type="text" 
+                id="searchProductoInput" 
+                placeholder="Buscar producto..." 
+                class="px-4 py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none w-48"
+                onkeyup="filterProductos()"
+              />
             </div>
           </div>
-          <div class="flex items-center justify-end gap-3">
-            <button
-              class="flex items-center gap-2 bg-surface-container-lowest border border-outline-variant px-4 py-2.5 rounded-lg text-on-surface font-label-md text-label-md hover:bg-surface-container-low transition-colors"
-            >
-              <span
-                class="material-symbols-outlined text-[20px]"
-                data-icon="file_download"
-                >file_download</span
-              >
-              Export
-            </button>
-            <button
-              class="flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-lg font-label-md text-label-md hover:opacity-90 transition-all active:scale-95"
-            >
-              <span
-                class="material-symbols-outlined text-[20px]"
-                data-icon="add"
-                >add</span
-              >
-              Add Product
-            </button>
+
+          <div id="productosContent">
+            <div class="loading"><span class="material-symbols-outlined">refresh</span> Cargando productos...</div>
           </div>
         </div>
-        <!-- Table Container -->
-        <div
-          class="bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden shadow-sm"
-        >
-          <!-- Table Header/Filters -->
-          <div
-            class="p-gutter border-b border-outline-variant bg-surface-container-low/30"
-          >
-            <div class="flex flex-col md:flex-row md:items-center gap-gutter">
-              <!-- Search Bar -->
-              <div class="relative flex-1">
-                <span
-                  class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline"
-                  data-icon="search"
-                  >search</span
-                >
-                <input
-                  class="w-full pl-10 pr-4 py-2.5 bg-white border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-body-md font-body-md transition-all"
-                  placeholder="Search by name, code or category..."
-                  type="text"
-                />
-              </div>
-              <!-- Filters -->
-              <div class="flex items-center gap-3 overflow-x-auto pb-2 md:pb-0">
-                <div class="flex flex-col">
-                  <label
-                    class="text-caption font-label-md text-on-surface-variant mb-1"
-                    >Category</label
-                  >
-                  <select
-                    class="bg-white border border-outline-variant rounded-lg px-3 py-2 text-body-md font-body-md outline-none focus:border-primary"
-                  >
-                    <option>All Categories</option>
-                    <option>Antibiotics</option>
-                    <option>Analgesics</option>
-                    <option>Vaccines</option>
-                    <option>Supplements</option>
-                  </select>
-                </div>
-                <div class="flex flex-col">
-                  <label
-                    class="text-caption font-label-md text-on-surface-variant mb-1"
-                    >Stock Level</label
-                  >
-                  <select
-                    class="bg-white border border-outline-variant rounded-lg px-3 py-2 text-body-md font-body-md outline-none focus:border-primary"
-                  >
-                    <option>All Levels</option>
-                    <option>In Stock</option>
-                    <option>Low Stock</option>
-                    <option>Out of Stock</option>
-                  </select>
-                </div>
-                <div class="flex flex-col">
-                  <label
-                    class="text-caption font-label-md text-on-surface-variant mb-1"
-                    >Branch</label
-                  >
-                  <select
-                    class="bg-white border border-outline-variant rounded-lg px-3 py-2 text-body-md font-body-md outline-none focus:border-primary"
-                  >
-                    <option>All Branches</option>
-                    <option>Main Pharmacy</option>
-                    <option>Downtown Clinic</option>
-                    <option>North Wing</option>
-                  </select>
-                </div>
-                <button
-                  class="mt-auto p-2.5 text-primary hover:bg-primary/5 rounded-lg transition-colors"
-                  title="Clear Filters"
-                >
-                  <span
-                    class="material-symbols-outlined"
-                    data-icon="filter_list_off"
-                    >filter_list_off</span
-                  >
-                </button>
-              </div>
-            </div>
-          </div>
-          <!-- Product Table -->
-          <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
-              <thead>
-                <tr class="bg-surface-container-low/50">
-                  <th
-                    class="px-gutter py-4 font-title-md text-on-surface-variant font-semibold text-body-md border-b border-outline-variant"
-                  >
-                    Code
-                  </th>
-                  <th
-                    class="px-gutter py-4 font-title-md text-on-surface-variant font-semibold text-body-md border-b border-outline-variant"
-                  >
-                    Name
-                  </th>
-                  <th
-                    class="px-gutter py-4 font-title-md text-on-surface-variant font-semibold text-body-md border-b border-outline-variant"
-                  >
-                    Category
-                  </th>
-                  <th
-                    class="px-gutter py-4 font-title-md text-on-surface-variant font-semibold text-body-md border-b border-outline-variant"
-                  >
-                    Stock
-                  </th>
-                  <th
-                    class="px-gutter py-4 font-title-md text-on-surface-variant font-semibold text-body-md border-b border-outline-variant"
-                  >
-                    Expiry Date
-                  </th>
-                  <th
-                    class="px-gutter py-4 font-title-md text-on-surface-variant font-semibold text-body-md border-b border-outline-variant"
-                  >
-                    Price
-                  </th>
-                  <th
-                    class="px-gutter py-4 font-title-md text-on-surface-variant font-semibold text-body-md border-b border-outline-variant"
-                  >
-                    Status
-                  </th>
-                  <th
-                    class="px-gutter py-4 font-title-md text-on-surface-variant font-semibold text-body-md border-b border-outline-variant text-right"
-                  >
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-outline-variant">
-                <!-- Row 1: Low Stock Indicator -->
-                <tr class="hover:bg-primary/5 transition-colors group">
-                  <td
-                    class="px-gutter py-4 font-body-md text-body-md text-on-surface font-mono"
-                  >
-                    FMD-9021
-                  </td>
-                  <td
-                    class="px-gutter py-4 font-body-md text-body-md text-on-surface font-medium"
-                  >
-                    Amoxicillin 500mg
-                  </td>
-                  <td
-                    class="px-gutter py-4 font-body-md text-body-md text-on-surface-variant"
-                  >
-                    Antibiotics
-                  </td>
-                  <td class="px-gutter py-4 font-body-md text-body-md">
-                    <div
-                      class="flex items-center gap-2 text-yellow-600 font-bold"
-                    >
-                      <span
-                        class="material-symbols-outlined text-[18px]"
-                        data-icon="trending_down"
-                        >trending_down</span
-                      >
-                      12 Units
-                    </div>
-                  </td>
-                  <td
-                    class="px-gutter py-4 font-body-md text-body-md text-on-surface-variant"
-                  >
-                    12/2025
-                  </td>
-                  <td
-                    class="px-gutter py-4 font-body-md text-body-md text-on-surface font-medium"
-                  >
-                    $24.50
-                  </td>
-                  <td class="px-gutter py-4">
-                    <span
-                      class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-yellow-500/10 text-yellow-700"
-                    >
-                      Low Stock
-                    </span>
-                  </td>
-                  <td class="px-gutter py-4 text-right">
-                    <button class="p-1.5 hover:text-primary transition-colors">
-                      <span
-                        class="material-symbols-outlined text-[20px]"
-                        data-icon="edit"
-                        >edit</span
-                      >
-                    </button>
-                    <button class="p-1.5 hover:text-error transition-colors">
-                      <span
-                        class="material-symbols-outlined text-[20px]"
-                        data-icon="delete"
-                        >delete</span
-                      >
-                    </button>
-                  </td>
-                </tr>
-                <!-- Row 2: Expired Indicator -->
-                <tr class="hover:bg-primary/5 transition-colors group">
-                  <td
-                    class="px-gutter py-4 font-body-md text-body-md text-on-surface font-mono"
-                  >
-                    FMD-4432
-                  </td>
-                  <td
-                    class="px-gutter py-4 font-body-md text-body-md text-on-surface font-medium"
-                  >
-                    Ibuprofen 200mg Gel
-                  </td>
-                  <td
-                    class="px-gutter py-4 font-body-md text-body-md text-on-surface-variant"
-                  >
-                    Analgesics
-                  </td>
-                  <td
-                    class="px-gutter py-4 font-body-md text-body-md text-on-surface"
-                  >
-                    450 Units
-                  </td>
-                  <td class="px-gutter py-4 font-body-md text-body-md">
-                    <div class="flex items-center gap-2 text-error font-bold">
-                      <span
-                        class="material-symbols-outlined text-[18px]"
-                        data-icon="error"
-                        >error</span
-                      >
-                      09/2023
-                    </div>
-                  </td>
-                  <td
-                    class="px-gutter py-4 font-body-md text-body-md text-on-surface font-medium"
-                  >
-                    $12.99
-                  </td>
-                  <td class="px-gutter py-4">
-                    <span
-                      class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-error/10 text-error"
-                    >
-                      Expired
-                    </span>
-                  </td>
-                  <td class="px-gutter py-4 text-right">
-                    <button class="p-1.5 hover:text-primary transition-colors">
-                      <span
-                        class="material-symbols-outlined text-[20px]"
-                        data-icon="edit"
-                        >edit</span
-                      >
-                    </button>
-                    <button class="p-1.5 hover:text-error transition-colors">
-                      <span
-                        class="material-symbols-outlined text-[20px]"
-                        data-icon="delete"
-                        >delete</span
-                      >
-                    </button>
-                  </td>
-                </tr>
-                <!-- Row 3: Normal -->
-                <tr class="hover:bg-primary/5 transition-colors group">
-                  <td
-                    class="px-gutter py-4 font-body-md text-body-md text-on-surface font-mono"
-                  >
-                    FMD-1182
-                  </td>
-                  <td
-                    class="px-gutter py-4 font-body-md text-body-md text-on-surface font-medium"
-                  >
-                    Paracetamol Extra
-                  </td>
-                  <td
-                    class="px-gutter py-4 font-body-md text-body-md text-on-surface-variant"
-                  >
-                    Analgesics
-                  </td>
-                  <td
-                    class="px-gutter py-4 font-body-md text-body-md text-on-surface"
-                  >
-                    1,240 Units
-                  </td>
-                  <td
-                    class="px-gutter py-4 font-body-md text-body-md text-on-surface-variant"
-                  >
-                    05/2026
-                  </td>
-                  <td
-                    class="px-gutter py-4 font-body-md text-body-md text-on-surface font-medium"
-                  >
-                    $8.00
-                  </td>
-                  <td class="px-gutter py-4">
-                    <span
-                      class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-green-500/10 text-green-700"
-                    >
-                      In Stock
-                    </span>
-                  </td>
-                  <td class="px-gutter py-4 text-right">
-                    <button class="p-1.5 hover:text-primary transition-colors">
-                      <span
-                        class="material-symbols-outlined text-[20px]"
-                        data-icon="edit"
-                        >edit</span
-                      >
-                    </button>
-                    <button class="p-1.5 hover:text-error transition-colors">
-                      <span
-                        class="material-symbols-outlined text-[20px]"
-                        data-icon="delete"
-                        >delete</span
-                      >
-                    </button>
-                  </td>
-                </tr>
-                <!-- Row 4: Normal -->
-                <tr class="hover:bg-primary/5 transition-colors group">
-                  <td
-                    class="px-gutter py-4 font-body-md text-body-md text-on-surface font-mono"
-                  >
-                    FMD-8871
-                  </td>
-                  <td
-                    class="px-gutter py-4 font-body-md text-body-md text-on-surface font-medium"
-                  >
-                    Vitamin C 1000mg
-                  </td>
-                  <td
-                    class="px-gutter py-4 font-body-md text-body-md text-on-surface-variant"
-                  >
-                    Supplements
-                  </td>
-                  <td
-                    class="px-gutter py-4 font-body-md text-body-md text-on-surface"
-                  >
-                    85 Units
-                  </td>
-                  <td
-                    class="px-gutter py-4 font-body-md text-body-md text-on-surface-variant"
-                  >
-                    11/2026
-                  </td>
-                  <td
-                    class="px-gutter py-4 font-body-md text-body-md text-on-surface font-medium"
-                  >
-                    $15.75
-                  </td>
-                  <td class="px-gutter py-4">
-                    <span
-                      class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-green-500/10 text-green-700"
-                    >
-                      In Stock
-                    </span>
-                  </td>
-                  <td class="px-gutter py-4 text-right">
-                    <button class="p-1.5 hover:text-primary transition-colors">
-                      <span
-                        class="material-symbols-outlined text-[20px]"
-                        data-icon="edit"
-                        >edit</span
-                      >
-                    </button>
-                    <button class="p-1.5 hover:text-error transition-colors">
-                      <span
-                        class="material-symbols-outlined text-[20px]"
-                        data-icon="delete"
-                        >delete</span
-                      >
-                    </button>
-                  </td>
-                </tr>
-                <!-- Row 5: Normal -->
-                <tr class="hover:bg-primary/5 transition-colors group">
-                  <td
-                    class="px-gutter py-4 font-body-md text-body-md text-on-surface font-mono"
-                  >
-                    FMD-2209
-                  </td>
-                  <td
-                    class="px-gutter py-4 font-body-md text-body-md text-on-surface font-medium"
-                  >
-                    Metformin 500mg
-                  </td>
-                  <td
-                    class="px-gutter py-4 font-body-md text-body-md text-on-surface-variant"
-                  >
-                    Diabetes Care
-                  </td>
-                  <td
-                    class="px-gutter py-4 font-body-md text-body-md text-on-surface"
-                  >
-                    230 Units
-                  </td>
-                  <td
-                    class="px-gutter py-4 font-body-md text-body-md text-on-surface-variant"
-                  >
-                    08/2025
-                  </td>
-                  <td
-                    class="px-gutter py-4 font-body-md text-body-md text-on-surface font-medium"
-                  >
-                    $32.00
-                  </td>
-                  <td class="px-gutter py-4">
-                    <span
-                      class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-green-500/10 text-green-700"
-                    >
-                      In Stock
-                    </span>
-                  </td>
-                  <td class="px-gutter py-4 text-right">
-                    <button class="p-1.5 hover:text-primary transition-colors">
-                      <span
-                        class="material-symbols-outlined text-[20px]"
-                        data-icon="edit"
-                        >edit</span
-                      >
-                    </button>
-                    <button class="p-1.5 hover:text-error transition-colors">
-                      <span
-                        class="material-symbols-outlined text-[20px]"
-                        data-icon="delete"
-                        >delete</span
-                      >
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <!-- Pagination -->
-          <div
-            class="px-gutter py-4 flex items-center justify-between bg-surface-container-low/30 border-t border-outline-variant"
-          >
-            <p class="font-body-md text-body-md text-on-surface-variant">
-              Showing <span class="font-bold">1-5</span> of
-              <span class="font-bold">1,284</span> products
-            </p>
-            <div class="flex items-center gap-2">
-              <button
-                class="w-10 h-10 flex items-center justify-center rounded-lg border border-outline-variant hover:bg-white transition-colors disabled:opacity-50"
-                disabled=""
-              >
-                <span
-                  class="material-symbols-outlined text-[20px]"
-                  data-icon="chevron_left"
-                  >chevron_left</span
-                >
+
+        <!-- Tab: Categorías -->
+        <div id="tabContentCategorias" class="hidden">
+          <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
+            <div class="flex flex-wrap gap-3">
+              <button onclick="showCreateCategoria()" class="btn btn-primary">
+                <span class="material-symbols-outlined text-sm">add</span>
+                Nueva Categoría
               </button>
-              <button
-                class="w-10 h-10 flex items-center justify-center rounded-lg bg-primary text-white font-bold text-body-md"
-              >
-                1
-              </button>
-              <button
-                class="w-10 h-10 flex items-center justify-center rounded-lg border border-outline-variant hover:bg-white transition-colors"
-              >
-                2
-              </button>
-              <button
-                class="w-10 h-10 flex items-center justify-center rounded-lg border border-outline-variant hover:bg-white transition-colors"
-              >
-                3
-              </button>
-              <span class="px-2">...</span>
-              <button
-                class="w-10 h-10 flex items-center justify-center rounded-lg border border-outline-variant hover:bg-white transition-colors"
-              >
-                256
-              </button>
-              <button
-                class="w-10 h-10 flex items-center justify-center rounded-lg border border-outline-variant hover:bg-white transition-colors"
-              >
-                <span
-                  class="material-symbols-outlined text-[20px]"
-                  data-icon="chevron_right"
-                  >chevron_right</span
-                >
+              <button onclick="loadCategorias()" class="btn btn-secondary">
+                <span class="material-symbols-outlined text-sm">refresh</span>
+                Actualizar
               </button>
             </div>
+          </div>
+
+          <div id="categoriasContent">
+            <div class="loading"><span class="material-symbols-outlined">refresh</span> Cargando categorías...</div>
           </div>
         </div>
-        <!-- Bento Widgets: Low Stock Focus & Logistics -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
-          <div
-            class="md:col-span-2 bg-surface-container-lowest p-gutter rounded-xl border border-outline-variant"
-          >
-            <div class="flex items-center justify-between mb-6">
-              <h4 class="font-title-lg text-title-lg font-bold">
-                Recent Expirations Warning
-              </h4>
-              <a
-                class="text-primary font-label-md text-label-md hover:underline"
-                href="#"
-                >View All Alerts</a
-              >
+
+        <!-- Tab: Stock por Sucursal -->
+        <div id="tabContentStock" class="hidden">
+          <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
+            <div class="flex flex-wrap gap-3">
+              <button onclick="loadStock()" class="btn btn-secondary">
+                <span class="material-symbols-outlined text-sm">refresh</span>
+                Actualizar
+              </button>
             </div>
-            <div class="space-y-4">
-              <div
-                class="flex items-center justify-between p-3 bg-error/5 border-l-4 border-error rounded-r-lg"
-              >
-                <div class="flex items-center gap-4">
-                  <span
-                    class="material-symbols-outlined text-error"
-                    data-icon="inventory_2"
-                    >inventory_2</span
-                  >
-                  <div>
-                    <p
-                      class="font-body-md text-body-md text-on-surface font-bold"
-                    >
-                      Amoxicillin 250mg - Batch #8812
-                    </p>
-                    <p class="text-caption font-caption text-error">
-                      Expires in 12 days (Nov 05, 2023)
-                    </p>
-                  </div>
-                </div>
-                <button
-                  class="bg-error text-white px-3 py-1.5 rounded-lg font-label-md text-label-md hover:opacity-90"
-                >
-                  Mark for Removal
-                </button>
-              </div>
-              <div
-                class="flex items-center justify-between p-3 bg-yellow-500/5 border-l-4 border-yellow-500 rounded-r-lg"
-              >
-                <div class="flex items-center gap-4">
-                  <span
-                    class="material-symbols-outlined text-yellow-600"
-                    data-icon="inventory_2"
-                    >inventory_2</span
-                  >
-                  <div>
-                    <p
-                      class="font-body-md text-body-md text-on-surface font-bold"
-                    >
-                      Insulin Glargine - Batch #4490
-                    </p>
-                    <p class="text-caption font-caption text-yellow-700">
-                      Expires in 34 days (Nov 27, 2023)
-                    </p>
-                  </div>
-                </div>
-                <button
-                  class="bg-yellow-600 text-white px-3 py-1.5 rounded-lg font-label-md text-label-md hover:opacity-90"
-                >
-                  Re-order Now
-                </button>
-              </div>
+            <div class="flex gap-2">
+              <select id="sucursalStockFilter" onchange="loadStock()" class="px-4 py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none">
+                <option value="">Todas las sucursales</option>
+              </select>
+              <input 
+                type="text" 
+                id="searchStockInput" 
+                placeholder="Buscar producto..." 
+                class="px-4 py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none w-48"
+                onkeyup="filterStock()"
+              />
             </div>
+          </div>
+
+          <div id="stockContent">
+            <div class="loading"><span class="material-symbols-outlined">refresh</span> Cargando stock...</div>
+          </div>
+        </div>
+
+        <!-- Tab: Movimientos -->
+        <div id="tabContentMovimientos" class="hidden">
+          <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
+            <div class="flex flex-wrap gap-3">
+              <button onclick="loadMovimientos()" class="btn btn-secondary">
+                <span class="material-symbols-outlined text-sm">refresh</span>
+                Actualizar
+              </button>
+            </div>
+            <div class="flex gap-2">
+              <select id="tipoMovimientoFilter" onchange="loadMovimientos()" class="px-4 py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none">
+                <option value="">Todos los tipos</option>
+                <option value="entrada">Entrada</option>
+                <option value="salida">Salida</option>
+                <option value="transferencia_origen">Transferencia Origen</option>
+                <option value="transferencia_destino">Transferencia Destino</option>
+                <option value="ajuste">Ajuste</option>
+              </select>
+              <input 
+                type="date" 
+                id="fechaMovimientoInicio" 
+                class="px-4 py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none"
+                onchange="loadMovimientos()"
+              />
+              <input 
+                type="date" 
+                id="fechaMovimientoFin" 
+                class="px-4 py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none"
+                onchange="loadMovimientos()"
+              />
+            </div>
+          </div>
+
+          <div id="movimientosContent">
+            <div class="loading"><span class="material-symbols-outlined">refresh</span> Cargando movimientos...</div>
           </div>
         </div>
       </div>
     </main>
+
+    <!-- Modal -->
+    <div id="modalOverlay" class="modal-overlay">
+      <div class="modal modal-lg">
+        <div class="modal-header">
+          <h3 id="modalTitle">Modal</h3>
+          <button class="modal-close" onclick="closeModal()">✕</button>
+        </div>
+        <div class="modal-body" id="modalBody">
+          <!-- Contenido dinámico -->
+        </div>
+      </div>
+    </div>
+
+    <script src="http://localhost:3010/public/js/config.js"></script>
+    <script src="http://localhost:3010/public/js/auth.js"></script>
+    <script>
+      // ============ VARIABLES GLOBALES ============
+      let productosData = [];
+      let categoriasData = [];
+      let stockData = [];
+      let movimientosData = [];
+      let currentTab = 'productos';
+      let sucursalesData = [];
+
+      // ============ INICIALIZACIÓN ============
+      document.addEventListener('DOMContentLoaded', () => {
+        if (!requireAuth()) return;
+        loadUserInfo();
+        loadProductos();
+        loadCategorias();
+        loadSucursales();
+        setupLogout();
+        setupSidebarToggle();
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+      });
+
+      // ============ FUNCIONES DE USUARIO ============
+      function loadUserInfo() {
+        try {
+          const user = JSON.parse(localStorage.getItem('user'));
+          if (user) {
+            document.getElementById('userName').textContent = user.username || 'Usuario';
+            document.getElementById('userRole').textContent = user.roles ? user.roles.join(', ') : 'Sin rol';
+            document.getElementById('userAvatar').textContent = user.username ? user.username.charAt(0).toUpperCase() : 'U';
+          }
+        } catch (e) {
+          console.error('Error loading user info:', e);
+        }
+      }
+
+      function setupLogout() {
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+          e.preventDefault();
+          logout();
+        });
+      }
+
+      function setupSidebarToggle() {
+        document.getElementById('toggleSidebar').addEventListener('click', () => {
+          document.getElementById('sidebar').classList.toggle('open');
+        });
+      }
+
+      function updateDateTime() {
+        const now = new Date();
+        document.getElementById('currentDateTime').textContent = now.toLocaleString('es-ES');
+      }
+
+      function switchTab(tab) {
+        currentTab = tab;
+        const tabs = ['productos', 'categorias', 'stock', 'movimientos'];
+        tabs.forEach(t => {
+          document.getElementById(`tabContent${t.charAt(0).toUpperCase() + t.slice(1)}`).classList.toggle('hidden', t !== tab);
+          const btn = document.getElementById(`tab${t.charAt(0).toUpperCase() + t.slice(1)}`);
+          if (btn) {
+            btn.className = t === tab 
+              ? 'px-4 py-2 text-sm font-medium text-blue-600 border-b-2 border-blue-600'
+              : 'px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent';
+          }
+        });
+        
+        // Cargar datos según la pestaña
+        if (tab === 'stock') loadStock();
+        if (tab === 'movimientos') loadMovimientos();
+      }
+
+      // ============ FUNCIONES API ============
+      async function apiRequest(endpoint, options = {}) {
+        const token = localStorage.getItem('token');
+        if (!token) throw new Error('No autenticado');
+
+        const url = `${getApiBase()}${endpoint}`;
+        const headers = {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          ...options.headers
+        };
+
+        const response = await fetch(url, { ...options, headers });
+        if (!response.ok) {
+          const error = await response.json().catch(() => ({ message: `Error ${response.status}` }));
+          throw new Error(error.message || `Error ${response.status}`);
+        }
+        return response.json();
+      }
+
+      // ============ LOAD SUCURSALES ============
+      async function loadSucursales() {
+        try {
+          const data = await apiRequest('/api/sucursales/sucursales');
+          sucursalesData = data.data || [];
+          
+          // Actualizar selects de sucursales
+          const selects = ['sucursalStockFilter'];
+          selects.forEach(id => {
+            const select = document.getElementById(id);
+            if (select) {
+              const currentValue = select.value;
+              select.innerHTML = '<option value="">Todas las sucursales</option>';
+              sucursalesData.forEach(s => {
+                select.innerHTML += `<option value="${s.id}">${s.nombre}</option>`;
+              });
+              select.value = currentValue;
+            }
+          });
+        } catch (error) {
+          console.warn('Error loading sucursales:', error);
+        }
+      }
+
+      // ============ CATEGORÍAS ============
+      async function loadCategorias() {
+        const container = document.getElementById('categoriasContent');
+        container.innerHTML = `<div class="loading"><span class="material-symbols-outlined">refresh</span> Cargando categorías...</div>`;
+
+        try {
+          const data = await apiRequest('/api/inventario/categorias');
+          categoriasData = data.data || [];
+          renderCategorias(categoriasData);
+          updateCategoriaFilter();
+        } catch (error) {
+          console.error('Error loading categorias:', error);
+          container.innerHTML = `
+            <div class="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
+              <span class="material-symbols-outlined text-red-500 text-4xl">error</span>
+              <p class="text-red-700 mt-2">Error al cargar categorías</p>
+              <p class="text-sm text-red-600">${error.message}</p>
+            </div>
+          `;
+        }
+      }
+
+      function renderCategorias(data) {
+        const container = document.getElementById('categoriasContent');
+        
+        if (!data || data.length === 0) {
+          container.innerHTML = `
+            <div class="bg-gray-50 rounded-xl p-8 text-center">
+              <span class="material-symbols-outlined text-gray-400 text-5xl">category</span>
+              <p class="text-gray-500 mt-2">No hay categorías registradas</p>
+              <button onclick="showCreateCategoria()" class="btn btn-primary mt-4">Crear primera categoría</button>
+            </div>
+          `;
+          return;
+        }
+
+        let html = `
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        `;
+
+        data.forEach(c => {
+          const estadoBadge = c.estado 
+            ? '<span class="badge badge-success">Activo</span>' 
+            : '<span class="badge badge-danger">Inactivo</span>';
+          
+          html += `
+            <div class="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-md transition-shadow">
+              <div class="flex justify-between items-start">
+                <div>
+                  <h3 class="font-semibold text-gray-800 text-lg">${c.nombre}</h3>
+                  <p class="text-sm text-gray-500 mt-1">${c.descripcion || 'Sin descripción'}</p>
+                </div>
+                ${estadoBadge}
+              </div>
+              <div class="mt-4 flex gap-2">
+                <button class="btn btn-primary btn-sm" onclick="showEditCategoria(${c.id})">
+                  <span class="material-symbols-outlined text-sm">edit</span> Editar
+                </button>
+                <button class="btn ${c.estado ? 'btn-danger' : 'btn-success'} btn-sm" onclick="toggleCategoriaStatus(${c.id})">
+                  <span class="material-symbols-outlined text-sm">${c.estado ? 'block' : 'check_circle'}</span>
+                  ${c.estado ? 'Desactivar' : 'Activar'}
+                </button>
+              </div>
+            </div>
+          `;
+        });
+
+        html += '</div>';
+        container.innerHTML = html;
+      }
+
+      function updateCategoriaFilter() {
+        const select = document.getElementById('categoriaFilter');
+        if (!select) return;
+        
+        const currentValue = select.value;
+        select.innerHTML = '<option value="">Todas las categorías</option>';
+        categoriasData.forEach(c => {
+          select.innerHTML += `<option value="${c.id}">${c.nombre}</option>`;
+        });
+        select.value = currentValue;
+      }
+
+      function showCreateCategoria() {
+        showModal('Nueva Categoría', `
+          <form id="categoriaForm" onsubmit="createCategoria(event)">
+            <div class="form-group">
+              <label>Nombre *</label>
+              <input type="text" name="nombre" required placeholder="Nombre de la categoría">
+            </div>
+            <div class="form-group">
+              <label>Descripción</label>
+              <textarea name="descripcion" placeholder="Descripción de la categoría"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary w-full">Crear Categoría</button>
+          </form>
+        `);
+      }
+
+      async function createCategoria(event) {
+        event.preventDefault();
+        const form = event.target;
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData);
+
+        try {
+          await apiRequest('/api/inventario/categorias', {
+            method: 'POST',
+            body: JSON.stringify(data)
+          });
+          closeModal();
+          showToast('✅ Categoría creada exitosamente', 'success');
+          loadCategorias();
+        } catch (error) {
+          showToast('❌ ' + error.message, 'error');
+        }
+      }
+
+      function showEditCategoria(id) {
+        const categoria = categoriasData.find(c => c.id === id);
+        if (!categoria) {
+          showToast('❌ Categoría no encontrada', 'error');
+          return;
+        }
+
+        showModal('Editar Categoría', `
+          <form id="categoriaForm" onsubmit="updateCategoria(event, ${id})">
+            <div class="form-group">
+              <label>Nombre *</label>
+              <input type="text" name="nombre" required value="${categoria.nombre}">
+            </div>
+            <div class="form-group">
+              <label>Descripción</label>
+              <textarea name="descripcion">${categoria.descripcion || ''}</textarea>
+            </div>
+            <div class="form-group">
+              <label>Estado</label>
+              <select name="estado">
+                <option value="true" ${categoria.estado ? 'selected' : ''}>Activo</option>
+                <option value="false" ${!categoria.estado ? 'selected' : ''}>Inactivo</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary w-full">Actualizar Categoría</button>
+          </form>
+        `);
+      }
+
+      async function updateCategoria(event, id) {
+        event.preventDefault();
+        const form = event.target;
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData);
+        data.estado = data.estado === 'true';
+
+        try {
+          await apiRequest(`/api/inventario/categorias/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify(data)
+          });
+          closeModal();
+          showToast('✅ Categoría actualizada exitosamente', 'success');
+          loadCategorias();
+        } catch (error) {
+          showToast('❌ ' + error.message, 'error');
+        }
+      }
+
+      async function toggleCategoriaStatus(id) {
+        const categoria = categoriasData.find(c => c.id === id);
+        if (!categoria) return;
+
+        const action = categoria.estado ? 'desactivar' : 'activar';
+        if (!confirm(`¿Estás seguro de ${action} esta categoría?`)) return;
+
+        try {
+          await apiRequest(`/api/inventario/categorias/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify({ ...categoria, estado: !categoria.estado })
+          });
+          showToast(`✅ Categoría ${action}da exitosamente`, 'success');
+          loadCategorias();
+        } catch (error) {
+          showToast('❌ ' + error.message, 'error');
+        }
+      }
+
+      // ============ PRODUCTOS ============
+      async function loadProductos() {
+        const container = document.getElementById('productosContent');
+        container.innerHTML = `<div class="loading"><span class="material-symbols-outlined">refresh</span> Cargando productos...</div>`;
+
+        try {
+          const data = await apiRequest('/api/inventario/productos');
+          productosData = data.data || [];
+          renderProductos(productosData);
+        } catch (error) {
+          console.error('Error loading productos:', error);
+          container.innerHTML = `
+            <div class="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
+              <span class="material-symbols-outlined text-red-500 text-4xl">error</span>
+              <p class="text-red-700 mt-2">Error al cargar productos</p>
+              <p class="text-sm text-red-600">${error.message}</p>
+            </div>
+          `;
+        }
+      }
+
+      function renderProductos(data) {
+        const container = document.getElementById('productosContent');
+        
+        if (!data || data.length === 0) {
+          container.innerHTML = `
+            <div class="bg-gray-50 rounded-xl p-8 text-center">
+              <span class="material-symbols-outlined text-gray-400 text-5xl">inventory_2</span>
+              <p class="text-gray-500 mt-2">No hay productos registrados</p>
+              <button onclick="showCreateProducto()" class="btn btn-primary mt-4">Crear primer producto</button>
+            </div>
+          `;
+          return;
+        }
+
+        let html = `
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Código</th>
+                  <th>Nombre</th>
+                  <th>Categoría</th>
+                  <th>Precio Compra</th>
+                  <th>Precio Venta</th>
+                  <th>Stock</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+        `;
+
+        data.forEach(p => {
+          const estadoBadge = p.estado 
+            ? '<span class="badge badge-success">Activo</span>' 
+            : '<span class="badge badge-danger">Inactivo</span>';
+          
+          const stockTotal = p.inventario?.reduce((sum, i) => sum + i.cantidad, 0) || 0;
+          
+          html += `
+            <tr>
+              <td><span class="font-mono text-sm">${p.codigo}</span></td>
+              <td><strong>${p.nombre}</strong></td>
+              <td>${p.categoria?.nombre || 'N/A'}</td>
+              <td>S/ ${parseFloat(p.precio_compra).toFixed(2)}</td>
+              <td>S/ ${parseFloat(p.precio_venta).toFixed(2)}</td>
+              <td class="text-center ${stockTotal <= (p.stock_minimo || 10) ? 'text-red-600 font-bold' : ''}">${stockTotal}</td>
+              <td>${estadoBadge}</td>
+              <td>
+                <button class="btn btn-primary btn-sm" onclick="showEditProducto(${p.id})">
+                  <span class="material-symbols-outlined text-sm">edit</span>
+                </button>
+                <button class="btn btn-info btn-sm" onclick="showStockProducto(${p.id})">
+                  <span class="material-symbols-outlined text-sm">warehouse</span>
+                </button>
+                <button class="btn ${p.estado ? 'btn-danger' : 'btn-success'} btn-sm" onclick="toggleProductoStatus(${p.id})">
+                  <span class="material-symbols-outlined text-sm">${p.estado ? 'block' : 'check_circle'}</span>
+                </button>
+              </td>
+            </tr>
+          `;
+        });
+
+        html += '</tbody></table></div>';
+        container.innerHTML = html;
+      }
+
+      function filterProductos() {
+        const search = document.getElementById('searchProductoInput').value.toLowerCase();
+        const categoriaId = document.getElementById('categoriaFilter').value;
+        
+        let filtered = productosData.filter(p => {
+          const matchSearch = 
+            p.nombre?.toLowerCase().includes(search) ||
+            p.codigo?.toLowerCase().includes(search);
+          const matchCategoria = !categoriaId || p.categoria_id == categoriaId;
+          return matchSearch && matchCategoria;
+        });
+        
+        renderProductos(filtered);
+      }
+
+      function showCreateProducto() {
+        const categoriasOptions = categoriasData
+          .filter(c => c.estado)
+          .map(c => `<option value="${c.id}">${c.nombre}</option>`)
+          .join('');
+
+        showModal('Nuevo Producto', `
+          <form id="productoForm" onsubmit="createProducto(event)">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="form-group">
+                <label>Código *</label>
+                <input type="text" name="codigo" required placeholder="PROD-001">
+              </div>
+              <div class="form-group">
+                <label>Nombre *</label>
+                <input type="text" name="nombre" required placeholder="Nombre del producto">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Descripción</label>
+              <textarea name="descripcion" placeholder="Descripción del producto"></textarea>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="form-group">
+                <label>Categoría *</label>
+                <select name="categoria_id" required>
+                  <option value="">Seleccionar...</option>
+                  ${categoriasOptions}
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Unidad de Medida</label>
+                <select name="unidad_medida">
+                  <option value="unidad">Unidad</option>
+                  <option value="caja">Caja</option>
+                  <option value="frasco">Frasco</option>
+                  <option value="ampolla">Ampolla</option>
+                  <option value="blister">Blister</option>
+                </select>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="form-group">
+                <label>Precio Compra</label>
+                <input type="number" name="precio_compra" step="0.01" placeholder="0.00">
+              </div>
+              <div class="form-group">
+                <label>Precio Venta</label>
+                <input type="number" name="precio_venta" step="0.01" placeholder="0.00">
+              </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="form-group">
+                <label>Stock Mínimo</label>
+                <input type="number" name="stock_minimo" placeholder="10">
+              </div>
+              <div class="form-group">
+                <label>Stock Máximo</label>
+                <input type="number" name="stock_maximo" placeholder="500">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="checkbox" name="requiere_receta" value="true">
+                Requiere Receta Médica
+              </label>
+            </div>
+            <button type="submit" class="btn btn-primary w-full">Crear Producto</button>
+          </form>
+        `);
+      }
+
+      async function createProducto(event) {
+        event.preventDefault();
+        const form = event.target;
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData);
+        data.requiere_receta = data.requiere_receta === 'true';
+
+        try {
+          await apiRequest('/api/inventario/productos', {
+            method: 'POST',
+            body: JSON.stringify(data)
+          });
+          closeModal();
+          showToast('✅ Producto creado exitosamente', 'success');
+          loadProductos();
+        } catch (error) {
+          showToast('❌ ' + error.message, 'error');
+        }
+      }
+
+      function showEditProducto(id) {
+        const producto = productosData.find(p => p.id === id);
+        if (!producto) {
+          showToast('❌ Producto no encontrado', 'error');
+          return;
+        }
+
+        const categoriasOptions = categoriasData
+          .filter(c => c.estado)
+          .map(c => `<option value="${c.id}" ${c.id === producto.categoria_id ? 'selected' : ''}>${c.nombre}</option>`)
+          .join('');
+
+        showModal('Editar Producto', `
+          <form id="productoForm" onsubmit="updateProducto(event, ${id})">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="form-group">
+                <label>Código *</label>
+                <input type="text" name="codigo" required value="${producto.codigo}">
+              </div>
+              <div class="form-group">
+                <label>Nombre *</label>
+                <input type="text" name="nombre" required value="${producto.nombre}">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Descripción</label>
+              <textarea name="descripcion">${producto.descripcion || ''}</textarea>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="form-group">
+                <label>Categoría *</label>
+                <select name="categoria_id" required>
+                  <option value="">Seleccionar...</option>
+                  ${categoriasOptions}
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Unidad de Medida</label>
+                <select name="unidad_medida">
+                  <option value="unidad" ${producto.unidad_medida === 'unidad' ? 'selected' : ''}>Unidad</option>
+                  <option value="caja" ${producto.unidad_medida === 'caja' ? 'selected' : ''}>Caja</option>
+                  <option value="frasco" ${producto.unidad_medida === 'frasco' ? 'selected' : ''}>Frasco</option>
+                  <option value="ampolla" ${producto.unidad_medida === 'ampolla' ? 'selected' : ''}>Ampolla</option>
+                  <option value="blister" ${producto.unidad_medida === 'blister' ? 'selected' : ''}>Blister</option>
+                </select>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="form-group">
+                <label>Precio Compra</label>
+                <input type="number" name="precio_compra" step="0.01" value="${producto.precio_compra}">
+              </div>
+              <div class="form-group">
+                <label>Precio Venta</label>
+                <input type="number" name="precio_venta" step="0.01" value="${producto.precio_venta}">
+              </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="form-group">
+                <label>Stock Mínimo</label>
+                <input type="number" name="stock_minimo" value="${producto.stock_minimo || 10}">
+              </div>
+              <div class="form-group">
+                <label>Stock Máximo</label>
+                <input type="number" name="stock_maximo" value="${producto.stock_maximo || 500}">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="checkbox" name="requiere_receta" value="true" ${producto.requiere_receta ? 'checked' : ''}>
+                Requiere Receta Médica
+              </label>
+            </div>
+            <div class="form-group">
+              <label>Estado</label>
+              <select name="estado">
+                <option value="true" ${producto.estado ? 'selected' : ''}>Activo</option>
+                <option value="false" ${!producto.estado ? 'selected' : ''}>Inactivo</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary w-full">Actualizar Producto</button>
+          </form>
+        `);
+      }
+
+      async function updateProducto(event, id) {
+        event.preventDefault();
+        const form = event.target;
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData);
+        data.requiere_receta = data.requiere_receta === 'true';
+        data.estado = data.estado === 'true';
+
+        try {
+          await apiRequest(`/api/inventario/productos/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify(data)
+          });
+          closeModal();
+          showToast('✅ Producto actualizado exitosamente', 'success');
+          loadProductos();
+        } catch (error) {
+          showToast('❌ ' + error.message, 'error');
+        }
+      }
+
+      async function toggleProductoStatus(id) {
+        const producto = productosData.find(p => p.id === id);
+        if (!producto) return;
+
+        const action = producto.estado ? 'desactivar' : 'activar';
+        if (!confirm(`¿Estás seguro de ${action} este producto?`)) return;
+
+        try {
+          await apiRequest(`/api/inventario/productos/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify({ ...producto, estado: !producto.estado })
+          });
+          showToast(`✅ Producto ${action}do exitosamente`, 'success');
+          loadProductos();
+        } catch (error) {
+          showToast('❌ ' + error.message, 'error');
+        }
+      }
+
+      // ============ STOCK ============
+      async function loadStock() {
+        const container = document.getElementById('stockContent');
+        container.innerHTML = `<div class="loading"><span class="material-symbols-outlined">refresh</span> Cargando stock...</div>`;
+
+        try {
+          const data = await apiRequest('/api/inventario/stock?producto_id=all');
+          stockData = data.data || [];
+          renderStock(stockData);
+        } catch (error) {
+          console.error('Error loading stock:', error);
+          container.innerHTML = `
+            <div class="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
+              <span class="material-symbols-outlined text-red-500 text-4xl">error</span>
+              <p class="text-red-700 mt-2">Error al cargar stock</p>
+              <p class="text-sm text-red-600">${error.message}</p>
+            </div>
+          `;
+        }
+      }
+
+      function renderStock(data) {
+        const container = document.getElementById('stockContent');
+        
+        if (!data || data.length === 0) {
+          container.innerHTML = `
+            <div class="bg-gray-50 rounded-xl p-8 text-center">
+              <span class="material-symbols-outlined text-gray-400 text-5xl">warehouse</span>
+              <p class="text-gray-500 mt-2">No hay stock registrado</p>
+            </div>
+          `;
+          return;
+        }
+
+        let html = `
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Producto</th>
+                  <th>Código</th>
+                  <th>Sucursal</th>
+                  <th>Lote</th>
+                  <th>Cantidad</th>
+                  <th>Disponible</th>
+                  <th>Reservado</th>
+                  <th>Vencimiento</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+        `;
+
+        data.forEach(item => {
+          const estadoColors = {
+            'activo': 'badge-success',
+            'agotado': 'badge-danger',
+            'vencido': 'badge-warning',
+            'bloqueado': 'badge-danger'
+          };
+          const estadoBadge = `<span class="badge ${estadoColors[item.estado] || 'badge-info'}">${item.estado}</span>`;
+          
+          html += `
+            <tr>
+              <td><strong>${item.producto?.nombre || 'N/A'}</strong></td>
+              <td><span class="font-mono text-sm">${item.producto?.codigo || 'N/A'}</span></td>
+              <td>${item.sucursal_id}</td>
+              <td><span class="font-mono text-sm">${item.lote}</span></td>
+              <td class="text-center">${item.cantidad}</td>
+              <td class="text-center ${item.cantidad_disponible <= (item.producto?.stock_minimo || 10) ? 'text-red-600 font-bold' : ''}">${item.cantidad_disponible}</td>
+              <td class="text-center">${item.cantidad_reservada}</td>
+              <td>${new Date(item.fecha_vencimiento).toLocaleDateString()}</td>
+              <td>${estadoBadge}</td>
+            </tr>
+          `;
+        });
+
+        html += '</tbody></table></div>';
+        container.innerHTML = html;
+      }
+
+      function filterStock() {
+        const search = document.getElementById('searchStockInput').value.toLowerCase();
+        const filtered = stockData.filter(item => 
+          item.producto?.nombre?.toLowerCase().includes(search) ||
+          item.producto?.codigo?.toLowerCase().includes(search) ||
+          item.lote?.toLowerCase().includes(search)
+        );
+        renderStock(filtered);
+      }
+
+      function showStockProducto(id) {
+        const producto = productosData.find(p => p.id === id);
+        if (!producto) return;
+
+        const stockItems = stockData.filter(s => s.producto_id === id);
+        
+        if (stockItems.length === 0) {
+          showModal(`Stock - ${producto.nombre}`, `
+            <div class="text-center text-gray-500 p-8">
+              <span class="material-symbols-outlined text-4xl">inventory_2</span>
+              <p class="mt-2">No hay stock registrado para este producto</p>
+            </div>
+          `);
+          return;
+        }
+
+        let html = `
+          <div class="mb-4 p-4 bg-gray-50 rounded-lg">
+            <p><strong>Producto:</strong> ${producto.nombre}</p>
+            <p><strong>Código:</strong> ${producto.codigo}</p>
+            <p><strong>Categoría:</strong> ${producto.categoria?.nombre || 'N/A'}</p>
+          </div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Sucursal</th>
+                  <th>Lote</th>
+                  <th>Cantidad</th>
+                  <th>Disponible</th>
+                  <th>Vencimiento</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+        `;
+
+        stockItems.forEach(item => {
+          const estadoColors = {
+            'activo': 'badge-success',
+            'agotado': 'badge-danger',
+            'vencido': 'badge-warning',
+            'bloqueado': 'badge-danger'
+          };
+          const estadoBadge = `<span class="badge ${estadoColors[item.estado] || 'badge-info'}">${item.estado}</span>`;
+          
+          html += `
+            <tr>
+              <td>${item.sucursal_id}</td>
+              <td><span class="font-mono text-sm">${item.lote}</span></td>
+              <td class="text-center">${item.cantidad}</td>
+              <td class="text-center">${item.cantidad_disponible}</td>
+              <td>${new Date(item.fecha_vencimiento).toLocaleDateString()}</td>
+              <td>${estadoBadge}</td>
+            </tr>
+          `;
+        });
+
+        html += '</tbody></table></div>';
+        showModal(`Stock - ${producto.nombre}`, html);
+      }
+
+      // ============ MOVIMIENTOS ============
+      async function loadMovimientos() {
+        const container = document.getElementById('movimientosContent');
+        container.innerHTML = `<div class="loading"><span class="material-symbols-outlined">refresh</span> Cargando movimientos...</div>`;
+
+        try {
+          const tipo = document.getElementById('tipoMovimientoFilter')?.value || '';
+          const fechaInicio = document.getElementById('fechaMovimientoInicio')?.value || '';
+          const fechaFin = document.getElementById('fechaMovimientoFin')?.value || '';
+          
+          let url = '/api/inventario/movimientos';
+          const params = new URLSearchParams();
+          if (tipo) params.append('tipo', tipo);
+          if (fechaInicio) params.append('fecha_inicio', fechaInicio);
+          if (fechaFin) params.append('fecha_fin', fechaFin);
+          if (params.toString()) url += '?' + params.toString();
+
+          const data = await apiRequest(url);
+          movimientosData = data.data || [];
+          renderMovimientos(movimientosData);
+        } catch (error) {
+          console.error('Error loading movimientos:', error);
+          container.innerHTML = `
+            <div class="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
+              <span class="material-symbols-outlined text-red-500 text-4xl">error</span>
+              <p class="text-red-700 mt-2">Error al cargar movimientos</p>
+              <p class="text-sm text-red-600">${error.message}</p>
+            </div>
+          `;
+        }
+      }
+
+      function renderMovimientos(data) {
+        const container = document.getElementById('movimientosContent');
+        
+        if (!data || data.length === 0) {
+          container.innerHTML = `
+            <div class="bg-gray-50 rounded-xl p-8 text-center">
+              <span class="material-symbols-outlined text-gray-400 text-5xl">history</span>
+              <p class="text-gray-500 mt-2">No hay movimientos registrados</p>
+            </div>
+          `;
+          return;
+        }
+
+        let html = `
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Tipo</th>
+                  <th>Producto</th>
+                  <th>Lote</th>
+                  <th>Cantidad</th>
+                  <th>Anterior</th>
+                  <th>Nuevo</th>
+                  <th>Referencia</th>
+                  <th>Usuario</th>
+                </tr>
+              </thead>
+              <tbody>
+        `;
+
+        data.forEach(m => {
+          const tipoColors = {
+            'entrada': 'badge-success',
+            'salida': 'badge-danger',
+            'transferencia_origen': 'badge-warning',
+            'transferencia_destino': 'badge-info',
+            'ajuste': 'badge-warning'
+          };
+          const tipoBadge = `<span class="badge ${tipoColors[m.tipo_movimiento] || 'badge-info'}">${m.tipo_movimiento}</span>`;
+          
+          html += `
+            <tr>
+              <td>${new Date(m.fecha_movimiento).toLocaleString()}</td>
+              <td>${tipoBadge}</td>
+              <td>${m.inventario?.producto?.nombre || 'N/A'}</td>
+              <td><span class="font-mono text-sm">${m.inventario?.lote || 'N/A'}</span></td>
+              <td class="text-center font-bold">${m.cantidad}</td>
+              <td class="text-center">${m.cantidad_anterior}</td>
+              <td class="text-center">${m.cantidad_nueva}</td>
+              <td>${m.referencia_tipo} #${m.referencia_id}</td>
+              <td>${m.usuario_id}</td>
+            </tr>
+          `;
+        });
+
+        html += '</tbody></table></div>';
+        container.innerHTML = html;
+      }
+
+      // ============ TOAST NOTIFICATIONS ============
+      function showToast(message, type = 'info') {
+        const colors = {
+          success: 'bg-green-50 border-green-200 text-green-700',
+          error: 'bg-red-50 border-red-200 text-red-700',
+          warning: 'bg-yellow-50 border-yellow-200 text-yellow-700',
+          info: 'bg-blue-50 border-blue-200 text-blue-700'
+        };
+        const icons = {
+          success: 'check_circle',
+          error: 'error',
+          warning: 'warning',
+          info: 'info'
+        };
+
+        const toast = document.createElement('div');
+        toast.className = `fixed top-4 right-4 p-4 rounded-lg border shadow-lg ${colors[type] || colors.info} flex items-center gap-3 z-50 max-w-md animate-slide-in`;
+        toast.innerHTML = `
+          <span class="material-symbols-outlined">${icons[type] || icons.info}</span>
+          <span>${message}</span>
+          <button onclick="this.parentElement.remove()" class="ml-auto text-gray-400 hover:text-gray-600">✕</button>
+        `;
+
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 5000);
+      }
+
+      // ============ MODAL ============
+      function showModal(title, content) {
+        document.getElementById('modalTitle').textContent = title;
+        document.getElementById('modalBody').innerHTML = content;
+        document.getElementById('modalOverlay').classList.add('active');
+        // Ajustar tamaño del modal
+        document.querySelector('.modal').classList.add('modal-lg');
+      }
+
+      function closeModal() {
+        document.getElementById('modalOverlay').classList.remove('active');
+      }
+
+      // Cerrar modal al hacer click fuera
+      document.getElementById('modalOverlay').addEventListener('click', (e) => {
+        if (e.target === e.currentTarget) closeModal();
+      });
+
+      // ============ ESTILOS ADICIONALES ============
+      const style = document.createElement('style');
+      style.textContent = `
+        .animate-slide-in {
+          animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn {
+          from { transform: translateX(100%); opacity: 0; }
+          to { transform: translateX(0); opacity: 1; }
+        }
+        .modal-lg {
+          max-width: 800px !important;
+        }
+        .badge-purple {
+          background: #ede9fe;
+          color: #5b21b6;
+        }
+        .btn-info {
+          background: #0ea5e9;
+          color: white;
+        }
+        .btn-info:hover {
+          background: #0284c7;
+        }
+      `;
+      document.head.appendChild(style);
+    </script>
   </body>
 </html>

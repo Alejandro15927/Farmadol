@@ -19,8 +19,9 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Routes
-app.use('/api/auth', authRoutes);
+// ✅ CAMBIO AQUÍ - Montar en ambos prefijos
+app.use('/auth', authRoutes);        // Para el Gateway (http://localhost:3001/auth/login)
+app.use('/api/auth', authRoutes);    // Para pruebas directas (http://localhost:3001/api/auth/login)
 
 // Health check
 app.get('/health', (req, res) => {
@@ -44,6 +45,12 @@ app.use((err, req, res, next) => {
 sequelize.sync()
   .then(() => {
     console.log(`🔐 Auth Service en http://localhost:${PORT}`);
+    console.log(`📋 Endpoints disponibles:`);
+    console.log(`  POST /auth/login (para Gateway)`);
+    console.log(`  POST /auth/register`);
+    console.log(`  POST /auth/verify`);
+    console.log(`  GET  /auth/profile`);
+    console.log(`  POST /api/auth/login (para pruebas directas)`);
     app.listen(PORT);
   })
   .catch(err => {

@@ -1,460 +1,931 @@
-<!doctype html>
-
-<html class="light" lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-      rel="stylesheet"
-    />
-    <script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              "primary-fixed": "#dbe1ff",
-              "on-tertiary-fixed": "#360f00",
-              "secondary-fixed-dim": "#bec6e0",
-              "inverse-primary": "#b4c5ff",
-              secondary: "#565e74",
-              "on-secondary-fixed-variant": "#3f465c",
-              "on-tertiary-container": "#ffede6",
-              "on-secondary-container": "#5c647a",
-              "on-error-container": "#93000a",
-              "surface-tint": "#0053db",
-              "on-primary-fixed-variant": "#003ea8",
-              "on-secondary-fixed": "#131b2e",
-              "secondary-fixed": "#dae2fd",
-              "outline-variant": "#c3c6d7",
-              "surface-container-lowest": "#ffffff",
-              tertiary: "#943700",
-              background: "#f8f9ff",
-              "on-secondary": "#ffffff",
-              "surface-dim": "#cbdbf5",
-              primary: "#004ac6",
-              "on-tertiary": "#ffffff",
-              "on-surface-variant": "#434655",
-              "inverse-on-surface": "#eaf1ff",
-              "surface-bright": "#f8f9ff",
-              "surface-container-low": "#eff4ff",
-              error: "#ba1a1a",
-              "tertiary-fixed-dim": "#ffb596",
-              "surface-variant": "#d3e4fe",
-              "surface-container": "#e5eeff",
-              "on-tertiary-fixed-variant": "#7d2d00",
-              "error-container": "#ffdad6",
-              "surface-container-highest": "#d3e4fe",
-              outline: "#737686",
-              surface: "#f8f9ff",
-              "tertiary-container": "#bc4800",
-              "on-background": "#0b1c30",
-              "on-surface": "#0b1c30",
-              "tertiary-fixed": "#ffdbcd",
-              "on-primary": "#ffffff",
-              "secondary-container": "#dae2fd",
-              "primary-container": "#2563eb",
-              "on-primary-fixed": "#00174b",
-              "on-error": "#ffffff",
-              "inverse-surface": "#213145",
-              "surface-container-high": "#dce9ff",
-              "on-primary-container": "#eeefff",
-              "primary-fixed-dim": "#b4c5ff",
-            },
-            borderRadius: {
-              DEFAULT: "0.25rem",
-              lg: "0.5rem",
-              xl: "0.75rem",
-              full: "9999px",
-            },
-            spacing: {
-              "stack-md": "16px",
-              "sidebar-width": "280px",
-              "margin-mobile": "16px",
-              "stack-lg": "24px",
-              "container-max-width": "1440px",
-              "stack-sm": "8px",
-              gutter: "24px",
-            },
-            fontFamily: {
-              "title-md": ["Inter"],
-              "headline-lg": ["Inter"],
-              "body-lg": ["Inter"],
-              "display-lg": ["Inter"],
-              caption: ["Inter"],
-              "headline-md": ["Inter"],
-              "body-md": ["Inter"],
-              "title-lg": ["Inter"],
-              "label-md": ["Inter"],
-            },
-            fontSize: {
-              "title-md": ["16px", { lineHeight: "24px", fontWeight: "600" }],
-              "headline-lg": [
-                "28px",
-                {
-                  lineHeight: "36px",
-                  letterSpacing: "-0.01em",
-                  fontWeight: "600",
-                },
-              ],
-              "body-lg": ["16px", { lineHeight: "24px", fontWeight: "400" }],
-              "display-lg": [
-                "36px",
-                {
-                  lineHeight: "44px",
-                  letterSpacing: "-0.02em",
-                  fontWeight: "700",
-                },
-              ],
-              caption: ["12px", { lineHeight: "16px", fontWeight: "400" }],
-              "headline-md": [
-                "24px",
-                { lineHeight: "32px", fontWeight: "600" },
-              ],
-              "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
-              "title-lg": ["20px", { lineHeight: "28px", fontWeight: "600" }],
-              "label-md": [
-                "13px",
-                {
-                  lineHeight: "18px",
-                  letterSpacing: "0.05em",
-                  fontWeight: "500",
-                },
-              ],
-            },
-          },
-        },
-      };
-    </script>
+<!-- frontend/public/sucursales.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Farmadol - Sucursales</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💊</text></svg>" />
     <style>
-      body {
-        font-family: "Inter", sans-serif;
-      }
-      .material-symbols-outlined {
-        font-variation-settings:
-          "FILL" 0,
-          "wght" 400,
-          "GRAD" 0,
-          "opsz" 24;
-      }
+        .sidebar-transition {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .sidebar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .modal-transition {
+            animation: modalIn 0.3s ease;
+        }
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .toast-slide {
+            animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #22c55e;
+            display: inline-block;
+            animation: pulse-dot 2s infinite;
+        }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        .transfer-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 6px 8px;
+            border-radius: 6px;
+            transition: all 0.2s;
+            font-size: 16px;
+        }
+        .transfer-btn:hover {
+            background: #dbeafe;
+            color: #2563eb;
+        }
     </style>
-  </head>
-  <body class="bg-background text-on-surface">
-    <!-- SideNavBar -->
-    <aside
-      class="fixed left-0 top-0 h-full w-[280px] bg-on-secondary-fixed flex flex-col py-stack-lg border-r border-outline-variant z-50"
-    >
-      <div class="px-6 mb-10">
-        <div class="flex items-center gap-3">
-          <div
-            class="w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center"
-          >
-            <span
-              class="material-symbols-outlined text-white"
-              data-icon="medical_services"
-              >medical_services</span
-            >
-          </div>
-          <div>
-            <h1
-              class="font-headline-md text-headline-md font-black text-surface-container-lowest leading-none"
-            >
-              Farmadol
-            </h1>
-            <p class="font-label-md text-label-md text-secondary-fixed-dim">
-              Pharmacy ERP
-            </p>
-          </div>
-        </div>
-      </div>
-      <nav class="flex-1 px-4 space-y-1">
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="dashboard"
-            >dashboard</span
-          >
-          <span class="font-label-md text-label-md">Dashboard</span>
-        </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="group">group</span>
-          <span class="font-label-md text-label-md">Users</span>
-        </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="inventory_2"
-            >inventory_2</span
-          >
-          <span class="font-label-md text-label-md">Inventory</span>
-        </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="point_of_sale"
-            >point_of_sale</span
-          >
-          <span class="font-label-md text-label-md">Sales</span>
-        </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="shopping_cart"
-            >shopping_cart</span
-          >
-          <span class="font-label-md text-label-md">Purchases</span>
-        </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="person_search"
-            >person_search</span
-          >
-          <span class="font-label-md text-label-md">Clients</span>
-        </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="analytics"
-            >analytics</span
-          >
-          <span class="font-label-md text-label-md">Reports</span>
-        </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-surface-container-lowest bg-white/5 border-l-4 border-primary-container transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="storefront"
-            >storefront</span
-          >
-          <span class="font-label-md text-label-md">Branches</span>
-        </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="settings"
-            >settings</span
-          >
-          <span class="font-label-md text-label-md">Settings</span>
-        </a>
-      </nav>
-      <div class="px-4 mt-auto">
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="logout"
-            >logout</span
-          >
-          <span class="font-label-md text-label-md">Logout</span>
-        </a>
-      </div>
-    </aside>
-    <!-- Main Content Area -->
-    <div class="ml-sidebar-width min-h-screen flex flex-col">
-      <!-- TopNavBar -->
-      <header
-        class="h-16 bg-surface-container-lowest sticky top-0 flex justify-between items-center px-gutter border-b border-outline-variant z-40"
-      >
-        <div class="flex items-center gap-4 flex-1">
-          <div class="relative w-full max-w-md">
-            <span
-              class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline"
-              data-icon="search"
-              >search</span
-            >
-            <input
-              class="w-full pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
-              placeholder="Buscar sucursales..."
-              type="text"
-            />
-          </div>
-        </div>
-        <div class="flex items-center gap-4">
-        <div
-            class="flex items-center gap-3 border-l border-outline-variant pl-6"
-          >
-            <div class="flex items-center gap-3 pl-2">
-            <div class="text-right">
-              <p
-                class="font-label-md text-label-md text-on-surface leading-none"
-              >
-                Dr. Alejandro Ruiz
-              </p>
-              <p
-                class="text-[11px] text-secondary font-medium uppercase tracking-wider"
-              >
-                Admin Principal
-              </p>
+</head>
+<body>
+
+    <!-- Sidebar Overlay (mobile) -->
+    <div class="fixed inset-0 bg-black/30 backdrop-blur-sm z-40 hidden" id="sidebarOverlay"></div>
+
+    <!-- ============ SIDEBAR ============ -->
+    <aside class="sidebar fixed left-0 top-0 h-full w-[280px] bg-white border-r border-gray-200 flex flex-col z-50 shadow-lg transform -translate-x-full md:translate-x-0 sidebar-transition" id="sidebar">
+        <div class="px-6 py-6 border-b border-gray-100 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-bold text-lg">F</div>
+            <div>
+                <h1 class="text-xl font-bold text-gray-900">Farmadol</h1>
+                <p class="text-xs text-gray-500">Sistema de Gestión</p>
             </div>
-            <img
-              alt="User profile photo"
-              class="w-10 h-10 rounded-full border-2 border-primary-container/20"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfDh0aDi-mYTTGT0gNhSnLGh4OBKf_o88qJ4izMLFyRHyU87yajEm5NOfmmV-ROb4H-zghVfM0qXVdoiF4mGNAbcha_4mc-C1bBVk0PJIAfFmCUAM0EjQTzCn6f8uW1CT-MBF1g-aeZ4VnV1ezpIc1OzOYU20Xw498A_rMwwgexs4B3T8sPjWFCggYuI3Ui8ZiXxQrHaQHIZcXRbQsbd-eH2fe0s9UNNoHMDji1otRwE7gdYmtVSVkHO8RfM869N5_xr8g0-be17Mk"
-            />
-          </div>
-      </div>
-      </header>
-      <!-- Main Canvas -->
-      <main class="p-gutter max-w-container-max-width mx-auto w-full space-y-8">
-        <!-- Page Header -->
-        <div
-          class="flex flex-col md:flex-row md:items-end justify-between gap-4"
-        >
-          <div>
-            <h2 class="font-display-lg text-display-lg text-on-surface">
-              Gestión de Sucursales
-            </h2>
-            <p class="font-body-lg text-body-lg text-on-surface-variant mt-1">
-              Supervisión operativa y logística de la red Farmadol.
-            </p>
-          </div>
-          <div class="flex gap-3">
-            <button
-              class="flex items-center gap-2 bg-primary px-5 py-2.5 rounded-lg font-title-md text-title-md text-on-primary hover:opacity-90 transition-all shadow-sm"
-            >
-              <span class="material-symbols-outlined" data-icon="add">add</span>
-              Añadir Sucursal
+        </div>
+
+        <nav class="flex-1 px-3 py-4 overflow-y-auto">
+            <p class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Navegación</p>
+            
+            <a href="/dashboard" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
+                <span class="text-lg">📊</span>
+                Dashboard
+            </a>
+            
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
+                <span class="text-lg">💳</span>
+                Ventas
+            </a>
+            
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
+                <span class="text-lg">📦</span>
+                Inventario
+            </a>
+            
+            <a href="/usuarios" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
+                <span class="text-lg">🛒</span>
+                Compras
+            </a>
+            
+            <a href="/clientes" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
+                <span class="text-lg">👤</span>
+                Clientes
+            </a>
+            
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
+                <span class="text-lg">🔐</span>
+                Usuarios
+            </a>
+            
+            <a href="/sucursales" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium bg-blue-50 text-blue-600">
+                <span class="text-lg">🏢</span>
+                Sucursales
+            </a>
+            
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
+                <span class="text-lg">📄</span>
+                Reportes
+            </a>
+        </nav>
+
+        <div class="px-4 py-4 border-t border-gray-100">
+            <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-semibold text-sm" id="userAvatar">A</div>
+                <div>
+                    <p class="text-sm font-semibold text-gray-900" id="userName">Administrador</p>
+                    <p class="text-xs text-gray-500" id="userEmail">admin@farmadol.com</p>
+                    <span class="text-xs text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full inline-block mt-0.5" id="userRole">Administrador</span>
+                </div>
+            </div>
+            <button class="w-full flex items-center gap-2 px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition-all" id="logoutBtn">
+                <span>🚪</span>
+                Cerrar Sesión
             </button>
-          </div>
         </div>
-        <!-- Dashboard Stats (Bento Style) -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div
-            class="bg-surface-container-lowest border border-outline-variant p-6 rounded-xl space-y-2"
-          >
-            <p
-              class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider"
-            >
-              Total Sucursales
-            </p>
-            <div class="flex items-baseline gap-2">
-              <span class="font-display-lg text-display-lg text-primary"
-                >12</span
-              >
-            </div>
-          </div>
-        </div>
-        <!-- Branches Grid -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-6">
-          <!-- Branch Card 1 -->
-          <div
-            class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden hover:border-primary/40 transition-colors group"
-          >
-            <div class="h-32 bg-surface-container relative overflow-hidden">
-              <img
-                alt="Pharmacy branch interior"
-                class="w-full h-full object-cover opacity-80"
-                data-alt="Interior of a modern, clinical pharmacy branch with sleek white shelving, organized pharmaceutical products, and bright, cool-toned lighting. The atmosphere is professional, sterile, and highly organized, reflecting a high-end medical environment with blue accents consistent with the brand identity."
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvg85sW10IQ9TYUOdhdYLI-lU8rdtVkv6SliTywLQMKWkMdnJaQygfHAImzvs7iK3zP7H7Wy8odnd4OaMRz9_C8LWGKvWcJAg2XEC24T_9M_dqnicNlksj_Qe7JZiiP2yHBa3N6e3YMUhotVBjEBBvG_0OtxieSukIOKRWEhOlpiIw8Yj4YpICBsWfJwWghounO7KWfAgp97AUxZhGzic1BXNwTnj8bdwYlF26L5VwBI67t_2GSYiFAjTSKbUttvRxOSDpckDxaxpV"
-              />
-            </div>
-            <div class="p-6 space-y-4">
-              <div class="flex justify-between items-start">
-                <div>
-                  <h3 class="font-title-lg text-title-lg text-on-surface">
-                    Sucursal Central Madrid
-                  </h3>
-                  <div class="flex items-center text-on-surface-variant mt-1">
-                    <span
-                      class="material-symbols-outlined text-sm mr-1"
-                      data-icon="location_on"
-                      >location_on</span
-                    >
-                    <span class="font-body-md text-body-md"
-                      >Calle Gran Vía, 12, Madrid</span
-                    >
-                  </div>
+    </aside>
+
+    <!-- ============ MAIN CONTENT ============ -->
+    <div class="md:ml-[280px] min-h-screen bg-gray-50">
+        <header class="bg-white border-b border-gray-200 sticky top-0 z-30">
+            <div class="flex items-center justify-between px-4 md:px-8 py-4">
+                <div class="flex items-center gap-4">
+                    <button class="md:hidden text-2xl text-gray-600" id="hamburgerBtn">☰</button>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900">Sucursales</h1>
+                        <p class="text-sm text-gray-500">Gestión de locales y sucursales</p>
+                    </div>
                 </div>
-              </div>
-            </div>
-          </div>
-          <!-- Branch Card 2 -->
-          <div
-            class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden hover:border-primary/40 transition-colors group"
-          >
-            <div class="h-32 bg-surface-container relative overflow-hidden">
-              <img
-                alt="Pharmacy branch interior"
-                class="w-full h-full object-cover opacity-80"
-                data-alt="A clean and modern pharmacy counter area in a bright metropolitan setting. Large glass windows allow natural light to fill the space. White and light grey surfaces dominate, accented by subtle blue lighting strips. The scene is calm, professional, and reflects a high standard of medical reliability."
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOtGxw4s-T-ILqCVvgz8KyAFxS1uDloTdpjTp8fimHkNElY82l3eCLkqydhCEVMilYRQm1dKOea97Zg-wQjyT5MAkqa_BB5_OTjnkSdysBrs6Bk-mRGoI3ibgQWN5vsGCQ7f3gA22uRSOthGYnn1N34ZW49H6rN7HUyPzGon_X4RWO89QD3yAFYz9x2cGiYXWcC_HJTxiCE1dtp1mH0pgba71D6zY-UmoER4Sso8m3qBsGy0WiwE6ltfvF_uRLKkeaKqXmo_dh8kdz"
-              />
-            </div>
-            <div class="p-6 space-y-4">
-              <div class="flex justify-between items-start">
-                <div>
-                  <h3 class="font-title-lg text-title-lg text-on-surface">
-                    Farmadol Norte - Castellana
-                  </h3>
-                  <div class="flex items-center text-on-surface-variant mt-1">
-                    <span
-                      class="material-symbols-outlined text-sm mr-1"
-                      data-icon="location_on"
-                      >location_on</span
-                    >
-                    <span class="font-body-md text-body-md"
-                      >P. de la Castellana, 120, Madrid</span
-                    >
-                  </div>
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-2 text-sm text-gray-500">
+                        <span class="status-dot"></span>
+                        <span>Conectado</span>
+                    </div>
+                    <span class="text-sm text-gray-500" id="currentDateTime"></span>
                 </div>
-              </div>  
             </div>
-          </div>
-          <!-- Branch Card 3 -->
-          <div
-            class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden hover:border-primary/40 transition-colors group"
-          >
-            <div class="h-32 bg-surface-container relative overflow-hidden">
-              <img
-                alt="Pharmacy branch interior"
-                class="w-full h-full object-cover opacity-80"
-                data-alt="A wide-angle shot of a state-of-the-art pharmacy laboratory area. Stainless steel equipment and glass containers are arranged on white countertops. The floor is polished light grey. Soft overhead LED lighting creates a professional, high-precision atmosphere with clinical cleanliness and modern pharmaceutical aesthetics."
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuA10R_rICX_r35cqU2yOJ9uMiCX4l9VzJj6vdGGl7r5nzf1p8r9BCkChfW4Oci-AQJvw2CBwrZ-ZtZ88Zl2CqLG0IFx0kc1HaztAj-hxuIMt9cWJlVpSp-ofBlrDHQAZvGzP5OqcitWOApkG8yKdwygOkUQc7RBiiKa-iDhFNta8EcLu_HVn-9ux7BgsPIfUZ3hBkBuU9vZwGvEBcrnxAe4iTLxAa_iro3VE2Dr3NOnjGfShTNiBqNoKSB32nANEWXQ0rDf4FzctHzz"
-              />
-            </div>
-            <div class="p-6 space-y-4">
-              <div class="flex justify-between items-start">
-                <div>
-                  <h3 class="font-title-lg text-title-lg text-on-surface">
-                    Farmacia Aeropuerto T4
-                  </h3>
-                  <div class="flex items-center text-on-surface-variant mt-1">
-                    <span
-                      class="material-symbols-outlined text-sm mr-1"
-                      data-icon="location_on"
-                      >location_on</span
-                    >
-                    <span class="font-body-md text-body-md"
-                      >Terminal 4, Madrid-Barajas</span
-                    >
-                  </div>
+        </header>
+
+        <main class="p-4 md:p-8">
+            <!-- Toolbar -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full sm:w-auto">
+                    <div class="relative flex-1 sm:flex-initial">
+                        <input type="text" id="searchInput" placeholder="Buscar sucursal..." oninput="filterSucursales()" class="w-full sm:w-64 px-4 py-2.5 pl-10 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white">
+                        <span class="absolute left-3 top-2.5 text-gray-400">🔍</span>
+                    </div>
+                    
+                    <select id="estadoFilter" onchange="filterSucursales()" class="w-full sm:w-auto px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white">
+                        <option value="todos">Todos los estados</option>
+                        <option value="1">Activos</option>
+                        <option value="0">Inactivos</option>
+                    </select>
+                    
+                    <button class="px-4 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg transition-all border border-gray-200" onclick="cargarSucursales()">
+                        🔄 Actualizar
+                    </button>
                 </div>
-              </div>
+                <button class="w-full sm:w-auto px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-all flex items-center justify-center gap-2 shadow-sm" onclick="openModal()">
+                    ➕ Nueva Sucursal
+                </button>
             </div>
-          </div>
-        </div>
-      </main>
+
+            <!-- Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div class="bg-white rounded-xl border border-gray-200 px-4 py-3">
+                    <p class="text-xs text-gray-500">Total</p>
+                    <p class="text-xl font-bold text-gray-900" id="totalSucursales">0</p>
+                </div>
+                <div class="bg-white rounded-xl border border-gray-200 px-4 py-3">
+                    <p class="text-xs text-gray-500">Activas</p>
+                    <p class="text-xl font-bold text-green-600" id="totalActivas">0</p>
+                </div>
+                <div class="bg-white rounded-xl border border-gray-200 px-4 py-3">
+                    <p class="text-xs text-gray-500">Inactivas</p>
+                    <p class="text-xl font-bold text-red-600" id="totalInactivas">0</p>
+                </div>
+                <div class="bg-white rounded-xl border border-gray-200 px-4 py-3">
+                    <p class="text-xs text-gray-500">Mostrando</p>
+                    <p class="text-xl font-bold text-blue-600" id="mostrandoCount">0</p>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="bg-gray-50 border-b border-gray-200">
+                                <th class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Código</th>
+                                <th class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Nombre</th>
+                                <th class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden md:table-cell">Dirección</th>
+                                <th class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden lg:table-cell">Teléfono</th>
+                                <th class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden xl:table-cell">Encargado</th>
+                                <th class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Estado</th>
+                                <th class="text-center px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sucursalesTableBody">
+                            <tr>
+                                <td colspan="7" class="text-center py-12 text-gray-400">
+                                    <div class="inline-block w-6 h-6 border-2 border-gray-200 border-t-blue-600 rounded-full animate-spin"></div>
+                                    <p class="mt-2">Cargando sucursales...</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
     </div>
-  </body>
+
+    <!-- ============ MODAL SUCURSAL ============ -->
+    <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden items-center justify-center p-4" id="modalOverlay">
+        <div class="bg-white rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto modal-transition">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+                <h3 class="text-lg font-semibold text-gray-900" id="modalTitle">Nueva Sucursal</h3>
+                <button class="text-gray-400 hover:text-gray-600 text-2xl" onclick="closeModal()">&times;</button>
+            </div>
+            <form id="sucursalForm" onsubmit="handleSubmit(event)">
+                <div class="p-6 space-y-4">
+                    <input type="hidden" id="editId" value="" />
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Código <span class="text-red-500">*</span></label>
+                            <input type="text" id="codigo" placeholder="Ej: SC-001" required class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Nombre <span class="text-red-500">*</span></label>
+                            <input type="text" id="nombre" placeholder="Nombre de la sucursal" required class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Dirección <span class="text-red-500">*</span></label>
+                        <input type="text" id="direccion" placeholder="Dirección completa" required class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Teléfono <span class="text-red-500">*</span></label>
+                            <input type="text" id="telefono" placeholder="Ej: 999-999-999" required class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Email <span class="text-red-500">*</span></label>
+                            <input type="email" id="email" placeholder="sucursal@farmadol.com" required class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Horario de Atención</label>
+                            <input type="text" id="horario_atencion" placeholder="Ej: Lun-Vie 8am-8pm" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Encargado</label>
+                            <input type="text" id="encargado" placeholder="Nombre del encargado" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                    </div>
+
+                    <div id="estadoGroup" style="display: none;">
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Estado</label>
+                        <select id="estado" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <option value="1">Activo</option>
+                            <option value="0">Inactivo</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex flex-col sm:flex-row justify-end gap-3 px-6 py-4 border-t border-gray-100">
+                    <button type="button" class="px-5 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg transition-all" onclick="closeModal()">Cancelar</button>
+                    <button type="submit" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-all shadow-sm" id="submitBtn">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ============ MODAL TRANSFERENCIA ============ -->
+    <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden items-center justify-center p-4" id="transferModalOverlay">
+        <div class="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto modal-transition">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+                <h3 class="text-lg font-semibold text-gray-900">🔄 Transferir Medicamentos</h3>
+                <button class="text-gray-400 hover:text-gray-600 text-2xl" onclick="closeTransferModal()">&times;</button>
+            </div>
+            <form id="transferForm" onsubmit="handleTransferSubmit(event)">
+                <div class="p-6 space-y-4">
+                    <input type="hidden" id="transferOrigenId" value="" />
+                    
+                    <!-- Selección de producto -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Producto <span class="text-red-500">*</span></label>
+                        <select id="transferProducto" required class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <option value="">Seleccionar producto...</option>
+                        </select>
+                    </div>
+
+                    <!-- Sucursal destino -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Sucursal Destino <span class="text-red-500">*</span></label>
+                        <select id="transferDestino" required class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <option value="">Seleccionar sucursal...</option>
+                        </select>
+                    </div>
+
+                    <!-- Lote -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Lote <span class="text-red-500">*</span></label>
+                        <input type="text" id="transferLote" placeholder="Ingrese el lote del producto" required class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Cantidad <span class="text-red-500">*</span></label>
+                            <input type="number" id="transferCantidad" placeholder="0" min="1" required class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Fecha de Vencimiento <span class="text-red-500">*</span></label>
+                            <input type="date" id="transferVencimiento" required class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Observaciones</label>
+                        <textarea id="transferObservaciones" rows="2" placeholder="Observaciones sobre la transferencia..." class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
+                    </div>
+
+                    <!-- Información de stock actual -->
+                    <div class="bg-blue-50 rounded-lg p-4 border border-blue-200">
+                        <p class="text-sm font-medium text-blue-800">📦 Stock disponible en origen</p>
+                        <p class="text-sm text-blue-600" id="stockDisponibleInfo">Seleccione un producto para ver el stock</p>
+                    </div>
+                </div>
+                <div class="flex flex-col sm:flex-row justify-end gap-3 px-6 py-4 border-t border-gray-100">
+                    <button type="button" class="px-5 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg transition-all" onclick="closeTransferModal()">Cancelar</button>
+                    <button type="submit" class="px-5 py-2.5 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg transition-all shadow-sm" id="transferSubmitBtn">
+                        🔄 Transferir
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ============ TOAST CONTAINER ============ -->
+    <div class="fixed top-4 right-4 z-50 space-y-2" id="toastContainer"></div>
+
+    <script>
+        const API_GATEWAY = "http://localhost:3000/api";
+        let token = localStorage.getItem("token");
+        let sucursalesData = [];
+        let filteredData = [];
+        let productosData = [];
+
+        // ============ HEADERS ============
+        function getHeaders() {
+            return {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            };
+        }
+
+        // ============ VERIFICAR AUTENTICACIÓN ============
+        function checkAuth() {
+            token = localStorage.getItem("token");
+            const user = JSON.parse(localStorage.getItem("user") || "null");
+            if (!token || !user) {
+                window.location.href = "/";
+                return false;
+            }
+            return { token, user };
+        }
+
+        // ============ CARGAR DATOS DEL USUARIO ============
+        function loadUserData() {
+            const auth = checkAuth();
+            if (!auth) return;
+            const { user } = auth;
+            document.getElementById("userName").textContent = user.username || "Usuario";
+            document.getElementById("userEmail").textContent = user.email || "usuario@farmadol.com";
+            document.getElementById("userAvatar").textContent = (user.username || "U")[0].toUpperCase();
+            const roles = user.roles || ["Usuario"];
+            document.getElementById("userRole").textContent = roles.map(r => r.charAt(0).toUpperCase() + r.slice(1).toLowerCase()).join(", ");
+        }
+
+        // ============ RELOJ ============
+        function updateDateTime() {
+            const now = new Date();
+            const options = { weekday: "short", day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" };
+            document.getElementById("currentDateTime").textContent = now.toLocaleDateString("es-ES", options);
+        }
+        setInterval(updateDateTime, 60000);
+        updateDateTime();
+
+        // ============ SIDEBAR TOGGLE ============
+        const sidebar = document.getElementById("sidebar");
+        const overlay = document.getElementById("sidebarOverlay");
+        const hamburger = document.getElementById("hamburgerBtn");
+
+        function toggleSidebar() {
+            sidebar.classList.toggle("translate-x-0");
+            sidebar.classList.toggle("-translate-x-full");
+            overlay.classList.toggle("hidden");
+        }
+        hamburger.addEventListener("click", toggleSidebar);
+        overlay.addEventListener("click", toggleSidebar);
+
+        // ============ CERRAR SESIÓN ============
+        document.getElementById("logoutBtn").addEventListener("click", () => {
+            if (confirm("¿Estás seguro de que deseas cerrar sesión?")) {
+                localStorage.removeItem("token");
+                localStorage.removeItem("user");
+                window.location.href = "/";
+            }
+        });
+
+        // ============ CARGAR PRODUCTOS ============
+        async function cargarProductos() {
+            try {
+                const response = await fetch(`${API_GATEWAY}/inventario/productos`, { headers: getHeaders() });
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success) {
+                        productosData = data.data || [];
+                        actualizarSelectProductos();
+                    }
+                }
+            } catch (error) {
+                console.error("Error cargando productos:", error);
+            }
+        }
+
+        function actualizarSelectProductos() {
+            const select = document.getElementById("transferProducto");
+            select.innerHTML = '<option value="">Seleccionar producto...</option>';
+            productosData.forEach(p => {
+                select.innerHTML += `<option value="${p.id}">${p.codigo} - ${p.nombre}</option>`;
+            });
+        }
+
+        // ============ CRUD SUCURSALES ============
+
+        async function cargarSucursales() {
+            const tbody = document.getElementById("sucursalesTableBody");
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="7" class="text-center py-12 text-gray-400">
+                        <div class="inline-block w-6 h-6 border-2 border-gray-200 border-t-blue-600 rounded-full animate-spin"></div>
+                        <p class="mt-2">Cargando sucursales...</p>
+                    </td>
+                </tr>
+            `;
+
+            try {
+                const response = await fetch(`${API_GATEWAY}/sucursales/sucursales?incluir_inactivas=true`, { headers: getHeaders() });
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        localStorage.removeItem("token");
+                        window.location.href = "/";
+                        return;
+                    }
+                    throw new Error("Error al cargar sucursales");
+                }
+                const data = await response.json();
+                if (data.success) {
+                    sucursalesData = data.data || [];
+                    sucursalesData.sort((a, b) => {
+                        if (a.estado === b.estado) return a.nombre.localeCompare(b.nombre);
+                        return a.estado ? -1 : 1;
+                    });
+                    filterSucursales();
+                    actualizarSelectDestino();
+                } else {
+                    throw new Error(data.message || "Error al cargar sucursales");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="text-center py-12 text-red-500">
+                            <p class="text-4xl mb-2">⚠️</p>
+                            <p>Error al cargar las sucursales</p>
+                            <button onclick="cargarSucursales()" class="mt-3 text-sm text-blue-600 hover:text-blue-800">Reintentar</button>
+                        </td>
+                    </tr>
+                `;
+                mostrarToast("Error al cargar sucursales", "error");
+            }
+        }
+
+        function actualizarSelectDestino() {
+            const select = document.getElementById("transferDestino");
+            const origenId = document.getElementById("transferOrigenId").value;
+            select.innerHTML = '<option value="">Seleccionar sucursal...</option>';
+            sucursalesData.filter(s => s.estado === true && s.id != origenId).forEach(s => {
+                select.innerHTML += `<option value="${s.id}">${s.codigo} - ${s.nombre}</option>`;
+            });
+        }
+
+        function updateStats(data) {
+            const total = data.length;
+            const activas = data.filter(s => s.estado === true || s.estado === 1).length;
+            const inactivas = data.filter(s => s.estado === false || s.estado === 0).length;
+            
+            document.getElementById("totalSucursales").textContent = total;
+            document.getElementById("totalActivas").textContent = activas;
+            document.getElementById("totalInactivas").textContent = inactivas;
+            document.getElementById("mostrandoCount").textContent = data.length;
+        }
+
+        function renderSucursales(data) {
+            const tbody = document.getElementById("sucursalesTableBody");
+
+            if (!data || data.length === 0) {
+                const estadoFiltro = document.getElementById("estadoFilter").value;
+                let mensaje = "No hay sucursales registradas";
+                if (estadoFiltro === "1") mensaje = "No hay sucursales activas";
+                if (estadoFiltro === "0") mensaje = "No hay sucursales inactivas";
+                
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="text-center py-12 text-gray-400">
+                            <p class="text-4xl mb-2">🏢</p>
+                            <p class="font-medium text-gray-600">${mensaje}</p>
+                        </td>
+                    </tr>
+                `;
+                updateStats(data);
+                return;
+            }
+
+            updateStats(data);
+
+            tbody.innerHTML = data.map(s => {
+                const isActive = s.estado === true || s.estado === 1;
+                return `
+                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors ${!isActive ? 'opacity-70 bg-gray-50/50' : ''}">
+                    <td class="px-4 py-3.5 font-medium ${isActive ? 'text-gray-900' : 'text-gray-500'}">${s.codigo || "-"}</td>
+                    <td class="px-4 py-3.5 ${isActive ? 'text-gray-900' : 'text-gray-500'}">${s.nombre || "-"}</td>
+                    <td class="px-4 py-3.5 hidden md:table-cell ${isActive ? 'text-gray-900' : 'text-gray-500'}">${s.direccion || "-"}</td>
+                    <td class="px-4 py-3.5 hidden lg:table-cell ${isActive ? 'text-gray-900' : 'text-gray-500'}">${s.telefono || "-"}</td>
+                    <td class="px-4 py-3.5 hidden xl:table-cell ${isActive ? 'text-gray-900' : 'text-gray-500'}">${s.encargado || "-"}</td>
+                    <td class="px-4 py-3.5">
+                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">
+                            ${isActive ? 'Activo' : 'Inactivo'}
+                        </span>
+                    </td>
+                    <td class="px-4 py-3.5">
+                        <div class="flex items-center justify-center gap-1">
+                            ${isActive ? `
+                                <button onclick="abrirTransferencia(${s.id})" class="transfer-btn" title="Transferir medicamentos">
+                                    🔄
+                                </button>
+                            ` : ''}
+                            <button onclick="editarSucursal(${s.id})" class="p-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all" title="Editar">✏️</button>
+                            <button onclick="eliminarSucursal(${s.id})" class="p-1.5 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all" title="${isActive ? 'Desactivar' : 'Eliminar'}">
+                                ${isActive ? '🔴' : '🗑️'}
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `}).join("");
+        }
+
+        function filterSucursales() {
+            const search = document.getElementById("searchInput").value.toLowerCase().trim();
+            const estadoFilter = document.getElementById("estadoFilter").value;
+
+            let filtered = [...sucursalesData];
+
+            if (estadoFilter !== "todos") {
+                const estadoBool = estadoFilter === "1";
+                filtered = filtered.filter(s => (s.estado === true || s.estado === 1) === estadoBool);
+            }
+
+            if (search) {
+                filtered = filtered.filter(s =>
+                    s.nombre?.toLowerCase().includes(search) ||
+                    s.codigo?.toLowerCase().includes(search) ||
+                    s.direccion?.toLowerCase().includes(search) ||
+                    s.encargado?.toLowerCase().includes(search) ||
+                    s.telefono?.includes(search)
+                );
+            }
+
+            filteredData = filtered;
+            renderSucursales(filtered);
+        }
+
+        // ============ TRANSFERENCIA ============
+        async function abrirTransferencia(sucursalId) {
+            const sucursal = sucursalesData.find(s => s.id === sucursalId);
+            if (!sucursal) {
+                mostrarToast("Sucursal no encontrada", "error");
+                return;
+            }
+
+            document.getElementById("transferOrigenId").value = sucursalId;
+            document.getElementById("transferForm").reset();
+            document.getElementById("stockDisponibleInfo").textContent = `Seleccione un producto para ver el stock en ${sucursal.nombre}`;
+            
+            actualizarSelectDestino();
+            
+            if (productosData.length === 0) {
+                await cargarProductos();
+            }
+            actualizarSelectProductos();
+
+            document.getElementById("transferModalOverlay").classList.add("flex");
+            document.getElementById("transferModalOverlay").classList.remove("hidden");
+            document.body.style.overflow = "hidden";
+        }
+
+        function closeTransferModal() {
+            document.getElementById("transferModalOverlay").classList.add("hidden");
+            document.getElementById("transferModalOverlay").classList.remove("flex");
+            document.body.style.overflow = "";
+        }
+
+        // Cargar stock al seleccionar producto
+        document.getElementById("transferProducto").addEventListener("change", async function() {
+            const productoId = this.value;
+            const sucursalId = document.getElementById("transferOrigenId").value;
+            const infoEl = document.getElementById("stockDisponibleInfo");
+
+            if (!productoId || !sucursalId) {
+                infoEl.textContent = "Seleccione un producto para ver el stock";
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_GATEWAY}/inventario/stock?producto_id=${productoId}&sucursal_id=${sucursalId}`, {
+                    headers: getHeaders()
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success) {
+                        const stock = data.data?.total_stock || 0;
+                        const sucursal = sucursalesData.find(s => s.id == sucursalId);
+                        infoEl.innerHTML = `
+                            <strong>${stock}</strong> unidades disponibles en <strong>${sucursal?.nombre || 'sucursal'}</strong>
+                            ${stock === 0 ? '<span class="text-red-500 ml-2">⚠️ Sin stock disponible</span>' : ''}
+                        `;
+                    }
+                }
+            } catch (error) {
+                console.error("Error cargando stock:", error);
+                infoEl.textContent = "Error al cargar el stock";
+            }
+        });
+
+        // ============ GUARDAR TRANSFERENCIA ============
+        async function handleTransferSubmit(e) {
+            e.preventDefault();
+
+            const origenId = document.getElementById("transferOrigenId").value;
+            const productoId = document.getElementById("transferProducto").value;
+            const destinoId = document.getElementById("transferDestino").value;
+            const lote = document.getElementById("transferLote").value.trim();
+            const cantidad = parseInt(document.getElementById("transferCantidad").value);
+            const fechaVencimiento = document.getElementById("transferVencimiento").value;
+            const observaciones = document.getElementById("transferObservaciones").value.trim();
+
+            if (!origenId || !productoId || !destinoId || !lote || !cantidad || !fechaVencimiento) {
+                mostrarToast("Todos los campos obligatorios deben estar completos", "error");
+                return;
+            }
+
+            if (origenId === destinoId) {
+                mostrarToast("La sucursal origen y destino no pueden ser la misma", "error");
+                return;
+            }
+
+            const submitBtn = document.getElementById("transferSubmitBtn");
+            submitBtn.disabled = true;
+            submitBtn.textContent = "🔄 Procesando...";
+
+            try {
+                // 1. Primero verificar stock disponible
+                const stockResponse = await fetch(`${API_GATEWAY}/inventario/stock?producto_id=${productoId}&sucursal_id=${origenId}`, {
+                    headers: getHeaders()
+                });
+                
+                if (stockResponse.ok) {
+                    const stockData = await stockResponse.json();
+                    if (stockData.success) {
+                        const stockDisponible = stockData.data?.total_stock || 0;
+                        if (stockDisponible < cantidad) {
+                            mostrarToast(`Stock insuficiente. Disponible: ${stockDisponible} unidades`, "error");
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = "🔄 Transferir";
+                            return;
+                        }
+                    }
+                }
+
+                // 2. Realizar la transferencia
+                const transferData = {
+                    producto_id: parseInt(productoId),
+                    sucursal_origen_id: parseInt(origenId),
+                    sucursal_destino_id: parseInt(destinoId),
+                    lote: lote,
+                    cantidad: cantidad,
+                    fecha_vencimiento: fechaVencimiento,
+                    referencia_id: Date.now(),
+                    observaciones: observaciones || `Transferencia de ${productosData.find(p => p.id == productoId)?.nombre || 'producto'}`
+                };
+
+                const response = await fetch(`${API_GATEWAY}/inventario/transferir`, {
+                    method: "POST",
+                    headers: getHeaders(),
+                    body: JSON.stringify(transferData)
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(result.message || "Error al realizar la transferencia");
+                }
+
+                if (result.success) {
+                    mostrarToast("✅ Transferencia realizada exitosamente", "success");
+                    closeTransferModal();
+                    // Actualizar lista de sucursales
+                    cargarSucursales();
+                } else {
+                    throw new Error(result.message || "Error al realizar la transferencia");
+                }
+            } catch (error) {
+                console.error("Error en transferencia:", error);
+                mostrarToast(error.message || "Error al realizar la transferencia", "error");
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = "🔄 Transferir";
+            }
+        }
+
+        // ============ MODAL SUCURSAL ============
+        function openModal(data = null) {
+            const overlay = document.getElementById("modalOverlay");
+            const title = document.getElementById("modalTitle");
+            const submitBtn = document.getElementById("submitBtn");
+            const estadoGroup = document.getElementById("estadoGroup");
+
+            if (data) {
+                title.textContent = "Editar Sucursal";
+                submitBtn.textContent = "Actualizar";
+                estadoGroup.style.display = "block";
+                document.getElementById("editId").value = data.id;
+                document.getElementById("codigo").value = data.codigo || "";
+                document.getElementById("nombre").value = data.nombre || "";
+                document.getElementById("direccion").value = data.direccion || "";
+                document.getElementById("telefono").value = data.telefono || "";
+                document.getElementById("email").value = data.email || "";
+                document.getElementById("horario_atencion").value = data.horario_atencion || "";
+                document.getElementById("encargado").value = data.encargado || "";
+                document.getElementById("estado").value = data.estado ? "1" : "0";
+            } else {
+                title.textContent = "Nueva Sucursal";
+                submitBtn.textContent = "Guardar";
+                estadoGroup.style.display = "none";
+                document.getElementById("editId").value = "";
+                document.getElementById("sucursalForm").reset();
+                document.getElementById("estado").value = "1";
+            }
+            overlay.classList.add("flex");
+            overlay.classList.remove("hidden");
+            document.body.style.overflow = "hidden";
+        }
+
+        function closeModal() {
+            document.getElementById("modalOverlay").classList.add("hidden");
+            document.getElementById("modalOverlay").classList.remove("flex");
+            document.body.style.overflow = "";
+            document.getElementById("sucursalForm").reset();
+            document.getElementById("editId").value = "";
+        }
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") {
+                closeModal();
+                closeTransferModal();
+            }
+        });
+        document.getElementById("modalOverlay").addEventListener("click", (e) => {
+            if (e.target === e.currentTarget) closeModal();
+        });
+        document.getElementById("transferModalOverlay").addEventListener("click", (e) => {
+            if (e.target === e.currentTarget) closeTransferModal();
+        });
+
+        // ============ GUARDAR SUCURSAL ============
+        async function handleSubmit(e) {
+            e.preventDefault();
+            const id = document.getElementById("editId").value;
+            const isEdit = !!id;
+
+            const data = {
+                codigo: document.getElementById("codigo").value.trim(),
+                nombre: document.getElementById("nombre").value.trim(),
+                direccion: document.getElementById("direccion").value.trim(),
+                telefono: document.getElementById("telefono").value.trim(),
+                email: document.getElementById("email").value.trim(),
+                horario_atencion: document.getElementById("horario_atencion").value.trim(),
+                encargado: document.getElementById("encargado").value.trim(),
+            };
+            if (isEdit) data.estado = document.getElementById("estado").value === "1";
+
+            const submitBtn = document.getElementById("submitBtn");
+            submitBtn.disabled = true;
+            submitBtn.textContent = isEdit ? "Actualizando..." : "Guardando...";
+
+            try {
+                const url = isEdit ? `${API_GATEWAY}/sucursales/sucursales/${id}` : `${API_GATEWAY}/sucursales/sucursales`;
+                const method = isEdit ? "PUT" : "POST";
+                const response = await fetch(url, { method, headers: getHeaders(), body: JSON.stringify(data) });
+                const result = await response.json();
+                if (!response.ok) throw new Error(result.message || "Error al guardar la sucursal");
+                if (result.success) {
+                    mostrarToast(isEdit ? "Sucursal actualizada exitosamente" : "Sucursal creada exitosamente", "success");
+                    closeModal();
+                    cargarSucursales();
+                } else {
+                    throw new Error(result.message || "Error al guardar la sucursal");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                mostrarToast(error.message || "Error al guardar la sucursal", "error");
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = isEdit ? "Actualizar" : "Guardar";
+            }
+        }
+
+        // ============ EDITAR SUCURSAL ============
+        function editarSucursal(id) {
+            const sucursal = sucursalesData.find(s => s.id === id);
+            if (sucursal) openModal(sucursal);
+            else mostrarToast("Sucursal no encontrada", "error");
+        }
+
+        // ============ ELIMINAR/DESACTIVAR SUCURSAL ============
+        async function eliminarSucursal(id) {
+            const sucursal = sucursalesData.find(s => s.id === id);
+            if (!sucursal) { mostrarToast("Sucursal no encontrada", "error"); return; }
+
+            const isActive = sucursal.estado === true || sucursal.estado === 1;
+            const mensaje = isActive 
+                ? `¿Estás seguro de desactivar la sucursal "${sucursal.nombre}"?` 
+                : `¿Estás seguro de eliminar permanentemente la sucursal "${sucursal.nombre}"?`;
+
+            if (!confirm(mensaje)) return;
+
+            try {
+                if (isActive) {
+                    const response = await fetch(`${API_GATEWAY}/sucursales/sucursales/${id}`, { 
+                        method: "DELETE", 
+                        headers: getHeaders() 
+                    });
+                    const result = await response.json();
+                    if (!response.ok) throw new Error(result.message || "Error al desactivar la sucursal");
+                    if (result.success) {
+                        mostrarToast("Sucursal desactivada exitosamente", "success");
+                        cargarSucursales();
+                    } else {
+                        throw new Error(result.message || "Error al desactivar la sucursal");
+                    }
+                } else {
+                    mostrarToast("Esta sucursal ya está inactiva", "warning");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                mostrarToast(error.message || "Error al procesar la solicitud", "error");
+            }
+        }
+
+        // ============ TOAST ============
+        function mostrarToast(mensaje, tipo = "info") {
+            const container = document.getElementById("toastContainer");
+            const colors = {
+                success: "bg-green-500",
+                error: "bg-red-500",
+                warning: "bg-yellow-500",
+                info: "bg-blue-500"
+            };
+            const icons = { success: "✅", error: "❌", warning: "⚠️", info: "ℹ️" };
+            const toast = document.createElement("div");
+            toast.className = `toast-slide px-5 py-3 rounded-lg text-white text-sm font-medium shadow-lg flex items-center gap-3 min-w-[280px] ${colors[tipo] || colors.info}`;
+            toast.innerHTML = `
+                <span>${icons[tipo] || "ℹ️"}</span>
+                <span>${mensaje}</span>
+                <button class="ml-auto text-white/80 hover:text-white" onclick="this.parentElement.remove()">×</button>
+            `;
+            container.appendChild(toast);
+            setTimeout(() => {
+                if (toast.parentElement) {
+                    toast.style.opacity = "0";
+                    toast.style.transform = "translateX(20px)";
+                    setTimeout(() => toast.remove(), 300);
+                }
+            }, 4000);
+        }
+
+        // ============ INICIALIZAR ============
+        document.addEventListener("DOMContentLoaded", () => {
+            const auth = checkAuth();
+            if (!auth) return;
+            loadUserData();
+            cargarSucursales();
+            cargarProductos();
+        });
+    </script>
+</body>
 </html>

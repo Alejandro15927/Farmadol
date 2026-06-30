@@ -1,728 +1,972 @@
 <!doctype html>
-
 <html class="light" lang="es">
   <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Farmadol - Gestión de Compras</title>
+    <title>Farmadol ERP - Compras</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap"
       rel="stylesheet"
     />
     <link
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
       rel="stylesheet"
     />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-      rel="stylesheet"
-    />
-    <script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              "primary-fixed": "#dbe1ff",
-              "on-tertiary-fixed": "#360f00",
-              "secondary-fixed-dim": "#bec6e0",
-              "inverse-primary": "#b4c5ff",
-              secondary: "#565e74",
-              "on-secondary-fixed-variant": "#3f465c",
-              "on-tertiary-container": "#ffede6",
-              "on-secondary-container": "#5c647a",
-              "on-error-container": "#93000a",
-              "surface-tint": "#0053db",
-              "on-primary-fixed-variant": "#003ea8",
-              "on-secondary-fixed": "#131b2e",
-              "secondary-fixed": "#dae2fd",
-              "outline-variant": "#c3c6d7",
-              "surface-container-lowest": "#ffffff",
-              tertiary: "#943700",
-              background: "#f8f9ff",
-              "on-secondary": "#ffffff",
-              "surface-dim": "#cbdbf5",
-              primary: "#004ac6",
-              "on-tertiary": "#ffffff",
-              "on-surface-variant": "#434655",
-              "inverse-on-surface": "#eaf1ff",
-              "surface-bright": "#f8f9ff",
-              "surface-container-low": "#eff4ff",
-              error: "#ba1a1a",
-              "tertiary-fixed-dim": "#ffb596",
-              "surface-variant": "#d3e4fe",
-              "surface-container": "#e5eeff",
-              "on-tertiary-fixed-variant": "#7d2d00",
-              "error-container": "#ffdad6",
-              "surface-container-highest": "#d3e4fe",
-              outline: "#737686",
-              surface: "#f8f9ff",
-              "tertiary-container": "#bc4800",
-              "on-background": "#0b1c30",
-              "on-surface": "#0b1c30",
-              "tertiary-fixed": "#ffdbcd",
-              "on-primary": "#ffffff",
-              "secondary-container": "#dae2fd",
-              "primary-container": "#2563eb",
-              "on-primary-fixed": "#00174b",
-              "on-error": "#ffffff",
-              "inverse-surface": "#213145",
-              "surface-container-high": "#dce9ff",
-              "on-primary-container": "#eeefff",
-              "primary-fixed-dim": "#b4c5ff",
-            },
-            borderRadius: {
-              DEFAULT: "0.25rem",
-              lg: "0.5rem",
-              xl: "0.75rem",
-              full: "9999px",
-            },
-            spacing: {
-              "stack-md": "16px",
-              "sidebar-width": "280px",
-              "margin-mobile": "16px",
-              "stack-lg": "24px",
-              "container-max-width": "1440px",
-              "stack-sm": "8px",
-              gutter: "24px",
-            },
-            fontFamily: {
-              "title-md": ["Inter"],
-              "headline-lg": ["Inter"],
-              "body-lg": ["Inter"],
-              "display-lg": ["Inter"],
-              caption: ["Inter"],
-              "headline-md": ["Inter"],
-              "body-md": ["Inter"],
-              "title-lg": ["Inter"],
-              "label-md": ["Inter"],
-            },
-            fontSize: {
-              "title-md": ["16px", { lineHeight: "24px", fontWeight: "600" }],
-              "headline-lg": [
-                "28px",
-                {
-                  lineHeight: "36px",
-                  letterSpacing: "-0.01em",
-                  fontWeight: "600",
-                },
-              ],
-              "body-lg": ["16px", { lineHeight: "24px", fontWeight: "400" }],
-              "display-lg": [
-                "36px",
-                {
-                  lineHeight: "44px",
-                  letterSpacing: "-0.02em",
-                  fontWeight: "700",
-                },
-              ],
-              caption: ["12px", { lineHeight: "16px", fontWeight: "400" }],
-              "headline-md": [
-                "24px",
-                { lineHeight: "32px", fontWeight: "600" },
-              ],
-              "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
-              "title-lg": ["20px", { lineHeight: "28px", fontWeight: "600" }],
-              "label-md": [
-                "13px",
-                {
-                  lineHeight: "18px",
-                  letterSpacing: "0.05em",
-                  fontWeight: "500",
-                },
-              ],
-            },
-          },
-        },
-      };
-    </script>
-    <style>
-      body {
-        font-family: "Inter", sans-serif;
-        background-color: #f8f9ff;
-      }
-      .material-symbols-outlined {
-        font-variation-settings:
-          "FILL" 0,
-          "wght" 400,
-          "GRAD" 0,
-          "opsz" 24;
-      }
-      .sidebar-active {
-        border-left: 4px solid #2563eb;
-        background-color: rgba(255, 255, 255, 0.05);
-        color: #ffffff;
-      }
-    </style>
+    <link rel="stylesheet" href="http://localhost:3010/public/css/dashboard.css" />
   </head>
-  <body class="text-on-surface">
-    <!-- SideNavBar -->
-    <aside
-      class="fixed left-0 top-0 h-full w-[280px] bg-on-secondary-fixed flex flex-col py-stack-lg border-r border-outline-variant z-50"
-    >
-      <div class="px-6 mb-10">
+  <body class="font-body-md text-on-background" style="font-family: Inter, sans-serif; background-color: #f1f5f9;">
+    
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-header">
         <div class="flex items-center gap-3">
-          <div
-            class="w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center"
-          >
-            <span
-              class="material-symbols-outlined text-white"
-              data-icon="medical_services"
-              >medical_services</span
-            >
-          </div>
+          <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-lg">F</div>
           <div>
-            <h1
-              class="font-headline-md text-headline-md font-black text-surface-container-lowest leading-none"
-            >
-              Farmadol
-            </h1>
-            <p class="font-label-md text-label-md text-secondary-fixed-dim">
-              Pharmacy ERP
-            </p>
+            <h1 class="text-lg font-bold text-gray-800">Farmadol ERP</h1>
+            <p class="text-xs text-gray-500">Sistema de Gestión</p>
           </div>
         </div>
       </div>
-      <nav class="flex-1 px-4 space-y-1">
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="dashboard"
-            >dashboard</span
-          >
-          <span class="font-label-md text-label-md">Dashboard</span>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section"><span class="nav-section-title">Principal</span></div>
+        <a href="http://localhost:3010/public/dashboard.html" class="nav-item">
+          <span class="material-symbols-outlined">dashboard</span>
+          <span>Dashboard</span>
         </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="group">group</span>
-          <span class="font-label-md text-label-md">Users</span>
+
+        <div class="nav-section"><span class="nav-section-title">Módulos</span></div>
+        <a href="http://localhost:3010/public/ventas.html" class="nav-item">
+          <span class="material-symbols-outlined">shopping_cart</span>
+          <span>Ventas</span>
         </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="inventory_2"
-            >inventory_2</span
-          >
-          <span class="font-label-md text-label-md">Inventory</span>
+        <a href="http://localhost:3010/public/inventario.html" class="nav-item">
+          <span class="material-symbols-outlined">inventory_2</span>
+          <span>Inventario</span>
         </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="point_of_sale"
-            >point_of_sale</span
-          >
-          <span class="font-label-md text-label-md">Sales</span>
+        <a href="http://localhost:3010/public/compras.html" class="nav-item active">
+          <span class="material-symbols-outlined">local_shipping</span>
+          <span>Compras</span>
         </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-surface-container-lowest bg-white/5 border-l-4 border-primary-container transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="shopping_cart"
-            >shopping_cart</span
-          >
-          <span class="font-label-md text-label-md">Purchases</span>
+        <a href="http://localhost:3010/public/clientes.html" class="nav-item">
+          <span class="material-symbols-outlined">people</span>
+          <span>Clientes</span>
         </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="person_search"
-            >person_search</span
-          >
-          <span class="font-label-md text-label-md">Clients</span>
+        <a href="http://localhost:3010/public/sucursales.html" class="nav-item">
+          <span class="material-symbols-outlined">storefront</span>
+          <span>Sucursales</span>
         </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="analytics"
-            >analytics</span
-          >
-          <span class="font-label-md text-label-md">Reports</span>
+        <a href="http://localhost:3010/public/reportes.html" class="nav-item">
+          <span class="material-symbols-outlined">assessment</span>
+          <span>Reportes</span>
         </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="storefront"
-            >storefront</span
-          >
-          <span class="font-label-md text-label-md">Branches</span>
-        </a>
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="settings"
-            >settings</span
-          >
-          <span class="font-label-md text-label-md">Settings</span>
+
+        <div class="nav-section mt-auto"><span class="nav-section-title">Usuario</span></div>
+        <a href="#" class="nav-item" id="logoutBtn">
+          <span class="material-symbols-outlined">logout</span>
+          <span>Cerrar Sesión</span>
         </a>
       </nav>
-      <div class="px-4 mt-auto">
-        <a
-          class="flex items-center gap-3 px-4 py-3 text-secondary-fixed-dim hover:text-surface-container-lowest hover:bg-white/10 transition-all duration-200"
-          href="#"
-        >
-          <span class="material-symbols-outlined" data-icon="logout"
-            >logout</span
-          >
-          <span class="font-label-md text-label-md">Logout</span>
-        </a>
+
+      <div class="sidebar-footer">
+        <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
+          <div class="w-9 h-9 bg-blue-600 rounded-full flex items-center justify-center text-white font-semibold" id="userAvatar">U</div>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-semibold text-gray-700 truncate" id="userName">Usuario</p>
+            <p class="text-xs text-gray-500 truncate" id="userRole">Cargando...</p>
+          </div>
+        </div>
       </div>
     </aside>
-    <!-- Main Canvas -->
-    <main class="ml-sidebar-width min-h-screen bg-background">
-      <!-- TopNavBar (Authority: JSON) -->
-      <header
-        class="h-16 bg-surface-container-lowest border-b border-outline-variant flex items-center justify-between px-gutter sticky top-0 z-40"
-      >
-        <div class="flex items-center gap-4 flex-1">
-          <div class="relative max-w-md w-full">
-            <span
-              class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-body-md"
-              data-icon="search"
-              >search</span
-            >
-            <input
-              class="w-full pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-body-md focus:ring-2 focus:ring-primary focus:border-primary outline-none"
-              placeholder="Buscar compras..."
-              type="text"
-            />
-          </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Top Bar -->
+      <header class="top-bar">
+        <div class="flex items-center gap-4">
+          <button id="toggleSidebar" class="lg:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors">
+            <span class="material-symbols-outlined">menu</span>
+          </button>
+          <h2 class="text-xl font-semibold text-gray-800">Compras</h2>
         </div>
-        <div class="flex items-center gap-6">
-          <div
-            class="flex items-center gap-3 border-l border-outline-variant pl-6"
-          >
-            <div class="flex items-center gap-3 pl-2">
-            <div class="text-right">
-              <p
-                class="font-label-md text-label-md text-on-surface leading-none"
-              >
-                Dr. Alejandro Ruiz
-              </p>
-              <p
-                class="text-[11px] text-secondary font-medium uppercase tracking-wider"
-              >
-                Admin Principal
-              </p>
-            </div>
-            <img
-              alt="User profile photo"
-              class="w-10 h-10 rounded-full border-2 border-primary-container/20"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfDh0aDi-mYTTGT0gNhSnLGh4OBKf_o88qJ4izMLFyRHyU87yajEm5NOfmmV-ROb4H-zghVfM0qXVdoiF4mGNAbcha_4mc-C1bBVk0PJIAfFmCUAM0EjQTzCn6f8uW1CT-MBF1g-aeZ4VnV1ezpIc1OzOYU20Xw498A_rMwwgexs4B3T8sPjWFCggYuI3Ui8ZiXxQrHaQHIZcXRbQsbd-eH2fe0s9UNNoHMDji1otRwE7gdYmtVSVkHO8RfM869N5_xr8g0-be17Mk"
-            />
-          </div>
+        <div class="flex items-center gap-3">
+          <span class="text-sm text-gray-500" id="currentDateTime"></span>
         </div>
       </header>
+
       <!-- Content Area -->
-      <div class="p-stack-lg max-w-container-max-width mx-auto">
-        <!-- Page Header Actions -->
-        <div
-          class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4"
-        >
-          <div>
-            <h2 class="font-headline-lg text-headline-lg text-on-surface">
-              Gestión de Compras
-            </h2>
-            <p class="font-body-md text-body-md text-on-surface-variant">
-              Control centralizado de órdenes y relaciones con proveedores
-              farmacéuticos.
-            </p>
-          </div>
-          <button
-            class="flex items-center justify-center gap-2 bg-primary-container text-on-primary-container px-6 py-3 rounded-lg font-title-md text-title-md hover:bg-primary transition-all active:scale-95 shadow-sm"
-          >
-            <span class="material-symbols-outlined" data-icon="add">add</span>
-            Nueva Orden de Compra
+      <div class="content-area">
+        <!-- Tabs -->
+        <div class="flex border-b border-gray-200 mb-6">
+          <button class="px-4 py-2 text-sm font-medium text-blue-600 border-b-2 border-blue-600" id="tabCompras" onclick="switchTab('compras')">
+            <span class="material-symbols-outlined text-sm align-middle">receipt</span>
+            Compras
+          </button>
+          <button class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent" id="tabProveedores" onclick="switchTab('proveedores')">
+            <span class="material-symbols-outlined text-sm align-middle">business</span>
+            Proveedores
           </button>
         </div>
-        <!-- Dashboard Stats Summary (Bento Lite) -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div
-            class="bg-surface-container-lowest border border-outline-variant p-5 rounded-xl"
-          >
-            <div class="flex items-center justify-between mb-3">
-              <span class="p-2 bg-primary/10 text-primary rounded-lg">
-                <span
-                  class="material-symbols-outlined"
-                  data-icon="shopping_cart_checkout"
-                  >shopping_cart_checkout</span
-                >
-              </span>
+
+        <!-- Tab: Compras -->
+        <div id="tabContentCompras">
+          <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
+            <div class="flex flex-wrap gap-3">
+              <button onclick="showCreateCompra()" class="btn btn-primary">
+                <span class="material-symbols-outlined text-sm">add</span>
+                Nueva Compra
+              </button>
+              <button onclick="loadCompras()" class="btn btn-secondary">
+                <span class="material-symbols-outlined text-sm">refresh</span>
+                Actualizar
+              </button>
             </div>
-            <p class="font-body-md text-body-md text-on-surface-variant">
-              Órdenes este mes
-            </p>
-            <h3 class="font-display-lg text-display-lg text-on-surface">142</h3>
+            <div class="flex gap-2">
+              <select id="estadoFilter" onchange="filterCompras()" class="px-4 py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none">
+                <option value="">Todos los estados</option>
+                <option value="pendiente">Pendiente</option>
+                <option value="recibido">Recibido</option>
+                <option value="parcial">Parcial</option>
+                <option value="cancelado">Cancelado</option>
+              </select>
+              <input 
+                type="text" 
+                id="searchCompraInput" 
+                placeholder="Buscar factura..." 
+                class="px-4 py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none w-48"
+                onkeyup="filterCompras()"
+              />
+            </div>
           </div>
-          <div
-            class="bg-surface-container-lowest border border-outline-variant p-5 rounded-xl"
-          >
-            <div class="flex items-center justify-between mb-3">
-              <span class="p-2 bg-tertiary/10 text-tertiary rounded-lg">
-                <span
-                  class="material-symbols-outlined"
-                  data-icon="pending_actions"
-                  >pending_actions</span
-                >
-              </span>
-            </div>
-            <p class="font-body-md text-body-md text-on-surface-variant">
-              Pendientes de recibir
-            </p>
-            <h3 class="font-display-lg text-display-lg text-on-surface">28</h3>
-          </div>
-          <div
-            class="bg-surface-container-lowest border border-outline-variant p-5 rounded-xl"
-          >
-            <div class="flex items-center justify-between mb-3">
-              <span class="p-2 bg-secondary/10 text-secondary rounded-lg">
-                <span
-                  class="material-symbols-outlined"
-                  data-icon="local_shipping"
-                  >local_shipping</span
-                >
-              </span>
-            </div>
-            <p class="font-body-md text-body-md text-on-surface-variant">
-              Proveedores activos
-            </p>
-            <h3 class="font-display-lg text-display-lg text-on-surface">45</h3>
-          </div>
-          <div
-            class="bg-surface-container-lowest border border-outline-variant p-5 rounded-xl"
-          >
-            <div class="flex items-center justify-between mb-3">
-              <span class="p-2 bg-primary/10 text-primary rounded-lg">
-                <span class="material-symbols-outlined" data-icon="payments"
-                  >payments</span
-                >
-              </span>
-            </div>
-            <p class="font-body-md text-body-md text-on-surface-variant">
-              Inversión Mensual
-            </p>
-            <h3 class="font-display-lg text-display-lg text-on-surface">
-              $24.5k
-            </h3>
+
+          <div id="comprasContent">
+            <div class="loading"><span class="material-symbols-outlined">refresh</span> Cargando compras...</div>
           </div>
         </div>
-        <!-- Filters & Data Table Section -->
-        <div
-          class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden"
-        >
-          <!-- Filters Header -->
-          <div
-            class="p-6 border-b border-outline-variant flex flex-col md:flex-row gap-4 items-end"
-          >
-            <div class="flex-1 grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
-              <div>
-                <label
-                  class="font-label-md text-label-md text-on-surface-variant block mb-2"
-                  >Estado de Orden</label
-                >
-                <select
-                  class="w-full bg-surface-container-low border border-outline-variant rounded-lg p-2 font-body-md text-body-md outline-none focus:ring-2 focus:ring-primary"
-                >
-                  <option>Todos los estados</option>
-                  <option>Pendiente</option>
-                  <option>Recibida</option>
-                  <option>Cancelada</option>
-                </select>
-              </div>
-              <div>
-                <label
-                  class="font-label-md text-label-md text-on-surface-variant block mb-2"
-                  >Proveedor</label
-                >
-                <select
-                  class="w-full bg-surface-container-low border border-outline-variant rounded-lg p-2 font-body-md text-body-md outline-none focus:ring-2 focus:ring-primary"
-                >
-                  <option>Todos los proveedores</option>
-                  <option>Farmacéutica Global S.A.</option>
-                  <option>Distribuidora Médica Norte</option>
-                  <option>Laboratorios BioTech</option>
-                </select>
-              </div>
-              <div>
-                <label
-                  class="font-label-md text-label-md text-on-surface-variant block mb-2"
-                  >Rango de Fecha</label
-                >
-                <div
-                  class="flex items-center bg-surface-container-low border border-outline-variant rounded-lg px-2"
-                >
-                  <span
-                    class="material-symbols-outlined text-on-surface-variant scale-75"
-                    data-icon="calendar_today"
-                    >calendar_today</span
-                  >
-                  <input
-                    class="bg-transparent border-none w-full p-2 font-body-md text-body-md focus:ring-0"
-                    placeholder="01/10/23 - 31/10/23"
-                    type="text"
-                  />
-                </div>
-              </div>
-            </div>
-            <button
-              class="bg-surface-container-high text-on-surface px-6 py-2.5 rounded-lg font-title-md text-title-md border border-outline-variant hover:bg-surface-variant transition-colors flex items-center gap-2"
-            >
-              <span class="material-symbols-outlined" data-icon="filter_list"
-                >filter_list</span
-              >
-              Aplicar Filtros
-            </button>
-          </div>
-          <!-- Table -->
-          <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
-              <thead>
-                <tr
-                  class="bg-surface-container-low text-on-surface-variant font-label-md text-label-md uppercase tracking-wider"
-                >
-                  <th class="px-6 py-4 border-b border-outline-variant">
-                    ID Orden
-                  </th>
-                  <th class="px-6 py-4 border-b border-outline-variant">
-                    Proveedor
-                  </th>
-                  <th class="px-6 py-4 border-b border-outline-variant">
-                    Fecha
-                  </th>
-                  <th
-                    class="px-6 py-4 border-b border-outline-variant text-right"
-                  >
-                    Monto Total
-                  </th>
-                  <th class="px-6 py-4 border-b border-outline-variant">
-                    Estado
-                  </th>
-                  <th
-                    class="px-6 py-4 border-b border-outline-variant text-center"
-                  >
-                    Acciones
-                  </th>
-                </tr>
-              </thead>
-              <tbody class="font-body-md text-body-md">
-                <!-- Row 1 -->
-                <tr
-                  class="hover:bg-primary-fixed/20 transition-colors border-b border-outline-variant group"
-                >
-                  <td class="px-6 py-4 font-title-md text-primary">#PO-8821</td>
-                  <td class="px-6 py-4">
-                    <div class="flex items-center gap-3">
-                      <div
-                        class="w-8 h-8 rounded bg-primary/10 flex items-center justify-center text-primary font-bold"
-                      >
-                        F
-                      </div>
-                      Farmacéutica Global S.A.
-                    </div>
-                  </td>
-                  <td class="px-6 py-4 text-on-surface-variant">
-                    24 Oct, 2023
-                  </td>
-                  <td class="px-6 py-4 text-right font-title-md">$4,250.00</td>
-                  <td class="px-6 py-4">
-                    <span
-                      class="px-3 py-1 rounded-full bg-orange-100 text-orange-700 font-label-md text-xs uppercase font-bold flex items-center gap-1 w-fit"
-                    >
-                      <span
-                        class="w-1.5 h-1.5 bg-orange-500 rounded-full"
-                      ></span>
-                      Pendiente
-                    </span>
-                  </td>
-                  <td class="px-6 py-4 text-center">
-                    <button
-                      class="p-2 text-on-surface-variant hover:text-primary hover:bg-primary/5 rounded-lg"
-                    >
-                      <span
-                        class="material-symbols-outlined"
-                        data-icon="visibility"
-                        >visibility</span
-                      >
-                    </button>
-                  </td>
-                </tr>
-                <!-- Row 2 -->
-                <tr
-                  class="hover:bg-primary-fixed/20 transition-colors border-b border-outline-variant"
-                >
-                  <td class="px-6 py-4 font-title-md text-primary">#PO-8819</td>
-                  <td class="px-6 py-4">
-                    <div class="flex items-center gap-3">
-                      <div
-                        class="w-8 h-8 rounded bg-tertiary/10 flex items-center justify-center text-tertiary font-bold"
-                      >
-                        D
-                      </div>
-                      Distribuidora Médica Norte
-                    </div>
-                  </td>
-                  <td class="px-6 py-4 text-on-surface-variant">
-                    22 Oct, 2023
-                  </td>
-                  <td class="px-6 py-4 text-right font-title-md">$1,120.50</td>
-                  <td class="px-6 py-4">
-                    <span
-                      class="px-3 py-1 rounded-full bg-green-100 text-green-700 font-label-md text-xs uppercase font-bold flex items-center gap-1 w-fit"
-                    >
-                      <span
-                        class="w-1.5 h-1.5 bg-green-500 rounded-full"
-                      ></span>
-                      Recibida
-                    </span>
-                  </td>
-                  <td class="px-6 py-4 text-center">
-                    <button
-                      class="p-2 text-on-surface-variant hover:text-primary hover:bg-primary/5 rounded-lg"
-                    >
-                      <span
-                        class="material-symbols-outlined"
-                        data-icon="visibility"
-                        >visibility</span
-                      >
-                    </button>
-                  </td>
-                </tr>
-                <!-- Row 3 -->
-                <tr
-                  class="hover:bg-primary-fixed/20 transition-colors border-b border-outline-variant"
-                >
-                  <td class="px-6 py-4 font-title-md text-primary">#PO-8818</td>
-                  <td class="px-6 py-4">
-                    <div class="flex items-center gap-3">
-                      <div
-                        class="w-8 h-8 rounded bg-primary/10 flex items-center justify-center text-primary font-bold"
-                      >
-                        B
-                      </div>
-                      Laboratorios BioTech
-                    </div>
-                  </td>
-                  <td class="px-6 py-4 text-on-surface-variant">
-                    20 Oct, 2023
-                  </td>
-                  <td class="px-6 py-4 text-right font-title-md">$8,400.00</td>
-                  <td class="px-6 py-4">
-                    <span
-                      class="px-3 py-1 rounded-full bg-red-100 text-red-700 font-label-md text-xs uppercase font-bold flex items-center gap-1 w-fit"
-                    >
-                      <span class="w-1.5 h-1.5 bg-red-500 rounded-full"></span>
-                      Cancelada
-                    </span>
-                  </td>
-                  <td class="px-6 py-4 text-center">
-                    <button
-                      class="p-2 text-on-surface-variant hover:text-primary hover:bg-primary/5 rounded-lg"
-                    >
-                      <span
-                        class="material-symbols-outlined"
-                        data-icon="visibility"
-                        >visibility</span
-                      >
-                    </button>
-                  </td>
-                </tr>
-                <!-- Row 4 -->
-                <tr
-                  class="hover:bg-primary-fixed/20 transition-colors border-b border-outline-variant"
-                >
-                  <td class="px-6 py-4 font-title-md text-primary">#PO-8815</td>
-                  <td class="px-6 py-4">
-                    <div class="flex items-center gap-3">
-                      <div
-                        class="w-8 h-8 rounded bg-secondary/10 flex items-center justify-center text-secondary font-bold"
-                      >
-                        S
-                      </div>
-                      Suministros Farma Express
-                    </div>
-                  </td>
-                  <td class="px-6 py-4 text-on-surface-variant">
-                    19 Oct, 2023
-                  </td>
-                  <td class="px-6 py-4 text-right font-title-md">$2,890.00</td>
-                  <td class="px-6 py-4">
-                    <span
-                      class="px-3 py-1 rounded-full bg-green-100 text-green-700 font-label-md text-xs uppercase font-bold flex items-center gap-1 w-fit"
-                    >
-                      <span
-                        class="w-1.5 h-1.5 bg-green-500 rounded-full"
-                      ></span>
-                      Recibida
-                    </span>
-                  </td>
-                  <td class="px-6 py-4 text-center">
-                    <button
-                      class="p-2 text-on-surface-variant hover:text-primary hover:bg-primary/5 rounded-lg"
-                    >
-                      <span
-                        class="material-symbols-outlined"
-                        data-icon="visibility"
-                        >visibility</span
-                      >
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <!-- Pagination Footer -->
-          <div
-            class="p-6 flex items-center justify-between border-t border-outline-variant"
-          >
-            <p class="font-body-md text-body-md text-on-surface-variant">
-              Mostrando 1-10 de 142 órdenes
-            </p>
-            <div class="flex items-center gap-2">
-              <button
-                class="p-2 border border-outline-variant rounded-lg hover:bg-surface-container-low transition-colors disabled:opacity-30"
-                disabled=""
-              >
-                <span class="material-symbols-outlined" data-icon="chevron_left"
-                  >chevron_left</span
-                >
+
+        <!-- Tab: Proveedores -->
+        <div id="tabContentProveedores" class="hidden">
+          <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
+            <div class="flex flex-wrap gap-3">
+              <button onclick="showCreateProveedor()" class="btn btn-primary">
+                <span class="material-symbols-outlined text-sm">add</span>
+                Nuevo Proveedor
               </button>
-              <button
-                class="w-10 h-10 flex items-center justify-center rounded-lg bg-primary text-on-primary font-title-md"
-              >
-                1
-              </button>
-              <button
-                class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-surface-container-low text-on-surface font-title-md"
-              >
-                2
-              </button>
-              <button
-                class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-surface-container-low text-on-surface font-title-md"
-              >
-                3
-              </button>
-              <button
-                class="p-2 border border-outline-variant rounded-lg hover:bg-surface-container-low transition-colors"
-              >
-                <span
-                  class="material-symbols-outlined"
-                  data-icon="chevron_right"
-                  >chevron_right</span
-                >
+              <button onclick="loadProveedores()" class="btn btn-secondary">
+                <span class="material-symbols-outlined text-sm">refresh</span>
+                Actualizar
               </button>
             </div>
+            <div class="flex gap-2">
+              <input 
+                type="text" 
+                id="searchProveedorInput" 
+                placeholder="Buscar proveedor..." 
+                class="px-4 py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none w-48"
+                onkeyup="filterProveedores()"
+              />
+            </div>
+          </div>
+
+          <div id="proveedoresContent">
+            <div class="loading"><span class="material-symbols-outlined">refresh</span> Cargando proveedores...</div>
           </div>
         </div>
       </div>
     </main>
+
+    <!-- Modal -->
+    <div id="modalOverlay" class="modal-overlay">
+      <div class="modal modal-lg">
+        <div class="modal-header">
+          <h3 id="modalTitle">Modal</h3>
+          <button class="modal-close" onclick="closeModal()">✕</button>
+        </div>
+        <div class="modal-body" id="modalBody">
+          <!-- Contenido dinámico -->
+        </div>
+      </div>
+    </div>
+
+    <script src="http://localhost:3010/public/js/config.js"></script>
+    <script src="http://localhost:3010/public/js/auth.js"></script>
+    <script>
+      // ============ VARIABLES GLOBALES ============
+      let comprasData = [];
+      let proveedoresData = [];
+      let currentTab = 'compras';
+
+      // ============ INICIALIZACIÓN ============
+      document.addEventListener('DOMContentLoaded', () => {
+        if (!requireAuth()) return;
+        loadUserInfo();
+        loadCompras();
+        loadProveedores();
+        setupLogout();
+        setupSidebarToggle();
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+      });
+
+      // ============ FUNCIONES DE USUARIO ============
+      function loadUserInfo() {
+        try {
+          const user = JSON.parse(localStorage.getItem('user'));
+          if (user) {
+            document.getElementById('userName').textContent = user.username || 'Usuario';
+            document.getElementById('userRole').textContent = user.roles ? user.roles.join(', ') : 'Sin rol';
+            document.getElementById('userAvatar').textContent = user.username ? user.username.charAt(0).toUpperCase() : 'U';
+          }
+        } catch (e) {
+          console.error('Error loading user info:', e);
+        }
+      }
+
+      function setupLogout() {
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+          e.preventDefault();
+          logout();
+        });
+      }
+
+      function setupSidebarToggle() {
+        document.getElementById('toggleSidebar').addEventListener('click', () => {
+          document.getElementById('sidebar').classList.toggle('open');
+        });
+      }
+
+      function updateDateTime() {
+        const now = new Date();
+        document.getElementById('currentDateTime').textContent = now.toLocaleString('es-ES');
+      }
+
+      function switchTab(tab) {
+        currentTab = tab;
+        document.getElementById('tabContentCompras').classList.toggle('hidden', tab !== 'compras');
+        document.getElementById('tabContentProveedores').classList.toggle('hidden', tab !== 'proveedores');
+        
+        document.getElementById('tabCompras').className = tab === 'compras' 
+          ? 'px-4 py-2 text-sm font-medium text-blue-600 border-b-2 border-blue-600'
+          : 'px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent';
+        
+        document.getElementById('tabProveedores').className = tab === 'proveedores'
+          ? 'px-4 py-2 text-sm font-medium text-blue-600 border-b-2 border-blue-600'
+          : 'px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent';
+      }
+
+      // ============ FUNCIONES API ============
+      async function apiRequest(endpoint, options = {}) {
+        const token = localStorage.getItem('token');
+        if (!token) throw new Error('No autenticado');
+
+        const url = `${getApiBase()}${endpoint}`;
+        const headers = {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          ...options.headers
+        };
+
+        const response = await fetch(url, { ...options, headers });
+        if (!response.ok) {
+          const error = await response.json().catch(() => ({ message: `Error ${response.status}` }));
+          throw new Error(error.message || `Error ${response.status}`);
+        }
+        return response.json();
+      }
+
+      // ============ LOAD COMPRAS ============
+      async function loadCompras() {
+        const container = document.getElementById('comprasContent');
+        container.innerHTML = `<div class="loading"><span class="material-symbols-outlined">refresh</span> Cargando compras...</div>`;
+
+        try {
+          const data = await apiRequest('/api/compras/compras');
+          comprasData = data.data || [];
+          renderCompras(comprasData);
+        } catch (error) {
+          console.error('Error loading compras:', error);
+          container.innerHTML = `
+            <div class="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
+              <span class="material-symbols-outlined text-red-500 text-4xl">error</span>
+              <p class="text-red-700 mt-2">Error al cargar compras</p>
+              <p class="text-sm text-red-600">${error.message}</p>
+              <button onclick="loadCompras()" class="btn btn-primary mt-4">Reintentar</button>
+            </div>
+          `;
+        }
+      }
+
+      function renderCompras(data) {
+        const container = document.getElementById('comprasContent');
+        
+        if (!data || data.length === 0) {
+          container.innerHTML = `
+            <div class="bg-gray-50 rounded-xl p-8 text-center">
+              <span class="material-symbols-outlined text-gray-400 text-5xl">receipt</span>
+              <p class="text-gray-500 mt-2">No hay compras registradas</p>
+              <button onclick="showCreateCompra()" class="btn btn-primary mt-4">
+                Registrar primera compra
+              </button>
+            </div>
+          `;
+          return;
+        }
+
+        let html = `
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Factura</th>
+                  <th>Proveedor</th>
+                  <th>Sucursal</th>
+                  <th>Subtotal</th>
+                  <th>IGV</th>
+                  <th>Total</th>
+                  <th>Estado</th>
+                  <th>Fecha</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+        `;
+
+        data.forEach(c => {
+          const estadoColors = {
+            'pendiente': 'badge-warning',
+            'recibido': 'badge-success',
+            'parcial': 'badge-info',
+            'cancelado': 'badge-danger'
+          };
+          const estadoBadge = `<span class="badge ${estadoColors[c.estado] || 'badge-info'}">${c.estado}</span>`;
+          
+          html += `
+            <tr>
+              <td><span class="font-mono text-sm font-medium">${c.numero_factura}</span></td>
+              <td>${c.proveedor?.razon_social || 'N/A'}</td>
+              <td>${c.sucursal_id || 'N/A'}</td>
+              <td class="text-right">S/ ${parseFloat(c.subtotal).toFixed(2)}</td>
+              <td class="text-right">S/ ${parseFloat(c.igv).toFixed(2)}</td>
+              <td class="text-right font-bold">S/ ${parseFloat(c.total).toFixed(2)}</td>
+              <td>${estadoBadge}</td>
+              <td>${new Date(c.fecha_compra).toLocaleDateString()}</td>
+              <td>
+                <button class="btn btn-primary btn-sm" onclick="showDetalleCompra(${c.id})">
+                  <span class="material-symbols-outlined text-sm">visibility</span>
+                </button>
+                ${c.estado === 'pendiente' ? `
+                  <button class="btn btn-success btn-sm" onclick="updateEstadoCompra(${c.id}, 'recibido')">
+                    <span class="material-symbols-outlined text-sm">check</span>
+                  </button>
+                ` : ''}
+                ${c.estado === 'pendiente' || c.estado === 'parcial' ? `
+                  <button class="btn btn-danger btn-sm" onclick="updateEstadoCompra(${c.id}, 'cancelado')">
+                    <span class="material-symbols-outlined text-sm">close</span>
+                  </button>
+                ` : ''}
+              </td>
+            </tr>
+          `;
+        });
+
+        html += '</tbody></table></div>';
+        container.innerHTML = html;
+      }
+
+      function filterCompras() {
+        const search = document.getElementById('searchCompraInput').value.toLowerCase();
+        const estado = document.getElementById('estadoFilter').value;
+        
+        let filtered = comprasData.filter(c => {
+          const matchSearch = 
+            c.numero_factura?.toLowerCase().includes(search) ||
+            c.proveedor?.razon_social?.toLowerCase().includes(search);
+          
+          const matchEstado = !estado || c.estado === estado;
+          
+          return matchSearch && matchEstado;
+        });
+        
+        renderCompras(filtered);
+      }
+
+      // ============ CRUD COMPRAS ============
+      async function loadProveedoresForSelect() {
+        try {
+          const data = await apiRequest('/api/compras/proveedores');
+          return data.data || [];
+        } catch (error) {
+          console.error('Error loading proveedores:', error);
+          return [];
+        }
+      }
+
+      function showCreateCompra() {
+        // Cargar proveedores y sucursales para los selects
+        const proveedoresOptions = proveedoresData
+          .filter(p => p.estado)
+          .map(p => `<option value="${p.id}">${p.razon_social}</option>`)
+          .join('');
+
+        // Sucursales (hardcodeadas por ahora, idealmente cargar desde API)
+        const sucursalesOptions = `
+          <option value="1">Sucursal Central</option>
+          <option value="2">Sucursal Norte</option>
+          <option value="3">Sucursal Sur</option>
+        `;
+
+        showModal('Nueva Compra', `
+          <form id="compraForm" onsubmit="createCompra(event)">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="form-group">
+                <label>Número Factura *</label>
+                <input type="text" name="numero_factura" required placeholder="F001-000001">
+              </div>
+              <div class="form-group">
+                <label>Proveedor *</label>
+                <select name="proveedor_id" required>
+                  <option value="">Seleccionar...</option>
+                  ${proveedoresOptions}
+                </select>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="form-group">
+                <label>Sucursal *</label>
+                <select name="sucursal_id" required>
+                  <option value="">Seleccionar...</option>
+                  ${sucursalesOptions}
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Fecha Factura</label>
+                <input type="date" name="fecha_factura" value="${new Date().toISOString().split('T')[0]}">
+              </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="form-group">
+                <label>Tipo Pago</label>
+                <select name="tipo_pago">
+                  <option value="contado">Contado</option>
+                  <option value="credito">Crédito</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Plazo Crédito (días)</label>
+                <input type="number" name="plazo_credito" placeholder="30" min="0">
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label>Detalles de Productos *</label>
+              <div id="productosList">
+                <div class="grid grid-cols-5 gap-2 mb-2">
+                  <input type="number" name="producto_id[]" placeholder="Producto ID" class="col-span-1" required>
+                  <input type="text" name="lote[]" placeholder="Lote" class="col-span-1" required>
+                  <input type="number" name="cantidad[]" placeholder="Cant" class="col-span-1" required min="1">
+                  <input type="number" name="costo_unitario[]" placeholder="Costo" class="col-span-1" required step="0.01">
+                  <input type="date" name="fecha_vencimiento[]" placeholder="Vence" class="col-span-1" required>
+                  <button type="button" class="btn btn-danger btn-sm col-span-1" onclick="this.parentElement.remove()">✕</button>
+                </div>
+              </div>
+              <button type="button" class="btn btn-secondary btn-sm mt-2" onclick="addProductoRow()">
+                <span class="material-symbols-outlined text-sm">add</span> Agregar Producto
+              </button>
+            </div>
+
+            <div class="form-group">
+              <label>Observaciones</label>
+              <textarea name="observaciones" placeholder="Observaciones de la compra"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary w-full">Registrar Compra</button>
+          </form>
+        `);
+      }
+
+      function addProductoRow() {
+        const list = document.getElementById('productosList');
+        const div = document.createElement('div');
+        div.className = 'grid grid-cols-6 gap-2 mb-2';
+        div.innerHTML = `
+          <input type="number" name="producto_id[]" placeholder="Producto ID" class="col-span-1" required>
+          <input type="text" name="lote[]" placeholder="Lote" class="col-span-1" required>
+          <input type="number" name="cantidad[]" placeholder="Cant" class="col-span-1" required min="1">
+          <input type="number" name="costo_unitario[]" placeholder="Costo" class="col-span-1" required step="0.01">
+          <input type="date" name="fecha_vencimiento[]" placeholder="Vence" class="col-span-1" required>
+          <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">✕</button>
+        `;
+        list.appendChild(div);
+      }
+
+      async function createCompra(event) {
+        event.preventDefault();
+        const form = event.target;
+        const formData = new FormData(form);
+        
+        const data = {
+          numero_factura: formData.get('numero_factura'),
+          proveedor_id: parseInt(formData.get('proveedor_id')),
+          sucursal_id: parseInt(formData.get('sucursal_id')),
+          fecha_factura: formData.get('fecha_factura') || new Date().toISOString(),
+          tipo_pago: formData.get('tipo_pago') || 'contado',
+          plazo_credito: formData.get('plazo_credito') ? parseInt(formData.get('plazo_credito')) : null,
+          observaciones: formData.get('observaciones'),
+          detalles: []
+        };
+
+        const productoIds = formData.getAll('producto_id[]');
+        const lotes = formData.getAll('lote[]');
+        const cantidades = formData.getAll('cantidad[]');
+        const costos = formData.getAll('costo_unitario[]');
+        const fechas = formData.getAll('fecha_vencimiento[]');
+
+        for (let i = 0; i < productoIds.length; i++) {
+          data.detalles.push({
+            producto_id: parseInt(productoIds[i]),
+            lote: lotes[i],
+            cantidad: parseInt(cantidades[i]),
+            costo_unitario: parseFloat(costos[i]),
+            fecha_vencimiento: fechas[i]
+          });
+        }
+
+        if (data.detalles.length === 0) {
+          showToast('❌ Debes agregar al menos un producto', 'error');
+          return;
+        }
+
+        try {
+          const result = await apiRequest('/api/compras/compras', {
+            method: 'POST',
+            body: JSON.stringify(data)
+          });
+          closeModal();
+          showToast('✅ Compra registrada exitosamente', 'success');
+          loadCompras();
+        } catch (error) {
+          showToast('❌ ' + error.message, 'error');
+        }
+      }
+
+      function showDetalleCompra(id) {
+        const compra = comprasData.find(c => c.id === id);
+        if (!compra) {
+          showToast('❌ Compra no encontrada', 'error');
+          return;
+        }
+
+        let detallesHtml = '';
+        if (compra.detalles && compra.detalles.length > 0) {
+          detallesHtml = `
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Producto</th>
+                    <th>Lote</th>
+                    <th>Cantidad</th>
+                    <th>Costo Unit.</th>
+                    <th>Subtotal</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+          `;
+          compra.detalles.forEach(d => {
+            detallesHtml += `
+              <tr>
+                <td>${d.producto_id}</td>
+                <td>${d.lote}</td>
+                <td class="text-center">${d.cantidad}</td>
+                <td class="text-right">S/ ${parseFloat(d.costo_unitario).toFixed(2)}</td>
+                <td class="text-right">S/ ${parseFloat(d.subtotal).toFixed(2)}</td>
+                <td class="text-right font-bold">S/ ${parseFloat(d.total).toFixed(2)}</td>
+              </tr>
+            `;
+          });
+          detallesHtml += '</tbody></table></div>';
+        } else {
+          detallesHtml = '<p class="text-gray-500 text-center py-4">No hay detalles disponibles</p>';
+        }
+
+        showModal(`Detalle de Compra - ${compra.numero_factura}`, `
+          <div class="grid grid-cols-2 gap-4 mb-4">
+            <div class="p-3 bg-gray-50 rounded-lg">
+              <p class="text-sm text-gray-500">Proveedor</p>
+              <p class="font-semibold">${compra.proveedor?.razon_social || 'N/A'}</p>
+            </div>
+            <div class="p-3 bg-gray-50 rounded-lg">
+              <p class="text-sm text-gray-500">Sucursal</p>
+              <p class="font-semibold">${compra.sucursal_id || 'N/A'}</p>
+            </div>
+            <div class="p-3 bg-gray-50 rounded-lg">
+              <p class="text-sm text-gray-500">Estado</p>
+              <p><span class="badge ${compra.estado === 'recibido' ? 'badge-success' : compra.estado === 'pendiente' ? 'badge-warning' : 'badge-danger'}">${compra.estado}</span></p>
+            </div>
+            <div class="p-3 bg-gray-50 rounded-lg">
+              <p class="text-sm text-gray-500">Total</p>
+              <p class="text-xl font-bold text-blue-600">S/ ${parseFloat(compra.total).toFixed(2)}</p>
+            </div>
+          </div>
+          <div class="mb-4">
+            <p class="text-sm text-gray-500">Observaciones</p>
+            <p class="text-gray-700">${compra.observaciones || 'Sin observaciones'}</p>
+          </div>
+          <h4 class="font-semibold text-gray-700 mb-2">Productos</h4>
+          ${detallesHtml}
+        `);
+      }
+
+      async function updateEstadoCompra(id, estado) {
+        const estados = {
+          'recibido': 'recibir',
+          'cancelado': 'cancelar'
+        };
+        const action = estados[estado] || estado;
+        if (!confirm(`¿Estás seguro de ${action} esta compra?`)) return;
+
+        try {
+          const result = await apiRequest(`/api/compras/compras/${id}/estado`, {
+            method: 'PUT',
+            body: JSON.stringify({ estado })
+          });
+          showToast(`✅ Compra ${action}da exitosamente`, 'success');
+          loadCompras();
+        } catch (error) {
+          showToast('❌ ' + error.message, 'error');
+        }
+      }
+
+      // ============ PROVEEDORES ============
+      async function loadProveedores() {
+        const container = document.getElementById('proveedoresContent');
+        container.innerHTML = `<div class="loading"><span class="material-symbols-outlined">refresh</span> Cargando proveedores...</div>`;
+
+        try {
+          const data = await apiRequest('/api/compras/proveedores');
+          proveedoresData = data.data || [];
+          renderProveedores(proveedoresData);
+        } catch (error) {
+          console.error('Error loading proveedores:', error);
+          container.innerHTML = `
+            <div class="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
+              <span class="material-symbols-outlined text-red-500 text-4xl">error</span>
+              <p class="text-red-700 mt-2">Error al cargar proveedores</p>
+              <p class="text-sm text-red-600">${error.message}</p>
+              <button onclick="loadProveedores()" class="btn btn-primary mt-4">Reintentar</button>
+            </div>
+          `;
+        }
+      }
+
+      function renderProveedores(data) {
+        const container = document.getElementById('proveedoresContent');
+        
+        if (!data || data.length === 0) {
+          container.innerHTML = `
+            <div class="bg-gray-50 rounded-xl p-8 text-center">
+              <span class="material-symbols-outlined text-gray-400 text-5xl">business</span>
+              <p class="text-gray-500 mt-2">No hay proveedores registrados</p>
+              <button onclick="showCreateProveedor()" class="btn btn-primary mt-4">
+                Registrar primer proveedor
+              </button>
+            </div>
+          `;
+          return;
+        }
+
+        let html = `
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>RUC</th>
+                  <th>Razón Social</th>
+                  <th>Email</th>
+                  <th>Teléfono</th>
+                  <th>Contacto</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+        `;
+
+        data.forEach(p => {
+          const estadoBadge = p.estado 
+            ? '<span class="badge badge-success">Activo</span>' 
+            : '<span class="badge badge-danger">Inactivo</span>';
+          
+          html += `
+            <tr>
+              <td><span class="font-mono text-sm">${p.ruc}</span></td>
+              <td><strong>${p.razon_social}</strong></td>
+              <td>${p.email || 'N/A'}</td>
+              <td>${p.telefono || 'N/A'}</td>
+              <td>${p.contacto_nombre || 'N/A'}</td>
+              <td>${estadoBadge}</td>
+              <td>
+                <button class="btn btn-primary btn-sm" onclick="showEditProveedor(${p.id})">
+                  <span class="material-symbols-outlined text-sm">edit</span>
+                </button>
+                <button class="btn ${p.estado ? 'btn-danger' : 'btn-success'} btn-sm" onclick="toggleProveedorStatus(${p.id})">
+                  <span class="material-symbols-outlined text-sm">${p.estado ? 'block' : 'check_circle'}</span>
+                </button>
+              </td>
+            </tr>
+          `;
+        });
+
+        html += '</tbody></table></div>';
+        container.innerHTML = html;
+      }
+
+      function filterProveedores() {
+        const search = document.getElementById('searchProveedorInput').value.toLowerCase();
+        const filtered = proveedoresData.filter(p => 
+          p.razon_social?.toLowerCase().includes(search) ||
+          p.ruc?.toLowerCase().includes(search) ||
+          p.email?.toLowerCase().includes(search)
+        );
+        renderProveedores(filtered);
+      }
+
+      function showCreateProveedor() {
+        showModal('Nuevo Proveedor', `
+          <form id="proveedorForm" onsubmit="createProveedor(event)">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="form-group">
+                <label>RUC *</label>
+                <input type="text" name="ruc" required placeholder="12345678901" maxlength="11">
+              </div>
+              <div class="form-group">
+                <label>Razón Social *</label>
+                <input type="text" name="razon_social" required placeholder="Nombre de la empresa">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Nombre Comercial</label>
+              <input type="text" name="nombre_comercial" placeholder="Nombre comercial">
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="form-group">
+                <label>Email</label>
+                <input type="email" name="email" placeholder="correo@empresa.com">
+              </div>
+              <div class="form-group">
+                <label>Teléfono</label>
+                <input type="text" name="telefono" placeholder="999-999-999">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Dirección</label>
+              <input type="text" name="direccion" placeholder="Dirección completa">
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="form-group">
+                <label>Contacto</label>
+                <input type="text" name="contacto_nombre" placeholder="Nombre del contacto">
+              </div>
+              <div class="form-group">
+                <label>Teléfono Contacto</label>
+                <input type="text" name="contacto_telefono" placeholder="999-999-999">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Email Contacto</label>
+              <input type="email" name="contacto_email" placeholder="contacto@empresa.com">
+            </div>
+            <button type="submit" class="btn btn-primary w-full">Crear Proveedor</button>
+          </form>
+        `);
+      }
+
+      async function createProveedor(event) {
+        event.preventDefault();
+        const form = event.target;
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData);
+
+        try {
+          const result = await apiRequest('/api/compras/proveedores', {
+            method: 'POST',
+            body: JSON.stringify(data)
+          });
+          closeModal();
+          showToast('✅ Proveedor creado exitosamente', 'success');
+          loadProveedores();
+          // Recargar select de proveedores si está abierto
+        } catch (error) {
+          showToast('❌ ' + error.message, 'error');
+        }
+      }
+
+      function showEditProveedor(id) {
+        const proveedor = proveedoresData.find(p => p.id === id);
+        if (!proveedor) {
+          showToast('❌ Proveedor no encontrado', 'error');
+          return;
+        }
+
+        showModal('Editar Proveedor', `
+          <form id="proveedorForm" onsubmit="updateProveedor(event, ${id})">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="form-group">
+                <label>RUC *</label>
+                <input type="text" name="ruc" required value="${proveedor.ruc || ''}" maxlength="11">
+              </div>
+              <div class="form-group">
+                <label>Razón Social *</label>
+                <input type="text" name="razon_social" required value="${proveedor.razon_social || ''}">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Nombre Comercial</label>
+              <input type="text" name="nombre_comercial" value="${proveedor.nombre_comercial || ''}">
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="form-group">
+                <label>Email</label>
+                <input type="email" name="email" value="${proveedor.email || ''}">
+              </div>
+              <div class="form-group">
+                <label>Teléfono</label>
+                <input type="text" name="telefono" value="${proveedor.telefono || ''}">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Dirección</label>
+              <input type="text" name="direccion" value="${proveedor.direccion || ''}">
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="form-group">
+                <label>Contacto</label>
+                <input type="text" name="contacto_nombre" value="${proveedor.contacto_nombre || ''}">
+              </div>
+              <div class="form-group">
+                <label>Teléfono Contacto</label>
+                <input type="text" name="contacto_telefono" value="${proveedor.contacto_telefono || ''}">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Email Contacto</label>
+              <input type="email" name="contacto_email" value="${proveedor.contacto_email || ''}">
+            </div>
+            <div class="form-group">
+              <label>Estado</label>
+              <select name="estado">
+                <option value="true" ${proveedor.estado ? 'selected' : ''}>Activo</option>
+                <option value="false" ${!proveedor.estado ? 'selected' : ''}>Inactivo</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary w-full">Actualizar Proveedor</button>
+          </form>
+        `);
+      }
+
+      async function updateProveedor(event, id) {
+        event.preventDefault();
+        const form = event.target;
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData);
+        data.estado = data.estado === 'true';
+
+        try {
+          const result = await apiRequest(`/api/compras/proveedores/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify(data)
+          });
+          closeModal();
+          showToast('✅ Proveedor actualizado exitosamente', 'success');
+          loadProveedores();
+        } catch (error) {
+          showToast('❌ ' + error.message, 'error');
+        }
+      }
+
+      async function toggleProveedorStatus(id) {
+        const proveedor = proveedoresData.find(p => p.id === id);
+        if (!proveedor) return;
+
+        const action = proveedor.estado ? 'desactivar' : 'activar';
+        if (!confirm(`¿Estás seguro de ${action} este proveedor?`)) return;
+
+        try {
+          await apiRequest(`/api/compras/proveedores/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify({ ...proveedor, estado: !proveedor.estado })
+          });
+          showToast(`✅ Proveedor ${action}do exitosamente`, 'success');
+          loadProveedores();
+        } catch (error) {
+          showToast('❌ ' + error.message, 'error');
+        }
+      }
+
+      // ============ TOAST NOTIFICATIONS ============
+      function showToast(message, type = 'info') {
+        const colors = {
+          success: 'bg-green-50 border-green-200 text-green-700',
+          error: 'bg-red-50 border-red-200 text-red-700',
+          warning: 'bg-yellow-50 border-yellow-200 text-yellow-700',
+          info: 'bg-blue-50 border-blue-200 text-blue-700'
+        };
+        const icons = {
+          success: 'check_circle',
+          error: 'error',
+          warning: 'warning',
+          info: 'info'
+        };
+
+        const toast = document.createElement('div');
+        toast.className = `fixed top-4 right-4 p-4 rounded-lg border shadow-lg ${colors[type] || colors.info} flex items-center gap-3 z-50 max-w-md animate-slide-in`;
+        toast.innerHTML = `
+          <span class="material-symbols-outlined">${icons[type] || icons.info}</span>
+          <span>${message}</span>
+          <button onclick="this.parentElement.remove()" class="ml-auto text-gray-400 hover:text-gray-600">✕</button>
+        `;
+
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 5000);
+      }
+
+      // ============ MODAL ============
+      function showModal(title, content) {
+        document.getElementById('modalTitle').textContent = title;
+        document.getElementById('modalBody').innerHTML = content;
+        document.getElementById('modalOverlay').classList.add('active');
+        // Ajustar tamaño del modal
+        document.querySelector('.modal').classList.add('modal-lg');
+      }
+
+      function closeModal() {
+        document.getElementById('modalOverlay').classList.remove('active');
+      }
+
+      // Cerrar modal al hacer click fuera
+      document.getElementById('modalOverlay').addEventListener('click', (e) => {
+        if (e.target === e.currentTarget) closeModal();
+      });
+
+      // ============ ESTILOS ADICIONALES ============
+      const style = document.createElement('style');
+      style.textContent = `
+        .animate-slide-in {
+          animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn {
+          from { transform: translateX(100%); opacity: 0; }
+          to { transform: translateX(0); opacity: 1; }
+        }
+        .modal-lg {
+          max-width: 800px !important;
+        }
+        .modal .grid input, .modal .grid select {
+          width: 100%;
+        }
+      `;
+      document.head.appendChild(style);
+    </script>
   </body>
 </html>
