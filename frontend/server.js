@@ -43,6 +43,11 @@ app.get('/usuarios', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'usuarios.html'));
 });
 
+// frontend/server.js
+app.get('/inventario', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'inventario.html'));
+});
+
 // Health check
 app.get('/health', (req, res) => {
   res.status(200).json({

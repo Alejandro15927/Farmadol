@@ -1,1196 +1,1375 @@
-<!doctype html>
-<html class="light" lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Farmadol ERP - Inventario</title>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="http://localhost:3010/public/css/dashboard.css" />
-  </head>
-  <body class="font-body-md text-on-background" style="font-family: Inter, sans-serif; background-color: #f1f5f9;">
-    
-    <!-- Sidebar -->
-    <aside id="sidebar" class="sidebar">
-      <div class="sidebar-header">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-lg">F</div>
-          <div>
-            <h1 class="text-lg font-bold text-gray-800">Farmadol ERP</h1>
-            <p class="text-xs text-gray-500">Sistema de Gestión</p>
-          </div>
-        </div>
-      </div>
-
-      <nav class="sidebar-nav">
-        <div class="nav-section"><span class="nav-section-title">Principal</span></div>
-        <a href="http://localhost:3010/public/dashboard.html" class="nav-item">
-          <span class="material-symbols-outlined">dashboard</span>
-          <span>Dashboard</span>
-        </a>
-
-        <div class="nav-section"><span class="nav-section-title">Módulos</span></div>
-        <a href="http://localhost:3010/public/ventas.html" class="nav-item">
-          <span class="material-symbols-outlined">shopping_cart</span>
-          <span>Ventas</span>
-        </a>
-        <a href="http://localhost:3010/public/inventario.html" class="nav-item active">
-          <span class="material-symbols-outlined">inventory_2</span>
-          <span>Inventario</span>
-        </a>
-        <a href="http://localhost:3010/public/compras.html" class="nav-item">
-          <span class="material-symbols-outlined">local_shipping</span>
-          <span>Compras</span>
-        </a>
-        <a href="http://localhost:3010/public/clientes.html" class="nav-item">
-          <span class="material-symbols-outlined">people</span>
-          <span>Clientes</span>
-        </a>
-        <a href="http://localhost:3010/public/sucursales.html" class="nav-item">
-          <span class="material-symbols-outlined">storefront</span>
-          <span>Sucursales</span>
-        </a>
-        <a href="http://localhost:3010/public/reportes.html" class="nav-item">
-          <span class="material-symbols-outlined">assessment</span>
-          <span>Reportes</span>
-        </a>
-
-        <div class="nav-section mt-auto"><span class="nav-section-title">Usuario</span></div>
-        <a href="#" class="nav-item" id="logoutBtn">
-          <span class="material-symbols-outlined">logout</span>
-          <span>Cerrar Sesión</span>
-        </a>
-      </nav>
-
-      <div class="sidebar-footer">
-        <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
-          <div class="w-9 h-9 bg-blue-600 rounded-full flex items-center justify-center text-white font-semibold" id="userAvatar">U</div>
-          <div class="flex-1 min-w-0">
-            <p class="text-sm font-semibold text-gray-700 truncate" id="userName">Usuario</p>
-            <p class="text-xs text-gray-500 truncate" id="userRole">Cargando...</p>
-          </div>
-        </div>
-      </div>
-    </aside>
-
-    <!-- Main Content -->
-    <main class="main-content">
-      <!-- Top Bar -->
-      <header class="top-bar">
-        <div class="flex items-center gap-4">
-          <button id="toggleSidebar" class="lg:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors">
-            <span class="material-symbols-outlined">menu</span>
-          </button>
-          <h2 class="text-xl font-semibold text-gray-800">Inventario</h2>
-        </div>
-        <div class="flex items-center gap-3">
-          <span class="text-sm text-gray-500" id="currentDateTime"></span>
-        </div>
-      </header>
-
-      <!-- Content Area -->
-      <div class="content-area">
-        <!-- Tabs -->
-        <div class="flex border-b border-gray-200 mb-6">
-          <button class="px-4 py-2 text-sm font-medium text-blue-600 border-b-2 border-blue-600" id="tabProductos" onclick="switchTab('productos')">
-            <span class="material-symbols-outlined text-sm align-middle">inventory_2</span>
-            Productos
-          </button>
-          <button class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent" id="tabCategorias" onclick="switchTab('categorias')">
-            <span class="material-symbols-outlined text-sm align-middle">category</span>
-            Categorías
-          </button>
-          <button class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent" id="tabStock" onclick="switchTab('stock')">
-            <span class="material-symbols-outlined text-sm align-middle">warehouse</span>
-            Stock por Sucursal
-          </button>
-          <button class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent" id="tabMovimientos" onclick="switchTab('movimientos')">
-            <span class="material-symbols-outlined text-sm align-middle">history</span>
-            Movimientos
-          </button>
-        </div>
-
-        <!-- Tab: Productos -->
-        <div id="tabContentProductos">
-          <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
-            <div class="flex flex-wrap gap-3">
-              <button onclick="showCreateProducto()" class="btn btn-primary">
-                <span class="material-symbols-outlined text-sm">add</span>
-                Nuevo Producto
-              </button>
-              <button onclick="loadProductos()" class="btn btn-secondary">
-                <span class="material-symbols-outlined text-sm">refresh</span>
-                Actualizar
-              </button>
-            </div>
-            <div class="flex gap-2">
-              <select id="categoriaFilter" onchange="filterProductos()" class="px-4 py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none">
-                <option value="">Todas las categorías</option>
-              </select>
-              <input 
-                type="text" 
-                id="searchProductoInput" 
-                placeholder="Buscar producto..." 
-                class="px-4 py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none w-48"
-                onkeyup="filterProductos()"
-              />
-            </div>
-          </div>
-
-          <div id="productosContent">
-            <div class="loading"><span class="material-symbols-outlined">refresh</span> Cargando productos...</div>
-          </div>
-        </div>
-
-        <!-- Tab: Categorías -->
-        <div id="tabContentCategorias" class="hidden">
-          <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
-            <div class="flex flex-wrap gap-3">
-              <button onclick="showCreateCategoria()" class="btn btn-primary">
-                <span class="material-symbols-outlined text-sm">add</span>
-                Nueva Categoría
-              </button>
-              <button onclick="loadCategorias()" class="btn btn-secondary">
-                <span class="material-symbols-outlined text-sm">refresh</span>
-                Actualizar
-              </button>
-            </div>
-          </div>
-
-          <div id="categoriasContent">
-            <div class="loading"><span class="material-symbols-outlined">refresh</span> Cargando categorías...</div>
-          </div>
-        </div>
-
-        <!-- Tab: Stock por Sucursal -->
-        <div id="tabContentStock" class="hidden">
-          <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
-            <div class="flex flex-wrap gap-3">
-              <button onclick="loadStock()" class="btn btn-secondary">
-                <span class="material-symbols-outlined text-sm">refresh</span>
-                Actualizar
-              </button>
-            </div>
-            <div class="flex gap-2">
-              <select id="sucursalStockFilter" onchange="loadStock()" class="px-4 py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none">
-                <option value="">Todas las sucursales</option>
-              </select>
-              <input 
-                type="text" 
-                id="searchStockInput" 
-                placeholder="Buscar producto..." 
-                class="px-4 py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none w-48"
-                onkeyup="filterStock()"
-              />
-            </div>
-          </div>
-
-          <div id="stockContent">
-            <div class="loading"><span class="material-symbols-outlined">refresh</span> Cargando stock...</div>
-          </div>
-        </div>
-
-        <!-- Tab: Movimientos -->
-        <div id="tabContentMovimientos" class="hidden">
-          <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
-            <div class="flex flex-wrap gap-3">
-              <button onclick="loadMovimientos()" class="btn btn-secondary">
-                <span class="material-symbols-outlined text-sm">refresh</span>
-                Actualizar
-              </button>
-            </div>
-            <div class="flex gap-2">
-              <select id="tipoMovimientoFilter" onchange="loadMovimientos()" class="px-4 py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none">
-                <option value="">Todos los tipos</option>
-                <option value="entrada">Entrada</option>
-                <option value="salida">Salida</option>
-                <option value="transferencia_origen">Transferencia Origen</option>
-                <option value="transferencia_destino">Transferencia Destino</option>
-                <option value="ajuste">Ajuste</option>
-              </select>
-              <input 
-                type="date" 
-                id="fechaMovimientoInicio" 
-                class="px-4 py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none"
-                onchange="loadMovimientos()"
-              />
-              <input 
-                type="date" 
-                id="fechaMovimientoFin" 
-                class="px-4 py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none"
-                onchange="loadMovimientos()"
-              />
-            </div>
-          </div>
-
-          <div id="movimientosContent">
-            <div class="loading"><span class="material-symbols-outlined">refresh</span> Cargando movimientos...</div>
-          </div>
-        </div>
-      </div>
-    </main>
-
-    <!-- Modal -->
-    <div id="modalOverlay" class="modal-overlay">
-      <div class="modal modal-lg">
-        <div class="modal-header">
-          <h3 id="modalTitle">Modal</h3>
-          <button class="modal-close" onclick="closeModal()">✕</button>
-        </div>
-        <div class="modal-body" id="modalBody">
-          <!-- Contenido dinámico -->
-        </div>
-      </div>
-    </div>
-
-    <script src="http://localhost:3010/public/js/config.js"></script>
-    <script src="http://localhost:3010/public/js/auth.js"></script>
-    <script>
-      // ============ VARIABLES GLOBALES ============
-      let productosData = [];
-      let categoriasData = [];
-      let stockData = [];
-      let movimientosData = [];
-      let currentTab = 'productos';
-      let sucursalesData = [];
-
-      // ============ INICIALIZACIÓN ============
-      document.addEventListener('DOMContentLoaded', () => {
-        if (!requireAuth()) return;
-        loadUserInfo();
-        loadProductos();
-        loadCategorias();
-        loadSucursales();
-        setupLogout();
-        setupSidebarToggle();
-        updateDateTime();
-        setInterval(updateDateTime, 1000);
-      });
-
-      // ============ FUNCIONES DE USUARIO ============
-      function loadUserInfo() {
-        try {
-          const user = JSON.parse(localStorage.getItem('user'));
-          if (user) {
-            document.getElementById('userName').textContent = user.username || 'Usuario';
-            document.getElementById('userRole').textContent = user.roles ? user.roles.join(', ') : 'Sin rol';
-            document.getElementById('userAvatar').textContent = user.username ? user.username.charAt(0).toUpperCase() : 'U';
-          }
-        } catch (e) {
-          console.error('Error loading user info:', e);
+<!-- frontend/public/inventario.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Farmadol - Inventario</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💊</text></svg>" />
+    <style>
+        .sidebar-transition {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-      }
-
-      function setupLogout() {
-        document.getElementById('logoutBtn').addEventListener('click', (e) => {
-          e.preventDefault();
-          logout();
-        });
-      }
-
-      function setupSidebarToggle() {
-        document.getElementById('toggleSidebar').addEventListener('click', () => {
-          document.getElementById('sidebar').classList.toggle('open');
-        });
-      }
-
-      function updateDateTime() {
-        const now = new Date();
-        document.getElementById('currentDateTime').textContent = now.toLocaleString('es-ES');
-      }
-
-      function switchTab(tab) {
-        currentTab = tab;
-        const tabs = ['productos', 'categorias', 'stock', 'movimientos'];
-        tabs.forEach(t => {
-          document.getElementById(`tabContent${t.charAt(0).toUpperCase() + t.slice(1)}`).classList.toggle('hidden', t !== tab);
-          const btn = document.getElementById(`tab${t.charAt(0).toUpperCase() + t.slice(1)}`);
-          if (btn) {
-            btn.className = t === tab 
-              ? 'px-4 py-2 text-sm font-medium text-blue-600 border-b-2 border-blue-600'
-              : 'px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent';
-          }
-        });
-        
-        // Cargar datos según la pestaña
-        if (tab === 'stock') loadStock();
-        if (tab === 'movimientos') loadMovimientos();
-      }
-
-      // ============ FUNCIONES API ============
-      async function apiRequest(endpoint, options = {}) {
-        const token = localStorage.getItem('token');
-        if (!token) throw new Error('No autenticado');
-
-        const url = `${getApiBase()}${endpoint}`;
-        const headers = {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-          ...options.headers
-        };
-
-        const response = await fetch(url, { ...options, headers });
-        if (!response.ok) {
-          const error = await response.json().catch(() => ({ message: `Error ${response.status}` }));
-          throw new Error(error.message || `Error ${response.status}`);
+        .sidebar::-webkit-scrollbar {
+            width: 4px;
         }
-        return response.json();
-      }
-
-      // ============ LOAD SUCURSALES ============
-      async function loadSucursales() {
-        try {
-          const data = await apiRequest('/api/sucursales/sucursales');
-          sucursalesData = data.data || [];
-          
-          // Actualizar selects de sucursales
-          const selects = ['sucursalStockFilter'];
-          selects.forEach(id => {
-            const select = document.getElementById(id);
-            if (select) {
-              const currentValue = select.value;
-              select.innerHTML = '<option value="">Todas las sucursales</option>';
-              sucursalesData.forEach(s => {
-                select.innerHTML += `<option value="${s.id}">${s.nombre}</option>`;
-              });
-              select.value = currentValue;
-            }
-          });
-        } catch (error) {
-          console.warn('Error loading sucursales:', error);
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
         }
-      }
-
-      // ============ CATEGORÍAS ============
-      async function loadCategorias() {
-        const container = document.getElementById('categoriasContent');
-        container.innerHTML = `<div class="loading"><span class="material-symbols-outlined">refresh</span> Cargando categorías...</div>`;
-
-        try {
-          const data = await apiRequest('/api/inventario/categorias');
-          categoriasData = data.data || [];
-          renderCategorias(categoriasData);
-          updateCategoriaFilter();
-        } catch (error) {
-          console.error('Error loading categorias:', error);
-          container.innerHTML = `
-            <div class="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
-              <span class="material-symbols-outlined text-red-500 text-4xl">error</span>
-              <p class="text-red-700 mt-2">Error al cargar categorías</p>
-              <p class="text-sm text-red-600">${error.message}</p>
-            </div>
-          `;
+        .modal-transition {
+            animation: modalIn 0.3s ease;
         }
-      }
-
-      function renderCategorias(data) {
-        const container = document.getElementById('categoriasContent');
-        
-        if (!data || data.length === 0) {
-          container.innerHTML = `
-            <div class="bg-gray-50 rounded-xl p-8 text-center">
-              <span class="material-symbols-outlined text-gray-400 text-5xl">category</span>
-              <p class="text-gray-500 mt-2">No hay categorías registradas</p>
-              <button onclick="showCreateCategoria()" class="btn btn-primary mt-4">Crear primera categoría</button>
-            </div>
-          `;
-          return;
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
-
-        let html = `
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        `;
-
-        data.forEach(c => {
-          const estadoBadge = c.estado 
-            ? '<span class="badge badge-success">Activo</span>' 
-            : '<span class="badge badge-danger">Inactivo</span>';
-          
-          html += `
-            <div class="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-md transition-shadow">
-              <div class="flex justify-between items-start">
-                <div>
-                  <h3 class="font-semibold text-gray-800 text-lg">${c.nombre}</h3>
-                  <p class="text-sm text-gray-500 mt-1">${c.descripcion || 'Sin descripción'}</p>
-                </div>
-                ${estadoBadge}
-              </div>
-              <div class="mt-4 flex gap-2">
-                <button class="btn btn-primary btn-sm" onclick="showEditCategoria(${c.id})">
-                  <span class="material-symbols-outlined text-sm">edit</span> Editar
-                </button>
-                <button class="btn ${c.estado ? 'btn-danger' : 'btn-success'} btn-sm" onclick="toggleCategoriaStatus(${c.id})">
-                  <span class="material-symbols-outlined text-sm">${c.estado ? 'block' : 'check_circle'}</span>
-                  ${c.estado ? 'Desactivar' : 'Activar'}
-                </button>
-              </div>
-            </div>
-          `;
-        });
-
-        html += '</div>';
-        container.innerHTML = html;
-      }
-
-      function updateCategoriaFilter() {
-        const select = document.getElementById('categoriaFilter');
-        if (!select) return;
-        
-        const currentValue = select.value;
-        select.innerHTML = '<option value="">Todas las categorías</option>';
-        categoriasData.forEach(c => {
-          select.innerHTML += `<option value="${c.id}">${c.nombre}</option>`;
-        });
-        select.value = currentValue;
-      }
-
-      function showCreateCategoria() {
-        showModal('Nueva Categoría', `
-          <form id="categoriaForm" onsubmit="createCategoria(event)">
-            <div class="form-group">
-              <label>Nombre *</label>
-              <input type="text" name="nombre" required placeholder="Nombre de la categoría">
-            </div>
-            <div class="form-group">
-              <label>Descripción</label>
-              <textarea name="descripcion" placeholder="Descripción de la categoría"></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary w-full">Crear Categoría</button>
-          </form>
-        `);
-      }
-
-      async function createCategoria(event) {
-        event.preventDefault();
-        const form = event.target;
-        const formData = new FormData(form);
-        const data = Object.fromEntries(formData);
-
-        try {
-          await apiRequest('/api/inventario/categorias', {
-            method: 'POST',
-            body: JSON.stringify(data)
-          });
-          closeModal();
-          showToast('✅ Categoría creada exitosamente', 'success');
-          loadCategorias();
-        } catch (error) {
-          showToast('❌ ' + error.message, 'error');
-        }
-      }
-
-      function showEditCategoria(id) {
-        const categoria = categoriasData.find(c => c.id === id);
-        if (!categoria) {
-          showToast('❌ Categoría no encontrada', 'error');
-          return;
-        }
-
-        showModal('Editar Categoría', `
-          <form id="categoriaForm" onsubmit="updateCategoria(event, ${id})">
-            <div class="form-group">
-              <label>Nombre *</label>
-              <input type="text" name="nombre" required value="${categoria.nombre}">
-            </div>
-            <div class="form-group">
-              <label>Descripción</label>
-              <textarea name="descripcion">${categoria.descripcion || ''}</textarea>
-            </div>
-            <div class="form-group">
-              <label>Estado</label>
-              <select name="estado">
-                <option value="true" ${categoria.estado ? 'selected' : ''}>Activo</option>
-                <option value="false" ${!categoria.estado ? 'selected' : ''}>Inactivo</option>
-              </select>
-            </div>
-            <button type="submit" class="btn btn-primary w-full">Actualizar Categoría</button>
-          </form>
-        `);
-      }
-
-      async function updateCategoria(event, id) {
-        event.preventDefault();
-        const form = event.target;
-        const formData = new FormData(form);
-        const data = Object.fromEntries(formData);
-        data.estado = data.estado === 'true';
-
-        try {
-          await apiRequest(`/api/inventario/categorias/${id}`, {
-            method: 'PUT',
-            body: JSON.stringify(data)
-          });
-          closeModal();
-          showToast('✅ Categoría actualizada exitosamente', 'success');
-          loadCategorias();
-        } catch (error) {
-          showToast('❌ ' + error.message, 'error');
-        }
-      }
-
-      async function toggleCategoriaStatus(id) {
-        const categoria = categoriasData.find(c => c.id === id);
-        if (!categoria) return;
-
-        const action = categoria.estado ? 'desactivar' : 'activar';
-        if (!confirm(`¿Estás seguro de ${action} esta categoría?`)) return;
-
-        try {
-          await apiRequest(`/api/inventario/categorias/${id}`, {
-            method: 'PUT',
-            body: JSON.stringify({ ...categoria, estado: !categoria.estado })
-          });
-          showToast(`✅ Categoría ${action}da exitosamente`, 'success');
-          loadCategorias();
-        } catch (error) {
-          showToast('❌ ' + error.message, 'error');
-        }
-      }
-
-      // ============ PRODUCTOS ============
-      async function loadProductos() {
-        const container = document.getElementById('productosContent');
-        container.innerHTML = `<div class="loading"><span class="material-symbols-outlined">refresh</span> Cargando productos...</div>`;
-
-        try {
-          const data = await apiRequest('/api/inventario/productos');
-          productosData = data.data || [];
-          renderProductos(productosData);
-        } catch (error) {
-          console.error('Error loading productos:', error);
-          container.innerHTML = `
-            <div class="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
-              <span class="material-symbols-outlined text-red-500 text-4xl">error</span>
-              <p class="text-red-700 mt-2">Error al cargar productos</p>
-              <p class="text-sm text-red-600">${error.message}</p>
-            </div>
-          `;
-        }
-      }
-
-      function renderProductos(data) {
-        const container = document.getElementById('productosContent');
-        
-        if (!data || data.length === 0) {
-          container.innerHTML = `
-            <div class="bg-gray-50 rounded-xl p-8 text-center">
-              <span class="material-symbols-outlined text-gray-400 text-5xl">inventory_2</span>
-              <p class="text-gray-500 mt-2">No hay productos registrados</p>
-              <button onclick="showCreateProducto()" class="btn btn-primary mt-4">Crear primer producto</button>
-            </div>
-          `;
-          return;
-        }
-
-        let html = `
-          <div class="table-container">
-            <table>
-              <thead>
-                <tr>
-                  <th>Código</th>
-                  <th>Nombre</th>
-                  <th>Categoría</th>
-                  <th>Precio Compra</th>
-                  <th>Precio Venta</th>
-                  <th>Stock</th>
-                  <th>Estado</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-        `;
-
-        data.forEach(p => {
-          const estadoBadge = p.estado 
-            ? '<span class="badge badge-success">Activo</span>' 
-            : '<span class="badge badge-danger">Inactivo</span>';
-          
-          const stockTotal = p.inventario?.reduce((sum, i) => sum + i.cantidad, 0) || 0;
-          
-          html += `
-            <tr>
-              <td><span class="font-mono text-sm">${p.codigo}</span></td>
-              <td><strong>${p.nombre}</strong></td>
-              <td>${p.categoria?.nombre || 'N/A'}</td>
-              <td>S/ ${parseFloat(p.precio_compra).toFixed(2)}</td>
-              <td>S/ ${parseFloat(p.precio_venta).toFixed(2)}</td>
-              <td class="text-center ${stockTotal <= (p.stock_minimo || 10) ? 'text-red-600 font-bold' : ''}">${stockTotal}</td>
-              <td>${estadoBadge}</td>
-              <td>
-                <button class="btn btn-primary btn-sm" onclick="showEditProducto(${p.id})">
-                  <span class="material-symbols-outlined text-sm">edit</span>
-                </button>
-                <button class="btn btn-info btn-sm" onclick="showStockProducto(${p.id})">
-                  <span class="material-symbols-outlined text-sm">warehouse</span>
-                </button>
-                <button class="btn ${p.estado ? 'btn-danger' : 'btn-success'} btn-sm" onclick="toggleProductoStatus(${p.id})">
-                  <span class="material-symbols-outlined text-sm">${p.estado ? 'block' : 'check_circle'}</span>
-                </button>
-              </td>
-            </tr>
-          `;
-        });
-
-        html += '</tbody></table></div>';
-        container.innerHTML = html;
-      }
-
-      function filterProductos() {
-        const search = document.getElementById('searchProductoInput').value.toLowerCase();
-        const categoriaId = document.getElementById('categoriaFilter').value;
-        
-        let filtered = productosData.filter(p => {
-          const matchSearch = 
-            p.nombre?.toLowerCase().includes(search) ||
-            p.codigo?.toLowerCase().includes(search);
-          const matchCategoria = !categoriaId || p.categoria_id == categoriaId;
-          return matchSearch && matchCategoria;
-        });
-        
-        renderProductos(filtered);
-      }
-
-      function showCreateProducto() {
-        const categoriasOptions = categoriasData
-          .filter(c => c.estado)
-          .map(c => `<option value="${c.id}">${c.nombre}</option>`)
-          .join('');
-
-        showModal('Nuevo Producto', `
-          <form id="productoForm" onsubmit="createProducto(event)">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div class="form-group">
-                <label>Código *</label>
-                <input type="text" name="codigo" required placeholder="PROD-001">
-              </div>
-              <div class="form-group">
-                <label>Nombre *</label>
-                <input type="text" name="nombre" required placeholder="Nombre del producto">
-              </div>
-            </div>
-            <div class="form-group">
-              <label>Descripción</label>
-              <textarea name="descripcion" placeholder="Descripción del producto"></textarea>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div class="form-group">
-                <label>Categoría *</label>
-                <select name="categoria_id" required>
-                  <option value="">Seleccionar...</option>
-                  ${categoriasOptions}
-                </select>
-              </div>
-              <div class="form-group">
-                <label>Unidad de Medida</label>
-                <select name="unidad_medida">
-                  <option value="unidad">Unidad</option>
-                  <option value="caja">Caja</option>
-                  <option value="frasco">Frasco</option>
-                  <option value="ampolla">Ampolla</option>
-                  <option value="blister">Blister</option>
-                </select>
-              </div>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div class="form-group">
-                <label>Precio Compra</label>
-                <input type="number" name="precio_compra" step="0.01" placeholder="0.00">
-              </div>
-              <div class="form-group">
-                <label>Precio Venta</label>
-                <input type="number" name="precio_venta" step="0.01" placeholder="0.00">
-              </div>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div class="form-group">
-                <label>Stock Mínimo</label>
-                <input type="number" name="stock_minimo" placeholder="10">
-              </div>
-              <div class="form-group">
-                <label>Stock Máximo</label>
-                <input type="number" name="stock_maximo" placeholder="500">
-              </div>
-            </div>
-            <div class="form-group">
-              <label>
-                <input type="checkbox" name="requiere_receta" value="true">
-                Requiere Receta Médica
-              </label>
-            </div>
-            <button type="submit" class="btn btn-primary w-full">Crear Producto</button>
-          </form>
-        `);
-      }
-
-      async function createProducto(event) {
-        event.preventDefault();
-        const form = event.target;
-        const formData = new FormData(form);
-        const data = Object.fromEntries(formData);
-        data.requiere_receta = data.requiere_receta === 'true';
-
-        try {
-          await apiRequest('/api/inventario/productos', {
-            method: 'POST',
-            body: JSON.stringify(data)
-          });
-          closeModal();
-          showToast('✅ Producto creado exitosamente', 'success');
-          loadProductos();
-        } catch (error) {
-          showToast('❌ ' + error.message, 'error');
-        }
-      }
-
-      function showEditProducto(id) {
-        const producto = productosData.find(p => p.id === id);
-        if (!producto) {
-          showToast('❌ Producto no encontrado', 'error');
-          return;
-        }
-
-        const categoriasOptions = categoriasData
-          .filter(c => c.estado)
-          .map(c => `<option value="${c.id}" ${c.id === producto.categoria_id ? 'selected' : ''}>${c.nombre}</option>`)
-          .join('');
-
-        showModal('Editar Producto', `
-          <form id="productoForm" onsubmit="updateProducto(event, ${id})">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div class="form-group">
-                <label>Código *</label>
-                <input type="text" name="codigo" required value="${producto.codigo}">
-              </div>
-              <div class="form-group">
-                <label>Nombre *</label>
-                <input type="text" name="nombre" required value="${producto.nombre}">
-              </div>
-            </div>
-            <div class="form-group">
-              <label>Descripción</label>
-              <textarea name="descripcion">${producto.descripcion || ''}</textarea>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div class="form-group">
-                <label>Categoría *</label>
-                <select name="categoria_id" required>
-                  <option value="">Seleccionar...</option>
-                  ${categoriasOptions}
-                </select>
-              </div>
-              <div class="form-group">
-                <label>Unidad de Medida</label>
-                <select name="unidad_medida">
-                  <option value="unidad" ${producto.unidad_medida === 'unidad' ? 'selected' : ''}>Unidad</option>
-                  <option value="caja" ${producto.unidad_medida === 'caja' ? 'selected' : ''}>Caja</option>
-                  <option value="frasco" ${producto.unidad_medida === 'frasco' ? 'selected' : ''}>Frasco</option>
-                  <option value="ampolla" ${producto.unidad_medida === 'ampolla' ? 'selected' : ''}>Ampolla</option>
-                  <option value="blister" ${producto.unidad_medida === 'blister' ? 'selected' : ''}>Blister</option>
-                </select>
-              </div>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div class="form-group">
-                <label>Precio Compra</label>
-                <input type="number" name="precio_compra" step="0.01" value="${producto.precio_compra}">
-              </div>
-              <div class="form-group">
-                <label>Precio Venta</label>
-                <input type="number" name="precio_venta" step="0.01" value="${producto.precio_venta}">
-              </div>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div class="form-group">
-                <label>Stock Mínimo</label>
-                <input type="number" name="stock_minimo" value="${producto.stock_minimo || 10}">
-              </div>
-              <div class="form-group">
-                <label>Stock Máximo</label>
-                <input type="number" name="stock_maximo" value="${producto.stock_maximo || 500}">
-              </div>
-            </div>
-            <div class="form-group">
-              <label>
-                <input type="checkbox" name="requiere_receta" value="true" ${producto.requiere_receta ? 'checked' : ''}>
-                Requiere Receta Médica
-              </label>
-            </div>
-            <div class="form-group">
-              <label>Estado</label>
-              <select name="estado">
-                <option value="true" ${producto.estado ? 'selected' : ''}>Activo</option>
-                <option value="false" ${!producto.estado ? 'selected' : ''}>Inactivo</option>
-              </select>
-            </div>
-            <button type="submit" class="btn btn-primary w-full">Actualizar Producto</button>
-          </form>
-        `);
-      }
-
-      async function updateProducto(event, id) {
-        event.preventDefault();
-        const form = event.target;
-        const formData = new FormData(form);
-        const data = Object.fromEntries(formData);
-        data.requiere_receta = data.requiere_receta === 'true';
-        data.estado = data.estado === 'true';
-
-        try {
-          await apiRequest(`/api/inventario/productos/${id}`, {
-            method: 'PUT',
-            body: JSON.stringify(data)
-          });
-          closeModal();
-          showToast('✅ Producto actualizado exitosamente', 'success');
-          loadProductos();
-        } catch (error) {
-          showToast('❌ ' + error.message, 'error');
-        }
-      }
-
-      async function toggleProductoStatus(id) {
-        const producto = productosData.find(p => p.id === id);
-        if (!producto) return;
-
-        const action = producto.estado ? 'desactivar' : 'activar';
-        if (!confirm(`¿Estás seguro de ${action} este producto?`)) return;
-
-        try {
-          await apiRequest(`/api/inventario/productos/${id}`, {
-            method: 'PUT',
-            body: JSON.stringify({ ...producto, estado: !producto.estado })
-          });
-          showToast(`✅ Producto ${action}do exitosamente`, 'success');
-          loadProductos();
-        } catch (error) {
-          showToast('❌ ' + error.message, 'error');
-        }
-      }
-
-      // ============ STOCK ============
-      async function loadStock() {
-        const container = document.getElementById('stockContent');
-        container.innerHTML = `<div class="loading"><span class="material-symbols-outlined">refresh</span> Cargando stock...</div>`;
-
-        try {
-          const data = await apiRequest('/api/inventario/stock?producto_id=all');
-          stockData = data.data || [];
-          renderStock(stockData);
-        } catch (error) {
-          console.error('Error loading stock:', error);
-          container.innerHTML = `
-            <div class="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
-              <span class="material-symbols-outlined text-red-500 text-4xl">error</span>
-              <p class="text-red-700 mt-2">Error al cargar stock</p>
-              <p class="text-sm text-red-600">${error.message}</p>
-            </div>
-          `;
-        }
-      }
-
-      function renderStock(data) {
-        const container = document.getElementById('stockContent');
-        
-        if (!data || data.length === 0) {
-          container.innerHTML = `
-            <div class="bg-gray-50 rounded-xl p-8 text-center">
-              <span class="material-symbols-outlined text-gray-400 text-5xl">warehouse</span>
-              <p class="text-gray-500 mt-2">No hay stock registrado</p>
-            </div>
-          `;
-          return;
-        }
-
-        let html = `
-          <div class="table-container">
-            <table>
-              <thead>
-                <tr>
-                  <th>Producto</th>
-                  <th>Código</th>
-                  <th>Sucursal</th>
-                  <th>Lote</th>
-                  <th>Cantidad</th>
-                  <th>Disponible</th>
-                  <th>Reservado</th>
-                  <th>Vencimiento</th>
-                  <th>Estado</th>
-                </tr>
-              </thead>
-              <tbody>
-        `;
-
-        data.forEach(item => {
-          const estadoColors = {
-            'activo': 'badge-success',
-            'agotado': 'badge-danger',
-            'vencido': 'badge-warning',
-            'bloqueado': 'badge-danger'
-          };
-          const estadoBadge = `<span class="badge ${estadoColors[item.estado] || 'badge-info'}">${item.estado}</span>`;
-          
-          html += `
-            <tr>
-              <td><strong>${item.producto?.nombre || 'N/A'}</strong></td>
-              <td><span class="font-mono text-sm">${item.producto?.codigo || 'N/A'}</span></td>
-              <td>${item.sucursal_id}</td>
-              <td><span class="font-mono text-sm">${item.lote}</span></td>
-              <td class="text-center">${item.cantidad}</td>
-              <td class="text-center ${item.cantidad_disponible <= (item.producto?.stock_minimo || 10) ? 'text-red-600 font-bold' : ''}">${item.cantidad_disponible}</td>
-              <td class="text-center">${item.cantidad_reservada}</td>
-              <td>${new Date(item.fecha_vencimiento).toLocaleDateString()}</td>
-              <td>${estadoBadge}</td>
-            </tr>
-          `;
-        });
-
-        html += '</tbody></table></div>';
-        container.innerHTML = html;
-      }
-
-      function filterStock() {
-        const search = document.getElementById('searchStockInput').value.toLowerCase();
-        const filtered = stockData.filter(item => 
-          item.producto?.nombre?.toLowerCase().includes(search) ||
-          item.producto?.codigo?.toLowerCase().includes(search) ||
-          item.lote?.toLowerCase().includes(search)
-        );
-        renderStock(filtered);
-      }
-
-      function showStockProducto(id) {
-        const producto = productosData.find(p => p.id === id);
-        if (!producto) return;
-
-        const stockItems = stockData.filter(s => s.producto_id === id);
-        
-        if (stockItems.length === 0) {
-          showModal(`Stock - ${producto.nombre}`, `
-            <div class="text-center text-gray-500 p-8">
-              <span class="material-symbols-outlined text-4xl">inventory_2</span>
-              <p class="mt-2">No hay stock registrado para este producto</p>
-            </div>
-          `);
-          return;
-        }
-
-        let html = `
-          <div class="mb-4 p-4 bg-gray-50 rounded-lg">
-            <p><strong>Producto:</strong> ${producto.nombre}</p>
-            <p><strong>Código:</strong> ${producto.codigo}</p>
-            <p><strong>Categoría:</strong> ${producto.categoria?.nombre || 'N/A'}</p>
-          </div>
-          <div class="table-container">
-            <table>
-              <thead>
-                <tr>
-                  <th>Sucursal</th>
-                  <th>Lote</th>
-                  <th>Cantidad</th>
-                  <th>Disponible</th>
-                  <th>Vencimiento</th>
-                  <th>Estado</th>
-                </tr>
-              </thead>
-              <tbody>
-        `;
-
-        stockItems.forEach(item => {
-          const estadoColors = {
-            'activo': 'badge-success',
-            'agotado': 'badge-danger',
-            'vencido': 'badge-warning',
-            'bloqueado': 'badge-danger'
-          };
-          const estadoBadge = `<span class="badge ${estadoColors[item.estado] || 'badge-info'}">${item.estado}</span>`;
-          
-          html += `
-            <tr>
-              <td>${item.sucursal_id}</td>
-              <td><span class="font-mono text-sm">${item.lote}</span></td>
-              <td class="text-center">${item.cantidad}</td>
-              <td class="text-center">${item.cantidad_disponible}</td>
-              <td>${new Date(item.fecha_vencimiento).toLocaleDateString()}</td>
-              <td>${estadoBadge}</td>
-            </tr>
-          `;
-        });
-
-        html += '</tbody></table></div>';
-        showModal(`Stock - ${producto.nombre}`, html);
-      }
-
-      // ============ MOVIMIENTOS ============
-      async function loadMovimientos() {
-        const container = document.getElementById('movimientosContent');
-        container.innerHTML = `<div class="loading"><span class="material-symbols-outlined">refresh</span> Cargando movimientos...</div>`;
-
-        try {
-          const tipo = document.getElementById('tipoMovimientoFilter')?.value || '';
-          const fechaInicio = document.getElementById('fechaMovimientoInicio')?.value || '';
-          const fechaFin = document.getElementById('fechaMovimientoFin')?.value || '';
-          
-          let url = '/api/inventario/movimientos';
-          const params = new URLSearchParams();
-          if (tipo) params.append('tipo', tipo);
-          if (fechaInicio) params.append('fecha_inicio', fechaInicio);
-          if (fechaFin) params.append('fecha_fin', fechaFin);
-          if (params.toString()) url += '?' + params.toString();
-
-          const data = await apiRequest(url);
-          movimientosData = data.data || [];
-          renderMovimientos(movimientosData);
-        } catch (error) {
-          console.error('Error loading movimientos:', error);
-          container.innerHTML = `
-            <div class="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
-              <span class="material-symbols-outlined text-red-500 text-4xl">error</span>
-              <p class="text-red-700 mt-2">Error al cargar movimientos</p>
-              <p class="text-sm text-red-600">${error.message}</p>
-            </div>
-          `;
-        }
-      }
-
-      function renderMovimientos(data) {
-        const container = document.getElementById('movimientosContent');
-        
-        if (!data || data.length === 0) {
-          container.innerHTML = `
-            <div class="bg-gray-50 rounded-xl p-8 text-center">
-              <span class="material-symbols-outlined text-gray-400 text-5xl">history</span>
-              <p class="text-gray-500 mt-2">No hay movimientos registrados</p>
-            </div>
-          `;
-          return;
-        }
-
-        let html = `
-          <div class="table-container">
-            <table>
-              <thead>
-                <tr>
-                  <th>Fecha</th>
-                  <th>Tipo</th>
-                  <th>Producto</th>
-                  <th>Lote</th>
-                  <th>Cantidad</th>
-                  <th>Anterior</th>
-                  <th>Nuevo</th>
-                  <th>Referencia</th>
-                  <th>Usuario</th>
-                </tr>
-              </thead>
-              <tbody>
-        `;
-
-        data.forEach(m => {
-          const tipoColors = {
-            'entrada': 'badge-success',
-            'salida': 'badge-danger',
-            'transferencia_origen': 'badge-warning',
-            'transferencia_destino': 'badge-info',
-            'ajuste': 'badge-warning'
-          };
-          const tipoBadge = `<span class="badge ${tipoColors[m.tipo_movimiento] || 'badge-info'}">${m.tipo_movimiento}</span>`;
-          
-          html += `
-            <tr>
-              <td>${new Date(m.fecha_movimiento).toLocaleString()}</td>
-              <td>${tipoBadge}</td>
-              <td>${m.inventario?.producto?.nombre || 'N/A'}</td>
-              <td><span class="font-mono text-sm">${m.inventario?.lote || 'N/A'}</span></td>
-              <td class="text-center font-bold">${m.cantidad}</td>
-              <td class="text-center">${m.cantidad_anterior}</td>
-              <td class="text-center">${m.cantidad_nueva}</td>
-              <td>${m.referencia_tipo} #${m.referencia_id}</td>
-              <td>${m.usuario_id}</td>
-            </tr>
-          `;
-        });
-
-        html += '</tbody></table></div>';
-        container.innerHTML = html;
-      }
-
-      // ============ TOAST NOTIFICATIONS ============
-      function showToast(message, type = 'info') {
-        const colors = {
-          success: 'bg-green-50 border-green-200 text-green-700',
-          error: 'bg-red-50 border-red-200 text-red-700',
-          warning: 'bg-yellow-50 border-yellow-200 text-yellow-700',
-          info: 'bg-blue-50 border-blue-200 text-blue-700'
-        };
-        const icons = {
-          success: 'check_circle',
-          error: 'error',
-          warning: 'warning',
-          info: 'info'
-        };
-
-        const toast = document.createElement('div');
-        toast.className = `fixed top-4 right-4 p-4 rounded-lg border shadow-lg ${colors[type] || colors.info} flex items-center gap-3 z-50 max-w-md animate-slide-in`;
-        toast.innerHTML = `
-          <span class="material-symbols-outlined">${icons[type] || icons.info}</span>
-          <span>${message}</span>
-          <button onclick="this.parentElement.remove()" class="ml-auto text-gray-400 hover:text-gray-600">✕</button>
-        `;
-
-        document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 5000);
-      }
-
-      // ============ MODAL ============
-      function showModal(title, content) {
-        document.getElementById('modalTitle').textContent = title;
-        document.getElementById('modalBody').innerHTML = content;
-        document.getElementById('modalOverlay').classList.add('active');
-        // Ajustar tamaño del modal
-        document.querySelector('.modal').classList.add('modal-lg');
-      }
-
-      function closeModal() {
-        document.getElementById('modalOverlay').classList.remove('active');
-      }
-
-      // Cerrar modal al hacer click fuera
-      document.getElementById('modalOverlay').addEventListener('click', (e) => {
-        if (e.target === e.currentTarget) closeModal();
-      });
-
-      // ============ ESTILOS ADICIONALES ============
-      const style = document.createElement('style');
-      style.textContent = `
-        .animate-slide-in {
-          animation: slideIn 0.3s ease;
+        .toast-slide {
+            animation: slideIn 0.3s ease;
         }
         @keyframes slideIn {
-          from { transform: translateX(100%); opacity: 0; }
-          to { transform: translateX(0); opacity: 1; }
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
         }
-        .modal-lg {
-          max-width: 800px !important;
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #22c55e;
+            display: inline-block;
+            animation: pulse-dot 2s infinite;
         }
-        .badge-purple {
-          background: #ede9fe;
-          color: #5b21b6;
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
         }
-        .btn-info {
-          background: #0ea5e9;
-          color: white;
+        .tab-active {
+            border-bottom: 2px solid #2563eb;
+            color: #2563eb;
         }
-        .btn-info:hover {
-          background: #0284c7;
+        .stock-bajo {
+            background: #fef2f2;
         }
-      `;
-      document.head.appendChild(style);
+        .stock-bajo td {
+            color: #dc2626;
+        }
+        .proximo-vencer {
+            background: #fffbeb;
+        }
+        .proximo-vencer td {
+            color: #d97706;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Overlay (mobile) -->
+    <div class="fixed inset-0 bg-black/30 backdrop-blur-sm z-40 hidden" id="sidebarOverlay"></div>
+
+    <!-- ============ SIDEBAR ============ -->
+    <aside class="sidebar fixed left-0 top-0 h-full w-[280px] bg-white border-r border-gray-200 flex flex-col z-50 shadow-lg transform -translate-x-full md:translate-x-0 sidebar-transition" id="sidebar">
+        <div class="px-6 py-6 border-b border-gray-100 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-bold text-lg">F</div>
+            <div>
+                <h1 class="text-xl font-bold text-gray-900">Farmadol</h1>
+                <p class="text-xs text-gray-500">Sistema de Gestión</p>
+            </div>
+        </div>
+
+        <nav class="flex-1 px-3 py-4 overflow-y-auto">
+            <p class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Navegación</p>
+            
+            <a href="/dashboard" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
+                <span class="text-lg">📊</span>
+                Dashboard
+            </a>
+            
+            <a href="/ventas" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
+                <span class="text-lg">💳</span>
+                Ventas
+            </a>
+            
+            <a href="/inventario" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium bg-blue-50 text-blue-600">
+                <span class="text-lg">📦</span>
+                Inventario
+            </a>
+            
+            <a href="/compras" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
+                <span class="text-lg">🛒</span>
+                Compras
+            </a>
+            
+            <a href="/clientes" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
+                <span class="text-lg">👤</span>
+                Clientes
+            </a>
+            
+            <a href="/usuarios" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
+                <span class="text-lg">🔐</span>
+                Usuarios
+            </a>
+            
+            <a href="/sucursales" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
+                <span class="text-lg">🏢</span>
+                Sucursales
+            </a>
+            
+            <a href="/reportes" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
+                <span class="text-lg">📄</span>
+                Reportes
+            </a>
+        </nav>
+
+        <div class="px-4 py-4 border-t border-gray-100">
+            <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-semibold text-sm" id="userAvatar">A</div>
+                <div>
+                    <p class="text-sm font-semibold text-gray-900" id="userName">Administrador</p>
+                    <p class="text-xs text-gray-500" id="userEmail">admin@farmadol.com</p>
+                    <span class="text-xs text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full inline-block mt-0.5" id="userRole">Administrador</span>
+                </div>
+            </div>
+            <button class="w-full flex items-center gap-2 px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition-all" id="logoutBtn">
+                <span>🚪</span>
+                Cerrar Sesión
+            </button>
+        </div>
+    </aside>
+
+    <!-- ============ MAIN CONTENT ============ -->
+    <div class="md:ml-[280px] min-h-screen bg-gray-50">
+        <header class="bg-white border-b border-gray-200 sticky top-0 z-30">
+            <div class="flex items-center justify-between px-4 md:px-8 py-4">
+                <div class="flex items-center gap-4">
+                    <button class="md:hidden text-2xl text-gray-600" id="hamburgerBtn">☰</button>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900">Inventario</h1>
+                        <p class="text-sm text-gray-500">Gestión de productos y stock</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-2 text-sm text-gray-500">
+                        <span class="status-dot"></span>
+                        <span>Conectado</span>
+                    </div>
+                    <span class="text-sm text-gray-500" id="currentDateTime"></span>
+                </div>
+            </div>
+        </header>
+
+        <main class="p-4 md:p-8">
+            <!-- Tabs -->
+            <div class="flex flex-wrap gap-2 border-b border-gray-200 mb-6">
+                <button class="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-gray-900 border-b-2 border-transparent hover:border-gray-300 transition-all tab-active" data-tab="productos" onclick="switchTab('productos')">
+                    📦 Productos
+                </button>
+                <button class="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-gray-900 border-b-2 border-transparent hover:border-gray-300 transition-all" data-tab="stock" onclick="switchTab('stock')">
+                    📊 Stock
+                </button>
+                <button class="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-gray-900 border-b-2 border-transparent hover:border-gray-300 transition-all" data-tab="movimientos" onclick="switchTab('movimientos')">
+                    📋 Movimientos
+                </button>
+                <button class="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-gray-900 border-b-2 border-transparent hover:border-gray-300 transition-all" data-tab="alertas" onclick="switchTab('alertas')">
+                    ⚠️ Alertas
+                </button>
+            </div>
+
+            <!-- ============ TAB: PRODUCTOS ============ -->
+            <div id="tab-productos" class="tab-content">
+                <!-- Toolbar -->
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full sm:w-auto">
+                        <div class="relative flex-1 sm:flex-initial">
+                            <input type="text" id="searchProducto" placeholder="Buscar producto..." oninput="filterProductos()" class="w-full sm:w-72 px-4 py-2.5 pl-10 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white">
+                            <span class="absolute left-3 top-2.5 text-gray-400">🔍</span>
+                        </div>
+                        
+                        <select id="categoriaFilter" onchange="filterProductos()" class="w-full sm:w-auto px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white">
+                            <option value="todos">Todas las categorías</option>
+                        </select>
+                        
+                        <select id="estadoProductoFilter" onchange="filterProductos()" class="w-full sm:w-auto px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white">
+                            <option value="todos">Todos los estados</option>
+                            <option value="1">Activos</option>
+                            <option value="0">Inactivos</option>
+                        </select>
+                        
+                        <button class="px-4 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg transition-all border border-gray-200" onclick="cargarProductos()">
+                            🔄 Actualizar
+                        </button>
+                    </div>
+                    <button class="w-full sm:w-auto px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-all flex items-center justify-center gap-2 shadow-sm" onclick="openProductoModal()">
+                        ➕ Nuevo Producto
+                    </button>
+                </div>
+
+                <!-- Stats Productos -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-white rounded-xl border border-gray-200 px-4 py-3">
+                        <p class="text-xs text-gray-500">Total Productos</p>
+                        <p class="text-xl font-bold text-gray-900" id="totalProductos">0</p>
+                    </div>
+                    <div class="bg-white rounded-xl border border-gray-200 px-4 py-3">
+                        <p class="text-xs text-gray-500">Activos</p>
+                        <p class="text-xl font-bold text-green-600" id="totalProductosActivos">0</p>
+                    </div>
+                    <div class="bg-white rounded-xl border border-gray-200 px-4 py-3">
+                        <p class="text-xs text-gray-500">Inactivos</p>
+                        <p class="text-xl font-bold text-red-600" id="totalProductosInactivos">0</p>
+                    </div>
+                    <div class="bg-white rounded-xl border border-gray-200 px-4 py-3">
+                        <p class="text-xs text-gray-500">Categorías</p>
+                        <p class="text-xl font-bold text-blue-600" id="totalCategorias">0</p>
+                    </div>
+                </div>
+
+                <!-- Table Productos -->
+                <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="bg-gray-50 border-b border-gray-200">
+                                    <th class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Código</th>
+                                    <th class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Nombre</th>
+                                    <th class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden md:table-cell">Categoría</th>
+                                    <th class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden lg:table-cell">Precio Venta</th>
+                                    <th class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden xl:table-cell">Stock Mín</th>
+                                    <th class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Estado</th>
+                                    <th class="text-center px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="productosTableBody">
+                                <tr>
+                                    <td colspan="7" class="text-center py-12 text-gray-400">
+                                        <div class="inline-block w-6 h-6 border-2 border-gray-200 border-t-blue-600 rounded-full animate-spin"></div>
+                                        <p class="mt-2">Cargando productos...</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============ TAB: STOCK ============ -->
+            <div id="tab-stock" class="tab-content hidden">
+                <div class="bg-white rounded-xl border border-gray-200 p-6">
+                    <div class="flex flex-col sm:flex-row gap-4 mb-6">
+                        <div class="flex-1">
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Producto</label>
+                            <select id="stockProducto" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="">Seleccionar producto...</option>
+                            </select>
+                        </div>
+                        <div class="flex-1">
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Sucursal</label>
+                            <select id="stockSucursal" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="">Seleccionar sucursal...</option>
+                            </select>
+                        </div>
+                        <div class="flex items-end">
+                            <button onclick="consultarStock()" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-all shadow-sm">
+                                🔍 Consultar Stock
+                            </button>
+                        </div>
+                    </div>
+                    <div id="stockResultado" class="mt-4">
+                        <div class="text-center py-8 text-gray-400">Seleccione un producto y una sucursal para consultar el stock</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============ TAB: MOVIMIENTOS ============ -->
+            <div id="tab-movimientos" class="tab-content hidden">
+                <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+                    <div class="p-4 border-b border-gray-200 flex flex-col sm:flex-row gap-4">
+                        <div class="flex-1">
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Producto</label>
+                            <select id="movimientoProducto" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="">Todos los productos</option>
+                            </select>
+                        </div>
+                        <div class="flex-1">
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Sucursal</label>
+                            <select id="movimientoSucursal" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="">Todas las sucursales</option>
+                            </select>
+                        </div>
+                        <div class="flex items-end">
+                            <button onclick="cargarMovimientos()" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-all shadow-sm">
+                                🔍 Buscar
+                            </button>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="bg-gray-50 border-b border-gray-200">
+                                    <th class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Fecha</th>
+                                    <th class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Tipo</th>
+                                    <th class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Producto</th>
+                                    <th class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Cantidad</th>
+                                    <th class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden md:table-cell">Usuario</th>
+                                </tr>
+                            </thead>
+                            <tbody id="movimientosTableBody">
+                                <tr>
+                                    <td colspan="5" class="text-center py-12 text-gray-400">
+                                        <p>Seleccione filtros y presione "Buscar"</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============ TAB: ALERTAS ============ -->
+            <div id="tab-alertas" class="tab-content hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Stock Bajo -->
+                    <div class="bg-white rounded-xl border border-gray-200">
+                        <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+                            <h3 class="font-semibold text-gray-900">⚠️ Stock Bajo</h3>
+                            <span class="text-xs bg-red-100 text-red-700 px-2.5 py-1 rounded-full" id="stockBajoCount">0</span>
+                        </div>
+                        <div class="p-4" id="stockBajoList">
+                            <div class="text-center py-8 text-gray-400">Cargando alertas...</div>
+                        </div>
+                    </div>
+
+                    <!-- Próximos a Vencer -->
+                    <div class="bg-white rounded-xl border border-gray-200">
+                        <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+                            <h3 class="font-semibold text-gray-900">📅 Próximos a Vencer</h3>
+                            <span class="text-xs bg-yellow-100 text-yellow-700 px-2.5 py-1 rounded-full" id="proximoVencerCount">0</span>
+                        </div>
+                        <div class="p-4" id="proximoVencerList">
+                            <div class="text-center py-8 text-gray-400">Cargando alertas...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ============ MODAL PRODUCTO ============ -->
+    <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden items-center justify-center p-4" id="productoModalOverlay">
+        <div class="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto modal-transition">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100 sticky top-0 bg-white z-10">
+                <h3 class="text-lg font-semibold text-gray-900" id="productoModalTitle">Nuevo Producto</h3>
+                <button class="text-gray-400 hover:text-gray-600 text-2xl" onclick="closeProductoModal()">&times;</button>
+            </div>
+            <form id="productoForm" onsubmit="handleProductoSubmit(event)">
+                <div class="p-6 space-y-4">
+                    <input type="hidden" id="editProductoId" value="" />
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Código <span class="text-red-500">*</span></label>
+                            <input type="text" id="productoCodigo" placeholder="MED-001" required class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Nombre <span class="text-red-500">*</span></label>
+                            <input type="text" id="productoNombre" placeholder="Paracetamol 500mg" required class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Descripción</label>
+                        <textarea id="productoDescripcion" rows="2" placeholder="Descripción del producto..." class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Categoría <span class="text-red-500">*</span></label>
+                            <select id="productoCategoria" required class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="">Seleccionar...</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Unidad de Medida</label>
+                            <select id="productoUnidad" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="unidad">Unidad</option>
+                                <option value="caja">Caja</option>
+                                <option value="frasco">Frasco</option>
+                                <option value="ampolla">Ampolla</option>
+                                <option value="blister">Blister</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Precio Compra</label>
+                            <input type="number" id="productoPrecioCompra" placeholder="0.00" step="0.01" min="0" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Precio Venta</label>
+                            <input type="number" id="productoPrecioVenta" placeholder="0.00" step="0.01" min="0" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Stock Mínimo</label>
+                            <input type="number" id="productoStockMinimo" placeholder="10" min="0" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Stock Máximo</label>
+                            <input type="number" id="productoStockMaximo" placeholder="500" min="0" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="flex items-center gap-2 text-sm text-gray-700">
+                            <input type="checkbox" id="productoRequiereReceta" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                            Requiere Receta Médica
+                        </label>
+                    </div>
+
+                    <div id="productoEstadoGroup" style="display: none;">
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Estado</label>
+                        <select id="productoEstado" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <option value="1">Activo</option>
+                            <option value="0">Inactivo</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex flex-col sm:flex-row justify-end gap-3 px-6 py-4 border-t border-gray-100 sticky bottom-0 bg-white">
+                    <button type="button" class="px-5 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg transition-all" onclick="closeProductoModal()">Cancelar</button>
+                    <button type="submit" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-all shadow-sm" id="productoSubmitBtn">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ============ MODAL ENTRADA STOCK ============ -->
+    <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden items-center justify-center p-4" id="entradaModalOverlay">
+        <div class="bg-white rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto modal-transition">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+                <h3 class="text-lg font-semibold text-gray-900">📥 Registrar Entrada de Stock</h3>
+                <button class="text-gray-400 hover:text-gray-600 text-2xl" onclick="closeEntradaModal()">&times;</button>
+            </div>
+            <form id="entradaForm" onsubmit="handleEntradaSubmit(event)">
+                <div class="p-6 space-y-4">
+                    <input type="hidden" id="entradaProductoId" value="" />
+                    <input type="hidden" id="entradaSucursalId" value="" />
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Producto</label>
+                        <p class="text-sm font-medium text-gray-900" id="entradaProductoNombre">-</p>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Sucursal</label>
+                        <p class="text-sm font-medium text-gray-900" id="entradaSucursalNombre">-</p>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Lote <span class="text-red-500">*</span></label>
+                        <input type="text" id="entradaLote" placeholder="L-2024-001" required class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Cantidad <span class="text-red-500">*</span></label>
+                            <input type="number" id="entradaCantidad" placeholder="0" min="1" required class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Costo Unitario</label>
+                            <input type="number" id="entradaCosto" placeholder="0.00" step="0.01" min="0" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Fecha Vencimiento <span class="text-red-500">*</span></label>
+                        <input type="date" id="entradaVencimiento" required class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Referencia ID</label>
+                        <input type="text" id="entradaReferencia" placeholder="ID de compra o referencia" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Observaciones</label>
+                        <textarea id="entradaObservaciones" rows="2" placeholder="Observaciones..." class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
+                    </div>
+                </div>
+                <div class="flex flex-col sm:flex-row justify-end gap-3 px-6 py-4 border-t border-gray-100">
+                    <button type="button" class="px-5 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg transition-all" onclick="closeEntradaModal()">Cancelar</button>
+                    <button type="submit" class="px-5 py-2.5 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg transition-all shadow-sm">Registrar Entrada</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ============ TOAST CONTAINER ============ -->
+    <div class="fixed top-4 right-4 z-50 space-y-2" id="toastContainer"></div>
+
+    <script>
+        const API_GATEWAY = "http://localhost:3000/api";
+        let token = localStorage.getItem("token");
+        let productosData = [];
+        let filteredProductos = [];
+        let categoriasData = [];
+        let sucursalesData = [];
+        let currentTab = 'productos';
+
+        // ============ HEADERS ============
+        function getHeaders() {
+            return {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            };
+        }
+
+        // ============ VERIFICAR AUTENTICACIÓN ============
+        function checkAuth() {
+            token = localStorage.getItem("token");
+            const user = JSON.parse(localStorage.getItem("user") || "null");
+            if (!token || !user) {
+                window.location.href = "/";
+                return false;
+            }
+            return { token, user };
+        }
+
+        // ============ CARGAR DATOS DEL USUARIO ============
+        function loadUserData() {
+            const auth = checkAuth();
+            if (!auth) return;
+            const { user } = auth;
+            document.getElementById("userName").textContent = user.username || "Usuario";
+            document.getElementById("userEmail").textContent = user.email || "usuario@farmadol.com";
+            document.getElementById("userAvatar").textContent = (user.username || "U")[0].toUpperCase();
+            const roles = user.roles || ["Usuario"];
+            document.getElementById("userRole").textContent = roles.map(r => r.charAt(0).toUpperCase() + r.slice(1).toLowerCase()).join(", ");
+        }
+
+        // ============ RELOJ ============
+        function updateDateTime() {
+            const now = new Date();
+            const options = { weekday: "short", day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" };
+            document.getElementById("currentDateTime").textContent = now.toLocaleDateString("es-ES", options);
+        }
+        setInterval(updateDateTime, 60000);
+        updateDateTime();
+
+        // ============ SIDEBAR TOGGLE ============
+        const sidebar = document.getElementById("sidebar");
+        const overlay = document.getElementById("sidebarOverlay");
+        const hamburger = document.getElementById("hamburgerBtn");
+
+        function toggleSidebar() {
+            sidebar.classList.toggle("translate-x-0");
+            sidebar.classList.toggle("-translate-x-full");
+            overlay.classList.toggle("hidden");
+        }
+        hamburger.addEventListener("click", toggleSidebar);
+        overlay.addEventListener("click", toggleSidebar);
+
+        // ============ CERRAR SESIÓN ============
+        document.getElementById("logoutBtn").addEventListener("click", () => {
+            if (confirm("¿Estás seguro de que deseas cerrar sesión?")) {
+                localStorage.removeItem("token");
+                localStorage.removeItem("user");
+                window.location.href = "/";
+            }
+        });
+
+        // ============ TABS ============
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`tab-${tab}`).classList.remove('hidden');
+            document.querySelectorAll('[data-tab]').forEach(el => {
+                el.classList.remove('tab-active');
+                if (el.dataset.tab === tab) el.classList.add('tab-active');
+            });
+            
+            if (tab === 'alertas') cargarAlertas();
+            if (tab === 'stock') cargarSelectoresStock();
+            if (tab === 'movimientos') cargarSelectoresMovimientos();
+        }
+
+        // ============ CATEGORÍAS ============
+        async function cargarCategorias() {
+            try {
+                const response = await fetch(`${API_GATEWAY}/inventario/categorias`, { headers: getHeaders() });
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success) {
+                        categoriasData = data.data || [];
+                        actualizarSelectoresCategoria();
+                    }
+                }
+            } catch (error) {
+                console.error("Error cargando categorías:", error);
+            }
+        }
+
+        function actualizarSelectoresCategoria() {
+            const selects = ['productoCategoria', 'categoriaFilter'];
+            selects.forEach(id => {
+                const select = document.getElementById(id);
+                if (!select) return;
+                const currentValue = select.value;
+                select.innerHTML = '<option value="">Seleccionar...</option>';
+                categoriasData.forEach(c => {
+                    select.innerHTML += `<option value="${c.id}">${c.nombre}</option>`;
+                });
+                if (id === 'categoriaFilter') {
+                    select.innerHTML = '<option value="todos">Todas las categorías</option>' + select.innerHTML.slice(1);
+                }
+                if (currentValue) select.value = currentValue;
+            });
+        }
+
+        // ============ SUCURSALES ============
+        async function cargarSucursales() {
+            try {
+                const response = await fetch(`${API_GATEWAY}/sucursales/sucursales`, { headers: getHeaders() });
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success) {
+                        sucursalesData = data.data || [];
+                        actualizarSelectoresSucursal();
+                    }
+                }
+            } catch (error) {
+                console.error("Error cargando sucursales:", error);
+            }
+        }
+
+        function actualizarSelectoresSucursal() {
+            const selects = ['stockSucursal', 'movimientoSucursal'];
+            selects.forEach(id => {
+                const select = document.getElementById(id);
+                if (!select) return;
+                const currentValue = select.value;
+                select.innerHTML = id === 'stockSucursal' ? '<option value="">Seleccionar sucursal...</option>' : '<option value="">Todas las sucursales</option>';
+                sucursalesData.filter(s => s.estado).forEach(s => {
+                    select.innerHTML += `<option value="${s.id}">${s.nombre}</option>`;
+                });
+                if (currentValue) select.value = currentValue;
+            });
+        }
+
+        // ============ CRUD PRODUCTOS ============
+
+        async function cargarProductos() {
+            const tbody = document.getElementById("productosTableBody");
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="7" class="text-center py-12 text-gray-400">
+                        <div class="inline-block w-6 h-6 border-2 border-gray-200 border-t-blue-600 rounded-full animate-spin"></div>
+                        <p class="mt-2">Cargando productos...</p>
+                    </td>
+                </tr>
+            `;
+
+            try {
+                const response = await fetch(`${API_GATEWAY}/inventario/productos`, { headers: getHeaders() });
+                if (!response.ok) throw new Error("Error al cargar productos");
+                const data = await response.json();
+                if (data.success) {
+                    productosData = data.data || [];
+                    filterProductos();
+                    actualizarSelectoresProductos();
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="text-center py-12 text-red-500">
+                            <p class="text-4xl mb-2">⚠️</p>
+                            <p>Error al cargar los productos</p>
+                            <button onclick="cargarProductos()" class="mt-3 text-sm text-blue-600 hover:text-blue-800">Reintentar</button>
+                        </td>
+                    </tr>
+                `;
+                mostrarToast("Error al cargar productos", "error");
+            }
+        }
+
+        function actualizarSelectoresProductos() {
+            const selects = ['stockProducto', 'movimientoProducto'];
+            selects.forEach(id => {
+                const select = document.getElementById(id);
+                if (!select) return;
+                const currentValue = select.value;
+                select.innerHTML = id === 'stockProducto' ? '<option value="">Seleccionar producto...</option>' : '<option value="">Todos los productos</option>';
+                productosData.filter(p => p.estado).forEach(p => {
+                    select.innerHTML += `<option value="${p.id}">${p.codigo} - ${p.nombre}</option>`;
+                });
+                if (currentValue) select.value = currentValue;
+            });
+        }
+
+        function updateProductoStats(data) {
+            const total = data.length;
+            const activos = data.filter(p => p.estado === true || p.estado === 1).length;
+            const inactivos = data.filter(p => p.estado === false || p.estado === 0).length;
+            
+            document.getElementById("totalProductos").textContent = total;
+            document.getElementById("totalProductosActivos").textContent = activos;
+            document.getElementById("totalProductosInactivos").textContent = inactivos;
+            document.getElementById("totalCategorias").textContent = categoriasData.length;
+        }
+
+        function getEstadoBadge(estado) {
+            return estado ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700';
+        }
+
+        function getEstadoText(estado) {
+            return estado ? 'Activo' : 'Inactivo';
+        }
+
+        function renderProductos(data) {
+            const tbody = document.getElementById("productosTableBody");
+
+            if (!data || data.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="text-center py-12 text-gray-400">
+                            <p class="text-4xl mb-2">📦</p>
+                            <p class="font-medium text-gray-600">No hay productos registrados</p>
+                        </td>
+                    </tr>
+                `;
+                updateProductoStats(data);
+                return;
+            }
+
+            updateProductoStats(data);
+
+            tbody.innerHTML = data.map(p => {
+                const isActive = p.estado === true || p.estado === 1;
+                const categoria = categoriasData.find(c => c.id === p.categoria_id);
+                return `
+                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors ${!isActive ? 'opacity-70 bg-gray-50/50' : ''}">
+                    <td class="px-4 py-3.5 font-medium ${isActive ? 'text-gray-900' : 'text-gray-500'}">${p.codigo || "-"}</td>
+                    <td class="px-4 py-3.5 ${isActive ? 'text-gray-900' : 'text-gray-500'}">${p.nombre || "-"}</td>
+                    <td class="px-4 py-3.5 hidden md:table-cell ${isActive ? 'text-gray-900' : 'text-gray-500'}">${categoria?.nombre || "-"}</td>
+                    <td class="px-4 py-3.5 hidden lg:table-cell ${isActive ? 'text-gray-900' : 'text-gray-500'}">S/ ${parseFloat(p.precio_venta || 0).toFixed(2)}</td>
+                    <td class="px-4 py-3.5 hidden xl:table-cell ${isActive ? 'text-gray-900' : 'text-gray-500'}">${p.stock_minimo || 0}</td>
+                    <td class="px-4 py-3.5">
+                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${getEstadoBadge(isActive)}">
+                            ${getEstadoText(isActive)}
+                        </span>
+                    </td>
+                    <td class="px-4 py-3.5">
+                        <div class="flex items-center justify-center gap-1">
+                            <button onclick="abrirEntradaStock(${p.id})" class="p-1.5 text-gray-500 hover:text-green-600 hover:bg-green-50 rounded-lg transition-all" title="Entrada de stock">📥</button>
+                            <button onclick="editarProducto(${p.id})" class="p-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all" title="Editar">✏️</button>
+                            <button onclick="eliminarProducto(${p.id})" class="p-1.5 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all" title="${isActive ? 'Desactivar' : 'Eliminar'}">
+                                ${isActive ? '🔴' : '🗑️'}
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `}).join("");
+        }
+
+        function filterProductos() {
+            const search = document.getElementById("searchProducto").value.toLowerCase().trim();
+            const categoriaFilter = document.getElementById("categoriaFilter").value;
+            const estadoFilter = document.getElementById("estadoProductoFilter").value;
+
+            let filtered = [...productosData];
+
+            if (categoriaFilter !== "todos") {
+                filtered = filtered.filter(p => p.categoria_id == categoriaFilter);
+            }
+
+            if (estadoFilter !== "todos") {
+                const estadoBool = estadoFilter === "1";
+                filtered = filtered.filter(p => (p.estado === true || p.estado === 1) === estadoBool);
+            }
+
+            if (search) {
+                filtered = filtered.filter(p =>
+                    p.nombre?.toLowerCase().includes(search) ||
+                    p.codigo?.toLowerCase().includes(search) ||
+                    p.descripcion?.toLowerCase().includes(search)
+                );
+            }
+
+            filteredProductos = filtered;
+            renderProductos(filtered);
+        }
+
+        // ============ MODAL PRODUCTO ============
+        function openProductoModal(data = null) {
+            const overlay = document.getElementById("productoModalOverlay");
+            const title = document.getElementById("productoModalTitle");
+            const submitBtn = document.getElementById("productoSubmitBtn");
+            const estadoGroup = document.getElementById("productoEstadoGroup");
+
+            if (!categoriasData.length) cargarCategorias();
+
+            if (data) {
+                title.textContent = "Editar Producto";
+                submitBtn.textContent = "Actualizar";
+                estadoGroup.style.display = "block";
+                document.getElementById("editProductoId").value = data.id;
+                document.getElementById("productoCodigo").value = data.codigo || "";
+                document.getElementById("productoNombre").value = data.nombre || "";
+                document.getElementById("productoDescripcion").value = data.descripcion || "";
+                document.getElementById("productoCategoria").value = data.categoria_id || "";
+                document.getElementById("productoUnidad").value = data.unidad_medida || "unidad";
+                document.getElementById("productoPrecioCompra").value = data.precio_compra || "";
+                document.getElementById("productoPrecioVenta").value = data.precio_venta || "";
+                document.getElementById("productoStockMinimo").value = data.stock_minimo || "";
+                document.getElementById("productoStockMaximo").value = data.stock_maximo || "";
+                document.getElementById("productoRequiereReceta").checked = data.requiere_receta || false;
+                document.getElementById("productoEstado").value = data.estado ? "1" : "0";
+            } else {
+                title.textContent = "Nuevo Producto";
+                submitBtn.textContent = "Guardar";
+                estadoGroup.style.display = "none";
+                document.getElementById("editProductoId").value = "";
+                document.getElementById("productoForm").reset();
+                document.getElementById("productoUnidad").value = "unidad";
+                document.getElementById("productoRequiereReceta").checked = false;
+                document.getElementById("productoEstado").value = "1";
+            }
+            overlay.classList.add("flex");
+            overlay.classList.remove("hidden");
+            document.body.style.overflow = "hidden";
+        }
+
+        function closeProductoModal() {
+            document.getElementById("productoModalOverlay").classList.add("hidden");
+            document.getElementById("productoModalOverlay").classList.remove("flex");
+            document.body.style.overflow = "";
+            document.getElementById("productoForm").reset();
+            document.getElementById("editProductoId").value = "";
+        }
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") {
+                closeProductoModal();
+                closeEntradaModal();
+            }
+        });
+        document.getElementById("productoModalOverlay").addEventListener("click", (e) => {
+            if (e.target === e.currentTarget) closeProductoModal();
+        });
+        document.getElementById("entradaModalOverlay").addEventListener("click", (e) => {
+            if (e.target === e.currentTarget) closeEntradaModal();
+        });
+
+        // ============ GUARDAR PRODUCTO ============
+        async function handleProductoSubmit(e) {
+            e.preventDefault();
+            const id = document.getElementById("editProductoId").value;
+            const isEdit = !!id;
+
+            const data = {
+                codigo: document.getElementById("productoCodigo").value.trim(),
+                nombre: document.getElementById("productoNombre").value.trim(),
+                descripcion: document.getElementById("productoDescripcion").value.trim(),
+                categoria_id: parseInt(document.getElementById("productoCategoria").value),
+                unidad_medida: document.getElementById("productoUnidad").value,
+                precio_compra: parseFloat(document.getElementById("productoPrecioCompra").value) || 0,
+                precio_venta: parseFloat(document.getElementById("productoPrecioVenta").value) || 0,
+                stock_minimo: parseInt(document.getElementById("productoStockMinimo").value) || 10,
+                stock_maximo: parseInt(document.getElementById("productoStockMaximo").value) || 500,
+                requiere_receta: document.getElementById("productoRequiereReceta").checked,
+            };
+            if (isEdit) data.estado = document.getElementById("productoEstado").value === "1";
+
+            const submitBtn = document.getElementById("productoSubmitBtn");
+            submitBtn.disabled = true;
+            submitBtn.textContent = isEdit ? "Actualizando..." : "Guardando...";
+
+            try {
+                const url = isEdit ? `${API_GATEWAY}/inventario/productos/${id}` : `${API_GATEWAY}/inventario/productos`;
+                const method = isEdit ? "PUT" : "POST";
+                const response = await fetch(url, { method, headers: getHeaders(), body: JSON.stringify(data) });
+                const result = await response.json();
+                if (!response.ok) throw new Error(result.message || "Error al guardar el producto");
+                if (result.success) {
+                    mostrarToast(isEdit ? "Producto actualizado exitosamente" : "Producto creado exitosamente", "success");
+                    closeProductoModal();
+                    cargarProductos();
+                } else {
+                    throw new Error(result.message || "Error al guardar el producto");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                mostrarToast(error.message || "Error al guardar el producto", "error");
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = isEdit ? "Actualizar" : "Guardar";
+            }
+        }
+
+        // ============ EDITAR PRODUCTO ============
+        function editarProducto(id) {
+            const producto = productosData.find(p => p.id === id);
+            if (producto) openProductoModal(producto);
+            else mostrarToast("Producto no encontrado", "error");
+        }
+
+        // ============ ELIMINAR/DESACTIVAR PRODUCTO ============
+        async function eliminarProducto(id) {
+            const producto = productosData.find(p => p.id === id);
+            if (!producto) { mostrarToast("Producto no encontrado", "error"); return; }
+
+            const isActive = producto.estado === true || producto.estado === 1;
+            const mensaje = isActive 
+                ? `¿Estás seguro de desactivar el producto "${producto.nombre}"?` 
+                : `¿Estás seguro de eliminar permanentemente el producto "${producto.nombre}"?`;
+
+            if (!confirm(mensaje)) return;
+
+            try {
+                if (isActive) {
+                    const response = await fetch(`${API_GATEWAY}/inventario/productos/${id}`, { 
+                        method: "DELETE", 
+                        headers: getHeaders() 
+                    });
+                    const result = await response.json();
+                    if (!response.ok) throw new Error(result.message || "Error al desactivar el producto");
+                    if (result.success) {
+                        mostrarToast("Producto desactivado exitosamente", "success");
+                        cargarProductos();
+                    } else {
+                        throw new Error(result.message || "Error al desactivar el producto");
+                    }
+                } else {
+                    mostrarToast("Este producto ya está inactivo", "warning");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                mostrarToast(error.message || "Error al procesar la solicitud", "error");
+            }
+        }
+
+        // ============ ENTRADA DE STOCK ============
+        async function abrirEntradaStock(productoId) {
+            const producto = productosData.find(p => p.id === productoId);
+            if (!producto) { mostrarToast("Producto no encontrado", "error"); return; }
+
+            if (!sucursalesData.length) await cargarSucursales();
+
+            document.getElementById("entradaProductoId").value = productoId;
+            document.getElementById("entradaProductoNombre").textContent = `${producto.codigo} - ${producto.nombre}`;
+            document.getElementById("entradaForm").reset();
+
+            // Primera sucursal activa por defecto
+            const primeraSucursal = sucursalesData.find(s => s.estado);
+            if (primeraSucursal) {
+                document.getElementById("entradaSucursalId").value = primeraSucursal.id;
+                document.getElementById("entradaSucursalNombre").textContent = primeraSucursal.nombre;
+            }
+
+            document.getElementById("entradaModalOverlay").classList.add("flex");
+            document.getElementById("entradaModalOverlay").classList.remove("hidden");
+            document.body.style.overflow = "hidden";
+        }
+
+        function closeEntradaModal() {
+            document.getElementById("entradaModalOverlay").classList.add("hidden");
+            document.getElementById("entradaModalOverlay").classList.remove("flex");
+            document.body.style.overflow = "";
+        }
+
+        // ============ GUARDAR ENTRADA STOCK ============
+        async function handleEntradaSubmit(e) {
+            e.preventDefault();
+
+            const productoId = document.getElementById("entradaProductoId").value;
+            const sucursalId = document.getElementById("entradaSucursalId").value;
+            const lote = document.getElementById("entradaLote").value.trim();
+            const cantidad = parseInt(document.getElementById("entradaCantidad").value);
+            const costo = parseFloat(document.getElementById("entradaCosto").value) || 0;
+            const fechaVencimiento = document.getElementById("entradaVencimiento").value;
+            const referencia = document.getElementById("entradaReferencia").value.trim();
+            const observaciones = document.getElementById("entradaObservaciones").value.trim();
+
+            if (!productoId || !sucursalId || !lote || !cantidad || !fechaVencimiento) {
+                mostrarToast("Todos los campos obligatorios deben estar completos", "error");
+                return;
+            }
+
+            const submitBtn = document.getElementById("entradaModalOverlay").querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Procesando...";
+
+            try {
+                const data = {
+                    producto_id: parseInt(productoId),
+                    sucursal_id: parseInt(sucursalId),
+                    lote: lote,
+                    cantidad: cantidad,
+                    fecha_vencimiento: fechaVencimiento,
+                    costo_unitario: costo,
+                    referencia_id: parseInt(referencia) || Date.now(),
+                    observaciones: observaciones || `Entrada de stock de ${productosData.find(p => p.id == productoId)?.nombre || 'producto'}`
+                };
+
+                const response = await fetch(`${API_GATEWAY}/inventario/entrada`, {
+                    method: "POST",
+                    headers: getHeaders(),
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+                if (!response.ok) throw new Error(result.message || "Error al registrar la entrada");
+                if (result.success) {
+                    mostrarToast("✅ Entrada de stock registrada exitosamente", "success");
+                    closeEntradaModal();
+                } else {
+                    throw new Error(result.message || "Error al registrar la entrada");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                mostrarToast(error.message || "Error al registrar la entrada", "error");
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = "Registrar Entrada";
+            }
+        }
+
+        // ============ CONSULTAR STOCK ============
+        function cargarSelectoresStock() {
+            if (!productosData.length) cargarProductos();
+            if (!sucursalesData.length) cargarSucursales();
+        }
+
+        async function consultarStock() {
+            const productoId = document.getElementById("stockProducto").value;
+            const sucursalId = document.getElementById("stockSucursal").value;
+            const resultado = document.getElementById("stockResultado");
+
+            if (!productoId || !sucursalId) {
+                resultado.innerHTML = '<div class="text-center py-8 text-yellow-600">⚠️ Seleccione un producto y una sucursal</div>';
+                return;
+            }
+
+            resultado.innerHTML = `
+                <div class="text-center py-8">
+                    <div class="inline-block w-6 h-6 border-2 border-gray-200 border-t-blue-600 rounded-full animate-spin"></div>
+                    <p class="mt-2 text-gray-400">Consultando stock...</p>
+                </div>
+            `;
+
+            try {
+                const response = await fetch(`${API_GATEWAY}/inventario/stock?producto_id=${productoId}&sucursal_id=${sucursalId}`, {
+                    headers: getHeaders()
+                });
+                if (!response.ok) throw new Error("Error al consultar stock");
+                const data = await response.json();
+                if (data.success) {
+                    const stockData = data.data;
+                    const producto = productosData.find(p => p.id == productoId);
+                    const sucursal = sucursalesData.find(s => s.id == sucursalId);
+
+                    if (!stockData || !stockData.lotes || stockData.lotes.length === 0) {
+                        resultado.innerHTML = `
+                            <div class="text-center py-8 text-gray-400">
+                                <p class="text-4xl mb-2">📭</p>
+                                <p>No hay stock disponible para este producto en ${sucursal?.nombre || 'la sucursal'}</p>
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    resultado.innerHTML = `
+                        <div class="bg-blue-50 rounded-lg p-4 mb-4">
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                <div>
+                                    <p class="text-xs text-gray-500">Producto</p>
+                                    <p class="font-medium text-gray-900">${producto?.nombre || 'N/A'}</p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-500">Código</p>
+                                    <p class="font-medium text-gray-900">${producto?.codigo || 'N/A'}</p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-500">Stock Total</p>
+                                    <p class="text-xl font-bold text-blue-600">${stockData.total_stock || 0} unidades</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm">
+                                <thead>
+                                    <tr class="bg-gray-50 border-b border-gray-200">
+                                        <th class="text-left px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">Lote</th>
+                                        <th class="text-left px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">Cantidad</th>
+                                        <th class="text-left px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">Disponible</th>
+                                        <th class="text-left px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">Vencimiento</th>
+                                        <th class="text-left px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">Costo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${stockData.lotes.map(l => `
+                                        <tr class="border-b border-gray-100">
+                                            <td class="px-4 py-2.5 font-medium">${l.lote || '-'}</td>
+                                            <td class="px-4 py-2.5">${l.cantidad || 0}</td>
+                                            <td class="px-4 py-2.5">${l.cantidad_disponible || 0}</td>
+                                            <td class="px-4 py-2.5 ${new Date(l.fecha_vencimiento) < new Date() ? 'text-red-600 font-medium' : ''}">
+                                                ${l.fecha_vencimiento ? new Date(l.fecha_vencimiento).toLocaleDateString('es-ES') : '-'}
+                                                ${new Date(l.fecha_vencimiento) < new Date() ? ' ⚠️ Vencido' : ''}
+                                            </td>
+                                            <td class="px-4 py-2.5">S/ ${parseFloat(l.costo_unitario || 0).toFixed(2)}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                resultado.innerHTML = `
+                    <div class="text-center py-8 text-red-500">
+                        <p>⚠️ Error al consultar el stock</p>
+                        <button onclick="consultarStock()" class="mt-2 text-sm text-blue-600 hover:text-blue-800">Reintentar</button>
+                    </div>
+                `;
+            }
+        }
+
+        // ============ MOVIMIENTOS ============
+        function cargarSelectoresMovimientos() {
+            if (!productosData.length) cargarProductos();
+            if (!sucursalesData.length) cargarSucursales();
+        }
+
+        async function cargarMovimientos() {
+            const tbody = document.getElementById("movimientosTableBody");
+            const productoId = document.getElementById("movimientoProducto").value;
+            const sucursalId = document.getElementById("movimientoSucursal").value;
+
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="5" class="text-center py-8">
+                        <div class="inline-block w-6 h-6 border-2 border-gray-200 border-t-blue-600 rounded-full animate-spin"></div>
+                        <p class="mt-2 text-gray-400">Cargando movimientos...</p>
+                    </td>
+                </tr>
+            `;
+
+            try {
+                let url = `${API_GATEWAY}/inventario/movimientos`;
+                const params = new URLSearchParams();
+                if (productoId) params.append('producto_id', productoId);
+                if (sucursalId) params.append('sucursal_id', sucursalId);
+                if (params.toString()) url += `?${params.toString()}`;
+
+                const response = await fetch(url, { headers: getHeaders() });
+                if (!response.ok) throw new Error("Error al cargar movimientos");
+                const data = await response.json();
+                if (data.success && data.data) {
+                    const movimientos = data.data;
+                    if (movimientos.length === 0) {
+                        tbody.innerHTML = `
+                            <tr>
+                                <td colspan="5" class="text-center py-8 text-gray-400">
+                                    <p>No hay movimientos registrados</p>
+                                </td>
+                            </tr>
+                        `;
+                        return;
+                    }
+
+                    const tipoIconos = {
+                        'entrada': '📥',
+                        'salida': '📤',
+                        'ajuste': '⚙️',
+                        'transferencia_origen': '🔄',
+                        'transferencia_destino': '🔄'
+                    };
+
+                    const tipoColores = {
+                        'entrada': 'text-green-600 bg-green-50',
+                        'salida': 'text-red-600 bg-red-50',
+                        'ajuste': 'text-yellow-600 bg-yellow-50',
+                        'transferencia_origen': 'text-blue-600 bg-blue-50',
+                        'transferencia_destino': 'text-purple-600 bg-purple-50'
+                    };
+
+                    tbody.innerHTML = movimientos.map(m => `
+                        <tr class="border-b border-gray-100 hover:bg-gray-50">
+                            <td class="px-4 py-3 text-sm">${m.fecha_movimiento ? new Date(m.fecha_movimiento).toLocaleString('es-ES') : '-'}</td>
+                            <td class="px-4 py-3 text-sm">
+                                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium ${tipoColores[m.tipo_movimiento] || 'bg-gray-100 text-gray-600'}">
+                                    ${tipoIconos[m.tipo_movimiento] || '📋'} ${m.tipo_movimiento?.replace('_', ' ')}
+                                </span>
+                            </td>
+                            <td class="px-4 py-3 text-sm">${m.inventario?.producto?.nombre || '-'}</td>
+                            <td class="px-4 py-3 text-sm font-medium">${m.cantidad || 0}</td>
+                            <td class="px-4 py-3 text-sm hidden md:table-cell">${m.usuario_id || '-'}</td>
+                        </tr>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="text-center py-8 text-red-500">
+                            <p>⚠️ Error al cargar los movimientos</p>
+                            <button onclick="cargarMovimientos()" class="mt-2 text-sm text-blue-600 hover:text-blue-800">Reintentar</button>
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        // ============ ALERTAS ============
+        async function cargarAlertas() {
+            await Promise.all([
+                cargarStockBajo(),
+                cargarProximoVencer()
+            ]);
+        }
+
+        async function cargarStockBajo() {
+            const container = document.getElementById("stockBajoList");
+            const countEl = document.getElementById("stockBajoCount");
+
+            try {
+                const response = await fetch(`${API_GATEWAY}/inventario/stock-bajo`, { headers: getHeaders() });
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success && data.data) {
+                        const items = data.data;
+                        countEl.textContent = items.length;
+
+                        if (items.length === 0) {
+                            container.innerHTML = `
+                                <div class="text-center py-8 text-gray-400">
+                                    <p class="text-2xl mb-2">✅</p>
+                                    <p>No hay productos con stock bajo</p>
+                                </div>
+                            `;
+                            return;
+                        }
+
+                        container.innerHTML = items.map(item => `
+                            <div class="flex items-center justify-between py-3 border-b border-gray-100 last:border-0">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900">${item.producto?.nombre || 'Producto'}</p>
+                                    <p class="text-xs text-gray-500">Código: ${item.producto?.codigo || '-'} | Stock: ${item.cantidad_disponible || 0}</p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-xs font-medium text-red-600 bg-red-50 px-2.5 py-1 rounded-full">
+                                        Mín: ${item.producto?.stock_minimo || 0}
+                                    </span>
+                                    <p class="text-xs text-gray-400 mt-1">Sucursal: ${item.sucursal_id || '-'}</p>
+                                </div>
+                            </div>
+                        `).join('');
+                    }
+                }
+            } catch (error) {
+                console.error("Error cargando stock bajo:", error);
+                container.innerHTML = `
+                    <div class="text-center py-8 text-red-500">
+                        <p>⚠️ Error al cargar alertas</p>
+                    </div>
+                `;
+            }
+        }
+
+        async function cargarProximoVencer() {
+            const container = document.getElementById("proximoVencerList");
+            const countEl = document.getElementById("proximoVencerCount");
+
+            try {
+                const response = await fetch(`${API_GATEWAY}/inventario/proximos-vencer?dias=30`, { headers: getHeaders() });
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success && data.data) {
+                        const items = data.data;
+                        countEl.textContent = items.length;
+
+                        if (items.length === 0) {
+                            container.innerHTML = `
+                                <div class="text-center py-8 text-gray-400">
+                                    <p class="text-2xl mb-2">✅</p>
+                                    <p>No hay productos próximos a vencer</p>
+                                </div>
+                            `;
+                            return;
+                        }
+
+                        container.innerHTML = items.map(item => {
+                            const dias = Math.ceil((new Date(item.fecha_vencimiento) - new Date()) / (1000 * 60 * 60 * 24));
+                            const esCritico = dias <= 15;
+                            return `
+                            <div class="flex items-center justify-between py-3 border-b border-gray-100 last:border-0 ${esCritico ? 'bg-red-50 -mx-2 px-2 rounded' : ''}">
+                                <div>
+                                    <p class="text-sm font-medium ${esCritico ? 'text-red-700' : 'text-gray-900'}">
+                                        ${item.producto?.nombre || 'Producto'}
+                                        ${esCritico ? '⚠️' : ''}
+                                    </p>
+                                    <p class="text-xs text-gray-500">Lote: ${item.lote || '-'} | ${item.cantidad || 0} unidades</p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-xs font-medium ${esCritico ? 'text-red-600 bg-red-100' : 'text-yellow-600 bg-yellow-100'} px-2.5 py-1 rounded-full">
+                                        ${dias} días
+                                    </span>
+                                    <p class="text-xs text-gray-400 mt-1">${item.fecha_vencimiento ? new Date(item.fecha_vencimiento).toLocaleDateString('es-ES') : '-'}</p>
+                                </div>
+                            </div>
+                        `}).join('');
+                    }
+                }
+            } catch (error) {
+                console.error("Error cargando próximos a vencer:", error);
+                container.innerHTML = `
+                    <div class="text-center py-8 text-red-500">
+                        <p>⚠️ Error al cargar alertas</p>
+                    </div>
+                `;
+            }
+        }
+
+        // ============ TOAST ============
+        function mostrarToast(mensaje, tipo = "info") {
+            const container = document.getElementById("toastContainer");
+            const colors = {
+                success: "bg-green-500",
+                error: "bg-red-500",
+                warning: "bg-yellow-500",
+                info: "bg-blue-500"
+            };
+            const icons = { success: "✅", error: "❌", warning: "⚠️", info: "ℹ️" };
+            const toast = document.createElement("div");
+            toast.className = `toast-slide px-5 py-3 rounded-lg text-white text-sm font-medium shadow-lg flex items-center gap-3 min-w-[280px] ${colors[tipo] || colors.info}`;
+            toast.innerHTML = `
+                <span>${icons[tipo] || "ℹ️"}</span>
+                <span>${mensaje}</span>
+                <button class="ml-auto text-white/80 hover:text-white" onclick="this.parentElement.remove()">×</button>
+            `;
+            container.appendChild(toast);
+            setTimeout(() => {
+                if (toast.parentElement) {
+                    toast.style.opacity = "0";
+                    toast.style.transform = "translateX(20px)";
+                    setTimeout(() => toast.remove(), 300);
+                }
+            }, 4000);
+        }
+
+        // ============ INICIALIZAR ============
+        document.addEventListener("DOMContentLoaded", () => {
+            const auth = checkAuth();
+            if (!auth) return;
+            loadUserData();
+            cargarCategorias();
+            cargarSucursales();
+            cargarProductos();
+        });
     </script>
-  </body>
+</body>
 </html>
