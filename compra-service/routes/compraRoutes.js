@@ -12,7 +12,8 @@ const {
   getCompras,
   getCompraById,
   updateEstadoCompra,
-  getComprasByProveedor
+  getComprasByProveedor,
+  updateCompra
 } = require('../controllers/compraController');
 
 const router = express.Router();
@@ -45,6 +46,19 @@ const registrarCompraValidation = [
   body('detalles.*.costo_unitario').isDecimal({ min: 0 }).withMessage('Costo unitario inválido')
 ];
 
+const updateCompraValidation = [
+  param('id').isInt().withMessage('ID inválido'),
+  body('numero_factura').notEmpty().withMessage('Número de factura requerido'),
+  body('proveedor_id').isInt().withMessage('ID de proveedor inválido'),
+  body('sucursal_id').isInt().withMessage('ID de sucursal inválido'),
+  body('detalles').isArray({ min: 1 }).withMessage('Debe incluir al menos un producto'),
+  body('detalles.*.producto_id').isInt().withMessage('ID de producto inválido'),
+  body('detalles.*.lote').notEmpty().withMessage('Lote requerido'),
+  body('detalles.*.fecha_vencimiento').isDate().withMessage('Fecha de vencimiento inválida'),
+  body('detalles.*.cantidad').isInt({ min: 1 }).withMessage('Cantidad debe ser mayor a 0'),
+  body('detalles.*.costo_unitario').isDecimal({ min: 0 }).withMessage('Costo unitario inválido')
+];
+
 const updateEstadoValidation = [
   param('id').isInt().withMessage('ID inválido'),
   body('estado').isIn(['pendiente', 'recibido', 'parcial', 'cancelado']).withMessage('Estado inválido')
@@ -66,5 +80,10 @@ router.get('/compras', getCompras);
 router.get('/compras/:id', param('id').isInt(), validate, getCompraById);
 router.put('/compras/:id/estado', checkRole(['ADMIN', 'GERENTE', 'ALMACENERO']), updateEstadoValidation, validate, updateEstadoCompra);
 router.get('/compras/proveedor/:proveedor_id', param('proveedor_id').isInt(), validate, getComprasByProveedor);
-
+router.put('/compras/:id', 
+  checkRole(['ADMIN', 'GERENTE', 'ALMACENERO']), 
+  updateCompraValidation, 
+  validate, 
+  updateCompra
+);
 module.exports = router;

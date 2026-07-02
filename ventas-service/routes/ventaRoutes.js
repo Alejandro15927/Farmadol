@@ -47,7 +47,7 @@ const registrarVentaValidation = [
   body('detalles.*.cantidad').isInt({ min: 1 }).withMessage('Cantidad debe ser mayor a 0'),
   body('detalles.*.precio_unitario').isDecimal({ min: 0 }).withMessage('Precio unitario inválido'),
   body('detalles.*.lote').optional().isString(),
-  body('detalles.*.fecha_vencimiento').optional().isDate().withMessage('Fecha de vencimiento inválida')
+  body('detalles.*.fecha_vencimiento').optional({ values: 'falsy' }).isDate().withMessage('Fecha de vencimiento inválida')
 ];
 
 const anularVentaValidation = [

@@ -19,7 +19,7 @@ app.use(helmet({
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 100,
+  max: 1000,
   message: {
     success: false,
     message: 'Demasiadas solicitudes, por favor intenta más tarde'

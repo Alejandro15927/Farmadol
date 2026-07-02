@@ -48,6 +48,21 @@ app.get('/inventario', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'inventario.html'));
 });
 
+// frontend/server.js
+app.get('/compras', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'compras.html'));
+});
+
+// frontend/server.js
+app.get('/ventas', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'ventas.html'));
+});
+
+// frontend/server.js
+app.get('/reportes', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'reportes.html'));
+});
+
 // Health check
 app.get('/health', (req, res) => {
   res.status(200).json({

@@ -2,6 +2,48 @@ const { Cliente, MetodoPago, Venta, VentaDetalle } = require('../models');
 const { validationResult } = require('express-validator');
 const { Op } = require('sequelize');
 
+const INVENTARIO_SERVICE_URL = process.env.INVENTARIO_SERVICE_URL || 'http://localhost:3004';
+const TASA_IGV = 0.18;
+
+async function validarStockDisponible(authHeader, sucursalId, detalles) {
+  for (const detalle of detalles) {
+    const response = await fetch(
+      `${INVENTARIO_SERVICE_URL}/api/inventario/stock?producto_id=${detalle.producto_id}&sucursal_id=${sucursalId}`,
+      { headers: { Authorization: authHeader } }
+    );
+    const data = await response.json().catch(() => ({}));
+    const stockDisponible = data.data?.total_stock ?? 0;
+    if (!response.ok || !data.success || stockDisponible < detalle.cantidad) {
+      throw new Error(
+        `Stock insuficiente para producto ID ${detalle.producto_id}. Disponible: ${stockDisponible}`
+      );
+    }
+  }
+}
+
+async function descontarStockInventario(authHeader, sucursalId, detalles, ventaId, numeroVenta) {
+  for (const detalle of detalles) {
+    const response = await fetch(`${INVENTARIO_SERVICE_URL}/api/inventario/salida`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: authHeader
+      },
+      body: JSON.stringify({
+        producto_id: detalle.producto_id,
+        sucursal_id: sucursalId,
+        cantidad: detalle.cantidad,
+        referencia_id: ventaId,
+        observaciones: `Salida por venta ${numeroVenta}`
+      })
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      throw new Error(data.message || 'Error al descontar stock del inventario');
+    }
+  }
+}
+
 // ============ CLIENTES ============
 
 // Obtener todos los clientes
@@ -250,23 +292,22 @@ const registrarVenta = async (req, res) => {
       });
     }
 
-    // Calcular totales
-    let subtotal = 0;
+    // Calcular totales (precio unitario ya incluye IGV)
+    let totalBruto = 0;
     const detallesVenta = [];
 
     for (const detalle of detalles) {
-      const subtotalItem = detalle.cantidad * detalle.precio_unitario;
-      const descuentoItem = detalle.descuento || 0;
-      const totalItem = subtotalItem - descuentoItem;
-      
-      subtotal += totalItem;
-      
+      const totalItem = detalle.cantidad * detalle.precio_unitario - (detalle.descuento || 0);
+      const subtotalItem = parseFloat((totalItem / (1 + TASA_IGV)).toFixed(2));
+
+      totalBruto += totalItem;
+
       detallesVenta.push({
         producto_id: detalle.producto_id,
         inventario_id: detalle.inventario_id,
         cantidad: detalle.cantidad,
         precio_unitario: detalle.precio_unitario,
-        descuento: descuentoItem,
+        descuento: detalle.descuento || 0,
         subtotal: subtotalItem,
         total: totalItem,
         lote: detalle.lote,
@@ -274,11 +315,22 @@ const registrarVenta = async (req, res) => {
       });
     }
 
-    // Calcular IGV (18%)
-    const igv = subtotal * 0.18;
-    const total = subtotal + igv;
+    const subtotal = parseFloat((totalBruto / (1 + TASA_IGV)).toFixed(2));
+    const igv = parseFloat((totalBruto - subtotal).toFixed(2));
     const descuentoAplicado = descuento || 0;
-    const totalFinal = total - descuentoAplicado;
+    const totalFinal = totalBruto - descuentoAplicado;
+
+    const authHeader = req.headers.authorization;
+    if (authHeader) {
+      try {
+        await validarStockDisponible(authHeader, sucursal_id, detalles);
+      } catch (stockError) {
+        return res.status(400).json({
+          success: false,
+          message: stockError.message
+        });
+      }
+    }
 
     // Generar número de venta
     const fecha = new Date();
@@ -318,6 +370,20 @@ const registrarVenta = async (req, res) => {
       });
     }
 
+    // Descontar stock en inventario
+    if (authHeader) {
+      try {
+        await descontarStockInventario(authHeader, sucursal_id, detalles, venta.id, numero_venta);
+      } catch (stockError) {
+        await VentaDetalle.destroy({ where: { venta_id: venta.id } });
+        await venta.destroy();
+        return res.status(400).json({
+          success: false,
+          message: stockError.message
+        });
+      }
+    }
+
     // Obtener la venta completa con detalles
     const ventaCompleta = await Venta.findByPk(venta.id, {
       include: [
@@ -327,8 +393,7 @@ const registrarVenta = async (req, res) => {
       ]
     });
 
-    // Aquí se integraría con Inventario Service para descontar stock
-    // También se integraría con Reportes para generar comprobante
+    // Aquí se integraría con Reportes para generar comprobante
 
     res.status(201).json({
       success: true,

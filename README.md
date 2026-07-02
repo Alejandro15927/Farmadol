@@ -20,9 +20,18 @@ cd api-gateway
 npm start
 ```
 
+**Terminal 3 — Ventas service (puerto 3005, requerido para el módulo de ventas)**
+
+```bash
+cd ventas-service
+npm start
+```
+
 Abre en el navegador: **http://localhost:3000/**
 
-### Alternativa: servidor frontend (puerto 3002)
+Para otras pantallas del ERP, inicia también el microservicio correspondiente (ver tabla de puertos más abajo).
+
+### Alternativa: servidor frontend (puerto 3010)
 
 Si prefieres el servidor del frontend con proxy directo al auth-service:
 
@@ -32,7 +41,7 @@ npm install
 npm start
 ```
 
-Requiere que el auth-service siga corriendo en el puerto 3001. Abre **http://localhost:3002/**
+Requiere que el auth-service siga corriendo en el puerto 3001. Abre **http://localhost:3010/**
 
 ### Live Server (puerto 5500)
 
@@ -61,11 +70,17 @@ npm run seed
 
 ### Puertos
 
-| Servicio      | Puerto |
-|---------------|--------|
-| API Gateway   | 3000   |
-| Auth service  | 3001   |
-| Frontend dev  | 3002   |
-| Live Server   | 5500   |
+| Servicio           | Puerto |
+|--------------------|--------|
+| API Gateway        | 3000   |
+| Auth service       | 3001   |
+| Sucursal service   | 3002   |
+| Compra service     | 3003   |
+| Inventario service | 3004   |
+| Ventas service     | 3005   |
+| Cliente service    | 3006   |
+| Reportes service   | 3007   |
+| Frontend dev       | 3010   |
+| Live Server        | 5500   |
 
 npx serve . -p 3010
