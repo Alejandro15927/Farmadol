@@ -23,16 +23,15 @@ module.exports = (sequelize) => {
     sucursal_id: {
       type: DataTypes.BIGINT,
       allowNull: false,
-      comment: 'ID de la sucursal destino (referencia a sucursal_db)'
+      comment: 'ID de sucursal (referencia a sucursal_db)'
     },
     usuario_id: {
       type: DataTypes.BIGINT,
       allowNull: false,
-      comment: 'ID del usuario que registra la compra (referencia a auth_db)'
+      comment: 'ID de usuario (referencia a auth_db)'
     },
     fecha_compra: {
       type: DataTypes.DATE,
-      allowNull: false,
       defaultValue: DataTypes.NOW
     },
     fecha_factura: {
@@ -41,22 +40,18 @@ module.exports = (sequelize) => {
     },
     subtotal: {
       type: DataTypes.DECIMAL(10, 2),
-      allowNull: false,
       defaultValue: 0
     },
     igv: {
       type: DataTypes.DECIMAL(10, 2),
-      allowNull: false,
       defaultValue: 0
     },
     total: {
       type: DataTypes.DECIMAL(10, 2),
-      allowNull: false,
       defaultValue: 0
     },
     tipo_pago: {
       type: DataTypes.ENUM('contado', 'credito'),
-      allowNull: false,
       defaultValue: 'contado'
     },
     plazo_credito: {

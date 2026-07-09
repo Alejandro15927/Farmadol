@@ -32,16 +32,15 @@ sequelize.sync()
     app.listen(PORT, () => {
       console.log(`🏢 Sucursal Service corriendo en http://localhost:${PORT}`);
       console.log(`📋 Endpoints disponibles:`);
-      console.log(`  GET    /api/sucursales/sucursales`);
-      console.log(`  GET    /api/sucursales/sucursales/:id`);
-      console.log(`  POST   /api/sucursales/sucursales (ADMIN/GERENTE)`);
-      console.log(`  PUT    /api/sucursales/sucursales/:id (ADMIN/GERENTE)`);
-      console.log(`  DELETE /api/sucursales/sucursales/:id (ADMIN)`);
-      console.log(`  POST   /api/sucursales/transferencias/solicitar`);
-      console.log(`  GET    /api/sucursales/transferencias`);
-      console.log(`  PUT    /api/sucursales/transferencias/:id/autorizar`);
-      console.log(`  PUT    /api/sucursales/transferencias/:id/completar`);
-      console.log(`  PUT    /api/sucursales/transferencias/:id/cancelar`);
+      console.log(`  # Sucursales (Protegido)`);
+      console.log(`  GET    /api/sucursales`);
+      console.log(`  GET    /api/sucursales/activas`);
+      console.log(`  GET    /api/sucursales/check/:id`);
+      console.log(`  GET    /api/sucursales/:id`);
+      console.log(`  POST   /api/sucursales (ADMIN)`);
+      console.log(`  PUT    /api/sucursales/:id (ADMIN)`);
+      console.log(`  DELETE /api/sucursales/:id (ADMIN)`);
+      console.log(`  PUT    /api/sucursales/:id/enable (ADMIN)`);
     });
   })
   .catch(error => {

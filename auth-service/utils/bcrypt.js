@@ -1,16 +1,22 @@
 const bcrypt = require('bcryptjs');
 
-const BCRYPT_ROUNDS = parseInt(process.env.BCRYPT_ROUNDS) || 10;
+const SALT_ROUNDS = 10;
 
 const hashPassword = async (password) => {
-  return await bcrypt.hash(password, BCRYPT_ROUNDS);
+  try {
+    const salt = await bcrypt.genSalt(SALT_ROUNDS);
+    return await bcrypt.hash(password, salt);
+  } catch (error) {
+    throw new Error('Error al hashear la contraseña');
+  }
 };
 
 const comparePassword = async (password, hashedPassword) => {
-  return await bcrypt.compare(password, hashedPassword);
+  try {
+    return await bcrypt.compare(password, hashedPassword);
+  } catch (error) {
+    throw new Error('Error al comparar contraseñas');
+  }
 };
 
-module.exports = {
-  hashPassword,
-  comparePassword
-};
+module.exports = { hashPassword, comparePassword };

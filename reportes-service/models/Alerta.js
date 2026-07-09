@@ -8,21 +8,11 @@ module.exports = (sequelize) => {
       primaryKey: true
     },
     tipo: {
-      type: DataTypes.ENUM(
-        'stock_bajo',
-        'producto_vencer',
-        'producto_vencido',
-        'venta_alta',
-        'venta_baja',
-        'cliente_frecuente',
-        'problema_inventario',
-        'sistema'
-      ),
+      type: DataTypes.ENUM('stock_bajo', 'producto_vencer', 'producto_vencido', 'venta_alta', 'venta_baja', 'cliente_frecuente', 'problema_inventario', 'sistema'),
       allowNull: false
     },
     nivel: {
       type: DataTypes.ENUM('info', 'warning', 'error', 'critical'),
-      allowNull: false,
       defaultValue: 'info'
     },
     titulo: {
@@ -45,7 +35,7 @@ module.exports = (sequelize) => {
     usuario_id: {
       type: DataTypes.BIGINT,
       allowNull: true,
-      comment: 'ID del usuario que generó la alerta'
+      comment: 'ID del usuario que generó la alerta (referencia a auth_db)'
     },
     leida: {
       type: DataTypes.BOOLEAN,

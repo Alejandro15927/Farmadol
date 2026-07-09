@@ -11,7 +11,6 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
-
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -35,21 +34,13 @@ CREATE TABLE `alertas` (
   `mensaje` text NOT NULL,
   `datos` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`datos`)),
   `sucursal_id` bigint(20) DEFAULT NULL COMMENT 'ID de sucursal (referencia a sucursal_db)',
-  `usuario_id` bigint(20) DEFAULT NULL COMMENT 'ID del usuario que generó la alerta',
+  `usuario_id` bigint(20) DEFAULT NULL COMMENT 'ID del usuario que generó la alerta (referencia a auth_db)',
   `leida` tinyint(1) DEFAULT 0,
   `fecha_lectura` datetime DEFAULT NULL,
   `estado` enum('activa','resuelta','ignorada') DEFAULT 'activa',
   `fecha_creacion` datetime DEFAULT current_timestamp(),
   `fecha_resolucion` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `alertas`
---
-
-INSERT INTO `alertas` (`id`, `tipo`, `nivel`, `titulo`, `mensaje`, `datos`, `sucursal_id`, `usuario_id`, `leida`, `fecha_lectura`, `estado`, `fecha_creacion`, `fecha_resolucion`) VALUES
-(1, 'sistema', 'info', 'Sistema Operativo', 'Reportes Service inicializado correctamente', '{\"version\": \"1.0.0\"}', NULL, NULL, 0, NULL, 'resuelta', '2026-06-29 00:46:56', NULL),
-(2, 'stock_bajo', 'warning', 'Stock Bajo: Paracetamol', 'El producto Paracetamol 500mg tiene stock bajo en la sucursal Central', '{\"producto\": \"Paracetamol 500mg\", \"stock\": 5, \"minimo\": 10}', NULL, NULL, 0, NULL, 'activa', '2026-06-29 00:46:56', NULL);
 
 -- --------------------------------------------------------
 
@@ -65,7 +56,7 @@ CREATE TABLE `reportes` (
   `parametros` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`parametros`)),
   `formato` enum('pdf','excel','csv','json') NOT NULL DEFAULT 'pdf',
   `ruta_archivo` varchar(500) DEFAULT NULL,
-  `usuario_id` bigint(20) NOT NULL COMMENT 'ID del usuario que generó el reporte',
+  `usuario_id` bigint(20) NOT NULL COMMENT 'ID del usuario que generó el reporte (referencia a auth_db)',
   `sucursal_id` bigint(20) DEFAULT NULL COMMENT 'ID de sucursal (referencia a sucursal_db)',
   `fecha_inicio` datetime DEFAULT NULL,
   `fecha_fin` datetime DEFAULT NULL,
@@ -102,13 +93,14 @@ ALTER TABLE `reportes`
 -- AUTO_INCREMENT de la tabla `alertas`
 --
 ALTER TABLE `alertas`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `reportes`
 --
 ALTER TABLE `reportes`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

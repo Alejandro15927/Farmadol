@@ -32,26 +32,32 @@ sequelize.sync()
     app.listen(PORT, () => {
       console.log(`📦 Inventario Service corriendo en http://localhost:${PORT}`);
       console.log(`📋 Endpoints disponibles:`);
-      console.log(`  # Categorías`);
+      console.log(`  # Categorías (Protegido)`);
       console.log(`  GET    /api/inventario/categorias`);
+      console.log(`  GET    /api/inventario/categorias/:id`);
       console.log(`  POST   /api/inventario/categorias (ADMIN/GERENTE)`);
+      console.log(`  PUT    /api/inventario/categorias/:id (ADMIN/GERENTE)`);
+      console.log(`  DELETE /api/inventario/categorias/:id (ADMIN/GERENTE)`);
       console.log(`  # Productos`);
       console.log(`  GET    /api/inventario/productos`);
       console.log(`  GET    /api/inventario/productos/:id`);
       console.log(`  POST   /api/inventario/productos (ADMIN/GERENTE)`);
       console.log(`  PUT    /api/inventario/productos/:id (ADMIN/GERENTE)`);
-      console.log(`  # Stock`);
+      console.log(`  DELETE /api/inventario/productos/:id (ADMIN/GERENTE)`);
+      console.log(`  PUT    /api/inventario/productos/:id/enable (ADMIN/GERENTE)`);
+      console.log(`  # Inventario`);
       console.log(`  GET    /api/inventario/stock`);
-      console.log(`  GET    /api/inventario/stock/producto/:producto_id`);
+      console.log(`  GET    /api/inventario/stock/global`);
       console.log(`  POST   /api/inventario/entrada (ADMIN/GERENTE/ALMACENERO)`);
       console.log(`  POST   /api/inventario/salida (ADMIN/GERENTE/CAJERO)`);
-      console.log(`  POST   /api/inventario/reservar (ADMIN/GERENTE/CAJERO)`);
-      console.log(`  POST   /api/inventario/liberar-reserva (ADMIN/GERENTE/CAJERO)`);
-      console.log(`  POST   /api/inventario/transferir (ADMIN/GERENTE)`);
-      console.log(`  # Consultas`);
-      console.log(`  GET    /api/inventario/proximos-vencer`);
-      console.log(`  GET    /api/inventario/stock-bajo`);
+      console.log(`  POST   /api/inventario/transferencia (ADMIN/GERENTE/ALMACENERO)`);
+      console.log(`  # Movimientos`);
       console.log(`  GET    /api/inventario/movimientos`);
+      console.log(`  # Alertas`);
+      console.log(`  GET    /api/inventario/alertas/stock-bajo`);
+      console.log(`  GET    /api/inventario/alertas/por-vencer`);
+      console.log(`  # Estadísticas`);
+      console.log(`  GET    /api/inventario/estadisticas (ADMIN/GERENTE)`);
     });
   })
   .catch(error => {

@@ -7,11 +7,11 @@ const sequelize = new Sequelize(config.database, config.username, config.passwor
   logging: false
 });
 
-const Reporte = require('./Reporte')(sequelize);
 const Alerta = require('./Alerta')(sequelize);
+const Reporte = require('./Reporte')(sequelize);
 
 module.exports = {
   sequelize,
-  Reporte,
-  Alerta
+  Alerta,
+  Reporte
 };

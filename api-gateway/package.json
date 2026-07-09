@@ -1,7 +1,7 @@
 {
   "name": "api-gateway",
   "version": "1.0.0",
-  "description": "API Gateway para Farmadol ERP",
+  "description": "API Gateway para Farmadol ERP - SOA",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -20,7 +20,12 @@
   "devDependencies": {
     "nodemon": "^2.0.22"
   },
-  "keywords": [],
+  "keywords": [
+    "farmadol",
+    "erp",
+    "api-gateway",
+    "soa"
+  ],
   "author": "",
   "license": "ISC"
 }

@@ -16,7 +16,7 @@ const MovimientoInventario = require('./MovimientoInventario')(sequelize);
 Categoria.hasMany(Producto, { foreignKey: 'categoria_id', as: 'productos' });
 Producto.belongsTo(Categoria, { foreignKey: 'categoria_id', as: 'categoria' });
 
-Producto.hasMany(Inventario, { foreignKey: 'producto_id', as: 'inventario' });
+Producto.hasMany(Inventario, { foreignKey: 'producto_id', as: 'inventarios' });
 Inventario.belongsTo(Producto, { foreignKey: 'producto_id', as: 'producto' });
 
 Inventario.hasMany(MovimientoInventario, { foreignKey: 'inventario_id', as: 'movimientos' });

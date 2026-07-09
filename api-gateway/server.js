@@ -1,4 +1,3 @@
-// api-gateway/server.js
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
@@ -30,14 +29,11 @@ const limiter = rateLimit({
 
 app.use('/api', limiter);
 
-// ==================== CORS (CORREGIDO) ====================
-// ✅ Configuración CORS más permisiva para desarrollo
+// ==================== CORS ====================
 const corsOptions = {
   origin: function (origin, callback) {
-    // Permitir solicitudes sin origin (como herramientas de API)
     if (!origin) return callback(null, true);
     
-    // Lista de orígenes permitidos
     const allowedOrigins = [
       'http://localhost:3010',
       'http://127.0.0.1:3010',
@@ -46,7 +42,6 @@ const corsOptions = {
       process.env.FRONTEND_URL
     ].filter(Boolean);
     
-    // En desarrollo, permitir todos los orígenes
     if (process.env.NODE_ENV === 'development' || !origin) {
       return callback(null, true);
     }
@@ -62,19 +57,16 @@ const corsOptions = {
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin', 'X-User-Id', 'X-User-Roles', 'X-User-Username'],
   exposedHeaders: ['Content-Range', 'X-Content-Range', 'X-Service'],
-  maxAge: 86400 // 24 horas
+  maxAge: 86400
 };
 
-// ✅ Aplicar CORS a todas las rutas
 app.use(cors(corsOptions));
-
-// ✅ Manejar explícitamente las solicitudes OPTIONS (preflight)
 app.options('*', cors(corsOptions));
 
 // ==================== LOGGING ====================
 app.use(morgan('combined'));
 
-// ==================== MIDDLEWARE DE AUTENTICACIÓN GLOBAL ====================
+// ==================== MIDDLEWARE DE AUTENTICACIÓN ====================
 app.use('/api', authMiddleware);
 
 // ==================== RUTAS PÚBLICAS ====================
@@ -87,10 +79,10 @@ app.get('/health', (req, res) => {
     services: {
       auth: process.env.AUTH_SERVICE_URL,
       sucursal: process.env.SUCURSAL_SERVICE_URL,
-      compra: process.env.COMPRA_SERVICE_URL,
+      cliente: process.env.CLIENTE_SERVICE_URL,
       inventario: process.env.INVENTARIO_SERVICE_URL,
       ventas: process.env.VENTAS_SERVICE_URL,
-      cliente: process.env.CLIENTE_SERVICE_URL,
+      compra: process.env.COMPRA_SERVICE_URL,
       reportes: process.env.REPORTES_SERVICE_URL
     }
   });
@@ -104,10 +96,10 @@ app.get('/', (req, res) => {
     endpoints: {
       auth: '/api/auth',
       sucursal: '/api/sucursales',
-      compra: '/api/compras',
+      cliente: '/api/clientes',
       inventario: '/api/inventario',
       ventas: '/api/ventas',
-      cliente: '/api/clientes',
+      compra: '/api/compras',
       reportes: '/api/reportes'
     }
   });
@@ -115,7 +107,6 @@ app.get('/', (req, res) => {
 
 // ==================== PROXY CONFIGURACIÓN ====================
 
-// Función para crear proxies con manejo de errores
 const createServiceProxy = (target, pathRewrite = {}) => {
   return createProxyMiddleware({
     target,
@@ -151,7 +142,7 @@ const createServiceProxy = (target, pathRewrite = {}) => {
 
 // Auth Service (puerto 3001)
 app.use('/api/auth', createServiceProxy(process.env.AUTH_SERVICE_URL, {
-  '^/api/auth': '/auth'
+  '^/api/auth': '/api/auth'
 }));
 
 // Sucursal Service (puerto 3002)
@@ -159,9 +150,9 @@ app.use('/api/sucursales', createServiceProxy(process.env.SUCURSAL_SERVICE_URL, 
   '^/api/sucursales': '/api/sucursales'
 }));
 
-// Compra Service (puerto 3003)
-app.use('/api/compras', createServiceProxy(process.env.COMPRA_SERVICE_URL, {
-  '^/api/compras': '/api/compras'
+// Cliente Service (puerto 3003)
+app.use('/api/clientes', createServiceProxy(process.env.CLIENTE_SERVICE_URL, {
+  '^/api/clientes': '/api/clientes'
 }));
 
 // Inventario Service (puerto 3004)
@@ -174,9 +165,9 @@ app.use('/api/ventas', createServiceProxy(process.env.VENTAS_SERVICE_URL, {
   '^/api/ventas': '/api/ventas'
 }));
 
-// Cliente Service (puerto 3006)
-app.use('/api/clientes', createServiceProxy(process.env.CLIENTE_SERVICE_URL, {
-  '^/api/clientes': '/api/clientes'
+// Compra Service (puerto 3006)
+app.use('/api/compras', createServiceProxy(process.env.COMPRA_SERVICE_URL, {
+  '^/api/compras': '/api/compras'
 }));
 
 // Reportes Service (puerto 3007)
@@ -221,14 +212,14 @@ app.listen(PORT, () => {
   console.log('📋 Servicios registrados:');
   console.log(`  🔐 Auth       → ${process.env.AUTH_SERVICE_URL}`);
   console.log(`  🏢 Sucursal   → ${process.env.SUCURSAL_SERVICE_URL}`);
-  console.log(`  🛒 Compra     → ${process.env.COMPRA_SERVICE_URL}`);
+  console.log(`  👤 Cliente    → ${process.env.CLIENTE_SERVICE_URL}`);
   console.log(`  📦 Inventario → ${process.env.INVENTARIO_SERVICE_URL}`);
   console.log(`  💳 Ventas     → ${process.env.VENTAS_SERVICE_URL}`);
-  console.log(`  👤 Cliente    → ${process.env.CLIENTE_SERVICE_URL}`);
+  console.log(`  🛒 Compra     → ${process.env.COMPRA_SERVICE_URL}`);
   console.log(`  📊 Reportes   → ${process.env.REPORTES_SERVICE_URL}`);
   console.log('========================================');
   console.log(`🌐 CORS habilitado para frontend en puerto 3010`);
-  console.log(`🔒 Rate limiting: 100 requests/15min`);
+  console.log(`🔒 Rate limiting: 1000 requests/15min`);
   console.log('========================================');
 });
 

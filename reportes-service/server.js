@@ -14,8 +14,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Static files para reportes
-app.use('/reports', express.static(path.join(__dirname, 'reports')));
+// Servir archivos estáticos de reportes
+app.use('/reportes_archivos', express.static(path.join(__dirname, 'reportes_archivos')));
 
 // Routes
 app.use('/api/reportes', reporteRoutes);
@@ -35,21 +35,28 @@ sequelize.sync()
     console.log('📦 Base de datos sincronizada');
     app.listen(PORT, () => {
       console.log(`📊 Reportes Service corriendo en http://localhost:${PORT}`);
+      console.log(`📁 Archivos de reportes: ${path.join(__dirname, 'reportes_archivos')}`);
       console.log(`📋 Endpoints disponibles:`);
-      console.log(`  # Reportes`);
-      console.log(`  POST   /api/reportes/reportes/ventas-diarias (ADMIN/GERENTE)`);
-      console.log(`  POST   /api/reportes/reportes/productos-mas-vendidos (ADMIN/GERENTE)`);
-      console.log(`  POST   /api/reportes/reportes/stock-bajo (ADMIN/GERENTE)`);
-      console.log(`  POST   /api/reportes/reportes/proximos-vencer (ADMIN/GERENTE)`);
-      console.log(`  POST   /api/reportes/reportes/clientes-frecuentes (ADMIN/GERENTE)`);
-      console.log(`  GET    /api/reportes/reportes`);
-      console.log(`  GET    /api/reportes/reportes/:id`);
-      console.log(`  GET    /api/reportes/reportes/:id/descargar`);
+      console.log(`  # Generación de Reportes (ADMIN/GERENTE)`);
+      console.log(`  POST   /api/reportes/generar/ventas`);
+      console.log(`  POST   /api/reportes/generar/inventario`);
+      console.log(`  POST   /api/reportes/generar/clientes`);
+      console.log(`  POST   /api/reportes/generar/compras`);
+      console.log(`  POST   /api/reportes/generar/resumen`);
+      console.log(`  # Reportes Guardados`);
+      console.log(`  GET    /api/reportes`);
+      console.log(`  GET    /api/reportes/estadisticas (ADMIN/GERENTE)`);
+      console.log(`  GET    /api/reportes/descargar/:id`);
+      console.log(`  GET    /api/reportes/:id`);  
+      console.log(`  DELETE /api/reportes/:id (ADMIN)`);
       console.log(`  # Alertas`);
       console.log(`  GET    /api/reportes/alertas`);
-      console.log(`  PUT    /api/reportes/alertas/:id/leida`);
-      console.log(`  PUT    /api/reportes/alertas/:id/resolver (ADMIN/GERENTE)`);
+      console.log(`  GET    /api/reportes/alertas/no-leidas`);
+      console.log(`  GET    /api/reportes/alertas/:id`);
       console.log(`  POST   /api/reportes/alertas (ADMIN/GERENTE)`);
+      console.log(`  PUT    /api/reportes/alertas/:id/leer (ADMIN/GERENTE)`);
+      console.log(`  PUT    /api/reportes/alertas/:id/resolver (ADMIN/GERENTE)`);
+      console.log(`  PUT    /api/reportes/alertas/:id/ignorar (ADMIN/GERENTE)`);
     });
   })
   .catch(error => {

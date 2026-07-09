@@ -1,9 +1,12 @@
 const { Cliente, MetodoPago, Venta, VentaDetalle } = require('../models');
 const { validationResult } = require('express-validator');
-const { Op } = require('sequelize');
+const { Op, Sequelize } = require('sequelize');
 
 const INVENTARIO_SERVICE_URL = process.env.INVENTARIO_SERVICE_URL || 'http://localhost:3004';
+const CLIENTE_SERVICE_URL = process.env.CLIENTE_SERVICE_URL || 'http://localhost:3003';
 const TASA_IGV = 0.18;
+
+// ============ FUNCIONES AUXILIARES ============
 
 async function validarStockDisponible(authHeader, sucursalId, detalles) {
   for (const detalle of detalles) {
@@ -22,6 +25,7 @@ async function validarStockDisponible(authHeader, sucursalId, detalles) {
 }
 
 async function descontarStockInventario(authHeader, sucursalId, detalles, ventaId, numeroVenta) {
+  const resultados = [];
   for (const detalle of detalles) {
     const response = await fetch(`${INVENTARIO_SERVICE_URL}/api/inventario/salida`, {
       method: 'POST',
@@ -34,45 +38,69 @@ async function descontarStockInventario(authHeader, sucursalId, detalles, ventaI
         sucursal_id: sucursalId,
         cantidad: detalle.cantidad,
         referencia_id: ventaId,
+        lote_especifico: detalle.lote || null,
         observaciones: `Salida por venta ${numeroVenta}`
       })
     });
     const data = await response.json().catch(() => ({}));
     if (!response.ok) {
-      throw new Error(data.message || 'Error al descontar stock del inventario');
+      throw new Error(data.message || `Error al descontar stock del producto ${detalle.producto_id}`);
     }
+    resultados.push(data.data);
   }
+  return resultados;
+}
+
+async function registrarHistorialCliente(authHeader, clienteId, ventaId, sucursalId, total, productos, unidades, metodoPago) {
+  if (!clienteId) return null;
+  
+  const response = await fetch(`${CLIENTE_SERVICE_URL}/api/clientes/${clienteId}/historial`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: authHeader
+    },
+    body: JSON.stringify({
+      venta_id: ventaId,
+      sucursal_id: sucursalId,
+      fecha_compra: new Date(),
+      total,
+      productos,
+      unidades,
+      metodo_pago: metodoPago
+    })
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    console.error('Error al registrar historial:', data);
+  }
+  return data;
 }
 
 // ============ CLIENTES ============
 
-// Obtener todos los clientes
+// Obtener todos los clientes (desde cliente-service)
 const getClientes = async (req, res) => {
   try {
+    const authHeader = req.headers.authorization;
     const { search } = req.query;
-    let where = { estado: true };
 
-    if (search) {
-      where = {
-        ...where,
-        [Op.or]: [
-          { nombres: { [Op.like]: `%${search}%` } },
-          { apellidos: { [Op.like]: `%${search}%` } },
-          { numero_documento: { [Op.like]: `%${search}%` } },
-          { email: { [Op.like]: `%${search}%` } }
-        ]
-      };
+    let url = `${CLIENTE_SERVICE_URL}/api/clientes`;
+    if (search) url += `?search=${search}`;
+
+    const response = await fetch(url, {
+      headers: { Authorization: authHeader }
+    });
+    const data = await response.json().catch(() => ({}));
+
+    if (!response.ok) {
+      return res.status(response.status).json({
+        success: false,
+        message: data.message || 'Error al obtener clientes'
+      });
     }
 
-    const clientes = await Cliente.findAll({
-      where,
-      order: [['apellidos', 'ASC'], ['nombres', 'ASC']]
-    });
-
-    res.json({
-      success: true,
-      data: clientes
-    });
+    res.json(data);
   } catch (error) {
     console.error('Error en getClientes:', error);
     res.status(500).json({
@@ -82,23 +110,25 @@ const getClientes = async (req, res) => {
   }
 };
 
-// Obtener cliente por ID
+// Obtener cliente por ID (desde cliente-service)
 const getClienteById = async (req, res) => {
   try {
+    const authHeader = req.headers.authorization;
     const { id } = req.params;
-    const cliente = await Cliente.findByPk(id);
 
-    if (!cliente) {
-      return res.status(404).json({
+    const response = await fetch(`${CLIENTE_SERVICE_URL}/api/clientes/${id}`, {
+      headers: { Authorization: authHeader }
+    });
+    const data = await response.json().catch(() => ({}));
+
+    if (!response.ok) {
+      return res.status(response.status).json({
         success: false,
-        message: 'Cliente no encontrado'
+        message: data.message || 'Error al obtener cliente'
       });
     }
 
-    res.json({
-      success: true,
-      data: cliente
-    });
+    res.json(data);
   } catch (error) {
     console.error('Error en getClienteById:', error);
     res.status(500).json({
@@ -108,52 +138,27 @@ const getClienteById = async (req, res) => {
   }
 };
 
-// Crear cliente
-const createCliente = async (req, res) => {
+// Buscar cliente por documento (desde cliente-service)
+const getClienteByDocumento = async (req, res) => {
   try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({
+    const authHeader = req.headers.authorization;
+    const { documento } = req.params;
+
+    const response = await fetch(`${CLIENTE_SERVICE_URL}/api/clientes/documento/${documento}`, {
+      headers: { Authorization: authHeader }
+    });
+    const data = await response.json().catch(() => ({}));
+
+    if (!response.ok) {
+      return res.status(response.status).json({
         success: false,
-        errors: errors.array()
+        message: data.message || 'Error al buscar cliente'
       });
     }
 
-    const { 
-      tipo_documento, numero_documento, nombres, apellidos,
-      razon_social, email, telefono, direccion, fecha_nacimiento, genero
-    } = req.body;
-
-    // Verificar documento único
-    const existing = await Cliente.findOne({ where: { numero_documento } });
-    if (existing) {
-      return res.status(400).json({
-        success: false,
-        message: 'Ya existe un cliente con ese número de documento'
-      });
-    }
-
-    const cliente = await Cliente.create({
-      tipo_documento,
-      numero_documento,
-      nombres,
-      apellidos,
-      razon_social,
-      email,
-      telefono,
-      direccion,
-      fecha_nacimiento,
-      genero,
-      estado: true
-    });
-
-    res.status(201).json({
-      success: true,
-      message: 'Cliente creado exitosamente',
-      data: cliente
-    });
+    res.json(data);
   } catch (error) {
-    console.error('Error en createCliente:', error);
+    console.error('Error en getClienteByDocumento:', error);
     res.status(500).json({
       success: false,
       message: 'Error interno del servidor'
@@ -161,66 +166,31 @@ const createCliente = async (req, res) => {
   }
 };
 
-// Actualizar cliente
-const updateCliente = async (req, res) => {
+// Crear cliente (desde cliente-service)
+const createCliente = async (req, res) => {
   try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({
-        success: false,
-        errors: errors.array()
-      });
-    }
-
-    const { id } = req.params;
-    const { 
-      tipo_documento, numero_documento, nombres, apellidos,
-      razon_social, email, telefono, direccion, fecha_nacimiento, genero, estado
-    } = req.body;
-
-    const cliente = await Cliente.findByPk(id);
-    if (!cliente) {
-      return res.status(404).json({
-        success: false,
-        message: 'Cliente no encontrado'
-      });
-    }
-
-    // Verificar duplicados
-    if (numero_documento !== cliente.numero_documento) {
-      const existing = await Cliente.findOne({
-        where: { numero_documento, id: { [Op.ne]: id } }
-      });
-      if (existing) {
-        return res.status(400).json({
-          success: false,
-          message: 'Ya existe otro cliente con ese número de documento'
-        });
-      }
-    }
-
-    await cliente.update({
-      tipo_documento,
-      numero_documento,
-      nombres,
-      apellidos,
-      razon_social,
-      email,
-      telefono,
-      direccion,
-      fecha_nacimiento,
-      genero,
-      estado,
-      fecha_actualizacion: new Date()
+    const authHeader = req.headers.authorization;
+    
+    const response = await fetch(`${CLIENTE_SERVICE_URL}/api/clientes`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: authHeader
+      },
+      body: JSON.stringify(req.body)
     });
+    const data = await response.json().catch(() => ({}));
 
-    res.json({
-      success: true,
-      message: 'Cliente actualizado exitosamente',
-      data: cliente
-    });
+    if (!response.ok) {
+      return res.status(response.status).json({
+        success: false,
+        message: data.message || 'Error al crear cliente'
+      });
+    }
+
+    res.status(201).json(data);
   } catch (error) {
-    console.error('Error en updateCliente:', error);
+    console.error('Error en createCliente:', error);
     res.status(500).json({
       success: false,
       message: 'Error interno del servidor'
@@ -251,6 +221,138 @@ const getMetodosPago = async (req, res) => {
   }
 };
 
+// Crear método de pago
+const createMetodoPago = async (req, res) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        success: false,
+        errors: errors.array()
+      });
+    }
+
+    const { nombre, descripcion } = req.body;
+
+    const existing = await MetodoPago.findOne({ where: { nombre } });
+    if (existing) {
+      return res.status(400).json({
+        success: false,
+        message: 'Ya existe un método de pago con ese nombre'
+      });
+    }
+
+    const metodo = await MetodoPago.create({
+      nombre,
+      descripcion,
+      estado: true
+    });
+
+    res.status(201).json({
+      success: true,
+      message: 'Método de pago creado exitosamente',
+      data: metodo
+    });
+  } catch (error) {
+    console.error('Error en createMetodoPago:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error interno del servidor'
+    });
+  }
+};
+
+// Actualizar método de pago
+const updateMetodoPago = async (req, res) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        success: false,
+        errors: errors.array()
+      });
+    }
+
+    const { id } = req.params;
+    const { nombre, descripcion, estado } = req.body;
+
+    const metodo = await MetodoPago.findByPk(id);
+    if (!metodo) {
+      return res.status(404).json({
+        success: false,
+        message: 'Método de pago no encontrado'
+      });
+    }
+
+    if (nombre && nombre !== metodo.nombre) {
+      const existing = await MetodoPago.findOne({
+        where: { nombre, id: { [Op.ne]: id } }
+      });
+      if (existing) {
+        return res.status(400).json({
+          success: false,
+          message: 'Ya existe otro método de pago con ese nombre'
+        });
+      }
+    }
+
+    await metodo.update({
+      nombre: nombre || metodo.nombre,
+      descripcion: descripcion !== undefined ? descripcion : metodo.descripcion,
+      estado: estado !== undefined ? estado : metodo.estado
+    });
+
+    res.json({
+      success: true,
+      message: 'Método de pago actualizado exitosamente',
+      data: metodo
+    });
+  } catch (error) {
+    console.error('Error en updateMetodoPago:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error interno del servidor'
+    });
+  }
+};
+
+// Eliminar método de pago
+const deleteMetodoPago = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const metodo = await MetodoPago.findByPk(id);
+    if (!metodo) {
+      return res.status(404).json({
+        success: false,
+        message: 'Método de pago no encontrado'
+      });
+    }
+
+    // Verificar si tiene ventas asociadas
+    const ventas = await Venta.count({ where: { metodo_pago_id: id } });
+    if (ventas > 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'No se puede eliminar el método de pago porque tiene ventas asociadas'
+      });
+    }
+
+    await metodo.update({ estado: false });
+
+    res.json({
+      success: true,
+      message: 'Método de pago deshabilitado exitosamente'
+    });
+  } catch (error) {
+    console.error('Error en deleteMetodoPago:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error interno del servidor'
+    });
+  }
+};
+
 // ============ VENTAS ============
 
 // Registrar una venta
@@ -264,24 +366,18 @@ const registrarVenta = async (req, res) => {
       });
     }
 
-    const { 
-      sucursal_id, cliente_id, metodo_pago_id,
-      descuento, monto_recibido, observaciones,
+    const {
+      sucursal_id,
+      cliente_id,
+      metodo_pago_id,
+      descuento,
+      monto_recibido,
+      observaciones,
       detalles
     } = req.body;
 
     const usuario_id = req.user.id;
-
-    // Validar cliente (opcional)
-    if (cliente_id) {
-      const cliente = await Cliente.findByPk(cliente_id);
-      if (!cliente) {
-        return res.status(404).json({
-          success: false,
-          message: 'Cliente no encontrado'
-        });
-      }
-    }
+    const authHeader = req.headers.authorization;
 
     // Validar método de pago
     const metodoPago = await MetodoPago.findByPk(metodo_pago_id);
@@ -292,26 +388,60 @@ const registrarVenta = async (req, res) => {
       });
     }
 
-    // Calcular totales (precio unitario ya incluye IGV)
+    // Verificar cliente (si se proporciona)
+    if (cliente_id) {
+      try {
+        const response = await fetch(`${CLIENTE_SERVICE_URL}/api/clientes/${cliente_id}`, {
+          headers: { Authorization: authHeader }
+        });
+        if (!response.ok) {
+          return res.status(404).json({
+            success: false,
+            message: 'Cliente no encontrado'
+          });
+        }
+      } catch (error) {
+        return res.status(500).json({
+          success: false,
+          message: 'Error al verificar cliente'
+        });
+      }
+    }
+
+    // Calcular totales
     let totalBruto = 0;
     const detallesVenta = [];
+    let totalProductos = 0;
+    let totalUnidades = 0;
 
     for (const detalle of detalles) {
       const totalItem = detalle.cantidad * detalle.precio_unitario - (detalle.descuento || 0);
       const subtotalItem = parseFloat((totalItem / (1 + TASA_IGV)).toFixed(2));
 
       totalBruto += totalItem;
+      totalProductos++;
+      totalUnidades += detalle.cantidad;
 
       detallesVenta.push({
         producto_id: detalle.producto_id,
-        inventario_id: detalle.inventario_id,
+        inventario_id: detalle.inventario_id || null,
         cantidad: detalle.cantidad,
         precio_unitario: detalle.precio_unitario,
         descuento: detalle.descuento || 0,
         subtotal: subtotalItem,
         total: totalItem,
-        lote: detalle.lote,
-        fecha_vencimiento: detalle.fecha_vencimiento
+        lote: detalle.lote || null,
+        fecha_vencimiento: detalle.fecha_vencimiento || null
+      });
+    }
+
+    // Validar stock
+    try {
+      await validarStockDisponible(authHeader, sucursal_id, detalles);
+    } catch (stockError) {
+      return res.status(400).json({
+        success: false,
+        message: stockError.message
       });
     }
 
@@ -320,24 +450,12 @@ const registrarVenta = async (req, res) => {
     const descuentoAplicado = descuento || 0;
     const totalFinal = totalBruto - descuentoAplicado;
 
-    const authHeader = req.headers.authorization;
-    if (authHeader) {
-      try {
-        await validarStockDisponible(authHeader, sucursal_id, detalles);
-      } catch (stockError) {
-        return res.status(400).json({
-          success: false,
-          message: stockError.message
-        });
-      }
-    }
-
     // Generar número de venta
     const fecha = new Date();
     const fechaStr = fecha.getFullYear().toString() +
       String(fecha.getMonth() + 1).padStart(2, '0') +
       String(fecha.getDate()).padStart(2, '0');
-    
+
     const lastVenta = await Venta.findOne({
       order: [['id', 'DESC']]
     });
@@ -371,29 +489,49 @@ const registrarVenta = async (req, res) => {
     }
 
     // Descontar stock en inventario
-    if (authHeader) {
+    try {
+      await descontarStockInventario(authHeader, sucursal_id, detalles, venta.id, numero_venta);
+    } catch (stockError) {
+      await VentaDetalle.destroy({ where: { venta_id: venta.id } });
+      await venta.destroy();
+      return res.status(400).json({
+        success: false,
+        message: stockError.message
+      });
+    }
+
+    // Registrar historial en cliente-service
+    if (cliente_id) {
       try {
-        await descontarStockInventario(authHeader, sucursal_id, detalles, venta.id, numero_venta);
-      } catch (stockError) {
-        await VentaDetalle.destroy({ where: { venta_id: venta.id } });
-        await venta.destroy();
-        return res.status(400).json({
-          success: false,
-          message: stockError.message
-        });
+        await registrarHistorialCliente(
+          authHeader,
+          cliente_id,
+          venta.id,
+          sucursal_id,
+          totalFinal,
+          totalProductos,
+          totalUnidades,
+          metodoPago.nombre
+        );
+      } catch (error) {
+        console.error('Error al registrar historial:', error);
+        // No interrumpimos el flujo
       }
     }
 
     // Obtener la venta completa con detalles
     const ventaCompleta = await Venta.findByPk(venta.id, {
       include: [
-        { model: Cliente, as: 'cliente' },
-        { model: MetodoPago, as: 'metodo_pago' },
-        { model: VentaDetalle, as: 'detalles' }
+        {
+          model: MetodoPago,
+          as: 'metodo_pago'
+        },
+        {
+          model: VentaDetalle,
+          as: 'detalles'
+        }
       ]
     });
-
-    // Aquí se integraría con Reportes para generar comprobante
 
     res.status(201).json({
       success: true,
@@ -412,9 +550,14 @@ const registrarVenta = async (req, res) => {
 // Obtener todas las ventas
 const getVentas = async (req, res) => {
   try {
-    const { 
-      estado, sucursal_id, cliente_id, usuario_id,
-      fecha_inicio, fecha_fin, metodo_pago_id
+    const {
+      estado,
+      sucursal_id,
+      cliente_id,
+      usuario_id,
+      metodo_pago_id,
+      fecha_inicio,
+      fecha_fin
     } = req.query;
 
     const where = {};
@@ -424,7 +567,7 @@ const getVentas = async (req, res) => {
     if (cliente_id) where.cliente_id = cliente_id;
     if (usuario_id) where.usuario_id = usuario_id;
     if (metodo_pago_id) where.metodo_pago_id = metodo_pago_id;
-    
+
     if (fecha_inicio && fecha_fin) {
       where.fecha_venta = {
         [Op.between]: [new Date(fecha_inicio), new Date(fecha_fin)]
@@ -434,9 +577,14 @@ const getVentas = async (req, res) => {
     const ventas = await Venta.findAll({
       where,
       include: [
-        { model: Cliente, as: 'cliente' },
-        { model: MetodoPago, as: 'metodo_pago' },
-        { model: VentaDetalle, as: 'detalles' }
+        {
+          model: MetodoPago,
+          as: 'metodo_pago'
+        },
+        {
+          model: VentaDetalle,
+          as: 'detalles'
+        }
       ],
       order: [['fecha_venta', 'DESC']]
     });
@@ -461,9 +609,14 @@ const getVentaById = async (req, res) => {
 
     const venta = await Venta.findByPk(id, {
       include: [
-        { model: Cliente, as: 'cliente' },
-        { model: MetodoPago, as: 'metodo_pago' },
-        { model: VentaDetalle, as: 'detalles' }
+        {
+          model: MetodoPago,
+          as: 'metodo_pago'
+        },
+        {
+          model: VentaDetalle,
+          as: 'detalles'
+        }
       ]
     });
 
@@ -538,9 +691,14 @@ const getVentasByCliente = async (req, res) => {
     const ventas = await Venta.findAll({
       where: { cliente_id },
       include: [
-        { model: Cliente, as: 'cliente' },
-        { model: MetodoPago, as: 'metodo_pago' },
-        { model: VentaDetalle, as: 'detalles' }
+        {
+          model: MetodoPago,
+          as: 'metodo_pago'
+        },
+        {
+          model: VentaDetalle,
+          as: 'detalles'
+        }
       ],
       order: [['fecha_venta', 'DESC']]
     });
@@ -564,12 +722,12 @@ const getVentasDelDia = async (req, res) => {
     const { sucursal_id } = req.query;
     const hoy = new Date();
     hoy.setHours(0, 0, 0, 0);
-    const mañana = new Date(hoy);
-    mañana.setDate(mañana.getDate() + 1);
+    const manana = new Date(hoy);
+    manana.setDate(manana.getDate() + 1);
 
     const where = {
       fecha_venta: {
-        [Op.between]: [hoy, mañana]
+        [Op.between]: [hoy, manana]
       },
       estado: 'completada'
     };
@@ -579,9 +737,14 @@ const getVentasDelDia = async (req, res) => {
     const ventas = await Venta.findAll({
       where,
       include: [
-        { model: Cliente, as: 'cliente' },
-        { model: MetodoPago, as: 'metodo_pago' },
-        { model: VentaDetalle, as: 'detalles' }
+        {
+          model: MetodoPago,
+          as: 'metodo_pago'
+        },
+        {
+          model: VentaDetalle,
+          as: 'detalles'
+        }
       ],
       order: [['fecha_venta', 'DESC']]
     });
@@ -674,14 +837,76 @@ const getProductosMasVendidos = async (req, res) => {
   }
 };
 
+// ============ ESTADÍSTICAS ============
+
+// Obtener estadísticas de ventas
+const getEstadisticas = async (req, res) => {
+  try {
+    const totalVentas = await Venta.count();
+    const ventasCompletadas = await Venta.count({ where: { estado: 'completada' } });
+    const ventasAnuladas = await Venta.count({ where: { estado: 'anulada' } });
+    
+    const totalIngresos = await Venta.sum('total', { where: { estado: 'completada' } });
+    const totalIngresosHoy = await Venta.sum('total', {
+      where: {
+        estado: 'completada',
+        fecha_venta: {
+          [Op.gte]: new Date(new Date().setHours(0, 0, 0, 0))
+        }
+      }
+    });
+
+    // Métodos de pago más usados
+    const metodosPago = await Venta.findAll({
+      attributes: [
+        'metodo_pago_id',
+        [Sequelize.fn('COUNT', Sequelize.col('Venta.id')), 'total_ventas'],  // ✅ Calificar columna
+        [Sequelize.fn('SUM', Sequelize.col('Venta.total')), 'total_monto']   // ✅ Calificar columna
+      ],
+      where: { estado: 'completada' },
+      group: ['metodo_pago_id'],
+      include: [
+        {
+          model: MetodoPago,
+          as: 'metodo_pago',
+          attributes: ['id', 'nombre']
+        }
+      ],
+      order: [[Sequelize.fn('SUM', Sequelize.col('Venta.total')), 'DESC']]  // ✅ Calificar columna
+    });
+
+    res.json({
+      success: true,
+      data: {
+        total_ventas: totalVentas,
+        ventas_completadas: ventasCompletadas,
+        ventas_anuladas: ventasAnuladas,
+        total_ingresos: totalIngresos || 0,
+        ingresos_hoy: totalIngresosHoy || 0,
+        metodos_pago: metodosPago
+      }
+    });
+  } catch (error) {
+    console.error('Error en getEstadisticas:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error interno del servidor',
+      error: error.message  // ✅ Agregar mensaje de error para debug
+    });
+  }
+};
+
 module.exports = {
-  // Clientes
+  // Clientes (proxy a cliente-service)
   getClientes,
   getClienteById,
+  getClienteByDocumento,
   createCliente,
-  updateCliente,
   // Métodos de pago
   getMetodosPago,
+  createMetodoPago,
+  updateMetodoPago,
+  deleteMetodoPago,
   // Ventas
   registrarVenta,
   getVentas,
@@ -689,5 +914,7 @@ module.exports = {
   anularVenta,
   getVentasByCliente,
   getVentasDelDia,
-  getProductosMasVendidos
+  getProductosMasVendidos,
+  // Estadísticas
+  getEstadisticas
 };

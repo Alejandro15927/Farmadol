@@ -11,7 +11,6 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
-
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -54,19 +53,6 @@ CREATE TABLE `clientes` (
   `fecha_actualizacion` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `clientes`
---
-
-INSERT INTO `clientes` (`id`, `tipo_documento`, `numero_documento`, `nombres`, `apellidos`, `razon_social`, `email`, `telefono`, `telefono_alternativo`, `fecha_nacimiento`, `genero`, `estado_civil`, `ocupacion`, `fecha_registro`, `ultima_compra`, `total_compras`, `total_gastado`, `promedio_gasto`, `puntos`, `nivel`, `estado`, `observaciones`, `fecha_creacion`, `fecha_actualizacion`) VALUES
-(1, 'DNI', '12345678', 'Juan Carlos', 'Pérez Gómez', NULL, 'juan.perez@email.com', '999-111-111', NULL, NULL, NULL, NULL, NULL, '2026-06-29 03:47:15', NULL, 5, 450.00, 0.00, 0, 'plata', 1, NULL, '2026-06-29 03:47:15', '2026-06-29 03:47:15'),
-(2, 'DNI', '87654321', 'María Elena', 'Rodríguez Torres', '', 'maria.rodriguez@email.com', '999-222-222', '', NULL, NULL, NULL, '', '2026-06-29 03:47:15', NULL, 12, 1250.00, 0.00, 0, 'oro', 1, '', '2026-06-29 03:47:15', '2026-06-30 02:46:10'),
-(3, 'RUC', '201234567892', 'Empresa', 'Farmacias del Perú S.A.', '', 'ventas@farmaciasperu.com', '999-333-333', '', '0000-00-00', '', '', '', '2026-06-29 03:47:15', NULL, 25, 3500.00, 0.00, 0, 'platino', 1, '', '2026-06-29 03:47:15', '2026-06-30 00:31:12'),
-(4, 'DNI', '45678912', 'Carlos', 'García López', '', 'carlos.garcia@email.com', '999-444-444', '', NULL, NULL, NULL, '', '2026-06-29 03:47:15', NULL, 3, 180.00, 0.00, 0, 'bronce', 1, '', '2026-06-29 03:47:15', '2026-06-30 02:45:59'),
-(5, 'DNI', '78912345', 'Ana', 'Martínez Sánchez', '', 'ana.martinez@email.com', '999-555-555', '', NULL, NULL, NULL, '', '2026-06-29 03:47:15', NULL, 18, 2800.00, 0.00, 0, 'oro', 1, '', '2026-06-29 03:47:15', '2026-06-30 03:18:08'),
-(6, 'DNI', '14785236', 'Alejandro', 'Paredes Eguia', '', 'juval40@hotmail.com', '959260629', '', '0000-00-00', '', '', '', '2026-06-29 23:31:07', NULL, 0, 0.00, 0.00, 0, 'bronce', 1, '', '2026-06-29 23:31:07', '2026-06-29 23:32:12'),
-(7, 'DNI', '147852363', 'BARRIENTOS', 'Acosta Poma', '', 'juval420@hotmail.com', '9592630629', '', NULL, NULL, NULL, '', '2026-07-02 19:09:57', NULL, 0, 0.00, 0.00, 0, 'bronce', 1, '', '2026-07-02 19:09:57', '2026-07-02 19:09:57');
-
 -- --------------------------------------------------------
 
 --
@@ -88,18 +74,6 @@ CREATE TABLE `direcciones` (
   `fecha_creacion` datetime DEFAULT current_timestamp(),
   `fecha_actualizacion` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `direcciones`
---
-
-INSERT INTO `direcciones` (`id`, `cliente_id`, `tipo`, `direccion`, `referencia`, `distrito`, `ciudad`, `departamento`, `codigo_postal`, `es_principal`, `estado`, `fecha_creacion`, `fecha_actualizacion`) VALUES
-(1, 1, 'casa', 'Av. Principal 456', 'Frente al parque', 'Miraflores', 'Lima', 'Lima', NULL, 1, 1, '2026-06-29 03:47:15', '2026-06-29 03:47:15'),
-(2, 1, 'trabajo', 'Calle Comercio 123', 'Oficina 301', 'San Isidro', 'Lima', 'Lima', NULL, 0, 1, '2026-06-29 03:47:15', '2026-06-29 03:47:15'),
-(3, 2, 'casa', 'Calle Secundaria 789', 'Altura del mercado', 'San Borja', 'Lima', 'Lima', NULL, 1, 1, '2026-06-29 03:47:15', '2026-06-29 03:47:15'),
-(4, 3, 'casa', 'Av. Empresarial 1000', 'Torre A', 'Surco', 'Lima', 'Lima', NULL, 1, 1, '2026-06-29 03:47:15', '2026-06-29 03:47:15'),
-(5, 4, 'casa', 'Calle Nueva 123', 'Cerca al colegio', 'Los Olivos', 'Lima', 'Lima', NULL, 1, 1, '2026-06-29 03:47:15', '2026-06-29 03:47:15'),
-(8, 5, 'casa', 'Av. Primavera 456', 'Edificio 3', 'San Miguel', 'Lima', 'Lima', NULL, 1, 1, '2026-06-29 23:32:18', '2026-06-29 23:32:18');
 
 -- --------------------------------------------------------
 
@@ -180,13 +154,13 @@ ALTER TABLE `historial_compras`
 -- AUTO_INCREMENT de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `direcciones`
 --
 ALTER TABLE `direcciones`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `frecuencia_compras`
@@ -221,6 +195,7 @@ ALTER TABLE `frecuencia_compras`
 --
 ALTER TABLE `historial_compras`
   ADD CONSTRAINT `historial_compras_ibfk_1` FOREIGN KEY (`cliente_id`) REFERENCES `clientes` (`id`) ON DELETE CASCADE;
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

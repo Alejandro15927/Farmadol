@@ -1,5 +1,4 @@
-// cliente-service/controllers/clienteController.js
-const { Cliente, Direccion, HistorialCompra, FrecuenciaCompra, sequelize } = require('../models');
+const { Cliente, Direccion, FrecuenciaCompra, HistorialCompra } = require('../models');
 const { validationResult } = require('express-validator');
 const { Op } = require('sequelize');
 
@@ -8,73 +7,46 @@ const { Op } = require('sequelize');
 // Obtener todos los clientes
 const getClientes = async (req, res) => {
   try {
-    const { 
-      search, nivel, estado, fecha_inicio, fecha_fin, 
-      min_compras, max_compras, min_gasto, max_gasto,
-      limit = 50, offset = 0
-    } = req.query;
+    const { search, estado, nivel, fecha_inicio, fecha_fin } = req.query;
 
-    const where = {};
-
-    if (search) {
-      where[Op.or] = [
-        { nombres: { [Op.like]: `%${search}%` } },
-        { apellidos: { [Op.like]: `%${search}%` } },
-        { numero_documento: { [Op.like]: `%${search}%` } },
-        { email: { [Op.like]: `%${search}%` } }
-      ];
-    }
-
-    if (nivel) where.nivel = nivel;
+    let where = {};
     if (estado !== undefined) where.estado = estado === 'true';
-    
+    if (nivel) where.nivel = nivel;
     if (fecha_inicio && fecha_fin) {
       where.fecha_registro = {
         [Op.between]: [new Date(fecha_inicio), new Date(fecha_fin)]
       };
     }
-
-    if (min_compras) where.total_compras = { [Op.gte]: parseInt(min_compras) };
-    if (max_compras) {
-      where.total_compras = { 
-        ...where.total_compras, 
-        [Op.lte]: parseInt(max_compras) 
+    if (search) {
+      where = {
+        ...where,
+        [Op.or]: [
+          { nombres: { [Op.like]: `%${search}%` } },
+          { apellidos: { [Op.like]: `%${search}%` } },
+          { numero_documento: { [Op.like]: `%${search}%` } },
+          { email: { [Op.like]: `%${search}%` } },
+          { telefono: { [Op.like]: `%${search}%` } }
+        ]
       };
     }
 
-    if (min_gasto) where.total_gastado = { [Op.gte]: parseFloat(min_gasto) };
-    if (max_gasto) {
-      where.total_gastado = { 
-        ...where.total_gastado, 
-        [Op.lte]: parseFloat(max_gasto) 
-      };
-    }
-
-    const { count, rows } = await Cliente.findAndCountAll({
+    const clientes = await Cliente.findAll({
       where,
       include: [
-        { 
-          model: Direccion, 
+        {
+          model: Direccion,
           as: 'direcciones',
           where: { es_principal: true },
           required: false,
           limit: 1
         }
       ],
-      order: [['apellidos', 'ASC'], ['nombres', 'ASC']],
-      limit: parseInt(limit),
-      offset: parseInt(offset)
+      order: [['apellidos', 'ASC'], ['nombres', 'ASC']]
     });
 
     res.json({
       success: true,
-      data: rows,
-      pagination: {
-        total: count,
-        limit: parseInt(limit),
-        offset: parseInt(offset),
-        pages: Math.ceil(count / parseInt(limit))
-      }
+      data: clientes
     });
   } catch (error) {
     console.error('Error en getClientes:', error);
@@ -92,9 +64,12 @@ const getClienteById = async (req, res) => {
 
     const cliente = await Cliente.findByPk(id, {
       include: [
-        { model: Direccion, as: 'direcciones' },
-        { 
-          model: HistorialCompra, 
+        {
+          model: Direccion,
+          as: 'direcciones'
+        },
+        {
+          model: HistorialCompra,
           as: 'historial_compras',
           limit: 10,
           order: [['fecha_compra', 'DESC']]
@@ -134,9 +109,19 @@ const createCliente = async (req, res) => {
     }
 
     const { 
-      tipo_documento, numero_documento, nombres, apellidos,
-      razon_social, email, telefono, telefono_alternativo,
-      fecha_nacimiento, genero, estado_civil, ocupacion,
+      tipo_documento, 
+      numero_documento, 
+      nombres, 
+      apellidos,
+      razon_social, 
+      email, 
+      telefono, 
+      telefono_alternativo,
+      fecha_nacimiento, 
+      genero, 
+      estado_civil,
+      ocupacion,
+      direcciones,
       observaciones
     } = req.body;
 
@@ -150,7 +135,7 @@ const createCliente = async (req, res) => {
     }
 
     const cliente = await Cliente.create({
-      tipo_documento,
+      tipo_documento: tipo_documento || 'DNI',
       numero_documento,
       nombres,
       apellidos,
@@ -162,35 +147,32 @@ const createCliente = async (req, res) => {
       genero,
       estado_civil,
       ocupacion,
+      observaciones,
       fecha_registro: new Date(),
+      estado: true,
+      nivel: 'bronce',
       total_compras: 0,
       total_gastado: 0,
-      promedio_gasto: 0,
-      puntos: 0,
-      nivel: 'bronce',
-      estado: true,
-      observaciones
+      puntos: 0
     });
 
-    // Si se envían direcciones
-    if (req.body.direcciones && req.body.direcciones.length > 0) {
-      for (const dir of req.body.direcciones) {
-        await Direccion.create({
-          cliente_id: cliente.id,
-          tipo: dir.tipo || 'casa',
-          direccion: dir.direccion,
-          referencia: dir.referencia,
-          distrito: dir.distrito,
-          ciudad: dir.ciudad,
-          departamento: dir.departamento,
-          codigo_postal: dir.codigo_postal,
-          es_principal: dir.es_principal || false
-        });
-      }
+    // Crear direcciones
+    if (direcciones && direcciones.length > 0) {
+      const direccionesData = direcciones.map((dir, index) => ({
+        ...dir,
+        cliente_id: cliente.id,
+        es_principal: index === 0 ? true : (dir.es_principal || false)
+      }));
+      await Direccion.bulkCreate(direccionesData);
     }
 
     const clienteCompleto = await Cliente.findByPk(cliente.id, {
-      include: [{ model: Direccion, as: 'direcciones' }]
+      include: [
+        {
+          model: Direccion,
+          as: 'direcciones'
+        }
+      ]
     });
 
     res.status(201).json({
@@ -220,10 +202,21 @@ const updateCliente = async (req, res) => {
 
     const { id } = req.params;
     const { 
-      tipo_documento, numero_documento, nombres, apellidos,
-      razon_social, email, telefono, telefono_alternativo,
-      fecha_nacimiento, genero, estado_civil, ocupacion,
-      estado, observaciones
+      tipo_documento, 
+      numero_documento, 
+      nombres, 
+      apellidos,
+      razon_social, 
+      email, 
+      telefono, 
+      telefono_alternativo,
+      fecha_nacimiento, 
+      genero, 
+      estado_civil,
+      ocupacion,
+      estado,
+      nivel,
+      observaciones
     } = req.body;
 
     const cliente = await Cliente.findByPk(id);
@@ -235,7 +228,7 @@ const updateCliente = async (req, res) => {
     }
 
     // Verificar duplicados
-    if (numero_documento !== cliente.numero_documento) {
+    if (numero_documento && numero_documento !== cliente.numero_documento) {
       const existing = await Cliente.findOne({
         where: { numero_documento, id: { [Op.ne]: id } }
       });
@@ -248,52 +241,37 @@ const updateCliente = async (req, res) => {
     }
 
     await cliente.update({
-      tipo_documento,
-      numero_documento,
-      nombres,
-      apellidos,
-      razon_social,
-      email,
-      telefono,
-      telefono_alternativo,
-      fecha_nacimiento,
-      genero,
-      estado_civil,
-      ocupacion,
-      estado,
-      observaciones,
+      tipo_documento: tipo_documento || cliente.tipo_documento,
+      numero_documento: numero_documento || cliente.numero_documento,
+      nombres: nombres || cliente.nombres,
+      apellidos: apellidos || cliente.apellidos,
+      razon_social: razon_social !== undefined ? razon_social : cliente.razon_social,
+      email: email || cliente.email,
+      telefono: telefono || cliente.telefono,
+      telefono_alternativo: telefono_alternativo !== undefined ? telefono_alternativo : cliente.telefono_alternativo,
+      fecha_nacimiento: fecha_nacimiento || cliente.fecha_nacimiento,
+      genero: genero || cliente.genero,
+      estado_civil: estado_civil || cliente.estado_civil,
+      ocupacion: ocupacion !== undefined ? ocupacion : cliente.ocupacion,
+      estado: estado !== undefined ? estado : cliente.estado,
+      nivel: nivel || cliente.nivel,
+      observaciones: observaciones !== undefined ? observaciones : cliente.observaciones,
       fecha_actualizacion: new Date()
     });
 
-    // Actualizar direcciones si se envían
-    if (req.body.direcciones) {
-      // Eliminar direcciones existentes
-      await Direccion.destroy({ where: { cliente_id: id } });
-      
-      // Crear nuevas direcciones
-      for (const dir of req.body.direcciones) {
-        await Direccion.create({
-          cliente_id: id,
-          tipo: dir.tipo || 'casa',
-          direccion: dir.direccion,
-          referencia: dir.referencia,
-          distrito: dir.distrito,
-          ciudad: dir.ciudad,
-          departamento: dir.departamento,
-          codigo_postal: dir.codigo_postal,
-          es_principal: dir.es_principal || false
-        });
-      }
-    }
-
-    const clienteCompleto = await Cliente.findByPk(id, {
-      include: [{ model: Direccion, as: 'direcciones' }]
+    const clienteActualizado = await Cliente.findByPk(id, {
+      include: [
+        {
+          model: Direccion,
+          as: 'direcciones'
+        }
+      ]
     });
 
     res.json({
       success: true,
       message: 'Cliente actualizado exitosamente',
-      data: clienteCompleto
+      data: clienteActualizado
     });
   } catch (error) {
     console.error('Error en updateCliente:', error);
@@ -304,7 +282,7 @@ const updateCliente = async (req, res) => {
   }
 };
 
-// Eliminar cliente (lógica)
+// Eliminar cliente (deshabilitar)
 const deleteCliente = async (req, res) => {
   try {
     const { id } = req.params;
@@ -317,17 +295,119 @@ const deleteCliente = async (req, res) => {
       });
     }
 
-    await cliente.update({
+    await cliente.update({ 
       estado: false,
       fecha_actualizacion: new Date()
     });
 
     res.json({
       success: true,
-      message: 'Cliente eliminado exitosamente'
+      message: 'Cliente deshabilitado exitosamente'
     });
   } catch (error) {
     console.error('Error en deleteCliente:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error interno del servidor'
+    });
+  }
+};
+
+// Habilitar cliente
+const enableCliente = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const cliente = await Cliente.findByPk(id);
+    if (!cliente) {
+      return res.status(404).json({
+        success: false,
+        message: 'Cliente no encontrado'
+      });
+    }
+
+    await cliente.update({ 
+      estado: true,
+      fecha_actualizacion: new Date()
+    });
+
+    res.json({
+      success: true,
+      message: 'Cliente habilitado exitosamente'
+    });
+  } catch (error) {
+    console.error('Error en enableCliente:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error interno del servidor'
+    });
+  }
+};
+
+// Buscar cliente por documento
+const getClienteByDocumento = async (req, res) => {
+  try {
+    const { documento } = req.params;
+
+    const cliente = await Cliente.findOne({
+      where: { numero_documento: documento },
+      include: [
+        {
+          model: Direccion,
+          as: 'direcciones'
+        }
+      ]
+    });
+
+    if (!cliente) {
+      return res.status(404).json({
+        success: false,
+        message: 'Cliente no encontrado'
+      });
+    }
+
+    res.json({
+      success: true,
+      data: cliente
+    });
+  } catch (error) {
+    console.error('Error en getClienteByDocumento:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error interno del servidor'
+    });
+  }
+};
+
+// Obtener clientes frecuentes
+const getClientesFrecuentes = async (req, res) => {
+  try {
+    const { limit = 10 } = req.query;
+
+    const clientes = await Cliente.findAll({
+      where: { estado: true },
+      order: [
+        ['total_compras', 'DESC'],
+        ['total_gastado', 'DESC']
+      ],
+      limit: parseInt(limit),
+      include: [
+        {
+          model: Direccion,
+          as: 'direcciones',
+          where: { es_principal: true },
+          required: false,
+          limit: 1
+        }
+      ]
+    });
+
+    res.json({
+      success: true,
+      data: clientes
+    });
+  } catch (error) {
+    console.error('Error en getClientesFrecuentes:', error);
     res.status(500).json({
       success: false,
       message: 'Error interno del servidor'
@@ -359,7 +439,7 @@ const addDireccion = async (req, res) => {
       });
     }
 
-    // Si es principal, quitar principal de otras direcciones
+    // Si es principal, quitar principal a las demás
     if (es_principal) {
       await Direccion.update(
         { es_principal: false },
@@ -367,7 +447,7 @@ const addDireccion = async (req, res) => {
       );
     }
 
-    const direccionNueva = await Direccion.create({
+    const nuevaDireccion = await Direccion.create({
       cliente_id,
       tipo: tipo || 'casa',
       direccion,
@@ -376,13 +456,14 @@ const addDireccion = async (req, res) => {
       ciudad,
       departamento,
       codigo_postal,
-      es_principal: es_principal || false
+      es_principal: es_principal || false,
+      estado: true
     });
 
     res.status(201).json({
       success: true,
       message: 'Dirección agregada exitosamente',
-      data: direccionNueva
+      data: nuevaDireccion
     });
   } catch (error) {
     console.error('Error en addDireccion:', error);
@@ -393,22 +474,84 @@ const addDireccion = async (req, res) => {
   }
 };
 
-// Obtener direcciones de un cliente
-const getDirecciones = async (req, res) => {
+// Actualizar dirección
+const updateDireccion = async (req, res) => {
   try {
-    const { cliente_id } = req.params;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        success: false,
+        errors: errors.array()
+      });
+    }
 
-    const direcciones = await Direccion.findAll({
-      where: { cliente_id, estado: true },
-      order: [['es_principal', 'DESC'], ['fecha_creacion', 'ASC']]
+    const { id } = req.params;
+    const { tipo, direccion, referencia, distrito, ciudad, departamento, codigo_postal, es_principal, estado } = req.body;
+
+    const direccionExistente = await Direccion.findByPk(id);
+    if (!direccionExistente) {
+      return res.status(404).json({
+        success: false,
+        message: 'Dirección no encontrada'
+      });
+    }
+
+    // Si es principal, quitar principal a las demás
+    if (es_principal) {
+      await Direccion.update(
+        { es_principal: false },
+        { where: { cliente_id: direccionExistente.cliente_id, es_principal: true } }
+      );
+    }
+
+    await direccionExistente.update({
+      tipo: tipo || direccionExistente.tipo,
+      direccion: direccion || direccionExistente.direccion,
+      referencia: referencia !== undefined ? referencia : direccionExistente.referencia,
+      distrito: distrito !== undefined ? distrito : direccionExistente.distrito,
+      ciudad: ciudad !== undefined ? ciudad : direccionExistente.ciudad,
+      departamento: departamento !== undefined ? departamento : direccionExistente.departamento,
+      codigo_postal: codigo_postal !== undefined ? codigo_postal : direccionExistente.codigo_postal,
+      es_principal: es_principal !== undefined ? es_principal : direccionExistente.es_principal,
+      estado: estado !== undefined ? estado : direccionExistente.estado,
+      fecha_actualizacion: new Date()
     });
 
     res.json({
       success: true,
-      data: direcciones
+      message: 'Dirección actualizada exitosamente',
+      data: direccionExistente
     });
   } catch (error) {
-    console.error('Error en getDirecciones:', error);
+    console.error('Error en updateDireccion:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error interno del servidor'
+    });
+  }
+};
+
+// Eliminar dirección
+const deleteDireccion = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const direccion = await Direccion.findByPk(id);
+    if (!direccion) {
+      return res.status(404).json({
+        success: false,
+        message: 'Dirección no encontrada'
+      });
+    }
+
+    await direccion.update({ estado: false });
+
+    res.json({
+      success: true,
+      message: 'Dirección eliminada exitosamente'
+    });
+  } catch (error) {
+    console.error('Error en deleteDireccion:', error);
     res.status(500).json({
       success: false,
       message: 'Error interno del servidor'
@@ -418,8 +561,8 @@ const getDirecciones = async (req, res) => {
 
 // ============ HISTORIAL DE COMPRAS ============
 
-// Registrar compra en historial del cliente
-const registrarCompra = async (req, res) => {
+// Registrar compra en historial
+const registrarHistorialCompra = async (req, res) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -430,10 +573,7 @@ const registrarCompra = async (req, res) => {
     }
 
     const { cliente_id } = req.params;
-    const { 
-      venta_id, sucursal_id, fecha_compra, total, 
-      productos, unidades, metodo_pago 
-    } = req.body;
+    const { venta_id, sucursal_id, fecha_compra, total, productos, unidades, metodo_pago } = req.body;
 
     const cliente = await Cliente.findByPk(cliente_id);
     if (!cliente) {
@@ -443,7 +583,6 @@ const registrarCompra = async (req, res) => {
       });
     }
 
-    // Crear historial
     const historial = await HistorialCompra.create({
       cliente_id,
       venta_id,
@@ -457,46 +596,24 @@ const registrarCompra = async (req, res) => {
     });
 
     // Actualizar estadísticas del cliente
-    const nuevasCompras = cliente.total_compras + 1;
-    const nuevoTotalGastado = parseFloat(cliente.total_gastado) + parseFloat(total);
-    const nuevoPromedio = nuevoTotalGastado / nuevasCompras;
-
-    // Calcular puntos (1 punto por cada 10 soles)
-    const nuevosPuntos = cliente.puntos + Math.floor(total / 10);
-
-    // Calcular nivel
-    let nivel = 'bronce';
-    if (nuevoTotalGastado >= 5000) nivel = 'diamante';
-    else if (nuevoTotalGastado >= 3000) nivel = 'platino';
-    else if (nuevoTotalGastado >= 1500) nivel = 'oro';
-    else if (nuevoTotalGastado >= 500) nivel = 'plata';
-
     await cliente.update({
-      total_compras: nuevasCompras,
-      total_gastado: nuevoTotalGastado,
-      promedio_gasto: nuevoPromedio,
-      puntos: nuevosPuntos,
-      nivel,
+      total_compras: cliente.total_compras + 1,
+      total_gastado: parseFloat(cliente.total_gastado) + parseFloat(total),
+      promedio_gasto: (parseFloat(cliente.total_gastado) + parseFloat(total)) / (cliente.total_compras + 1),
       ultima_compra: new Date(),
       fecha_actualizacion: new Date()
     });
 
+    // Actualizar nivel
+    await actualizarNivelCliente(cliente.id);
+
     res.status(201).json({
       success: true,
-      message: 'Compra registrada en historial',
-      data: {
-        historial,
-        cliente_actualizado: {
-          total_compras: nuevasCompras,
-          total_gastado: nuevoTotalGastado,
-          promedio_gasto: nuevoPromedio,
-          puntos: nuevosPuntos,
-          nivel
-        }
-      }
+      message: 'Historial de compra registrado exitosamente',
+      data: historial
     });
   } catch (error) {
-    console.error('Error en registrarCompra:', error);
+    console.error('Error en registrarHistorialCompra:', error);
     res.status(500).json({
       success: false,
       message: 'Error interno del servidor'
@@ -504,31 +621,21 @@ const registrarCompra = async (req, res) => {
   }
 };
 
-// Obtener historial de compras del cliente
+// Obtener historial de compras de un cliente
 const getHistorialCompras = async (req, res) => {
   try {
     const { cliente_id } = req.params;
-    const { limit = 20, offset = 0, estado } = req.query;
+    const { limit = 50 } = req.query;
 
-    const where = { cliente_id };
-    if (estado) where.estado = estado;
-
-    const { count, rows } = await HistorialCompra.findAndCountAll({
-      where,
+    const historial = await HistorialCompra.findAll({
+      where: { cliente_id },
       order: [['fecha_compra', 'DESC']],
-      limit: parseInt(limit),
-      offset: parseInt(offset)
+      limit: parseInt(limit)
     });
 
     res.json({
       success: true,
-      data: rows,
-      pagination: {
-        total: count,
-        limit: parseInt(limit),
-        offset: parseInt(offset),
-        pages: Math.ceil(count / parseInt(limit))
-      }
+      data: historial
     });
   } catch (error) {
     console.error('Error en getHistorialCompras:', error);
@@ -539,246 +646,61 @@ const getHistorialCompras = async (req, res) => {
   }
 };
 
-// ============ FRECUENCIA DE COMPRAS ============
+// ============ FUNCIONES AUXILIARES ============
 
-// Actualizar frecuencia de compra de productos
-const actualizarFrecuencia = async (req, res) => {
+// Actualizar nivel del cliente según compras
+const actualizarNivelCliente = async (clienteId) => {
   try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({
-        success: false,
-        errors: errors.array()
-      });
+    const cliente = await Cliente.findByPk(clienteId);
+    if (!cliente) return;
+
+    const totalGastado = parseFloat(cliente.total_gastado);
+    let nivel = 'bronce';
+
+    if (totalGastado >= 5000) nivel = 'diamante';
+    else if (totalGastado >= 3000) nivel = 'platino';
+    else if (totalGastado >= 1500) nivel = 'oro';
+    else if (totalGastado >= 500) nivel = 'plata';
+
+    if (nivel !== cliente.nivel) {
+      await cliente.update({ nivel });
     }
-
-    const { cliente_id, producto_id, cantidad, total } = req.body;
-
-    const cliente = await Cliente.findByPk(cliente_id);
-    if (!cliente) {
-      return res.status(404).json({
-        success: false,
-        message: 'Cliente no encontrado'
-      });
-    }
-
-    let frecuencia = await FrecuenciaCompra.findOne({
-      where: { cliente_id, producto_id }
-    });
-
-    if (frecuencia) {
-      // Actualizar existente
-      const nuevasCompras = frecuencia.total_compras + 1;
-      const nuevasUnidades = frecuencia.total_unidades + cantidad;
-      const nuevoGastado = parseFloat(frecuencia.total_gastado) + parseFloat(total);
-
-      // Calcular frecuencia
-      let nivelFrecuencia = 'baja';
-      if (nuevasCompras >= 10) nivelFrecuencia = 'muy_alta';
-      else if (nuevasCompras >= 5) nivelFrecuencia = 'alta';
-      else if (nuevasCompras >= 3) nivelFrecuencia = 'media';
-
-      await frecuencia.update({
-        total_compras: nuevasCompras,
-        total_unidades: nuevasUnidades,
-        total_gastado: nuevoGastado,
-        ultima_compra: new Date(),
-        frecuencia: nivelFrecuencia,
-        fecha_actualizacion: new Date()
-      });
-    } else {
-      // Crear nuevo
-      frecuencia = await FrecuenciaCompra.create({
-        cliente_id,
-        producto_id,
-        total_compras: 1,
-        total_unidades: cantidad,
-        total_gastado: total,
-        ultima_compra: new Date(),
-        frecuencia: 'baja'
-      });
-    }
-
-    res.json({
-      success: true,
-      message: 'Frecuencia de compra actualizada',
-      data: frecuencia
-    });
   } catch (error) {
-    console.error('Error en actualizarFrecuencia:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Error interno del servidor'
-    });
+    console.error('Error en actualizarNivelCliente:', error);
   }
 };
 
-// Obtener productos más comprados por un cliente
-const getProductosFrecuentes = async (req, res) => {
-  try {
-    const { cliente_id } = req.params;
-    const { limit = 10 } = req.query;
+// ============ ESTADÍSTICAS ============
 
-    const productos = await FrecuenciaCompra.findAll({
-      where: { cliente_id },
-      order: [['total_compras', 'DESC'], ['total_unidades', 'DESC']],
-      limit: parseInt(limit)
-    });
-
-    res.json({
-      success: true,
-      data: productos
-    });
-  } catch (error) {
-    console.error('Error en getProductosFrecuentes:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Error interno del servidor'
-    });
-  }
-};
-
-// ============ ESTADÍSTICAS Y REPORTES ============
-
-// Obtener estadísticas generales
+// Obtener estadísticas de clientes
 const getEstadisticas = async (req, res) => {
   try {
-    const totalClientes = await Cliente.count({ where: { estado: true } });
-    const clientesActivos = await Cliente.count({ 
-      where: { 
-        estado: true,
-        total_compras: { [Op.gt]: 0 }
-      } 
-    });
+    const totalClientes = await Cliente.count();
+    const clientesActivos = await Cliente.count({ where: { estado: true } });
     
-    const clientesNuevos = await Cliente.count({
-      where: {
-        estado: true,
-        fecha_registro: {
-          [Op.gte]: new Date(new Date() - 30 * 24 * 60 * 60 * 1000)
-        }
-      }
-    });
-
-    // CORRECCIÓN: Usar sequelize correctamente
     const niveles = await Cliente.findAll({
-      where: { estado: true },
       attributes: [
         'nivel',
-        [sequelize.fn('COUNT', sequelize.col('id')), 'total']
+        [Sequelize.fn('COUNT', Sequelize.col('id')), 'total']
       ],
+      where: { estado: true },
       group: ['nivel']
     });
 
-    const totalGastado = await Cliente.sum('total_gastado', { 
-      where: { estado: true } 
-    });
-
-    // CORRECCIÓN: Usar sequelize correctamente
-    const promedioGasto = await Cliente.findOne({
-      where: { estado: true, total_compras: { [Op.gt]: 0 } },
-      attributes: [
-        [sequelize.fn('AVG', sequelize.col('total_gastado')), 'promedio']
-      ]
-    });
+    const totalGastado = await Cliente.sum('total_gastado', { where: { estado: true } });
 
     res.json({
       success: true,
       data: {
         total_clientes: totalClientes,
         clientes_activos: clientesActivos,
-        clientes_nuevos_30dias: clientesNuevos,
+        clientes_inactivos: totalClientes - clientesActivos,
         total_gastado: totalGastado || 0,
-        promedio_gasto: promedioGasto?.dataValues?.promedio || 0,
-        niveles: niveles || []
+        niveles
       }
     });
   } catch (error) {
     console.error('Error en getEstadisticas:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Error interno del servidor'
-    });
-  }
-};
-
-// Obtener clientes frecuentes
-const getClientesFrecuentes = async (req, res) => {
-  try {
-    const { limit = 10, min_compras = 3 } = req.query;
-
-    const clientes = await Cliente.findAll({
-      where: {
-        estado: true,
-        total_compras: { [Op.gte]: parseInt(min_compras) }
-      },
-      include: [
-        { 
-          model: Direccion, 
-          as: 'direcciones',
-          where: { es_principal: true },
-          required: false,
-          limit: 1
-        }
-      ],
-      order: [
-        ['total_compras', 'DESC'],
-        ['total_gastado', 'DESC']
-      ],
-      limit: parseInt(limit)
-    });
-
-    res.json({
-      success: true,
-      data: clientes
-    });
-  } catch (error) {
-    console.error('Error en getClientesFrecuentes:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Error interno del servidor'
-    });
-  }
-};
-
-// Buscar clientes por documento
-const buscarPorDocumento = async (req, res) => {
-  try {
-    const { numero_documento } = req.query;
-
-    if (!numero_documento) {
-      return res.status(400).json({
-        success: false,
-        message: 'Número de documento requerido'
-      });
-    }
-
-    const cliente = await Cliente.findOne({
-      where: { numero_documento, estado: true },
-      include: [
-        { model: Direccion, as: 'direcciones' },
-        { 
-          model: HistorialCompra, 
-          as: 'historial_compras',
-          limit: 5,
-          order: [['fecha_compra', 'DESC']]
-        }
-      ]
-    });
-
-    if (!cliente) {
-      return res.status(404).json({
-        success: false,
-        message: 'Cliente no encontrado'
-      });
-    }
-
-    res.json({
-      success: true,
-      data: cliente
-    });
-  } catch (error) {
-    console.error('Error en buscarPorDocumento:', error);
     res.status(500).json({
       success: false,
       message: 'Error interno del servidor'
@@ -793,17 +715,16 @@ module.exports = {
   createCliente,
   updateCliente,
   deleteCliente,
+  enableCliente,
+  getClienteByDocumento,
+  getClientesFrecuentes,
   // Direcciones
   addDireccion,
-  getDirecciones,
+  updateDireccion,
+  deleteDireccion,
   // Historial
-  registrarCompra,
+  registrarHistorialCompra,
   getHistorialCompras,
-  // Frecuencia
-  actualizarFrecuencia,
-  getProductosFrecuentes,
   // Estadísticas
-  getEstadisticas,
-  getClientesFrecuentes,
-  buscarPorDocumento
+  getEstadisticas
 };

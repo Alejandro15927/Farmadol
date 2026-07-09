@@ -1,519 +1,832 @@
 <!-- frontend/public/dashboard.html -->
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Farmadol - Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💊</text></svg>" />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💊</text></svg>"
+    />
     <style>
-        .sidebar-transition {
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      .sidebar-transition {
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .hover-scale:hover {
+        transform: scale(1.02);
+      }
+      .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #22c55e;
+        display: inline-block;
+        animation: pulse-dot 2s infinite;
+      }
+      @keyframes pulse-dot {
+        0%,
+        100% {
+          opacity: 1;
         }
-        .hover-scale:hover {
-            transform: scale(1.02);
+        50% {
+          opacity: 0.4;
         }
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #22c55e;
-            display: inline-block;
-            animation: pulse-dot 2s infinite;
-        }
-        @keyframes pulse-dot {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
-        }
-        .sidebar::-webkit-scrollbar {
-            width: 4px;
-        }
-        .sidebar::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
+      }
+      .sidebar::-webkit-scrollbar {
+        width: 4px;
+      }
+      .sidebar::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 4px;
+      }
+      .card-hover {
+        transition: all 0.2s ease;
+      }
+      .card-hover:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+      }
+      .btn-accion {
+        transition: all 0.2s ease;
+      }
+      .btn-accion:hover {
+        transform: scale(1.02);
+      }
     </style>
-</head>
-<body>
-
+  </head>
+  <body>
     <!-- Sidebar Overlay (mobile) -->
-    <div class="fixed inset-0 bg-black/30 backdrop-blur-sm z-40 hidden" id="sidebarOverlay"></div>
+    <div
+      class="fixed inset-0 bg-black/30 backdrop-blur-sm z-40 hidden"
+      id="sidebarOverlay"
+    ></div>
 
     <!-- ============ SIDEBAR ============ -->
-    <aside class="sidebar fixed left-0 top-0 h-full w-[280px] bg-white border-r border-gray-200 flex flex-col z-50 shadow-lg transform -translate-x-full md:translate-x-0 sidebar-transition" id="sidebar">
-        <!-- Brand -->
-        <div class="px-6 py-6 border-b border-gray-100 flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-bold text-lg">F</div>
-            <div>
-                <h1 class="text-xl font-bold text-gray-900">Farmadol</h1>
-                <p class="text-xs text-gray-500">Sistema de Gestión</p>
-            </div>
+    <aside
+      class="sidebar fixed left-0 top-0 h-full w-[280px] bg-white border-r border-gray-200 flex flex-col z-50 shadow-lg transform -translate-x-full md:translate-x-0 sidebar-transition"
+      id="sidebar"
+    >
+      <!-- Brand -->
+      <div class="px-6 py-6 border-b border-gray-100 flex items-center gap-3">
+        <div
+          class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-bold text-lg"
+        >
+          F
         </div>
-
-        <!-- Menu -->
-        <nav class="flex-1 px-3 py-4 overflow-y-auto">
-            <p class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Navegación</p>
-            
-            <a href="/dashboard" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all bg-blue-50 text-blue-600">
-                <span class="text-lg">📊</span>
-                Dashboard
-            </a>
-            
-            <a href="/ventas" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
-                <span class="text-lg">💳</span>
-                Ventas
-                <span class="ml-auto bg-blue-500 text-white text-xs px-2.5 py-0.5 rounded-full" id="ventasBadge">0</span>
-            </a>
-            
-            <a href="/inventario" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
-                <span class="text-lg">📦</span>
-                Inventario
-                <span class="ml-auto bg-yellow-500 text-white text-xs px-2.5 py-0.5 rounded-full" id="stockBadge">0</span>
-            </a>
-            
-            <a href="/usuarios" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
-                <span class="text-lg">🛒</span>
-                Compras
-            </a>
-            
-            <a href="/clientes" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
-                <span class="text-lg">👤</span>
-                Clientes
-                <span class="ml-auto bg-blue-500 text-white text-xs px-2.5 py-0.5 rounded-full" id="clientesBadge">0</span>
-            </a>
-            
-            <a href="/usuarios" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
-                <span class="text-lg">🔐</span>
-                Usuarios
-            </a>
-            
-            <a href="/sucursales" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
-                <span class="text-lg">🏢</span>
-                Sucursales
-                <span class="ml-auto bg-blue-500 text-white text-xs px-2.5 py-0.5 rounded-full" id="sucursalesBadge">0</span>
-            </a>
-            
-            <a href="/reportes" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
-                <span class="text-lg">📄</span>
-                Reportes
-            </a>
-        </nav>
-
-        <!-- Footer -->
-        <div class="px-4 py-4 border-t border-gray-100">
-            <div class="flex items-center gap-3 mb-3">
-                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-semibold text-sm" id="userAvatar">A</div>
-                <div>
-                    <p class="text-sm font-semibold text-gray-900" id="userName">Administrador</p>
-                    <p class="text-xs text-gray-500" id="userEmail">admin@farmadol.com</p>
-                    <span class="text-xs text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full inline-block mt-0.5" id="userRole">Administrador</span>
-                </div>
-            </div>
-            <button class="w-full flex items-center gap-2 px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition-all" id="logoutBtn">
-                <span>🚪</span>
-                Cerrar Sesión
-            </button>
+        <div>
+          <h1 class="text-xl font-bold text-gray-900">Farmadol</h1>
+          <p class="text-xs text-gray-500">Sistema de Gestión</p>
         </div>
+      </div>
+
+      <!-- Menu -->
+      <nav class="flex-1 px-3 py-4 overflow-y-auto">
+        <p
+          class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3"
+        >
+          Navegación
+        </p>
+
+        <a
+          href="/dashboard"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all bg-blue-50 text-blue-600"
+        >
+          <span class="text-lg">📊</span>
+          Dashboard
+        </a>
+
+        <a
+          href="/ventas"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1"
+        >
+          <span class="text-lg">💳</span>
+          Ventas
+          <span
+            class="ml-auto bg-blue-500 text-white text-xs px-2.5 py-0.5 rounded-full"
+            id="ventasBadge"
+            >0</span
+          >
+        </a>
+
+        <a
+          href="/inventario"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1"
+        >
+          <span class="text-lg">📦</span>
+          Inventario
+          <span
+            class="ml-auto bg-yellow-500 text-white text-xs px-2.5 py-0.5 rounded-full"
+            id="stockBadge"
+            >0</span
+          >
+        </a>
+
+        <a
+          href="/compras"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1"
+        >
+          <span class="text-lg">🛒</span>
+          Compras
+          <span
+            class="ml-auto bg-purple-500 text-white text-xs px-2.5 py-0.5 rounded-full"
+            id="comprasBadge"
+            >0</span
+          >
+        </a>
+
+        <a
+          href="/clientes"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1"
+        >
+          <span class="text-lg">👤</span>
+          Clientes
+          <span
+            class="ml-auto bg-green-500 text-white text-xs px-2.5 py-0.5 rounded-full"
+            id="clientesBadge"
+            >0</span
+          >
+        </a>
+
+        <a
+          href="/usuarios"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1"
+        >
+          <span class="text-lg">🔐</span>
+          Usuarios
+          <span
+            class="ml-auto bg-indigo-500 text-white text-xs px-2.5 py-0.5 rounded-full"
+            id="usuariosBadge"
+            >0</span
+          >
+        </a>
+
+        <a
+          href="/sucursales"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1"
+        >
+          <span class="text-lg">🏢</span>
+          Sucursales
+          <span
+            class="ml-auto bg-orange-500 text-white text-xs px-2.5 py-0.5 rounded-full"
+            id="sucursalesBadge"
+            >0</span
+          >
+        </a>
+
+        <a
+          href="/reportes"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1"
+        >
+          <span class="text-lg">📄</span>
+          Reportes
+        </a>
+      </nav>
+
+      <!-- Footer -->
+      <div class="px-4 py-4 border-t border-gray-100">
+        <div class="flex items-center gap-3 mb-3">
+          <div
+            class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-semibold text-sm"
+            id="userAvatar"
+          >
+            A
+          </div>
+          <div class="flex-1 min-w-0">
+            <p
+              class="text-sm font-semibold text-gray-900 truncate"
+              id="userName"
+            >
+              Administrador
+            </p>
+            <p class="text-xs text-gray-500 truncate" id="userEmail">
+              admin@farmadol.com
+            </p>
+            <span
+              class="text-xs text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full inline-block mt-0.5"
+              id="userRole"
+              >Administrador</span
+            >
+          </div>
+        </div>
+        <button
+          class="w-full flex items-center gap-2 px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition-all"
+          id="logoutBtn"
+        >
+          <span>🚪</span>
+          Cerrar Sesión
+        </button>
+      </div>
     </aside>
 
     <!-- ============ MAIN CONTENT ============ -->
     <div class="md:ml-[280px] min-h-screen bg-gray-50">
-        <!-- Header -->
-        <header class="bg-white border-b border-gray-200 sticky top-0 z-30">
-            <div class="flex items-center justify-between px-4 md:px-8 py-4">
-                <div class="flex items-center gap-4">
-                    <button class="md:hidden text-2xl text-gray-600" id="hamburgerBtn">☰</button>
-                    <div>
-                        <h1 class="text-xl font-bold text-gray-900" id="pageTitle">Dashboard</h1>
-                        <p class="text-sm text-gray-500" id="pageSubtitle">Panel de control general</p>
-                    </div>
-                </div>
-                <div class="flex items-center gap-4">
-                    <div class="flex items-center gap-2 text-sm text-gray-500">
-                        <span class="status-dot"></span>
-                        <span>Conectado</span>
-                    </div>
-                    <span class="text-sm text-gray-500" id="currentDateTime"></span>
-                </div>
+      <!-- Header -->
+      <header class="bg-white border-b border-gray-200 sticky top-0 z-30">
+        <div class="flex items-center justify-between px-4 md:px-8 py-4">
+          <div class="flex items-center gap-4">
+            <button class="md:hidden text-2xl text-gray-600" id="hamburgerBtn">
+              ☰
+            </button>
+            <div>
+              <h1 class="text-xl font-bold text-gray-900" id="pageTitle">
+                Dashboard
+              </h1>
+              <p class="text-sm text-gray-500" id="pageSubtitle">
+                Panel de control general
+              </p>
             </div>
-        </header>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2 text-sm text-gray-500">
+              <span class="status-dot"></span>
+              <span>Conectado</span>
+            </div>
+            <span class="text-sm text-gray-500" id="currentDateTime"></span>
+          </div>
+        </div>
+      </header>
 
-        <!-- Content -->
-        <main class="p-4 md:p-8">
-            <!-- Stats Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6 mb-6">
-                <div class="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md transition-shadow">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-2xl">💰</span>
-                    </div>
-                    <p class="text-2xl font-bold text-gray-900" id="ventasHoy">S/ 0.00</p>
-                    <p class="text-sm text-gray-500">Ventas Hoy</p>
-                </div>
+      <!-- Content -->
+      <main class="p-4 md:p-8">
+        <!-- Stats Grid -->
+        <div
+          class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6 mb-6"
+        >
+          <div
+            class="bg-white rounded-xl border border-gray-200 p-5 card-hover"
+          >
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-2xl">💰</span>
+              <span class="text-xs text-gray-400" id="ventasHoyFecha">Hoy</span>
+            </div>
+            <p class="text-2xl font-bold text-gray-900" id="ventasHoy">
+              S/ 0.00
+            </p>
+            <p class="text-sm text-gray-500">Ventas Hoy</p>
+          </div>
 
-                <div class="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md transition-shadow">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-2xl">📦</span>
-                    </div>
-                    <p class="text-2xl font-bold text-gray-900" id="totalProductos">--</p>
-                    <p class="text-sm text-gray-500">Productos en Stock</p>
-                </div>
+          <div
+            class="bg-white rounded-xl border border-gray-200 p-5 card-hover"
+          >
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-2xl">📦</span>
+              <span class="text-xs text-green-600" id="stockEstado"
+                >● Activo</span
+              >
+            </div>
+            <p class="text-2xl font-bold text-gray-900" id="totalProductos">
+              --
+            </p>
+            <p class="text-sm text-gray-500">Productos en Stock</p>
+          </div>
 
-                <div class="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md transition-shadow">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-2xl">👤</span>
-                    </div>
-                    <p class="text-2xl font-bold text-gray-900" id="totalClientes">--</p>
-                    <p class="text-sm text-gray-500">Clientes Activos</p>
-                </div>
+          <div
+            class="bg-white rounded-xl border border-gray-200 p-5 card-hover"
+          >
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-2xl">👤</span>
+              <span class="text-xs text-blue-600" id="clientesNivel"
+                >Activos</span
+              >
+            </div>
+            <p class="text-2xl font-bold text-gray-900" id="totalClientes">
+              --
+            </p>
+            <p class="text-sm text-gray-500">Clientes Activos</p>
+          </div>
 
-                <div class="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md transition-shadow">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-2xl">🏢</span>
-                    </div>
-                    <p class="text-2xl font-bold text-gray-900" id="totalSucursales">--</p>
-                    <p class="text-sm text-gray-500">Sucursales</p>
+          <div
+            class="bg-white rounded-xl border border-gray-200 p-5 card-hover"
+          >
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-2xl">🏢</span>
+              <span class="text-xs text-purple-600" id="sucursalesEstado"
+                >Operativas</span
+              >
+            </div>
+            <p class="text-2xl font-bold text-gray-900" id="totalSucursales">
+              --
+            </p>
+            <p class="text-sm text-gray-500">Sucursales</p>
+          </div>
+        </div>
+
+        <!-- Two Column Layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Actividad Reciente -->
+          <div class="lg:col-span-2 bg-white rounded-xl border border-gray-200">
+            <div
+              class="flex items-center justify-between px-6 py-4 border-b border-gray-100"
+            >
+              <h3 class="font-semibold text-gray-900">📋 Actividad Reciente</h3>
+              <div class="flex items-center gap-3">
+                <span class="text-xs text-gray-400" id="actividadHora">--</span>
+                <button
+                  class="text-sm text-blue-600 hover:text-blue-800 font-medium"
+                  onclick="cargarActividadReciente()"
+                >
+                  🔄 Actualizar
+                </button>
+              </div>
+            </div>
+            <div
+              class="p-6 max-h-[400px] overflow-y-auto"
+              id="actividadReciente"
+            >
+              <div class="text-center py-8 text-gray-400">
+                ⏳ Cargando actividad...
+              </div>
+            </div>
+          </div>
+
+          <!-- Panel Derecho -->
+          <div class="bg-white rounded-xl border border-gray-200">
+            <div class="px-6 py-4 border-b border-gray-100">
+              <h3 class="font-semibold text-gray-900">⚡ Acciones Rápidas</h3>
+            </div>
+            <div class="p-4 space-y-3">
+              <a
+                href="/ventas"
+                class="w-full flex items-center gap-3 px-4 py-3 bg-blue-50 hover:bg-blue-100 rounded-lg transition-all text-left btn-accion"
+              >
+                <span class="text-xl">💳</span>
+                <div>
+                  <p class="text-sm font-medium text-gray-900">Nueva Venta</p>
+                  <p class="text-xs text-gray-500">Registrar transacción</p>
                 </div>
+              </a>
+
+              <a
+                href="/compras"
+                class="w-full flex items-center gap-3 px-4 py-3 bg-green-50 hover:bg-green-100 rounded-lg transition-all text-left btn-accion"
+              >
+                <span class="text-xl">🛒</span>
+                <div>
+                  <p class="text-sm font-medium text-gray-900">
+                    Registrar Compra
+                  </p>
+                  <p class="text-xs text-gray-500">Ingresar mercadería</p>
+                </div>
+              </a>
+
+              <a
+                href="/inventario"
+                class="w-full flex items-center gap-3 px-4 py-3 bg-yellow-50 hover:bg-yellow-100 rounded-lg transition-all text-left btn-accion"
+              >
+                <span class="text-xl">📦</span>
+                <div>
+                  <p class="text-sm font-medium text-gray-900">
+                    Ver Inventario
+                  </p>
+                  <p class="text-xs text-gray-500">Consultar stock</p>
+                </div>
+              </a>
+
+              <a
+                href="/reportes"
+                class="w-full flex items-center gap-3 px-4 py-3 bg-purple-50 hover:bg-purple-100 rounded-lg transition-all text-left btn-accion"
+              >
+                <span class="text-xl">📄</span>
+                <div>
+                  <p class="text-sm font-medium text-gray-900">
+                    Generar Reporte
+                  </p>
+                  <p class="text-xs text-gray-500">Análisis y métricas</p>
+                </div>
+              </a>
             </div>
 
-            <!-- Two Column Layout -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Actividad Reciente -->
-                <div class="lg:col-span-2 bg-white rounded-xl border border-gray-200">
-                    <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-                        <h3 class="font-semibold text-gray-900">📋 Actividad Reciente</h3>
-                        <button class="text-sm text-blue-600 hover:text-blue-800 font-medium" onclick="cargarActividadReciente()">🔄 Actualizar</button>
-                    </div>
-                    <div class="p-6" id="actividadReciente">
-                        <div class="text-center py-8 text-gray-400">Cargando actividad...</div>
-                    </div>
-                </div>
-
-                <!-- Panel Derecho -->
-                <div class="bg-white rounded-xl border border-gray-200">
-                    <div class="px-6 py-4 border-b border-gray-100">
-                        <h3 class="font-semibold text-gray-900">⚡ Acciones Rápidas</h3>
-                    </div>
-                    <div class="p-4 space-y-3">
-                        <button class="w-full flex items-center gap-3 px-4 py-3 bg-blue-50 hover:bg-blue-100 rounded-lg transition-all text-left" onclick="alert('Redirigiendo a Ventas...')">
-                            <span class="text-xl">💳</span>
-                            <div>
-                                <p class="text-sm font-medium text-gray-900">Nueva Venta</p>
-                                <p class="text-xs text-gray-500">Registrar transacción</p>
-                            </div>
-                        </button>
-
-                        <button class="w-full flex items-center gap-3 px-4 py-3 bg-green-50 hover:bg-green-100 rounded-lg transition-all text-left" onclick="alert('Redirigiendo a Compras...')">
-                            <span class="text-xl">🛒</span>
-                            <div>
-                                <p class="text-sm font-medium text-gray-900">Registrar Compra</p>
-                                <p class="text-xs text-gray-500">Ingresar mercadería</p>
-                            </div>
-                        </button>
-
-                        <button class="w-full flex items-center gap-3 px-4 py-3 bg-yellow-50 hover:bg-yellow-100 rounded-lg transition-all text-left" onclick="alert('Redirigiendo a Inventario...')">
-                            <span class="text-xl">📦</span>
-                            <div>
-                                <p class="text-sm font-medium text-gray-900">Ver Inventario</p>
-                                <p class="text-xs text-gray-500">Consultar stock</p>
-                            </div>
-                        </button>
-
-                        <button class="w-full flex items-center gap-3 px-4 py-3 bg-purple-50 hover:bg-purple-100 rounded-lg transition-all text-left" onclick="alert('Redirigiendo a Reportes...')">
-                            <span class="text-xl">📄</span>
-                            <div>
-                                <p class="text-sm font-medium text-gray-900">Generar Reporte</p>
-                                <p class="text-xs text-gray-500">Análisis y métricas</p>
-                            </div>
-                        </button>
-                    </div>
-
-                    <!-- System Info -->
-                    <div class="px-6 py-4 border-t border-gray-100 space-y-1.5">
-                        <div class="flex justify-between text-sm">
-                            <span class="text-gray-400">🟢 Sistema</span>
-                            <span class="text-green-600 font-medium">Operativo</span>
-                        </div>
-                        <div class="flex justify-between text-sm">
-                            <span class="text-gray-400">📡 API Gateway</span>
-                            <span class="text-green-600 font-medium" id="gatewayStatus">Conectado</span>
-                        </div>
-                        <div class="flex justify-between text-sm">
-                            <span class="text-gray-400">📦 Microservicios</span>
-                            <span class="text-gray-700 font-medium" id="serviciosStatus">7 activos</span>
-                        </div>
-                        <div class="flex justify-between text-sm">
-                            <span class="text-gray-400">📅 Última actualización</span>
-                            <span class="text-gray-700 font-medium" id="ultimaActualizacion">--</span>
-                        </div>
-                    </div>
-                </div>
+            <!-- System Info -->
+            <div class="px-6 py-4 border-t border-gray-100 space-y-1.5">
+              <div class="flex justify-between text-sm">
+                <span class="text-gray-400">🟢 Sistema</span>
+                <span class="text-green-600 font-medium">Operativo</span>
+              </div>
+              <div class="flex justify-between text-sm">
+                <span class="text-gray-400">📡 API Gateway</span>
+                <span class="text-green-600 font-medium" id="gatewayStatus"
+                  >Conectado</span
+                >
+              </div>
+              <div class="flex justify-between text-sm">
+                <span class="text-gray-400">📦 Microservicios</span>
+                <span class="text-gray-700 font-medium" id="serviciosStatus"
+                  >7 activos</span
+                >
+              </div>
+              <div class="flex justify-between text-sm">
+                <span class="text-gray-400">📅 Última actualización</span>
+                <span class="text-gray-700 font-medium" id="ultimaActualizacion"
+                  >--</span
+                >
+              </div>
             </div>
-        </main>
+          </div>
+        </div>
+      </main>
     </div>
 
     <script>
-        const API_GATEWAY = "http://localhost:3000/api";
-        let token = localStorage.getItem("token");
+      const API_GATEWAY = "http://localhost:3000/api";
 
-        // ============ HEADERS ============
-        function getHeaders() {
-            return {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-            };
+      // ============ HEADERS ============
+      function getHeaders() {
+        const token = localStorage.getItem("token");
+        return {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        };
+      }
+
+      // ============ VERIFICAR AUTENTICACIÓN ============
+      function checkAuth() {
+        const token = localStorage.getItem("token");
+        const user = JSON.parse(localStorage.getItem("user") || "null");
+        if (!token || !user) {
+          window.location.href = "/";
+          return false;
         }
+        return { token, user };
+      }
 
-        // ============ VERIFICAR AUTENTICACIÓN ============
-        function checkAuth() {
-            token = localStorage.getItem("token");
-            const user = JSON.parse(localStorage.getItem("user") || "null");
-            if (!token || !user) {
-                window.location.href = "/";
-                return false;
+      // ============ CARGAR DATOS DEL USUARIO ============
+      function loadUserData() {
+        const auth = checkAuth();
+        if (!auth) return;
+        const { user } = auth;
+        document.getElementById("userName").textContent =
+          user.username || user.email || "Usuario";
+        document.getElementById("userEmail").textContent =
+          user.email || "usuario@farmadol.com";
+        const avatar = (user.username || user.email || "U")[0].toUpperCase();
+        document.getElementById("userAvatar").textContent = avatar;
+        const roles = user.roles || ["Usuario"];
+        document.getElementById("userRole").textContent = roles
+          .map((r) => r.charAt(0).toUpperCase() + r.slice(1).toLowerCase())
+          .join(", ");
+      }
+
+      // ============ RELOJ ============
+      function updateDateTime() {
+        const now = new Date();
+        const options = {
+          weekday: "short",
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        };
+        document.getElementById("currentDateTime").textContent =
+          now.toLocaleDateString("es-ES", options);
+        const el = document.getElementById("ultimaActualizacion");
+        if (el) el.textContent = now.toLocaleTimeString("es-ES");
+        const hora = document.getElementById("actividadHora");
+        if (hora) hora.textContent = now.toLocaleTimeString("es-ES");
+      }
+      setInterval(updateDateTime, 60000);
+      updateDateTime();
+
+      // ============ SIDEBAR TOGGLE ============
+      const sidebar = document.getElementById("sidebar");
+      const overlay = document.getElementById("sidebarOverlay");
+      const hamburger = document.getElementById("hamburgerBtn");
+
+      function toggleSidebar() {
+        sidebar.classList.toggle("translate-x-0");
+        sidebar.classList.toggle("-translate-x-full");
+        overlay.classList.toggle("hidden");
+      }
+      hamburger.addEventListener("click", toggleSidebar);
+      overlay.addEventListener("click", toggleSidebar);
+
+      // ============ CERRAR SESIÓN ============
+      document.getElementById("logoutBtn").addEventListener("click", () => {
+        if (confirm("¿Estás seguro de que deseas cerrar sesión?")) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
+          window.location.href = "/";
+        }
+      });
+
+      // ============ CARGAR DASHBOARD ============
+      async function cargarDashboard() {
+        try {
+          await Promise.all([
+            cargarVentasHoy(),
+            cargarProductos(),
+            cargarClientes(),
+            cargarSucursales(),
+            cargarUsuarios(),
+            cargarComprasPendientes(),
+            cargarActividadReciente(),
+          ]);
+        } catch (error) {
+          console.error("Error cargando dashboard:", error);
+        }
+      }
+
+      // ============ VENTAS HOY ============
+      async function cargarVentasHoy() {
+        try {
+          // ✅ Endpoint correcto: /api/ventas/ventas/dia/resumen
+          const response = await fetch(
+            `${API_GATEWAY}/ventas/ventas/dia/resumen`,
+            {
+              headers: getHeaders(),
+            },
+          );
+          if (response.ok) {
+            const data = await response.json();
+            if (data.success && data.data) {
+              const total = data.data.resumen?.total_monto || 0;
+              document.getElementById("ventasHoy").textContent =
+                `S/ ${total.toFixed(2)}`;
+              document.getElementById("ventasBadge").textContent =
+                data.data.ventas?.length || 0;
+              const fecha = new Date().toLocaleDateString("es-ES");
+              document.getElementById("ventasHoyFecha").textContent = fecha;
             }
-            return { token, user };
+          }
+        } catch (error) {
+          console.error("Error cargando ventas:", error);
+          document.getElementById("ventasHoy").textContent = "S/ 0.00";
         }
+      }
 
-        // ============ CARGAR DATOS DEL USUARIO ============
-        function loadUserData() {
-            const auth = checkAuth();
-            if (!auth) return;
-            const { user } = auth;
-            document.getElementById("userName").textContent = user.username || "Usuario";
-            document.getElementById("userEmail").textContent = user.email || "usuario@farmadol.com";
-            document.getElementById("userAvatar").textContent = (user.username || "U")[0].toUpperCase();
-            const roles = user.roles || ["Usuario"];
-            document.getElementById("userRole").textContent = roles.map(r => r.charAt(0).toUpperCase() + r.slice(1).toLowerCase()).join(", ");
-        }
+      // ============ PRODUCTOS ============
+      async function cargarProductos() {
+        try {
+          const response = await fetch(`${API_GATEWAY}/inventario/productos`, {
+            headers: getHeaders(),
+          });
+          if (response.ok) {
+            const data = await response.json();
+            if (data.success) {
+              const productos = data.data || [];
+              document.getElementById("totalProductos").textContent =
+                productos.length;
 
-        // ============ RELOJ ============
-        function updateDateTime() {
-            const now = new Date();
-            const options = { weekday: "short", day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" };
-            document.getElementById("currentDateTime").textContent = now.toLocaleDateString("es-ES", options);
-            const el = document.getElementById("ultimaActualizacion");
-            if (el) el.textContent = now.toLocaleTimeString("es-ES");
-        }
-        setInterval(updateDateTime, 60000);
-        updateDateTime();
-
-        // ============ SIDEBAR TOGGLE ============
-        const sidebar = document.getElementById("sidebar");
-        const overlay = document.getElementById("sidebarOverlay");
-        const hamburger = document.getElementById("hamburgerBtn");
-
-        function toggleSidebar() {
-            sidebar.classList.toggle("translate-x-0");
-            sidebar.classList.toggle("-translate-x-full");
-            overlay.classList.toggle("hidden");
-        }
-        hamburger.addEventListener("click", toggleSidebar);
-        overlay.addEventListener("click", toggleSidebar);
-
-        // ============ CERRAR SESIÓN ============
-        document.getElementById("logoutBtn").addEventListener("click", () => {
-            if (confirm("¿Estás seguro de que deseas cerrar sesión?")) {
-                localStorage.removeItem("token");
-                localStorage.removeItem("user");
-                window.location.href = "/";
+              // Contar productos con stock bajo (stock_minimo > stock_actual)
+              const stockBajo = productos.filter((p) => {
+                const stockActual = p.stock_actual || 0;
+                return p.stock_minimo && stockActual < p.stock_minimo;
+              });
+              document.getElementById("stockBadge").textContent =
+                stockBajo.length;
+              document.getElementById("stockEstado").textContent =
+                stockBajo.length > 0
+                  ? `⚠️ ${stockBajo.length} bajos`
+                  : "● Activo";
+              document.getElementById("stockEstado").className =
+                stockBajo.length > 0
+                  ? "text-xs text-yellow-600"
+                  : "text-xs text-green-600";
             }
+          }
+        } catch (error) {
+          console.error("Error cargando productos:", error);
+          document.getElementById("totalProductos").textContent = "--";
+        }
+      }
+
+      // ============ CLIENTES ============
+      async function cargarClientes() {
+        try {
+          const response = await fetch(`${API_GATEWAY}/clientes?estado=true`, {
+            headers: getHeaders(),
+          });
+          if (response.ok) {
+            const data = await response.json();
+            if (data.success) {
+              const clientes = data.data || [];
+              const activos = clientes.filter((c) => c.estado !== false);
+              document.getElementById("totalClientes").textContent =
+                activos.length;
+              document.getElementById("clientesBadge").textContent =
+                activos.length;
+              document.getElementById("clientesNivel").textContent =
+                `${activos.length} activos`;
+            }
+          }
+        } catch (error) {
+          console.error("Error cargando clientes:", error);
+          document.getElementById("totalClientes").textContent = "--";
+        }
+      }
+
+      // ============ SUCURSALES ============
+      async function cargarSucursales() {
+        try {
+          const response = await fetch(`${API_GATEWAY}/sucursales`, {
+            headers: getHeaders(),
+          });
+          if (response.ok) {
+            const data = await response.json();
+            if (data.success) {
+              const sucursales = data.data || [];
+              const activas = sucursales.filter((s) => s.estado !== false);
+              document.getElementById("totalSucursales").textContent =
+                activas.length;
+              document.getElementById("sucursalesBadge").textContent =
+                activas.length;
+              document.getElementById("sucursalesEstado").textContent =
+                `${activas.length} activas`;
+            }
+          }
+        } catch (error) {
+          console.error("Error cargando sucursales:", error);
+          document.getElementById("totalSucursales").textContent = "--";
+        }
+      }
+
+      // ============ USUARIOS ============
+      async function cargarUsuarios() {
+        try {
+          // ✅ Endpoint correcto: /api/auth/usuarios (solo ADMIN)
+          // Si no eres ADMIN, mostrar solo el usuario actual
+          const user = JSON.parse(localStorage.getItem("user") || "{}");
+          const roles = user.roles || [];
+
+          if (roles.includes("ADMIN")) {
+            const response = await fetch(`${API_GATEWAY}/auth/usuarios`, {
+              headers: getHeaders(),
+            });
+            if (response.ok) {
+              const data = await response.json();
+              if (data.success) {
+                const usuarios = data.data || [];
+                const activos = usuarios.filter((u) => u.estado !== false);
+                document.getElementById("usuariosBadge").textContent =
+                  activos.length;
+              }
+            }
+          } else {
+            // Si no es ADMIN, mostrar solo 1 (el usuario actual)
+            document.getElementById("usuariosBadge").textContent = "1";
+          }
+        } catch (error) {
+          console.error("Error cargando usuarios:", error);
+          document.getElementById("usuariosBadge").textContent = "0";
+        }
+      }
+
+      // ============ COMPRAS PENDIENTES ============
+      async function cargarComprasPendientes() {
+        try {
+          const response = await fetch(
+            `${API_GATEWAY}/compras?estado=pendiente`,
+            {
+              headers: getHeaders(),
+            },
+          );
+          if (response.ok) {
+            const data = await response.json();
+            if (data.success) {
+              const compras = data.data || [];
+              document.getElementById("comprasBadge").textContent =
+                compras.length;
+            }
+          }
+        } catch (error) {
+          console.error("Error cargando compras:", error);
+          document.getElementById("comprasBadge").textContent = "0";
+        }
+      }
+
+      // ============ ACTIVIDAD RECIENTE ============
+      async function cargarActividadReciente() {
+  const container = document.getElementById("actividadReciente");
+  container.innerHTML = `<div class="text-center py-8 text-gray-400">⏳ Cargando actividad...</div>`;
+
+  try {
+    const headers = getHeaders();
+    
+    // ✅ Endpoints correctos con /ventas/ventas
+    const [ventasRes, comprasRes, stockRes] = await Promise.all([
+      fetch(`${API_GATEWAY}/ventas/ventas?limit=5`, { headers }),
+      fetch(`${API_GATEWAY}/compras?estado=pendiente&limit=3`, { headers }),
+      fetch(`${API_GATEWAY}/inventario/alertas/stock-bajo?limit=3`, { headers })
+    ]);
+
+    let items = [];
+
+    // Ventas recientes
+    if (ventasRes.ok) {
+      const data = await ventasRes.json();
+      if (data.success && data.data && data.data.length > 0) {
+        data.data.slice(0, 3).forEach(v => {
+          const fecha = v.fecha_venta ? new Date(v.fecha_venta).toLocaleTimeString("es-ES", {hour:'2-digit',minute:'2-digit'}) : '';
+          items.push({
+            icon: '💳',
+            title: `Venta #${v.numero_venta || "N/A"}`,
+            subtitle: `${v.detalles?.length || 0} productos • ${fecha}`,
+            value: `S/ ${parseFloat(v.total || 0).toFixed(2)}`,
+            badge: { 
+              text: v.estado || "Completada", 
+              class: v.estado === 'anulada' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700' 
+            }
+          });
         });
+      }
+    }
 
-        // ============ CARGAR DASHBOARD ============
-        async function cargarDashboard() {
-            try {
-                await Promise.all([
-                    cargarVentasHoy(),
-                    cargarProductos(),
-                    cargarClientes(),
-                    cargarSucursales(),
-                    cargarActividadReciente()
-                ]);
-            } catch (error) {
-                console.error("Error cargando dashboard:", error);
-            }
-        }
-
-        // ============ VENTAS HOY ============
-        async function cargarVentasHoy() {
-            try {
-                const response = await fetch(`${API_GATEWAY}/ventas/ventas/dia/resumen`, { headers: getHeaders() });
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data.success && data.data) {
-                        const total = data.data.resumen?.total_monto || 0;
-                        document.getElementById("ventasHoy").textContent = `S/ ${total.toFixed(2)}`;
-                        document.getElementById("ventasBadge").textContent = data.data.ventas?.length || 0;
-                    }
-                }
-            } catch (error) {
-                console.error("Error cargando ventas:", error);
-                document.getElementById("ventasHoy").textContent = "S/ 0.00";
-            }
-        }
-
-        // ============ PRODUCTOS ============
-        async function cargarProductos() {
-            try {
-                const response = await fetch(`${API_GATEWAY}/inventario/productos`, { headers: getHeaders() });
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data.success) {
-                        const count = data.data?.length || 0;
-                        document.getElementById("totalProductos").textContent = count;
-                        const stockBajo = data.data?.filter(p => p.stock_minimo && p.stock_actual < p.stock_minimo) || [];
-                        document.getElementById("stockBadge").textContent = stockBajo.length;
-                    }
-                }
-            } catch (error) {
-                console.error("Error cargando productos:", error);
-                document.getElementById("totalProductos").textContent = "--";
-            }
-        }
-
-        // ============ CLIENTES ============
-        async function cargarClientes() {
-            try {
-                const response = await fetch(`${API_GATEWAY}/clientes/clientes?estado=true&limit=1`, { headers: getHeaders() });
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data.success) {
-                        const total = data.pagination?.total || data.data?.length || 0;
-                        document.getElementById("totalClientes").textContent = total;
-                        document.getElementById("clientesBadge").textContent = total;
-                    }
-                }
-            } catch (error) {
-                console.error("Error cargando clientes:", error);
-                document.getElementById("totalClientes").textContent = "--";
-            }
-        }
-
-        // ============ SUCURSALES ============
-        async function cargarSucursales() {
-            try {
-                const response = await fetch(`${API_GATEWAY}/sucursales/sucursales`, { headers: getHeaders() });
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data.success) {
-                        const count = data.data?.length || 0;
-                        document.getElementById("totalSucursales").textContent = count;
-                        document.getElementById("sucursalesBadge").textContent = count;
-                    }
-                }
-            } catch (error) {
-                console.error("Error cargando sucursales:", error);
-                document.getElementById("totalSucursales").textContent = "--";
-            }
-        }
-
-        // ============ ACTIVIDAD RECIENTE ============
-        async function cargarActividadReciente() {
-            const container = document.getElementById("actividadReciente");
-            container.innerHTML = `<div class="text-center py-8 text-gray-400">Cargando actividad...</div>`;
-
-            try {
-                const [ventasRes, comprasRes, stockRes] = await Promise.all([
-                    fetch(`${API_GATEWAY}/ventas/ventas?limit=3`, { headers: getHeaders() }),
-                    fetch(`${API_GATEWAY}/compras/compras?estado=pendiente`, { headers: getHeaders() }),
-                    fetch(`${API_GATEWAY}/inventario/stock-bajo`, { headers: getHeaders() })
-                ]);
-
-                let items = [];
-
-                if (ventasRes.ok) {
-                    const data = await ventasRes.json();
-                    if (data.success && data.data) {
-                        data.data.slice(0, 2).forEach(v => {
-                            items.push({
-                                title: `Venta #${v.numero_venta || "N/A"}`,
-                                subtitle: `${v.detalles?.length || 0} productos • ${v.cliente?.nombres || "Cliente general"}`,
-                                value: `S/ ${parseFloat(v.total || 0).toFixed(2)}`,
-                                badge: { text: "Completada", class: "bg-green-100 text-green-700" }
-                            });
-                        });
-                    }
-                }
-
-                if (comprasRes.ok) {
-                    const data = await comprasRes.json();
-                    if (data.success && data.data && data.data.length > 0) {
-                        data.data.slice(0, 1).forEach(c => {
-                            items.push({
-                                title: `Compra ${c.numero_factura || "N/A"}`,
-                                subtitle: `Proveedor: ${c.proveedor?.razon_social || "N/A"}`,
-                                value: `S/ ${parseFloat(c.total || 0).toFixed(2)}`,
-                                badge: { text: "Pendiente", class: "bg-yellow-100 text-yellow-700" }
-                            });
-                        });
-                    }
-                }
-
-                if (stockRes.ok) {
-                    const data = await stockRes.json();
-                    if (data.success && data.data && data.data.length > 0) {
-                        data.data.slice(0, 1).forEach(s => {
-                            items.push({
-                                title: `⚠️ Stock Bajo: ${s.producto?.nombre || "Producto"}`,
-                                subtitle: `Disponible: ${s.cantidad_disponible || 0} unidades`,
-                                value: `Mín: ${s.producto?.stock_minimo || 0}`,
-                                badge: { text: "Crítico", class: "bg-red-100 text-red-700" }
-                            });
-                        });
-                    }
-                }
-
-                if (items.length === 0) {
-                    container.innerHTML = `<div class="text-center py-8 text-gray-400">📭 No hay actividad reciente</div>`;
-                    return;
-                }
-
-                container.innerHTML = items.map(item => `
-                    <div class="flex items-center justify-between py-3 border-b border-gray-100 last:border-0">
-                        <div>
-                            <p class="text-sm font-medium text-gray-900">${item.title}</p>
-                            <p class="text-xs text-gray-500">${item.subtitle}</p>
-                        </div>
-                        <div class="flex items-center gap-3">
-                            <span class="text-sm font-semibold text-gray-900">${item.value}</span>
-                            <span class="text-xs px-2.5 py-1 rounded-full font-medium ${item.badge.class}">${item.badge.text}</span>
-                        </div>
-                    </div>
-                `).join("");
-
-            } catch (error) {
-                console.error("Error cargando actividad:", error);
-                container.innerHTML = `
-                    <div class="text-center py-8 text-red-500">
-                        <p>⚠️ Error al cargar la actividad</p>
-                        <button onclick="cargarActividadReciente()" class="mt-2 text-sm text-blue-600 hover:text-blue-800">Reintentar</button>
-                    </div>
-                `;
-            }
-        }
-
-        // ============ VERIFICAR GATEWAY ============
-        async function verificarGateway() {
-            try {
-                const response = await fetch("http://localhost:3000/health");
-                document.getElementById("gatewayStatus").textContent = response.ok ? "Conectado" : "Desconectado";
-                document.getElementById("gatewayStatus").className = response.ok ? "text-green-600 font-medium" : "text-red-600 font-medium";
-            } catch {
-                document.getElementById("gatewayStatus").textContent = "Desconectado";
-                document.getElementById("gatewayStatus").className = "text-red-600 font-medium";
-            }
-        }
-
-        // ============ INICIALIZAR ============
-        document.addEventListener("DOMContentLoaded", () => {
-            const auth = checkAuth();
-            if (!auth) return;
-            loadUserData();
-            verificarGateway();
-            cargarDashboard();
-            setInterval(cargarDashboard, 60000);
+    // Compras pendientes
+    if (comprasRes.ok) {
+      const data = await comprasRes.json();
+      if (data.success && data.data && data.data.length > 0) {
+        data.data.slice(0, 2).forEach(c => {
+          items.push({
+            icon: '🛒',
+            title: `Compra ${c.numero_factura || "N/A"}`,
+            subtitle: `Proveedor: ${c.proveedor?.razon_social || "N/A"}`,
+            value: `S/ ${parseFloat(c.total || 0).toFixed(2)}`,
+            badge: { text: "Pendiente", class: "bg-yellow-100 text-yellow-700" }
+          });
         });
+      }
+    }
+
+    // Stock bajo
+    if (stockRes.ok) {
+      const data = await stockRes.json();
+      if (data.success && data.data && data.data.length > 0) {
+        data.data.slice(0, 2).forEach(s => {
+          items.push({
+            icon: '⚠️',
+            title: `Stock Bajo: ${s.producto?.nombre || "Producto"}`,
+            subtitle: `Disponible: ${s.total_stock || 0} unidades`,
+            value: `Mín: ${s.stock_minimo || 0}`,
+            badge: { text: "Crítico", class: "bg-red-100 text-red-700" }
+          });
+        });
+      }
+    }
+
+    if (items.length === 0) {
+      container.innerHTML = `<div class="text-center py-8 text-gray-400">📭 No hay actividad reciente</div>`;
+      return;
+    }
+
+    container.innerHTML = items.slice(0, 5).map(item => `
+      <div class="flex items-center justify-between py-3 border-b border-gray-100 last:border-0">
+        <div class="flex items-center gap-3">
+          <span class="text-xl">${item.icon}</span>
+          <div>
+            <p class="text-sm font-medium text-gray-900">${item.title}</p>
+            <p class="text-xs text-gray-500">${item.subtitle}</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-sm font-semibold text-gray-900">${item.value}</span>
+          <span class="text-xs px-2.5 py-1 rounded-full font-medium ${item.badge.class}">${item.badge.text}</span>
+        </div>
+      </div>
+    `).join("");
+
+  } catch (error) {
+    console.error("Error cargando actividad:", error);
+    container.innerHTML = `
+      <div class="text-center py-8 text-red-500">
+        <p>⚠️ Error al cargar la actividad</p>
+        <button onclick="cargarActividadReciente()" class="mt-2 text-sm text-blue-600 hover:text-blue-800">Reintentar</button>
+      </div>
+    `;
+  }
+}
+
+
+      // ============ VERIFICAR GATEWAY ============
+      async function verificarGateway() {
+        try {
+          const response = await fetch("http://localhost:3000/health");
+          const el = document.getElementById("gatewayStatus");
+          if (response.ok) {
+            el.textContent = "Conectado";
+            el.className = "text-green-600 font-medium";
+          } else {
+            el.textContent = "Error";
+            el.className = "text-red-600 font-medium";
+          }
+        } catch {
+          const el = document.getElementById("gatewayStatus");
+          el.textContent = "Desconectado";
+          el.className = "text-red-600 font-medium";
+        }
+      }
+
+      // ============ INICIALIZAR ============
+      document.addEventListener("DOMContentLoaded", () => {
+        const auth = checkAuth();
+        if (!auth) return;
+        loadUserData();
+        verificarGateway();
+        cargarDashboard();
+        setInterval(cargarDashboard, 60000);
+      });
     </script>
-</body>
+  </body>
 </html>

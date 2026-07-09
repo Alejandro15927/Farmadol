@@ -3,82 +3,88 @@ const { body, param, query } = require('express-validator');
 const { authMiddleware, checkRole } = require('../middleware/auth');
 const { validate } = require('../middleware/validation');
 const {
-  generarReporteVentasDiarias,
-  generarReporteProductosMasVendidos,
-  generarReporteStockBajo,
-  generarReporteProximosVencer,
-  generarReporteClientesFrecuentes,
+  // Reportes
+  generarReporteVentas,
+  generarReporteInventario,
+  generarReporteClientes,
+  generarReporteCompras,
+  generarResumenGeneral,
   getReportes,
   getReporteById,
+  deleteReporte,
   descargarReporte,
+  // Alertas
   getAlertas,
+  getAlertaById,
+  createAlerta,
   marcarAlertaLeida,
   resolverAlerta,
-  crearAlerta
+  ignorarAlerta,
+  getAlertasNoLeidas,
+  // Estadísticas
+  getEstadisticas
 } = require('../controllers/reporteController');
 
 const router = express.Router();
 
-// Validaciones
-const reporteVentasDiariasValidation = [
-  body('fecha').optional().isDate().withMessage('Fecha inválida'),
-  body('sucursal_id').optional().isInt().withMessage('ID de sucursal inválido'),
+// ============ VALIDACIONES ============
+
+const generarReporteVentasValidation = [
+  body('tipo').isIn(['ventas_diarias', 'ventas_mensuales', 'productos_mas_vendidos', 'ventas_sucursal', 'ventas_vendedor']).withMessage('Tipo de reporte inválido'),
+  body('fecha_inicio').optional().isDate().withMessage('Fecha de inicio inválida'),
+  body('fecha_fin').optional().isDate().withMessage('Fecha de fin inválida'),
   body('formato').optional().isIn(['pdf', 'excel', 'csv', 'json']).withMessage('Formato inválido')
 ];
 
-const reporteProductosValidation = [
-  body('fecha_inicio').optional().isDate().withMessage('Fecha inicio inválida'),
-  body('fecha_fin').optional().isDate().withMessage('Fecha fin inválida'),
-  body('sucursal_id').optional().isInt().withMessage('ID de sucursal inválido'),
-  body('limit').optional().isInt({ min: 1, max: 100 }).withMessage('Limit debe ser entre 1 y 100'),
+const generarReporteInventarioValidation = [
+  body('tipo').isIn(['stock_bajo', 'productos_vencer', 'rotacion_inventario']).withMessage('Tipo de reporte inválido'),
   body('formato').optional().isIn(['pdf', 'excel', 'csv', 'json']).withMessage('Formato inválido')
 ];
 
-const reporteStockValidation = [
-  body('sucursal_id').optional().isInt().withMessage('ID de sucursal inválido'),
+const generarReporteClientesValidation = [
+  body('tipo').isIn(['clientes_frecuentes', 'resumen_general']).withMessage('Tipo de reporte inválido'),
   body('formato').optional().isIn(['pdf', 'excel', 'csv', 'json']).withMessage('Formato inválido')
 ];
 
-const reporteVencerValidation = [
-  body('dias').optional().isInt({ min: 1, max: 365 }).withMessage('Días debe ser entre 1 y 365'),
-  body('sucursal_id').optional().isInt().withMessage('ID de sucursal inválido'),
+const generarReporteComprasValidation = [
+  body('tipo').isIn(['compras_proveedores', 'resumen_general']).withMessage('Tipo de reporte inválido'),
+  body('fecha_inicio').optional().isDate().withMessage('Fecha de inicio inválida'),
+  body('fecha_fin').optional().isDate().withMessage('Fecha de fin inválida'),
   body('formato').optional().isIn(['pdf', 'excel', 'csv', 'json']).withMessage('Formato inválido')
 ];
 
-const reporteClientesValidation = [
-  body('limit').optional().isInt({ min: 1, max: 100 }).withMessage('Limit debe ser entre 1 y 100'),
-  body('min_compras').optional().isInt({ min: 1 }).withMessage('Mínimo de compras inválido'),
-  body('formato').optional().isIn(['pdf', 'excel', 'csv', 'json']).withMessage('Formato inválido')
-];
-
-const alertaValidation = [
-  body('tipo').isIn(['stock_bajo', 'producto_vencer', 'producto_vencido', 'venta_alta', 'venta_baja', 'cliente_frecuente', 'problema_inventario', 'sistema']).withMessage('Tipo inválido'),
-  body('nivel').optional().isIn(['info', 'warning', 'error', 'critical']).withMessage('Nivel inválido'),
+const createAlertaValidation = [
+  body('tipo').isIn(['stock_bajo', 'producto_vencer', 'producto_vencido', 'venta_alta', 'venta_baja', 'cliente_frecuente', 'problema_inventario', 'sistema']).withMessage('Tipo de alerta inválido'),
   body('titulo').notEmpty().withMessage('Título requerido'),
   body('mensaje').notEmpty().withMessage('Mensaje requerido'),
-  body('sucursal_id').optional().isInt().withMessage('ID de sucursal inválido')
+  body('nivel').optional().isIn(['info', 'warning', 'error', 'critical']).withMessage('Nivel inválido')
 ];
 
-// ============ RUTAS PROTEGIDAS ============
+// ============ RUTAS ============
+
+// Todas las rutas requieren autenticación
 router.use(authMiddleware);
 
 // ============ REPORTES ============
-// Generar reportes (solo ADMIN y GERENTE)
-router.post('/reportes/ventas-diarias', checkRole(['ADMIN', 'GERENTE']), reporteVentasDiariasValidation, validate, generarReporteVentasDiarias);
-router.post('/reportes/productos-mas-vendidos', checkRole(['ADMIN', 'GERENTE']), reporteProductosValidation, validate, generarReporteProductosMasVendidos);
-router.post('/reportes/stock-bajo', checkRole(['ADMIN', 'GERENTE']), reporteStockValidation, validate, generarReporteStockBajo);
-router.post('/reportes/proximos-vencer', checkRole(['ADMIN', 'GERENTE']), reporteVencerValidation, validate, generarReporteProximosVencer);
-router.post('/reportes/clientes-frecuentes', checkRole(['ADMIN', 'GERENTE']), reporteClientesValidation, validate, generarReporteClientesFrecuentes);
+router.post('/generar/ventas', checkRole(['ADMIN', 'GERENTE']), generarReporteVentasValidation, validate, generarReporteVentas);
+router.post('/generar/inventario', checkRole(['ADMIN', 'GERENTE']), generarReporteInventarioValidation, validate, generarReporteInventario);
+router.post('/generar/clientes', checkRole(['ADMIN', 'GERENTE']), generarReporteClientesValidation, validate, generarReporteClientes);
+router.post('/generar/compras', checkRole(['ADMIN', 'GERENTE']), generarReporteComprasValidation, validate, generarReporteCompras);
+router.post('/generar/resumen', checkRole(['ADMIN', 'GERENTE']), generarResumenGeneral);
 
-// Obtener reportes
-router.get('/reportes', getReportes);
-router.get('/reportes/:id', param('id').isInt(), validate, getReporteById);
-router.get('/reportes/:id/descargar', param('id').isInt(), validate, descargarReporte);
+router.get('/', getReportes);
+router.get('/estadisticas', checkRole(['ADMIN', 'GERENTE']), getEstadisticas);
+router.get('/descargar/:id', param('id').isInt(), validate, descargarReporte);  // Nueva ruta de descarga
+router.get('/:id', param('id').isInt(), validate, getReporteById);
+router.delete('/:id', checkRole(['ADMIN']), param('id').isInt(), validate, deleteReporte);
 
 // ============ ALERTAS ============
 router.get('/alertas', getAlertas);
-router.put('/alertas/:id/leida', param('id').isInt(), validate, marcarAlertaLeida);
+router.get('/alertas/no-leidas', getAlertasNoLeidas);
+router.get('/alertas/:id', param('id').isInt(), validate, getAlertaById);
+router.post('/alertas', checkRole(['ADMIN', 'GERENTE']), createAlertaValidation, validate, createAlerta);
+router.put('/alertas/:id/leer', checkRole(['ADMIN', 'GERENTE']), param('id').isInt(), validate, marcarAlertaLeida);
 router.put('/alertas/:id/resolver', checkRole(['ADMIN', 'GERENTE']), param('id').isInt(), validate, resolverAlerta);
-router.post('/alertas', checkRole(['ADMIN', 'GERENTE']), alertaValidation, validate, crearAlerta);
+router.put('/alertas/:id/ignorar', checkRole(['ADMIN', 'GERENTE']), param('id').isInt(), validate, ignorarAlerta);
 
 module.exports = router;

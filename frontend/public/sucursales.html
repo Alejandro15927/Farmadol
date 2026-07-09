@@ -44,18 +44,25 @@
             0%, 100% { opacity: 1; }
             50% { opacity: 0.4; }
         }
-        .transfer-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 6px 8px;
-            border-radius: 6px;
-            transition: all 0.2s;
-            font-size: 16px;
+        .btn-accion {
+            transition: all 0.2s ease;
         }
-        .transfer-btn:hover {
-            background: #dbeafe;
-            color: #2563eb;
+        .btn-accion:hover {
+            transform: scale(1.05);
+        }
+        .badge-estado {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        .badge-activo {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        .badge-inactivo {
+            background: #fee2e2;
+            color: #991b1b;
         }
     </style>
 </head>
@@ -92,7 +99,7 @@
                 Inventario
             </a>
             
-            <a href="/usuarios" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
+            <a href="/compras" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
                 <span class="text-lg">🛒</span>
                 Compras
             </a>
@@ -174,7 +181,7 @@
                         🔄 Actualizar
                     </button>
                 </div>
-                <button class="w-full sm:w-auto px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-all flex items-center justify-center gap-2 shadow-sm" onclick="openModal()">
+                <button class="w-full sm:w-auto px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-all flex items-center justify-center gap-2 shadow-sm btn-accion" onclick="openModal()">
                     ➕ Nueva Sucursal
                 </button>
             </div>
@@ -231,7 +238,7 @@
     <!-- ============ MODAL SUCURSAL ============ -->
     <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden items-center justify-center p-4" id="modalOverlay">
         <div class="bg-white rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto modal-transition">
-            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100 sticky top-0 bg-white z-10">
                 <h3 class="text-lg font-semibold text-gray-900" id="modalTitle">Nueva Sucursal</h3>
                 <button class="text-gray-400 hover:text-gray-600 text-2xl" onclick="closeModal()">&times;</button>
             </div>
@@ -285,74 +292,9 @@
                         </select>
                     </div>
                 </div>
-                <div class="flex flex-col sm:flex-row justify-end gap-3 px-6 py-4 border-t border-gray-100">
+                <div class="flex flex-col sm:flex-row justify-end gap-3 px-6 py-4 border-t border-gray-100 sticky bottom-0 bg-white">
                     <button type="button" class="px-5 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg transition-all" onclick="closeModal()">Cancelar</button>
                     <button type="submit" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-all shadow-sm" id="submitBtn">Guardar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- ============ MODAL TRANSFERENCIA ============ -->
-    <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden items-center justify-center p-4" id="transferModalOverlay">
-        <div class="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto modal-transition">
-            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-                <h3 class="text-lg font-semibold text-gray-900">🔄 Transferir Medicamentos</h3>
-                <button class="text-gray-400 hover:text-gray-600 text-2xl" onclick="closeTransferModal()">&times;</button>
-            </div>
-            <form id="transferForm" onsubmit="handleTransferSubmit(event)">
-                <div class="p-6 space-y-4">
-                    <input type="hidden" id="transferOrigenId" value="" />
-                    
-                    <!-- Selección de producto -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Producto <span class="text-red-500">*</span></label>
-                        <select id="transferProducto" required class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                            <option value="">Seleccionar producto...</option>
-                        </select>
-                    </div>
-
-                    <!-- Sucursal destino -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Sucursal Destino <span class="text-red-500">*</span></label>
-                        <select id="transferDestino" required class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                            <option value="">Seleccionar sucursal...</option>
-                        </select>
-                    </div>
-
-                    <!-- Lote -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Lote <span class="text-red-500">*</span></label>
-                        <input type="text" id="transferLote" placeholder="Ingrese el lote del producto" required class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Cantidad <span class="text-red-500">*</span></label>
-                            <input type="number" id="transferCantidad" placeholder="0" min="1" required class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Fecha de Vencimiento <span class="text-red-500">*</span></label>
-                            <input type="date" id="transferVencimiento" required class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Observaciones</label>
-                        <textarea id="transferObservaciones" rows="2" placeholder="Observaciones sobre la transferencia..." class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
-                    </div>
-
-                    <!-- Información de stock actual -->
-                    <div class="bg-blue-50 rounded-lg p-4 border border-blue-200">
-                        <p class="text-sm font-medium text-blue-800">📦 Stock disponible en origen</p>
-                        <p class="text-sm text-blue-600" id="stockDisponibleInfo">Seleccione un producto para ver el stock</p>
-                    </div>
-                </div>
-                <div class="flex flex-col sm:flex-row justify-end gap-3 px-6 py-4 border-t border-gray-100">
-                    <button type="button" class="px-5 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg transition-all" onclick="closeTransferModal()">Cancelar</button>
-                    <button type="submit" class="px-5 py-2.5 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg transition-all shadow-sm" id="transferSubmitBtn">
-                        🔄 Transferir
-                    </button>
                 </div>
             </form>
         </div>
@@ -366,7 +308,6 @@
         let token = localStorage.getItem("token");
         let sucursalesData = [];
         let filteredData = [];
-        let productosData = [];
 
         // ============ HEADERS ============
         function getHeaders() {
@@ -430,30 +371,6 @@
             }
         });
 
-        // ============ CARGAR PRODUCTOS ============
-        async function cargarProductos() {
-            try {
-                const response = await fetch(`${API_GATEWAY}/inventario/productos`, { headers: getHeaders() });
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data.success) {
-                        productosData = data.data || [];
-                        actualizarSelectProductos();
-                    }
-                }
-            } catch (error) {
-                console.error("Error cargando productos:", error);
-            }
-        }
-
-        function actualizarSelectProductos() {
-            const select = document.getElementById("transferProducto");
-            select.innerHTML = '<option value="">Seleccionar producto...</option>';
-            productosData.forEach(p => {
-                select.innerHTML += `<option value="${p.id}">${p.codigo} - ${p.nombre}</option>`;
-            });
-        }
-
         // ============ CRUD SUCURSALES ============
 
         async function cargarSucursales() {
@@ -468,7 +385,8 @@
             `;
 
             try {
-                const response = await fetch(`${API_GATEWAY}/sucursales/sucursales?incluir_inactivas=true`, { headers: getHeaders() });
+                const response = await fetch(`${API_GATEWAY}/sucursales`, { headers: getHeaders() });
+                
                 if (!response.ok) {
                     if (response.status === 401) {
                         localStorage.removeItem("token");
@@ -477,6 +395,7 @@
                     }
                     throw new Error("Error al cargar sucursales");
                 }
+                
                 const data = await response.json();
                 if (data.success) {
                     sucursalesData = data.data || [];
@@ -485,7 +404,6 @@
                         return a.estado ? -1 : 1;
                     });
                     filterSucursales();
-                    actualizarSelectDestino();
                 } else {
                     throw new Error(data.message || "Error al cargar sucursales");
                 }
@@ -502,15 +420,6 @@
                 `;
                 mostrarToast("Error al cargar sucursales", "error");
             }
-        }
-
-        function actualizarSelectDestino() {
-            const select = document.getElementById("transferDestino");
-            const origenId = document.getElementById("transferOrigenId").value;
-            select.innerHTML = '<option value="">Seleccionar sucursal...</option>';
-            sucursalesData.filter(s => s.estado === true && s.id != origenId).forEach(s => {
-                select.innerHTML += `<option value="${s.id}">${s.codigo} - ${s.nombre}</option>`;
-            });
         }
 
         function updateStats(data) {
@@ -557,20 +466,15 @@
                     <td class="px-4 py-3.5 hidden lg:table-cell ${isActive ? 'text-gray-900' : 'text-gray-500'}">${s.telefono || "-"}</td>
                     <td class="px-4 py-3.5 hidden xl:table-cell ${isActive ? 'text-gray-900' : 'text-gray-500'}">${s.encargado || "-"}</td>
                     <td class="px-4 py-3.5">
-                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">
+                        <span class="badge-estado ${isActive ? 'badge-activo' : 'badge-inactivo'}">
                             ${isActive ? 'Activo' : 'Inactivo'}
                         </span>
                     </td>
                     <td class="px-4 py-3.5">
                         <div class="flex items-center justify-center gap-1">
-                            ${isActive ? `
-                                <button onclick="abrirTransferencia(${s.id})" class="transfer-btn" title="Transferir medicamentos">
-                                    🔄
-                                </button>
-                            ` : ''}
                             <button onclick="editarSucursal(${s.id})" class="p-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all" title="Editar">✏️</button>
-                            <button onclick="eliminarSucursal(${s.id})" class="p-1.5 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all" title="${isActive ? 'Desactivar' : 'Eliminar'}">
-                                ${isActive ? '🔴' : '🗑️'}
+                            <button onclick="toggleEstadoSucursal(${s.id})" class="p-1.5 text-gray-500 ${isActive ? 'hover:text-red-600 hover:bg-red-50' : 'hover:text-green-600 hover:bg-green-50'} rounded-lg transition-all" title="${isActive ? 'Desactivar' : 'Activar'}">
+                                ${isActive ? '🔴' : '🟢'}
                             </button>
                         </div>
                     </td>
@@ -601,155 +505,6 @@
 
             filteredData = filtered;
             renderSucursales(filtered);
-        }
-
-        // ============ TRANSFERENCIA ============
-        async function abrirTransferencia(sucursalId) {
-            const sucursal = sucursalesData.find(s => s.id === sucursalId);
-            if (!sucursal) {
-                mostrarToast("Sucursal no encontrada", "error");
-                return;
-            }
-
-            document.getElementById("transferOrigenId").value = sucursalId;
-            document.getElementById("transferForm").reset();
-            document.getElementById("stockDisponibleInfo").textContent = `Seleccione un producto para ver el stock en ${sucursal.nombre}`;
-            
-            actualizarSelectDestino();
-            
-            if (productosData.length === 0) {
-                await cargarProductos();
-            }
-            actualizarSelectProductos();
-
-            document.getElementById("transferModalOverlay").classList.add("flex");
-            document.getElementById("transferModalOverlay").classList.remove("hidden");
-            document.body.style.overflow = "hidden";
-        }
-
-        function closeTransferModal() {
-            document.getElementById("transferModalOverlay").classList.add("hidden");
-            document.getElementById("transferModalOverlay").classList.remove("flex");
-            document.body.style.overflow = "";
-        }
-
-        // Cargar stock al seleccionar producto
-        document.getElementById("transferProducto").addEventListener("change", async function() {
-            const productoId = this.value;
-            const sucursalId = document.getElementById("transferOrigenId").value;
-            const infoEl = document.getElementById("stockDisponibleInfo");
-
-            if (!productoId || !sucursalId) {
-                infoEl.textContent = "Seleccione un producto para ver el stock";
-                return;
-            }
-
-            try {
-                const response = await fetch(`${API_GATEWAY}/inventario/stock?producto_id=${productoId}&sucursal_id=${sucursalId}`, {
-                    headers: getHeaders()
-                });
-                
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data.success) {
-                        const stock = data.data?.total_stock || 0;
-                        const sucursal = sucursalesData.find(s => s.id == sucursalId);
-                        infoEl.innerHTML = `
-                            <strong>${stock}</strong> unidades disponibles en <strong>${sucursal?.nombre || 'sucursal'}</strong>
-                            ${stock === 0 ? '<span class="text-red-500 ml-2">⚠️ Sin stock disponible</span>' : ''}
-                        `;
-                    }
-                }
-            } catch (error) {
-                console.error("Error cargando stock:", error);
-                infoEl.textContent = "Error al cargar el stock";
-            }
-        });
-
-        // ============ GUARDAR TRANSFERENCIA ============
-        async function handleTransferSubmit(e) {
-            e.preventDefault();
-
-            const origenId = document.getElementById("transferOrigenId").value;
-            const productoId = document.getElementById("transferProducto").value;
-            const destinoId = document.getElementById("transferDestino").value;
-            const lote = document.getElementById("transferLote").value.trim();
-            const cantidad = parseInt(document.getElementById("transferCantidad").value);
-            const fechaVencimiento = document.getElementById("transferVencimiento").value;
-            const observaciones = document.getElementById("transferObservaciones").value.trim();
-
-            if (!origenId || !productoId || !destinoId || !lote || !cantidad || !fechaVencimiento) {
-                mostrarToast("Todos los campos obligatorios deben estar completos", "error");
-                return;
-            }
-
-            if (origenId === destinoId) {
-                mostrarToast("La sucursal origen y destino no pueden ser la misma", "error");
-                return;
-            }
-
-            const submitBtn = document.getElementById("transferSubmitBtn");
-            submitBtn.disabled = true;
-            submitBtn.textContent = "🔄 Procesando...";
-
-            try {
-                // 1. Primero verificar stock disponible
-                const stockResponse = await fetch(`${API_GATEWAY}/inventario/stock?producto_id=${productoId}&sucursal_id=${origenId}`, {
-                    headers: getHeaders()
-                });
-                
-                if (stockResponse.ok) {
-                    const stockData = await stockResponse.json();
-                    if (stockData.success) {
-                        const stockDisponible = stockData.data?.total_stock || 0;
-                        if (stockDisponible < cantidad) {
-                            mostrarToast(`Stock insuficiente. Disponible: ${stockDisponible} unidades`, "error");
-                            submitBtn.disabled = false;
-                            submitBtn.textContent = "🔄 Transferir";
-                            return;
-                        }
-                    }
-                }
-
-                // 2. Realizar la transferencia
-                const transferData = {
-                    producto_id: parseInt(productoId),
-                    sucursal_origen_id: parseInt(origenId),
-                    sucursal_destino_id: parseInt(destinoId),
-                    lote: lote,
-                    cantidad: cantidad,
-                    fecha_vencimiento: fechaVencimiento,
-                    referencia_id: Date.now(),
-                    observaciones: observaciones || `Transferencia de ${productosData.find(p => p.id == productoId)?.nombre || 'producto'}`
-                };
-
-                const response = await fetch(`${API_GATEWAY}/inventario/transferir`, {
-                    method: "POST",
-                    headers: getHeaders(),
-                    body: JSON.stringify(transferData)
-                });
-
-                const result = await response.json();
-
-                if (!response.ok) {
-                    throw new Error(result.message || "Error al realizar la transferencia");
-                }
-
-                if (result.success) {
-                    mostrarToast("✅ Transferencia realizada exitosamente", "success");
-                    closeTransferModal();
-                    // Actualizar lista de sucursales
-                    cargarSucursales();
-                } else {
-                    throw new Error(result.message || "Error al realizar la transferencia");
-                }
-            } catch (error) {
-                console.error("Error en transferencia:", error);
-                mostrarToast(error.message || "Error al realizar la transferencia", "error");
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.textContent = "🔄 Transferir";
-            }
         }
 
         // ============ MODAL SUCURSAL ============
@@ -794,16 +549,10 @@
         }
 
         document.addEventListener("keydown", (e) => {
-            if (e.key === "Escape") {
-                closeModal();
-                closeTransferModal();
-            }
+            if (e.key === "Escape") closeModal();
         });
         document.getElementById("modalOverlay").addEventListener("click", (e) => {
             if (e.target === e.currentTarget) closeModal();
-        });
-        document.getElementById("transferModalOverlay").addEventListener("click", (e) => {
-            if (e.target === e.currentTarget) closeTransferModal();
         });
 
         // ============ GUARDAR SUCURSAL ============
@@ -828,7 +577,7 @@
             submitBtn.textContent = isEdit ? "Actualizando..." : "Guardando...";
 
             try {
-                const url = isEdit ? `${API_GATEWAY}/sucursales/sucursales/${id}` : `${API_GATEWAY}/sucursales/sucursales`;
+                const url = isEdit ? `${API_GATEWAY}/sucursales/${id}` : `${API_GATEWAY}/sucursales`;
                 const method = isEdit ? "PUT" : "POST";
                 const response = await fetch(url, { method, headers: getHeaders(), body: JSON.stringify(data) });
                 const result = await response.json();
@@ -856,38 +605,35 @@
             else mostrarToast("Sucursal no encontrada", "error");
         }
 
-        // ============ ELIMINAR/DESACTIVAR SUCURSAL ============
-        async function eliminarSucursal(id) {
+        // ============ TOGGLE ESTADO SUCURSAL ============
+        async function toggleEstadoSucursal(id) {
             const sucursal = sucursalesData.find(s => s.id === id);
             if (!sucursal) { mostrarToast("Sucursal no encontrada", "error"); return; }
 
             const isActive = sucursal.estado === true || sucursal.estado === 1;
             const mensaje = isActive 
-                ? `¿Estás seguro de desactivar la sucursal "${sucursal.nombre}"?` 
-                : `¿Estás seguro de eliminar permanentemente la sucursal "${sucursal.nombre}"?`;
+                ? `¿Desactivar la sucursal "${sucursal.nombre}"?` 
+                : `¿Activar la sucursal "${sucursal.nombre}"?`;
 
             if (!confirm(mensaje)) return;
 
             try {
-                if (isActive) {
-                    const response = await fetch(`${API_GATEWAY}/sucursales/sucursales/${id}`, { 
-                        method: "DELETE", 
-                        headers: getHeaders() 
-                    });
-                    const result = await response.json();
-                    if (!response.ok) throw new Error(result.message || "Error al desactivar la sucursal");
-                    if (result.success) {
-                        mostrarToast("Sucursal desactivada exitosamente", "success");
-                        cargarSucursales();
-                    } else {
-                        throw new Error(result.message || "Error al desactivar la sucursal");
-                    }
+                const response = await fetch(`${API_GATEWAY}/sucursales/${id}`, { 
+                    method: "PUT", 
+                    headers: getHeaders(),
+                    body: JSON.stringify({ ...sucursal, estado: !isActive })
+                });
+                const result = await response.json();
+                if (!response.ok) throw new Error(result.message || "Error al cambiar estado");
+                if (result.success) {
+                    mostrarToast(isActive ? "Sucursal desactivada" : "Sucursal activada", "success");
+                    cargarSucursales();
                 } else {
-                    mostrarToast("Esta sucursal ya está inactiva", "warning");
+                    throw new Error(result.message || "Error al cambiar estado");
                 }
             } catch (error) {
                 console.error("Error:", error);
-                mostrarToast(error.message || "Error al procesar la solicitud", "error");
+                mostrarToast(error.message || "Error al cambiar estado", "error");
             }
         }
 
@@ -924,7 +670,6 @@
             if (!auth) return;
             loadUserData();
             cargarSucursales();
-            cargarProductos();
         });
     </script>
 </body>

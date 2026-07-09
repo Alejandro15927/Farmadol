@@ -22,7 +22,7 @@ module.exports = (sequelize) => {
     },
     inventario_id: {
       type: DataTypes.BIGINT,
-      allowNull: false,
+      allowNull: true,
       comment: 'ID del inventario específico (lote)'
     },
     cantidad: {

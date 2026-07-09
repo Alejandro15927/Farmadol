@@ -6,7 +6,7 @@ const { sequelize } = require('./models');
 const clienteRoutes = require('./routes/clienteRoutes');
 
 const app = express();
-const PORT = process.env.PORT || 3006;
+const PORT = process.env.PORT || 3003;
 
 // Middlewares
 app.use(cors());
@@ -32,24 +32,23 @@ sequelize.sync()
     app.listen(PORT, () => {
       console.log(`👤 Cliente Service corriendo en http://localhost:${PORT}`);
       console.log(`📋 Endpoints disponibles:`);
-      console.log(`  # Clientes`);
-      console.log(`  GET    /api/clientes/clientes`);
-      console.log(`  GET    /api/clientes/clientes/buscar?numero_documento=...`);
-      console.log(`  GET    /api/clientes/clientes/estadisticas (ADMIN/GERENTE)`);
-      console.log(`  GET    /api/clientes/clientes/frecuentes (ADMIN/GERENTE)`);
-      console.log(`  GET    /api/clientes/clientes/:id`);
-      console.log(`  POST   /api/clientes/clientes (ADMIN/GERENTE/CAJERO)`);
-      console.log(`  PUT    /api/clientes/clientes/:id (ADMIN/GERENTE/CAJERO)`);
-      console.log(`  DELETE /api/clientes/clientes/:id (ADMIN/GERENTE)`);
+      console.log(`  # Clientes (Protegido)`);
+      console.log(`  GET    /api/clientes`);
+      console.log(`  GET    /api/clientes/frecuentes`);
+      console.log(`  GET    /api/clientes/estadisticas (ADMIN/GERENTE)`);
+      console.log(`  GET    /api/clientes/documento/:documento`);
+      console.log(`  GET    /api/clientes/:id`);
+      console.log(`  POST   /api/clientes (ADMIN/GERENTE/CAJERO)`);
+      console.log(`  PUT    /api/clientes/:id (ADMIN/GERENTE/CAJERO)`);
+      console.log(`  DELETE /api/clientes/:id (ADMIN/GERENTE)`);
+      console.log(`  PUT    /api/clientes/:id/enable (ADMIN/GERENTE)`);
       console.log(`  # Direcciones`);
-      console.log(`  GET    /api/clientes/clientes/:cliente_id/direcciones`);
-      console.log(`  POST   /api/clientes/clientes/:cliente_id/direcciones`);
-      console.log(`  # Historial`);
-      console.log(`  GET    /api/clientes/clientes/:cliente_id/historial`);
-      console.log(`  POST   /api/clientes/clientes/:cliente_id/historial`);
-      console.log(`  # Frecuencia`);
-      console.log(`  POST   /api/clientes/frecuencia`);
-      console.log(`  GET    /api/clientes/clientes/:cliente_id/productos-frecuentes`);
+      console.log(`  POST   /api/clientes/:cliente_id/direcciones (ADMIN/GERENTE/CAJERO)`);
+      console.log(`  PUT    /api/clientes/direcciones/:id (ADMIN/GERENTE/CAJERO)`);
+      console.log(`  DELETE /api/clientes/direcciones/:id (ADMIN/GERENTE)`);
+      console.log(`  # Historial de Compras`);
+      console.log(`  POST   /api/clientes/:cliente_id/historial (ADMIN/GERENTE/CAJERO)`);
+      console.log(`  GET    /api/clientes/:cliente_id/historial`);
     });
   })
   .catch(error => {

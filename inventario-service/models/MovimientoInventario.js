@@ -21,10 +21,7 @@ module.exports = (sequelize) => {
     },
     cantidad: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        min: 1
-      }
+      allowNull: false
     },
     cantidad_anterior: {
       type: DataTypes.INTEGER,
@@ -46,7 +43,7 @@ module.exports = (sequelize) => {
     usuario_id: {
       type: DataTypes.BIGINT,
       allowNull: false,
-      comment: 'ID del usuario que realiza el movimiento'
+      comment: 'ID del usuario que realiza el movimiento (referencia a auth_db)'
     },
     observaciones: {
       type: DataTypes.TEXT,

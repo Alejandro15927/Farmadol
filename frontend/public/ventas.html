@@ -8,67 +8,44 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💊</text></svg>" />
     <style>
-        .sidebar-transition {
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .sidebar::-webkit-scrollbar {
-            width: 4px;
-        }
-        .sidebar::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-        .modal-transition {
-            animation: modalIn 0.3s ease;
-        }
+        .sidebar-transition { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .sidebar::-webkit-scrollbar { width: 4px; }
+        .sidebar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .modal-transition { animation: modalIn 0.3s ease; }
         @keyframes modalIn {
             from { opacity: 0; transform: scale(0.95) translateY(10px); }
             to { opacity: 1; transform: scale(1) translateY(0); }
         }
-        .toast-slide {
-            animation: slideIn 0.3s ease;
-        }
+        .toast-slide { animation: slideIn 0.3s ease; }
         @keyframes slideIn {
             from { opacity: 0; transform: translateX(20px); }
             to { opacity: 1; transform: translateX(0); }
         }
         .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #22c55e;
-            display: inline-block;
+            width: 8px; height: 8px; border-radius: 50%;
+            background: #22c55e; display: inline-block;
             animation: pulse-dot 2s infinite;
         }
         @keyframes pulse-dot {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.4; }
         }
-        .tab-active {
-            border-bottom: 2px solid #2563eb;
-            color: #2563eb;
-        }
-        .detalle-row {
-            background: #f8fafc;
-        }
-        .stock-disponible {
-            font-size: 12px;
-            color: #64748b;
-            margin-top: 2px;
-        }
-        .stock-disponible .cantidad {
-            font-weight: 600;
-            color: #2563eb;
-        }
-        .stock-disponible .critico {
-            color: #dc2626;
-        }
-        .stock-disponible .bajo {
-            color: #f59e0b;
-        }
-        .hidden-field {
-            display: none !important;
-        }
+        .tab-active { border-bottom: 2px solid #2563eb; color: #2563eb; }
+        .detalle-row { background: #f8fafc; }
+        .stock-disponible { font-size: 12px; color: #64748b; margin-top: 2px; }
+        .stock-disponible .cantidad { font-weight: 600; color: #2563eb; }
+        .stock-disponible .critico { color: #dc2626; }
+        .stock-disponible .bajo { color: #f59e0b; }
+        .badge-estado { padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; }
+        .badge-completada { background: #d1fae5; color: #065f46; }
+        .badge-anulada { background: #fee2e2; color: #991b1b; }
+        .badge-cancelada { background: #fee2e2; color: #991b1b; }
+        .badge-pendiente { background: #fef3c7; color: #92400e; }
+        .badge-activo { background: #d1fae5; color: #065f46; }
+        .badge-inactivo { background: #fee2e2; color: #991b1b; }
+        .detalle-modal table { width: 100%; border-collapse: collapse; }
+        .detalle-modal th { background: #f8fafc; text-align: left; padding: 8px 12px; font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; border-bottom: 1px solid #e2e8f0; }
+        .detalle-modal td { padding: 8px 12px; font-size: 14px; border-bottom: 1px solid #f1f5f9; }
     </style>
 </head>
 <body>
@@ -85,51 +62,17 @@
                 <p class="text-xs text-gray-500">Sistema de Gestión</p>
             </div>
         </div>
-
         <nav class="flex-1 px-3 py-4 overflow-y-auto">
             <p class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Navegación</p>
-            
-            <a href="/dashboard" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
-                <span class="text-lg">📊</span>
-                Dashboard
-            </a>
-            
-            <a href="/ventas" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium bg-blue-50 text-blue-600">
-                <span class="text-lg">💳</span>
-                Ventas
-            </a>
-            
-            <a href="/inventario" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
-                <span class="text-lg">📦</span>
-                Inventario
-            </a>
-            
-            <a href="/compras" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
-                <span class="text-lg">🛒</span>
-                Compras
-            </a>
-            
-            <a href="/clientes" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
-                <span class="text-lg">👤</span>
-                Clientes
-            </a>
-            
-            <a href="/usuarios" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
-                <span class="text-lg">🔐</span>
-                Usuarios
-            </a>
-            
-            <a href="/sucursales" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
-                <span class="text-lg">🏢</span>
-                Sucursales
-            </a>
-            
-            <a href="/reportes" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
-                <span class="text-lg">📄</span>
-                Reportes
-            </a>
+            <a href="/dashboard" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1"><span class="text-lg">📊</span>Dashboard</a>
+            <a href="/ventas" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium bg-blue-50 text-blue-600"><span class="text-lg">💳</span>Ventas</a>
+            <a href="/inventario" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1"><span class="text-lg">📦</span>Inventario</a>
+            <a href="/compras" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1"><span class="text-lg">🛒</span>Compras</a>
+            <a href="/clientes" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1"><span class="text-lg">👤</span>Clientes</a>
+            <a href="/usuarios" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1"><span class="text-lg">🔐</span>Usuarios</a>
+            <a href="/sucursales" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1"><span class="text-lg">🏢</span>Sucursales</a>
+            <a href="/reportes" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1"><span class="text-lg">📄</span>Reportes</a>
         </nav>
-
         <div class="px-4 py-4 border-t border-gray-100">
             <div class="flex items-center gap-3 mb-3">
                 <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-semibold text-sm" id="userAvatar">A</div>
@@ -139,10 +82,7 @@
                     <span class="text-xs text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full inline-block mt-0.5" id="userRole">Administrador</span>
                 </div>
             </div>
-            <button class="w-full flex items-center gap-2 px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition-all" id="logoutBtn">
-                <span>🚪</span>
-                Cerrar Sesión
-            </button>
+            <button class="w-full flex items-center gap-2 px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition-all" id="logoutBtn"><span>🚪</span>Cerrar Sesión</button>
         </div>
     </aside>
 
@@ -158,10 +98,7 @@
                     </div>
                 </div>
                 <div class="flex items-center gap-4">
-                    <div class="flex items-center gap-2 text-sm text-gray-500">
-                        <span class="status-dot"></span>
-                        <span>Conectado</span>
-                    </div>
+                    <div class="flex items-center gap-2 text-sm text-gray-500"><span class="status-dot"></span><span>Conectado</span></div>
                     <span class="text-sm text-gray-500" id="currentDateTime"></span>
                 </div>
             </div>
@@ -170,27 +107,19 @@
         <main class="p-4 md:p-8">
             <!-- Tabs -->
             <div class="flex flex-wrap gap-2 border-b border-gray-200 mb-6">
-                <button class="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-gray-900 border-b-2 border-transparent hover:border-gray-300 transition-all tab-active" data-tab="ventas" onclick="switchTab('ventas')">
-                    💳 Ventas
-                </button>
-                <button class="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-gray-900 border-b-2 border-transparent hover:border-gray-300 transition-all" data-tab="clientes" onclick="switchTab('clientes')">
-                    👤 Clientes (Rápido)
-                </button>
-                <button class="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-gray-900 border-b-2 border-transparent hover:border-gray-300 transition-all" data-tab="metodos-pago" onclick="switchTab('metodos-pago')">
-                    💳 Métodos de Pago
-                </button>
+                <button class="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-gray-900 border-b-2 border-transparent hover:border-gray-300 transition-all tab-active" data-tab="ventas" onclick="switchTab('ventas')">💳 Ventas</button>
+                <button class="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-gray-900 border-b-2 border-transparent hover:border-gray-300 transition-all" data-tab="clientes" onclick="switchTab('clientes')">👤 Clientes (Rápido)</button>
+                <button class="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-gray-900 border-b-2 border-transparent hover:border-gray-300 transition-all" data-tab="metodos-pago" onclick="switchTab('metodos-pago')">💳 Métodos de Pago</button>
             </div>
 
             <!-- ============ TAB: VENTAS ============ -->
             <div id="tab-ventas" class="tab-content">
-                <!-- Toolbar -->
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                     <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full sm:w-auto">
                         <div class="relative flex-1 sm:flex-initial">
                             <input type="text" id="searchVenta" placeholder="Buscar venta..." oninput="filterVentas()" class="w-full sm:w-64 px-4 py-2.5 pl-10 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white">
                             <span class="absolute left-3 top-2.5 text-gray-400">🔍</span>
                         </div>
-                        
                         <select id="estadoVentaFilter" onchange="filterVentas()" class="w-full sm:w-auto px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white">
                             <option value="todos">Todos los estados</option>
                             <option value="completada">Completadas</option>
@@ -198,45 +127,20 @@
                             <option value="cancelada">Canceladas</option>
                             <option value="pendiente">Pendientes</option>
                         </select>
-                        
                         <select id="metodoPagoFilter" onchange="filterVentas()" class="w-full sm:w-auto px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white">
                             <option value="todos">Todos los métodos</option>
                         </select>
-                        
-                        <button class="px-4 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg transition-all border border-gray-200" onclick="cargarVentas()">
-                            🔄 Actualizar
-                        </button>
+                        <button class="px-4 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg transition-all border border-gray-200" onclick="cargarVentas()">🔄 Actualizar</button>
                     </div>
-                    <button class="w-full sm:w-auto px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-all flex items-center justify-center gap-2 shadow-sm" onclick="openVentaModal()">
-                        ➕ Nueva Venta
-                    </button>
+                    <button class="w-full sm:w-auto px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-all flex items-center justify-center gap-2 shadow-sm" onclick="openVentaModal()">➕ Nueva Venta</button>
                 </div>
-
-                <!-- Stats Ventas -->
                 <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
-                    <div class="bg-white rounded-xl border border-gray-200 px-4 py-3">
-                        <p class="text-xs text-gray-500">Total Hoy</p>
-                        <p class="text-xl font-bold text-gray-900" id="totalVentasHoy">S/ 0.00</p>
-                    </div>
-                    <div class="bg-white rounded-xl border border-gray-200 px-4 py-3">
-                        <p class="text-xs text-gray-500">Ventas Hoy</p>
-                        <p class="text-xl font-bold text-blue-600" id="totalVentasCount">0</p>
-                    </div>
-                    <div class="bg-white rounded-xl border border-gray-200 px-4 py-3">
-                        <p class="text-xs text-gray-500">Completadas</p>
-                        <p class="text-xl font-bold text-green-600" id="totalCompletadas">0</p>
-                    </div>
-                    <div class="bg-white rounded-xl border border-gray-200 px-4 py-3">
-                        <p class="text-xs text-gray-500">Anuladas</p>
-                        <p class="text-xl font-bold text-red-600" id="totalAnuladas">0</p>
-                    </div>
-                    <div class="bg-white rounded-xl border border-gray-200 px-4 py-3">
-                        <p class="text-xs text-gray-500">Total Registros</p>
-                        <p class="text-xl font-bold text-gray-900" id="totalVentasRegistros">0</p>
-                    </div>
+                    <div class="bg-white rounded-xl border border-gray-200 px-4 py-3"><p class="text-xs text-gray-500">Total Hoy</p><p class="text-xl font-bold text-gray-900" id="totalVentasHoy">S/ 0.00</p></div>
+                    <div class="bg-white rounded-xl border border-gray-200 px-4 py-3"><p class="text-xs text-gray-500">Ventas Hoy</p><p class="text-xl font-bold text-blue-600" id="totalVentasCount">0</p></div>
+                    <div class="bg-white rounded-xl border border-gray-200 px-4 py-3"><p class="text-xs text-gray-500">Completadas</p><p class="text-xl font-bold text-green-600" id="totalCompletadas">0</p></div>
+                    <div class="bg-white rounded-xl border border-gray-200 px-4 py-3"><p class="text-xs text-gray-500">Anuladas</p><p class="text-xl font-bold text-red-600" id="totalAnuladas">0</p></div>
+                    <div class="bg-white rounded-xl border border-gray-200 px-4 py-3"><p class="text-xs text-gray-500">Total Registros</p><p class="text-xl font-bold text-gray-900" id="totalVentasRegistros">0</p></div>
                 </div>
-
-                <!-- Table Ventas -->
                 <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
                     <div class="overflow-x-auto">
                         <table class="w-full text-sm">
@@ -252,12 +156,7 @@
                                 </tr>
                             </thead>
                             <tbody id="ventasTableBody">
-                                <tr>
-                                    <td colspan="7" class="text-center py-12 text-gray-400">
-                                        <div class="inline-block w-6 h-6 border-2 border-gray-200 border-t-blue-600 rounded-full animate-spin"></div>
-                                        <p class="mt-2">Cargando ventas...</p>
-                                    </td>
-                                </tr>
+                                <tr><td colspan="7" class="text-center py-12 text-gray-400"><div class="inline-block w-6 h-6 border-2 border-gray-200 border-t-blue-600 rounded-full animate-spin"></div><p class="mt-2">Cargando ventas...</p></td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -274,29 +173,20 @@
                                 <input type="text" id="buscarClienteInput" placeholder="DNI, nombres, apellidos..." class="w-full px-4 py-2.5 pl-10 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                                 <span class="absolute left-3 top-2.5 text-gray-400">🔍</span>
                             </div>
-                            <div id="sugerenciasClientes" class="mt-2 border border-gray-200 rounded-lg hidden overflow-hidden"></div>
                         </div>
                         <div class="flex items-end gap-2">
-                            <button onclick="buscarCliente()" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-all shadow-sm">
-                                🔍 Buscar
-                            </button>
-                            <button onclick="openClienteRapidoModal()" class="px-5 py-2.5 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg transition-all shadow-sm">
-                                ➕ Nuevo
-                            </button>
+                            <button onclick="buscarCliente()" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-all shadow-sm">🔍 Buscar</button>
+                            <button onclick="openClienteRapidoModal()" class="px-5 py-2.5 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg transition-all shadow-sm">➕ Nuevo</button>
                         </div>
                     </div>
-                    <div id="clienteResultado" class="mt-4">
-                        <div class="text-center py-8 text-gray-400">Ingrese un documento o nombre para buscar un cliente</div>
-                    </div>
+                    <div id="clienteResultado" class="mt-4"><div class="text-center py-8 text-gray-400">Ingrese un documento o nombre para buscar un cliente</div></div>
                 </div>
             </div>
 
             <!-- ============ TAB: MÉTODOS DE PAGO ============ -->
             <div id="tab-metodos-pago" class="tab-content hidden">
                 <div class="bg-white rounded-xl border border-gray-200 p-6">
-                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="metodosPagoContainer">
-                        <div class="text-center py-8 text-gray-400">Cargando métodos de pago...</div>
-                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="metodosPagoContainer"><div class="text-center py-8 text-gray-400">Cargando métodos de pago...</div></div>
                 </div>
             </div>
         </main>
@@ -312,77 +202,40 @@
             <form id="ventaForm" onsubmit="handleVentaSubmit(event)">
                 <div class="p-6 space-y-4">
                     <input type="hidden" id="editVentaId" value="" />
-
-                    <!-- Cliente y método de pago -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1.5">Cliente</label>
                             <div class="flex gap-2">
-                                <select id="ventaCliente" class="flex-1 px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                    <option value="">Cliente general</option>
-                                </select>
+                                <select id="ventaCliente" class="flex-1 px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"><option value="">Cliente general</option></select>
                                 <button type="button" onclick="openClienteRapidoModal()" class="px-3 py-2.5 bg-green-600 hover:bg-green-700 text-white text-sm rounded-lg transition-all" title="Nuevo cliente">➕</button>
                             </div>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1.5">Método de Pago <span class="text-red-500">*</span></label>
-                            <select id="ventaMetodoPago" required class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                <option value="">Seleccionar...</option>
-                            </select>
+                            <select id="ventaMetodoPago" required class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"><option value="">Seleccionar...</option></select>
                         </div>
                     </div>
-
-                    <!-- Sucursal -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1.5">Sucursal <span class="text-red-500">*</span></label>
-                        <select id="ventaSucursal" required class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" onchange="actualizarStockDisponible()">
-                            <option value="">Seleccionar sucursal...</option>
-                        </select>
+                        <select id="ventaSucursal" required class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" onchange="onSucursalChange()"><option value="">Seleccionar sucursal...</option></select>
                     </div>
-
                     <hr class="border-gray-200" />
-
-                    <!-- Detalles de la venta -->
                     <div>
                         <div class="flex items-center justify-between mb-3">
                             <h4 class="font-medium text-gray-900">📦 Productos</h4>
-                            <button type="button" class="text-sm text-blue-600 hover:text-blue-800 font-medium" onclick="agregarDetalleVenta()">
-                                ➕ Agregar Producto
-                            </button>
+                            <button type="button" class="text-sm text-blue-600 hover:text-blue-800 font-medium" onclick="agregarDetalleVenta()">➕ Agregar Producto</button>
                         </div>
-                        <div class="bg-gray-50 rounded-lg p-4">
-                            <div id="ventaDetallesContainer">
-                                <div class="text-center py-4 text-gray-400 text-sm">No hay productos agregados</div>
-                            </div>
-                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4"><div id="ventaDetallesContainer"><div class="text-center py-4 text-gray-400 text-sm">No hay productos agregados</div></div></div>
                     </div>
-
-                    <!-- Descuento global (oculto) -->
                     <input type="hidden" id="ventaDescuento" value="0" />
-
-                    <!-- Resumen de la venta -->
                     <div class="bg-blue-50 rounded-lg p-4">
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            <div>
-                                <p class="text-xs text-gray-500">Subtotal</p>
-                                <p class="text-lg font-bold text-gray-900" id="ventaSubtotal">S/ 0.00</p>
-                            </div>
-                            <div>
-                                <p class="text-xs text-gray-500">IGV (18%)</p>
-                                <p class="text-lg font-bold text-gray-900" id="ventaIgv">S/ 0.00</p>
-                            </div>
-                            <div>
-                                <p class="text-xs text-gray-500">Total</p>
-                                <p class="text-xl font-bold text-blue-600" id="ventaTotal">S/ 0.00</p>
-                            </div>
-                            <div>
-                                <p class="text-xs text-gray-500">Productos</p>
-                                <p class="text-lg font-bold text-gray-900" id="ventaCantidadProductos">0</p>
-                            </div>
+                            <div><p class="text-xs text-gray-500">Subtotal</p><p class="text-lg font-bold text-gray-900" id="ventaSubtotal">S/ 0.00</p></div>
+                            <div><p class="text-xs text-gray-500">IGV (18%)</p><p class="text-lg font-bold text-gray-900" id="ventaIgv">S/ 0.00</p></div>
+                            <div><p class="text-xs text-gray-500">Total</p><p class="text-xl font-bold text-blue-600" id="ventaTotal">S/ 0.00</p></div>
+                            <div><p class="text-xs text-gray-500">Productos</p><p class="text-lg font-bold text-gray-900" id="ventaCantidadProductos">0</p></div>
                         </div>
                     </div>
-
-                    <!-- Monto recibido y cambio -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1.5">Monto Recibido</label>
@@ -393,20 +246,14 @@
                             <input type="text" id="ventaCambio" placeholder="S/ 0.00" readonly class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-gray-50 text-gray-900 font-medium">
                         </div>
                     </div>
-
-                    <!-- Observaciones -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1.5">Observaciones</label>
                         <input type="text" id="ventaObservaciones" placeholder="Observaciones..." class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                     </div>
-
                     <div id="ventaEstadoGroup" style="display: none;">
                         <label class="block text-sm font-medium text-gray-700 mb-1.5">Estado</label>
                         <select id="ventaEstado" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                            <option value="completada">Completada</option>
-                            <option value="anulada">Anulada</option>
-                            <option value="cancelada">Cancelada</option>
-                            <option value="pendiente">Pendiente</option>
+                            <option value="completada">Completada</option><option value="anulada">Anulada</option><option value="cancelada">Cancelada</option><option value="pendiente">Pendiente</option>
                         </select>
                     </div>
                 </div>
@@ -415,6 +262,22 @@
                     <button type="submit" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-all shadow-sm" id="ventaSubmitBtn">Registrar Venta</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- ============ MODAL DETALLE VENTA (nuevo, similar a compras.html) ============ -->
+    <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden items-center justify-center p-4" id="detalleVentaModalOverlay">
+        <div class="bg-white rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto modal-transition">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100 sticky top-0 bg-white z-10">
+                <h3 class="text-lg font-semibold text-gray-900" id="detalleVentaModalTitle">📋 Detalle de Venta</h3>
+                <button class="text-gray-400 hover:text-gray-600 text-2xl" onclick="closeDetalleVentaModal()">&times;</button>
+            </div>
+            <div class="p-6" id="detalleVentaModalContent">
+                <div class="text-center py-8 text-gray-400">Cargando detalle...</div>
+            </div>
+            <div class="flex justify-end px-6 py-4 border-t border-gray-100">
+                <button class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-all shadow-sm" onclick="closeDetalleVentaModal()">Cerrar</button>
+            </div>
         </div>
     </div>
 
@@ -431,23 +294,21 @@
                         <div>
                             <label class="block text-xs font-medium text-gray-700 mb-1">Tipo Doc.</label>
                             <select id="clienteRapidoTipoDoc" class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                <option value="DNI">DNI</option>
-                                <option value="RUC">RUC</option>
-                                <option value="CE">CE</option>
+                                <option value="DNI">DNI</option><option value="RUC">RUC</option><option value="CE">CE</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-gray-700 mb-1">N° Documento</label>
-                            <input type="text" id="clienteRapidoDoc" placeholder="12345678" class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <label class="block text-xs font-medium text-gray-700 mb-1">N° Documento <span class="text-red-500">*</span></label>
+                            <input type="text" id="clienteRapidoDoc" placeholder="12345678" required class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-gray-700 mb-1">Nombres</label>
-                        <input type="text" id="clienteRapidoNombres" placeholder="Juan Carlos" class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <label class="block text-xs font-medium text-gray-700 mb-1">Nombres <span class="text-red-500">*</span></label>
+                        <input type="text" id="clienteRapidoNombres" placeholder="Juan Carlos" required class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-gray-700 mb-1">Apellidos</label>
-                        <input type="text" id="clienteRapidoApellidos" placeholder="Pérez Gómez" class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <label class="block text-xs font-medium text-gray-700 mb-1">Apellidos <span class="text-red-500">*</span></label>
+                        <input type="text" id="clienteRapidoApellidos" placeholder="Pérez Gómez" required class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
                     <div>
                         <label class="block text-xs font-medium text-gray-700 mb-1">Email</label>
@@ -489,32 +350,17 @@
             return { subtotal, igv, total };
         }
 
-        function obtenerStockDisponible(productoId, sucursalId) {
-            if (!productoId || !sucursalId) return null;
-            const cacheKey = `${productoId}-${sucursalId}`;
-            return stockCache[cacheKey]?.total_stock ?? null;
-        }
-
-        // ============ HEADERS ============
         function getHeaders() {
-            return {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-            };
+            return { "Content-Type": "application/json", Authorization: `Bearer ${token}` };
         }
 
-        // ============ VERIFICAR AUTENTICACIÓN ============
         function checkAuth() {
             token = localStorage.getItem("token");
             const user = JSON.parse(localStorage.getItem("user") || "null");
-            if (!token || !user) {
-                window.location.href = "/";
-                return false;
-            }
+            if (!token || !user) { window.location.href = "/"; return false; }
             return { token, user };
         }
 
-        // ============ CARGAR DATOS DEL USUARIO ============
         function loadUserData() {
             const auth = checkAuth();
             if (!auth) return;
@@ -526,7 +372,6 @@
             document.getElementById("userRole").textContent = roles.map(r => r.charAt(0).toUpperCase() + r.slice(1).toLowerCase()).join(", ");
         }
 
-        // ============ RELOJ ============
         function updateDateTime() {
             const now = new Date();
             const options = { weekday: "short", day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" };
@@ -535,11 +380,9 @@
         setInterval(updateDateTime, 60000);
         updateDateTime();
 
-        // ============ SIDEBAR TOGGLE ============
         const sidebar = document.getElementById("sidebar");
         const overlay = document.getElementById("sidebarOverlay");
         const hamburger = document.getElementById("hamburgerBtn");
-
         function toggleSidebar() {
             sidebar.classList.toggle("translate-x-0");
             sidebar.classList.toggle("-translate-x-full");
@@ -548,7 +391,6 @@
         hamburger.addEventListener("click", toggleSidebar);
         overlay.addEventListener("click", toggleSidebar);
 
-        // ============ CERRAR SESIÓN ============
         document.getElementById("logoutBtn").addEventListener("click", () => {
             if (confirm("¿Estás seguro de que deseas cerrar sesión?")) {
                 localStorage.removeItem("token");
@@ -557,7 +399,6 @@
             }
         });
 
-        // ============ TABS ============
         function switchTab(tab) {
             currentTab = tab;
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
@@ -570,32 +411,17 @@
             if (tab === 'metodos-pago') cargarMetodosPago();
         }
 
-        // ============ CARGAR DATOS AUXILIARES ============
         async function cargarDatosAuxiliares() {
             try {
-                const clientesRes = await fetch(`${API_GATEWAY}/clientes/clientes?estado=true`, { headers: getHeaders() });
-                if (clientesRes.ok) {
-                    const data = await clientesRes.json();
-                    if (data.success) clientesData = data.data || [];
-                }
-
-                const sucursalesRes = await fetch(`${API_GATEWAY}/sucursales/sucursales`, { headers: getHeaders() });
-                if (sucursalesRes.ok) {
-                    const data = await sucursalesRes.json();
-                    if (data.success) sucursalesData = data.data || [];
-                }
-
+                const clientesRes = await fetch(`${API_GATEWAY}/clientes`, { headers: getHeaders() });
+                if (clientesRes.ok) { const data = await clientesRes.json(); if (data.success) clientesData = data.data || []; }
+                const sucursalesRes = await fetch(`${API_GATEWAY}/sucursales`, { headers: getHeaders() });
+                if (sucursalesRes.ok) { const data = await sucursalesRes.json(); if (data.success) sucursalesData = data.data || []; }
                 const productosRes = await fetch(`${API_GATEWAY}/inventario/productos`, { headers: getHeaders() });
-                if (productosRes.ok) {
-                    const data = await productosRes.json();
-                    if (data.success) productosData = data.data || [];
-                }
-
+                if (productosRes.ok) { const data = await productosRes.json(); if (data.success) productosData = data.data || []; }
                 await cargarMetodosPago();
                 actualizarSelectores();
-            } catch (error) {
-                console.error("Error cargando datos auxiliares:", error);
-            }
+            } catch (error) { console.error("Error cargando datos auxiliares:", error); }
         }
 
         function actualizarSelectores() {
@@ -606,7 +432,6 @@
                     clienteSelect.innerHTML += `<option value="${c.id}">${c.nombres} ${c.apellidos} - ${c.numero_documento}</option>`;
                 });
             }
-
             const sucursalSelect = document.getElementById("ventaSucursal");
             if (sucursalSelect) {
                 sucursalSelect.innerHTML = '<option value="">Seleccionar sucursal...</option>';
@@ -614,7 +439,6 @@
                     sucursalSelect.innerHTML += `<option value="${s.id}">${s.nombre}</option>`;
                 });
             }
-
             const metodoSelect = document.getElementById("ventaMetodoPago");
             if (metodoSelect) {
                 metodoSelect.innerHTML = '<option value="">Seleccionar...</option>';
@@ -622,7 +446,6 @@
                     metodoSelect.innerHTML += `<option value="${m.id}">${m.nombre}</option>`;
                 });
             }
-
             const filterSelect = document.getElementById("metodoPagoFilter");
             if (filterSelect) {
                 filterSelect.innerHTML = '<option value="todos">Todos los métodos</option>';
@@ -632,120 +455,60 @@
             }
         }
 
-        function mensajeServicioVentasNoDisponible() {
-            return `
-                <div class="col-span-full bg-yellow-50 border border-yellow-200 rounded-xl p-6 text-center">
-                    <p class="text-4xl mb-2">⚠️</p>
-                    <p class="text-yellow-700 font-medium">Servicio de ventas no disponible</p>
-                    <p class="text-sm text-yellow-600 mt-1">Inicia ventas-service en el puerto 3005</p>
-                    <button onclick="cargarMetodosPago()" class="mt-3 text-sm text-blue-600 hover:text-blue-800">Reintentar</button>
-                </div>
-            `;
-        }
-
         // ============ MÉTODOS DE PAGO ============
         async function cargarMetodosPago() {
             const container = document.getElementById("metodosPagoContainer");
             try {
                 const response = await fetch(`${API_GATEWAY}/ventas/metodos-pago`, { headers: getHeaders() });
-                if (response.status === 503) {
-                    if (container) container.innerHTML = mensajeServicioVentasNoDisponible();
-                    mostrarToast("Servicio de ventas no disponible (puerto 3005)", "error");
-                    return;
-                }
                 if (response.ok) {
                     const data = await response.json();
-                    if (data.success) {
-                        metodosPagoData = data.data || [];
-                        renderMetodosPago();
-                        actualizarSelectores();
-                    }
+                    if (data.success) { metodosPagoData = data.data || []; renderMetodosPago(); actualizarSelectores(); }
                 }
-            } catch (error) {
-                console.error("Error cargando métodos de pago:", error);
-                if (container) container.innerHTML = mensajeServicioVentasNoDisponible();
-            }
+            } catch (error) { console.error("Error cargando métodos de pago:", error); }
         }
 
         function renderMetodosPago() {
             const container = document.getElementById("metodosPagoContainer");
             if (!metodosPagoData || metodosPagoData.length === 0) {
-                container.innerHTML = `
-                    <div class="col-span-full text-center py-8 text-gray-400">
-                        <p class="text-4xl mb-2">💳</p>
-                        <p>No hay métodos de pago registrados</p>
-                    </div>
-                `;
+                container.innerHTML = '<div class="col-span-full text-center py-8 text-gray-400"><p class="text-4xl mb-2">💳</p><p>No hay métodos de pago registrados</p></div>';
                 return;
             }
             container.innerHTML = metodosPagoData.map(m => `
                 <div class="bg-gray-50 rounded-lg p-4 text-center border border-gray-200">
-                    <div class="text-3xl mb-2">${m.nombre === 'Efectivo' ? '💵' : m.nombre === 'Tarjeta Débito' ? '💳' : m.nombre === 'Tarjeta Crédito' ? '💳' : m.nombre === 'Yape' ? '📱' : m.nombre === 'Plin' ? '📱' : '💳'}</div>
+                    <div class="text-3xl mb-2">${m.nombre === 'efectivo' ? '💵' : m.nombre === 'tarjeta_debito' ? '💳' : m.nombre === 'tarjeta_credito' ? '💳' : m.nombre === 'yape' ? '📱' : m.nombre === 'plin' ? '📱' : '💳'}</div>
                     <p class="font-medium text-gray-900">${m.nombre}</p>
                     <p class="text-xs text-gray-500">${m.descripcion || ''}</p>
-                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${m.estado ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'} mt-2">
-                        ${m.estado ? 'Activo' : 'Inactivo'}
-                    </span>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${m.estado ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'} mt-2">${m.estado ? 'Activo' : 'Inactivo'}</span>
                 </div>
             `).join('');
         }
 
-        // ============ CLIENTES (TAB RÁPIDO) ============
+        // ============ CLIENTES ============
         async function buscarCliente() {
             const input = document.getElementById("buscarClienteInput");
             const resultado = document.getElementById("clienteResultado");
             const search = input.value.trim();
-
-            if (!search) {
-                resultado.innerHTML = `<div class="text-center py-8 text-gray-400">Ingrese un documento o nombre para buscar un cliente</div>`;
-                return;
-            }
-
-            resultado.innerHTML = `
-                <div class="text-center py-8">
-                    <div class="inline-block w-6 h-6 border-2 border-gray-200 border-t-blue-600 rounded-full animate-spin"></div>
-                    <p class="mt-2 text-gray-400">Buscando...</p>
-                </div>
-            `;
-
+            if (!search) { resultado.innerHTML = '<div class="text-center py-8 text-gray-400">Ingrese un documento o nombre para buscar un cliente</div>'; return; }
+            resultado.innerHTML = '<div class="text-center py-8"><div class="inline-block w-6 h-6 border-2 border-gray-200 border-t-blue-600 rounded-full animate-spin"></div><p class="mt-2 text-gray-400">Buscando...</p></div>';
             try {
-                const response = await fetch(`${API_GATEWAY}/clientes/clientes?search=${encodeURIComponent(search)}&estado=true`, { headers: getHeaders() });
+                const response = await fetch(`${API_GATEWAY}/clientes?search=${encodeURIComponent(search)}`, { headers: getHeaders() });
                 if (response.ok) {
                     const data = await response.json();
                     if (data.success && data.data && data.data.length > 0) {
-                        const clientes = data.data;
-                        resultado.innerHTML = `
-                            <div class="grid gap-3">
-                                ${clientes.map(c => `
-                                    <div class="bg-white border border-gray-200 rounded-lg p-4 flex justify-between items-center hover:shadow-md transition-shadow">
-                                        <div>
-                                            <p class="font-medium text-gray-900">${c.nombres} ${c.apellidos}</p>
-                                            <p class="text-sm text-gray-500">${c.numero_documento} - ${c.email || 'Sin email'} - ${c.telefono || 'Sin teléfono'}</p>
-                                            <p class="text-xs text-gray-400">Compras: ${c.total_compras || 0} | Gasto: S/ ${parseFloat(c.total_gastado || 0).toFixed(2)}</p>
-                                        </div>
-                                        <div class="flex gap-2">
-                                            <button onclick="seleccionarClienteRapido(${c.id})" class="px-3 py-1.5 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-all">
-                                                Seleccionar
-                                            </button>
-                                        </div>
-                                    </div>
-                                `).join('')}
+                        resultado.innerHTML = `<div class="grid gap-3">${data.data.map(c => `
+                            <div class="bg-white border border-gray-200 rounded-lg p-4 flex justify-between items-center hover:shadow-md transition-shadow">
+                                <div>
+                                    <p class="font-medium text-gray-900">${c.nombres} ${c.apellidos}</p>
+                                    <p class="text-sm text-gray-500">${c.numero_documento} - ${c.email || 'Sin email'} - ${c.telefono || 'Sin teléfono'}</p>
+                                </div>
+                                <button onclick="seleccionarClienteRapido(${c.id})" class="px-3 py-1.5 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-all">Seleccionar</button>
                             </div>
-                        `;
+                        `).join('')}</div>`;
                     } else {
-                        resultado.innerHTML = `
-                            <div class="text-center py-8 text-gray-400">
-                                <p class="text-4xl mb-2">👤</p>
-                                <p>No se encontraron clientes</p>
-                                <button onclick="openClienteRapidoModal()" class="mt-3 text-sm text-blue-600 hover:text-blue-800">Crear nuevo cliente</button>
-                            </div>
-                        `;
+                        resultado.innerHTML = '<div class="text-center py-8 text-gray-400"><p class="text-4xl mb-2">👤</p><p>No se encontraron clientes</p><button onclick="openClienteRapidoModal()" class="mt-3 text-sm text-blue-600 hover:text-blue-800">Crear nuevo cliente</button></div>';
                     }
                 }
-            } catch (error) {
-                console.error("Error:", error);
-                resultado.innerHTML = `<div class="text-center py-8 text-red-500">⚠️ Error al buscar cliente</div>`;
-            }
+            } catch (error) { resultado.innerHTML = '<div class="text-center py-8 text-red-500">⚠️ Error al buscar cliente</div>'; }
         }
 
         function seleccionarClienteRapido(id) {
@@ -753,120 +516,55 @@
             if (cliente) {
                 document.getElementById("buscarClienteInput").value = `${cliente.nombres} ${cliente.apellidos} - ${cliente.numero_documento}`;
                 mostrarToast(`Cliente seleccionado: ${cliente.nombres} ${cliente.apellidos}`, "success");
-                
                 const ventaClienteSelect = document.getElementById("ventaCliente");
-                if (ventaClienteSelect) {
-                    ventaClienteSelect.value = id;
-                }
+                if (ventaClienteSelect) ventaClienteSelect.value = id;
             }
         }
 
-        // ============ STOCK DISPONIBLE ============
+        // ============ STOCK ============
         async function consultarStockDisponible(productoId, sucursalId) {
             if (!productoId || !sucursalId) return null;
-            
             const cacheKey = `${productoId}-${sucursalId}`;
-            if (stockCache[cacheKey]) {
-                return stockCache[cacheKey];
-            }
-
+            if (stockCache[cacheKey]) return stockCache[cacheKey];
             try {
-                const response = await fetch(`${API_GATEWAY}/inventario/stock?producto_id=${productoId}&sucursal_id=${sucursalId}`, {
-                    headers: getHeaders()
-                });
+                const response = await fetch(`${API_GATEWAY}/inventario/stock?producto_id=${productoId}&sucursal_id=${sucursalId}`, { headers: getHeaders() });
                 if (response.ok) {
                     const data = await response.json();
                     if (data.success) {
-                        const result = {
-                            total_stock: data.data?.total_stock || 0,
-                            lotes: data.data?.lotes || []
-                        };
+                        const result = { total_stock: data.data?.total_stock || 0, lotes: data.data?.lotes || [] };
                         stockCache[cacheKey] = result;
                         return result;
                     }
                 }
                 return null;
-            } catch (error) {
-                console.error("Error consultando stock:", error);
-                return null;
-            }
+            } catch (error) { console.error("Error consultando stock:", error); return null; }
         }
 
-        function asignarLoteInventario(index, lote) {
-            if (!detallesVenta[index]) return;
-            if (lote) {
-                detallesVenta[index].inventario_id = lote.id;
-                detallesVenta[index].lote = lote.lote || '';
-                detallesVenta[index].fecha_vencimiento = lote.fecha_vencimiento
-                    ? String(lote.fecha_vencimiento).split('T')[0]
-                    : '';
-            } else {
-                detallesVenta[index].inventario_id = null;
-                detallesVenta[index].lote = '';
-                detallesVenta[index].fecha_vencimiento = '';
-            }
-        }
-
-        function actualizarStockDisponible() {
-            const sucursalId = document.getElementById("ventaSucursal").value;
+        function onSucursalChange() {
             stockCache = {};
-            detallesVenta.forEach((detalle, index) => {
-                if (detalle && detalle.producto_id && sucursalId) {
-                    actualizarStockDetalle(index, detalle.producto_id, sucursalId);
+            const sucursalId = document.getElementById("ventaSucursal").value;
+            document.querySelectorAll('.producto-select-venta').forEach((select, index) => {
+                const productoId = select.value;
+                if (productoId && sucursalId) {
+                    actualizarStockDetalle(index, productoId, sucursalId);
+                } else if (!sucursalId) {
+                    const stockInfo = document.getElementById(`stock-info-${index}`);
+                    if (stockInfo) { stockInfo.textContent = '⚠️ Seleccione una sucursal primero'; stockInfo.className = 'stock-disponible text-yellow-600'; }
                 }
             });
         }
 
         // ============ VENTAS ============
-
         async function cargarVentas() {
             const tbody = document.getElementById("ventasTableBody");
-            tbody.innerHTML = `
-                <tr>
-                    <td colspan="7" class="text-center py-12 text-gray-400">
-                        <div class="inline-block w-6 h-6 border-2 border-gray-200 border-t-blue-600 rounded-full animate-spin"></div>
-                        <p class="mt-2">Cargando ventas...</p>
-                    </td>
-                </tr>
-            `;
-
+            tbody.innerHTML = '<tr><td colspan="7" class="text-center py-12 text-gray-400"><div class="inline-block w-6 h-6 border-2 border-gray-200 border-t-blue-600 rounded-full animate-spin"></div><p class="mt-2">Cargando ventas...</p></td></tr>';
             try {
                 const response = await fetch(`${API_GATEWAY}/ventas/ventas`, { headers: getHeaders() });
-                if (response.status === 503) {
-                    tbody.innerHTML = `
-                        <tr>
-                            <td colspan="7" class="text-center py-12">
-                                <div class="inline-block bg-yellow-50 border border-yellow-200 rounded-xl p-6">
-                                    <p class="text-4xl mb-2">⚠️</p>
-                                    <p class="text-yellow-700 font-medium">Servicio de ventas no disponible</p>
-                                    <p class="text-sm text-yellow-600 mt-1">Inicia ventas-service en el puerto 3005</p>
-                                    <button onclick="cargarVentas()" class="mt-3 text-sm text-blue-600 hover:text-blue-800">Reintentar</button>
-                                </div>
-                            </td>
-                        </tr>
-                    `;
-                    mostrarToast("Servicio de ventas no disponible (puerto 3005)", "error");
-                    return;
-                }
                 if (!response.ok) throw new Error("Error al cargar ventas");
                 const data = await response.json();
-                if (data.success) {
-                    ventasData = data.data || [];
-                    filterVentas();
-                    cargarVentasHoy();
-                }
+                if (data.success) { ventasData = data.data || []; filterVentas(); cargarVentasHoy(); }
             } catch (error) {
-                console.error("Error:", error);
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="7" class="text-center py-12 text-red-500">
-                            <p class="text-4xl mb-2">⚠️</p>
-                            <p>Error al cargar las ventas</p>
-                            <button onclick="cargarVentas()" class="mt-3 text-sm text-blue-600 hover:text-blue-800">Reintentar</button>
-                        </td>
-                    </tr>
-                `;
-                mostrarToast("Error al cargar ventas", "error");
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center py-12 text-red-500"><p class="text-4xl mb-2">⚠️</p><p>Error al cargar las ventas</p><button onclick="cargarVentas()" class="mt-3 text-sm text-blue-600 hover:text-blue-800">Reintentar</button></td></tr>';
             }
         }
 
@@ -880,104 +578,73 @@
                         document.getElementById("totalVentasCount").textContent = data.data.ventas?.length || 0;
                     }
                 }
-            } catch (error) {
-                console.error("Error cargando ventas hoy:", error);
-            }
+            } catch (error) { console.error("Error ventas hoy:", error); }
         }
 
         function updateVentaStats(data) {
-            const total = data.length;
-            const completadas = data.filter(v => v.estado === 'completada').length;
-            const anuladas = data.filter(v => v.estado === 'anulada').length;
-            
-            document.getElementById("totalCompletadas").textContent = completadas;
-            document.getElementById("totalAnuladas").textContent = anuladas;
-            document.getElementById("totalVentasRegistros").textContent = total;
+            document.getElementById("totalCompletadas").textContent = data.filter(v => v.estado === 'completada').length;
+            document.getElementById("totalAnuladas").textContent = data.filter(v => v.estado === 'anulada').length;
+            document.getElementById("totalVentasRegistros").textContent = data.length;
         }
 
         function getEstadoBadgeVenta(estado) {
-            const clases = {
-                'completada': 'bg-green-100 text-green-700',
-                'anulada': 'bg-red-100 text-red-700',
-                'cancelada': 'bg-red-100 text-red-700',
-                'pendiente': 'bg-yellow-100 text-yellow-700'
-            };
-            return clases[estado] || 'bg-gray-100 text-gray-700';
+            const clases = { 'completada': 'badge-completada', 'anulada': 'badge-anulada', 'cancelada': 'badge-cancelada', 'pendiente': 'badge-pendiente' };
+            return clases[estado] || 'badge-pendiente';
         }
 
         function renderVentas(data) {
             const tbody = document.getElementById("ventasTableBody");
-
             if (!data || data.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="7" class="text-center py-12 text-gray-400">
-                            <p class="text-4xl mb-2">💳</p>
-                            <p class="font-medium text-gray-600">No hay ventas registradas</p>
-                        </td>
-                    </tr>
-                `;
-                updateVentaStats(data);
-                return;
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center py-12 text-gray-400"><p class="text-4xl mb-2">💳</p><p class="font-medium text-gray-600">No hay ventas registradas</p></td></tr>';
+                updateVentaStats(data); return;
             }
-
             updateVentaStats(data);
-
             tbody.innerHTML = data.map(v => {
                 const cliente = clientesData.find(c => c.id === v.cliente_id);
                 const metodo = metodosPagoData.find(m => m.id === v.metodo_pago_id);
-                return `
-                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                return `<tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
                     <td class="px-4 py-3.5 font-medium text-gray-900">${v.numero_venta || "-"}</td>
                     <td class="px-4 py-3.5 text-gray-700">${cliente ? `${cliente.nombres} ${cliente.apellidos}` : 'Cliente general'}</td>
                     <td class="px-4 py-3.5 hidden md:table-cell text-gray-600">${v.fecha_venta ? new Date(v.fecha_venta).toLocaleDateString('es-ES') : "-"}</td>
                     <td class="px-4 py-3.5 hidden lg:table-cell text-gray-600">${metodo?.nombre || "-"}</td>
                     <td class="px-4 py-3.5 font-medium text-gray-900">S/ ${parseFloat(v.total || 0).toFixed(2)}</td>
-                    <td class="px-4 py-3.5">
-                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${getEstadoBadgeVenta(v.estado)}">
-                            ${v.estado || 'pendiente'}
-                        </span>
-                    </td>
-                    <td class="px-4 py-3.5">
-                        <div class="flex items-center justify-center gap-1">
-                            <button onclick="verDetalleVenta(${v.id})" class="p-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all" title="Ver detalles">👁️</button>
-                            ${v.estado === 'completada' ? `
-                                <button onclick="anularVenta(${v.id})" class="p-1.5 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all" title="Anular venta">❌</button>
-                            ` : ''}
-                        </div>
-                    </td>
-                </tr>
-            `}).join("");
+                    <td class="px-4 py-3.5"><span class="badge-estado ${getEstadoBadgeVenta(v.estado)}">${v.estado || 'pendiente'}</span></td>
+                    <td class="px-4 py-3.5"><div class="flex items-center justify-center gap-1">
+                        <button onclick="verDetalleVenta(${v.id})" class="p-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all" title="Ver detalles">👁️</button>
+                        ${v.estado === 'completada' ? `<button onclick="anularVenta(${v.id})" class="p-1.5 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all" title="Anular venta">❌</button>` : ''}
+                    </div></td>
+                </tr>`;
+            }).join("");
         }
 
         function filterVentas() {
             const search = document.getElementById("searchVenta").value.toLowerCase().trim();
             const estadoFilter = document.getElementById("estadoVentaFilter").value;
             const metodoFilter = document.getElementById("metodoPagoFilter").value;
-
             let filtered = [...ventasData];
-
-            if (estadoFilter !== "todos") {
-                filtered = filtered.filter(v => v.estado === estadoFilter);
-            }
-
-            if (metodoFilter !== "todos") {
-                filtered = filtered.filter(v => v.metodo_pago_id == metodoFilter);
-            }
-
-            if (search) {
-                filtered = filtered.filter(v =>
-                    v.numero_venta?.toLowerCase().includes(search) ||
-                    v.cliente?.nombres?.toLowerCase().includes(search) ||
-                    v.cliente?.apellidos?.toLowerCase().includes(search)
-                );
-            }
-
+            if (estadoFilter !== "todos") filtered = filtered.filter(v => v.estado === estadoFilter);
+            if (metodoFilter !== "todos") filtered = filtered.filter(v => v.metodo_pago_id == metodoFilter);
+            if (search) filtered = filtered.filter(v => v.numero_venta?.toLowerCase().includes(search));
             renderVentas(filtered);
         }
 
-        // ============ DETALLE VENTA ============
+        // ============ MODAL DETALLE VENTA (similar a compras.html) ============
         async function verDetalleVenta(id) {
+            const overlay = document.getElementById("detalleVentaModalOverlay");
+            const content = document.getElementById("detalleVentaModalContent");
+            const title = document.getElementById("detalleVentaModalTitle");
+
+            overlay.classList.add("flex");
+            overlay.classList.remove("hidden");
+            document.body.style.overflow = "hidden";
+
+            content.innerHTML = `
+                <div class="text-center py-8">
+                    <div class="inline-block w-6 h-6 border-2 border-gray-200 border-t-blue-600 rounded-full animate-spin"></div>
+                    <p class="mt-2 text-gray-400">Cargando detalle...</p>
+                </div>
+            `;
+
             try {
                 const response = await fetch(`${API_GATEWAY}/ventas/ventas/${id}`, { headers: getHeaders() });
                 if (!response.ok) throw new Error("Error al cargar detalle");
@@ -986,114 +653,169 @@
                     const v = data.data;
                     const cliente = clientesData.find(c => c.id === v.cliente_id);
                     const metodo = metodosPagoData.find(m => m.id === v.metodo_pago_id);
-                    
-                    let detallesHtml = '';
+                    const sucursal = sucursalesData.find(s => s.id === v.sucursal_id);
+
+                    title.textContent = `📋 Detalle de Venta - ${v.numero_venta || "N/A"}`;
+
+                    let detallesHtml = "";
                     if (v.detalles && v.detalles.length > 0) {
-                        detallesHtml = v.detalles.map(d => `
-                            <tr class="border-b border-gray-100">
-                                <td class="px-4 py-2 text-sm">${d.producto_id || '-'}</td>
-                                <td class="px-4 py-2 text-sm">${d.cantidad || 0}</td>
-                                <td class="px-4 py-2 text-sm">S/ ${parseFloat(d.precio_unitario || 0).toFixed(2)}</td>
-                                <td class="px-4 py-2 text-sm font-medium">S/ ${parseFloat(d.total || 0).toFixed(2)}</td>
-                            </tr>
-                        `).join('');
+                        detallesHtml = `
+                            <div class="overflow-x-auto">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Producto</th>
+                                            <th>Cantidad</th>
+                                            <th>Precio Unit.</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${v.detalles.map(d => `
+                                            <tr>
+                                                <td>${d.producto_id || "-"}</td>
+                                                <td>${d.cantidad || 0}</td>
+                                                <td>S/ ${parseFloat(d.precio_unitario || 0).toFixed(2)}</td>
+                                                <td class="font-medium">S/ ${parseFloat(d.total || 0).toFixed(2)}</td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                    <tfoot>
+                                        <tr class="border-t-2 border-gray-200">
+                                            <td colspan="3" class="text-right font-medium">Total:</td>
+                                            <td class="font-bold text-lg text-blue-600">S/ ${parseFloat(v.total || 0).toFixed(2)}</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        `;
+                    } else {
+                        detallesHtml = `<div class="text-center py-8 text-gray-400">No hay productos en esta venta</div>`;
                     }
 
-                    mostrarToast(`
-                        <div class="text-left">
-                            <p class="font-bold text-white">Venta ${v.numero_venta}</p>
-                            <p class="text-sm text-white/90">Cliente: ${cliente ? `${cliente.nombres} ${cliente.apellidos}` : 'Cliente general'}</p>
-                            <p class="text-sm text-white/90">Método: ${metodo?.nombre || '-'}</p>
-                            <p class="text-sm text-white/90">Total: S/ ${parseFloat(v.total || 0).toFixed(2)}</p>
-                            <p class="text-sm text-white/90">Estado: ${v.estado || 'pendiente'}</p>
-                            ${v.detalles && v.detalles.length > 0 ? `
-                                <div class="mt-2 text-xs text-white/80">
-                                    <p>Productos: ${v.detalles.length}</p>
-                                    <p>Unidades: ${v.detalles.reduce((sum, d) => sum + d.cantidad, 0)}</p>
+                    content.innerHTML = `
+                        <div class="space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 rounded-lg p-4">
+                                <div>
+                                    <p class="text-xs text-gray-500">Cliente</p>
+                                    <p class="font-medium text-gray-900">${cliente ? `${cliente.nombres} ${cliente.apellidos}` : 'Cliente general'}</p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-500">Sucursal</p>
+                                    <p class="font-medium text-gray-900">${sucursal?.nombre || "-"}</p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-500">Fecha</p>
+                                    <p class="font-medium text-gray-900">${v.fecha_venta ? new Date(v.fecha_venta).toLocaleString("es-ES") : "-"}</p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-500">Estado</p>
+                                    <span class="badge-estado ${getEstadoBadgeVenta(v.estado)}">${v.estado || "pendiente"}</span>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-500">Método de Pago</p>
+                                    <p class="font-medium text-gray-900">${metodo?.nombre || "-"}</p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-500">Subtotal</p>
+                                    <p class="font-medium text-gray-900">S/ ${parseFloat(v.subtotal || 0).toFixed(2)}</p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-500">IGV (18%)</p>
+                                    <p class="font-medium text-gray-900">S/ ${parseFloat(v.igv || 0).toFixed(2)}</p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-500">Total</p>
+                                    <p class="font-bold text-lg text-blue-600">S/ ${parseFloat(v.total || 0).toFixed(2)}</p>
+                                </div>
+                                ${v.monto_recibido ? `
+                                <div>
+                                    <p class="text-xs text-gray-500">Monto Recibido</p>
+                                    <p class="font-medium text-gray-900">S/ ${parseFloat(v.monto_recibido || 0).toFixed(2)}</p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-500">Cambio</p>
+                                    <p class="font-medium text-gray-900">S/ ${parseFloat((v.monto_recibido || 0) - (v.total || 0)).toFixed(2)}</p>
+                                </div>
+                                ` : ''}
+                            </div>
+                            ${v.observaciones ? `
+                                <div>
+                                    <p class="text-xs text-gray-500">Observaciones</p>
+                                    <p class="text-sm text-gray-700">${v.observaciones}</p>
                                 </div>
                             ` : ''}
+                            <div>
+                                <h4 class="font-medium text-gray-900 mb-3">📦 Productos</h4>
+                                ${detallesHtml}
+                            </div>
                         </div>
-                    `, 'info', 8000);
+                    `;
+                } else {
+                    throw new Error("Error al cargar el detalle");
                 }
             } catch (error) {
                 console.error("Error:", error);
+                content.innerHTML = `
+                    <div class="text-center py-8 text-red-500">
+                        <p class="text-4xl mb-2">⚠️</p>
+                        <p>Error al cargar el detalle de la venta</p>
+                        <button onclick="verDetalleVenta(${id})" class="mt-3 text-sm text-blue-600 hover:text-blue-800">Reintentar</button>
+                    </div>
+                `;
                 mostrarToast("Error al cargar el detalle de la venta", "error");
             }
+        }
+
+        function closeDetalleVentaModal() {
+            document.getElementById("detalleVentaModalOverlay").classList.add("hidden");
+            document.getElementById("detalleVentaModalOverlay").classList.remove("flex");
+            document.body.style.overflow = "";
         }
 
         // ============ ANULAR VENTA ============
         async function anularVenta(id) {
             const venta = ventasData.find(v => v.id === id);
             if (!venta) { mostrarToast("Venta no encontrada", "error"); return; }
-
-            const motivo = prompt(`¿Motivo de anulación de la venta ${venta.numero_venta}?`, "Cliente solicitó cancelación");
+            const motivo = prompt(`¿Motivo de anulación de ${venta.numero_venta}?`, "Cliente solicitó cancelación");
             if (motivo === null) return;
-
             try {
-                const response = await fetch(`${API_GATEWAY}/ventas/ventas/${id}/anular`, {
-                    method: "PUT",
-                    headers: getHeaders(),
-                    body: JSON.stringify({ observaciones: motivo })
-                });
+                const response = await fetch(`${API_GATEWAY}/ventas/ventas/${id}/anular`, { method: "PUT", headers: getHeaders(), body: JSON.stringify({ observaciones: motivo }) });
                 const result = await response.json();
-                if (!response.ok) throw new Error(result.message || "Error al anular la venta");
-                if (result.success) {
-                    mostrarToast(`Venta ${venta.numero_venta} anulada exitosamente`, "success");
-                    cargarVentas();
-                }
-            } catch (error) {
-                console.error("Error:", error);
-                mostrarToast(error.message || "Error al anular la venta", "error");
-            }
+                if (!response.ok) throw new Error(result.message || "Error al anular");
+                if (result.success) { mostrarToast(`Venta ${venta.numero_venta} anulada`, "success"); cargarVentas(); }
+            } catch (error) { mostrarToast(error.message || "Error al anular", "error"); }
         }
 
         // ============ MODAL VENTA ============
         function openVentaModal(data = null) {
             const overlay = document.getElementById("ventaModalOverlay");
-            const title = document.getElementById("ventaModalTitle");
-            const submitBtn = document.getElementById("ventaSubmitBtn");
-            const estadoGroup = document.getElementById("ventaEstadoGroup");
-
-            detallesVenta = [];
-            stockCache = {};
-            document.getElementById("ventaDetallesContainer").innerHTML = `
-                <div class="text-center py-4 text-gray-400 text-sm">No hay productos agregados</div>
-            `;
+            detallesVenta = []; stockCache = {};
+            document.getElementById("ventaDetallesContainer").innerHTML = '<div class="text-center py-4 text-gray-400 text-sm">No hay productos agregados</div>';
             document.getElementById("ventaDescuento").value = "0";
             actualizarResumenVenta();
-
             if (!metodosPagoData.length) cargarMetodosPago();
-
             if (data) {
-                title.textContent = "Editar Venta";
-                submitBtn.textContent = "Actualizar";
-                estadoGroup.style.display = "block";
+                document.getElementById("ventaModalTitle").textContent = "Editar Venta";
+                document.getElementById("ventaSubmitBtn").textContent = "Actualizar";
+                document.getElementById("ventaEstadoGroup").style.display = "block";
                 document.getElementById("editVentaId").value = data.id;
                 document.getElementById("ventaCliente").value = data.cliente_id || "";
                 document.getElementById("ventaMetodoPago").value = data.metodo_pago_id || "";
                 document.getElementById("ventaSucursal").value = data.sucursal_id || "";
                 document.getElementById("ventaMontoRecibido").value = data.monto_recibido || "";
-                document.getElementById("ventaDescuento").value = data.descuento || "0";
                 document.getElementById("ventaObservaciones").value = data.observaciones || "";
                 document.getElementById("ventaEstado").value = data.estado || "completada";
-
-                if (data.detalles) {
-                    data.detalles.forEach(d => {
-                        agregarDetalleVenta(d);
-                    });
-                }
+                if (data.detalles) data.detalles.forEach(d => agregarDetalleVenta(d));
             } else {
-                title.textContent = "Nueva Venta";
-                submitBtn.textContent = "Registrar Venta";
-                estadoGroup.style.display = "none";
+                document.getElementById("ventaModalTitle").textContent = "Nueva Venta";
+                document.getElementById("ventaSubmitBtn").textContent = "Registrar Venta";
+                document.getElementById("ventaEstadoGroup").style.display = "none";
                 document.getElementById("editVentaId").value = "";
                 document.getElementById("ventaForm").reset();
                 document.getElementById("ventaEstado").value = "completada";
-                document.getElementById("ventaDescuento").value = "0";
             }
-
-            overlay.classList.add("flex");
-            overlay.classList.remove("hidden");
+            overlay.classList.add("flex"); overlay.classList.remove("hidden");
             document.body.style.overflow = "hidden";
             calcularCambio();
         }
@@ -1104,32 +826,21 @@
             document.body.style.overflow = "";
             document.getElementById("ventaForm").reset();
             document.getElementById("editVentaId").value = "";
-            detallesVenta = [];
-            stockCache = {};
+            detallesVenta = []; stockCache = {};
         }
 
-        // ============ DETALLES VENTA ============
         function agregarDetalleVenta(data = null) {
             const container = document.getElementById("ventaDetallesContainer");
-            
-            if (container.querySelector('.text-center.py-4')) {
-                container.innerHTML = '';
-            }
-
+            if (container.querySelector('.text-center.py-4')) container.innerHTML = '';
             const index = detallesVenta.length;
-            
-            const detalleHtml = `
+            container.insertAdjacentHTML('beforeend', `
                 <div class="detalle-row border border-gray-200 rounded-lg p-3 mb-2 bg-white" id="detalle-venta-${index}">
                     <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
                         <div>
                             <label class="block text-xs font-medium text-gray-600 mb-1">Producto</label>
                             <select class="w-full px-3 py-1.5 border border-gray-200 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 producto-select-venta" onchange="onProductoSeleccionado(${index})">
                                 <option value="">Seleccionar...</option>
-                                ${productosData.filter(p => p.estado).map(p => `
-                                    <option value="${p.id}" data-precio="${p.precio_venta || 0}" ${data && data.producto_id == p.id ? 'selected' : ''}>
-                                        ${p.codigo} - ${p.nombre} (S/ ${parseFloat(p.precio_venta || 0).toFixed(2)})
-                                    </option>
-                                `).join('')}
+                                ${productosData.filter(p => p.estado).map(p => `<option value="${p.id}" data-precio="${p.precio_venta || 0}" ${data && data.producto_id == p.id ? 'selected' : ''}>${p.codigo} - ${p.nombre} (S/ ${parseFloat(p.precio_venta || 0).toFixed(2)})</option>`).join('')}
                             </select>
                             <div class="stock-disponible" id="stock-info-${index}">Seleccione un producto</div>
                         </div>
@@ -1138,13 +849,11 @@
                             <input type="number" class="w-full px-3 py-1.5 border border-gray-200 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 cantidad-input-venta" placeholder="1" min="1" value="${data?.cantidad || ''}" onchange="calcularDetalleVenta(${index})">
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-gray-600 mb-1">Precio Unitario</label>
+                            <label class="block text-xs font-medium text-gray-600 mb-1">Precio Unit.</label>
                             <input type="number" class="w-full px-3 py-1.5 border border-gray-200 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 precio-input-venta" placeholder="0.00" step="0.01" min="0" value="${data?.precio_unitario || ''}" onchange="calcularDetalleVenta(${index})">
                         </div>
                         <div class="flex items-end justify-end">
-                            <button type="button" class="text-red-500 hover:text-red-700 text-sm font-medium" onclick="eliminarDetalleVenta(${index})">
-                                🗑️ Eliminar
-                            </button>
+                            <button type="button" class="text-red-500 hover:text-red-700 text-sm font-medium" onclick="eliminarDetalleVenta(${index})">🗑️ Eliminar</button>
                         </div>
                     </div>
                     <div class="mt-2 text-sm text-gray-600">
@@ -1152,134 +861,81 @@
                         <span class="ml-4">Total: <strong class="total-venta-${index}">S/ ${data?.total ? parseFloat(data.total).toFixed(2) : '0.00'}</strong></span>
                     </div>
                 </div>
-            `;
-
-            container.insertAdjacentHTML('beforeend', detalleHtml);
-            
+            `);
             if (data) {
-                const detalle = {
-                    producto_id: data.producto_id,
-                    cantidad: data.cantidad,
-                    precio_unitario: data.precio_unitario,
-                    descuento: 0,
-                    subtotal: data.subtotal || 0,
-                    total: data.total || 0,
-                    inventario_id: data.inventario_id || null,
-                    lote: data.lote || '',
-                    fecha_vencimiento: data.fecha_vencimiento || ''
-                };
-                detallesVenta[index] = detalle;
-                const sucursalId = document.getElementById("ventaSucursal").value;
-                if (sucursalId && detalle.producto_id) {
-                    actualizarStockDetalle(index, detalle.producto_id, sucursalId);
-                }
-            } else {
                 detallesVenta[index] = {
-                    producto_id: null,
-                    cantidad: 0,
-                    precio_unitario: 0,
-                    descuento: 0,
-                    subtotal: 0,
-                    total: 0,
-                    inventario_id: null,
-                    lote: '',
-                    fecha_vencimiento: ''
+                    producto_id: data.producto_id, cantidad: data.cantidad, precio_unitario: data.precio_unitario,
+                    descuento: 0, subtotal: data.subtotal || 0, total: data.total || 0,
+                    inventario_id: data.inventario_id || null, lote: data.lote || '', fecha_vencimiento: data.fecha_vencimiento || ''
                 };
+                const sucursalId = document.getElementById("ventaSucursal").value;
+                if (sucursalId && data.producto_id) actualizarStockDetalle(index, data.producto_id, sucursalId);
+            } else {
+                detallesVenta[index] = { producto_id: null, cantidad: 0, precio_unitario: 0, descuento: 0, subtotal: 0, total: 0, inventario_id: null, lote: '', fecha_vencimiento: '' };
             }
-            
             actualizarResumenVenta();
         }
 
         async function onProductoSeleccionado(index) {
             const container = document.getElementById(`detalle-venta-${index}`);
             if (!container) return;
-
             const productoSelect = container.querySelector('.producto-select-venta');
             const productoId = productoSelect?.value;
-            const selectedOption = productoSelect?.options[productoSelect.selectedIndex];
-            const precioData = parseFloat(selectedOption?.dataset?.precio) || 0;
-            
+            const precioData = parseFloat(productoSelect?.options[productoSelect.selectedIndex]?.dataset?.precio) || 0;
             const precioInput = container.querySelector('.precio-input-venta');
-            if (precioInput && precioData > 0) {
-                precioInput.value = precioData;
-            }
-
-            if (detallesVenta[index]) {
-                detallesVenta[index].producto_id = parseInt(productoId) || null;
-                detallesVenta[index].precio_unitario = precioData;
-            }
-
+            if (precioInput && precioData > 0) precioInput.value = precioData;
+            if (detallesVenta[index]) { detallesVenta[index].producto_id = parseInt(productoId) || null; detallesVenta[index].precio_unitario = precioData; }
             const sucursalId = document.getElementById("ventaSucursal").value;
             if (productoId && sucursalId) {
                 await actualizarStockDetalle(index, productoId, sucursalId);
             } else if (!sucursalId) {
                 const stockInfo = document.getElementById(`stock-info-${index}`);
-                if (stockInfo) {
-                    stockInfo.textContent = '⚠️ Seleccione una sucursal primero';
-                    stockInfo.className = 'stock-disponible text-yellow-600';
-                }
+                if (stockInfo) { stockInfo.textContent = '⚠️ Seleccione una sucursal primero'; stockInfo.className = 'stock-disponible text-yellow-600'; }
             }
-
             calcularDetalleVenta(index);
         }
 
         async function actualizarStockDetalle(index, productoId, sucursalId) {
             const stockInfo = document.getElementById(`stock-info-${index}`);
             if (!stockInfo) return;
-
             try {
                 const stockData = await consultarStockDisponible(productoId, sucursalId);
                 if (stockData !== null) {
                     const stock = stockData.total_stock;
                     let className = 'stock-disponible';
-                    let texto = `📦 Stock disponible: <span class="cantidad">${stock}</span> unidades`;
-                    if (stock === 0) {
-                        className += ' critico';
-                        texto = `⚠️ <span class="critico">Sin stock disponible</span>`;
-                        asignarLoteInventario(index, null);
-                    } else if (stock < 10) {
-                        className += ' bajo';
-                        texto = `📦 Stock disponible: <span class="bajo">${stock}</span> unidades (bajo)`;
-                        asignarLoteInventario(index, stockData.lotes[0]);
-                    } else {
-                        asignarLoteInventario(index, stockData.lotes[0]);
+                    let texto = `📦 Stock: <span class="cantidad">${stock}</span> unidades`;
+                    if (stock === 0) { className += ' critico'; texto = '⚠️ <span class="critico">Sin stock</span>'; }
+                    else if (stock < 10) { className += ' bajo'; texto = `📦 Stock: <span class="bajo">${stock}</span> u (bajo)`; }
+                    stockInfo.className = className; stockInfo.innerHTML = texto;
+                    if (detallesVenta[index] && stockData.lotes && stockData.lotes.length > 0) {
+                        const lote = stockData.lotes[0];
+                        detallesVenta[index].inventario_id = lote.id;
+                        detallesVenta[index].lote = lote.lote || '';
+                        detallesVenta[index].fecha_vencimiento = lote.fecha_vencimiento ? String(lote.fecha_vencimiento).split('T')[0] : '';
+                    } else if (detallesVenta[index]) {
+                        detallesVenta[index].inventario_id = null;
+                        detallesVenta[index].lote = '';
+                        detallesVenta[index].fecha_vencimiento = '';
                     }
-                    stockInfo.className = className;
-                    stockInfo.innerHTML = texto;
                 }
-            } catch (error) {
-                stockInfo.textContent = '❌ Error al consultar stock';
-                stockInfo.className = 'stock-disponible text-red-500';
-            }
+            } catch (error) { stockInfo.textContent = '❌ Error al consultar stock'; stockInfo.className = 'stock-disponible text-red-500'; }
         }
 
         function calcularDetalleVenta(index) {
             const container = document.getElementById(`detalle-venta-${index}`);
             if (!container) return;
-
             const cantidad = parseInt(container.querySelector('.cantidad-input-venta')?.value) || 0;
             const precio = parseFloat(container.querySelector('.precio-input-venta')?.value) || 0;
             const totalBruto = cantidad * precio;
             const { subtotal, total } = calcularMontosConIgvIncluido(totalBruto);
-
             container.querySelector(`.subtotal-venta-${index}`).textContent = `S/ ${subtotal.toFixed(2)}`;
             container.querySelector(`.total-venta-${index}`).textContent = `S/ ${total.toFixed(2)}`;
-
             if (detallesVenta[index]) {
                 detallesVenta[index].cantidad = cantidad;
                 detallesVenta[index].precio_unitario = precio;
                 detallesVenta[index].subtotal = subtotal;
                 detallesVenta[index].total = total;
-
-                const sucursalId = document.getElementById("ventaSucursal")?.value;
-                const stockDisponible = obtenerStockDisponible(detallesVenta[index].producto_id, sucursalId);
-                const stockInfo = document.getElementById(`stock-info-${index}`);
-                if (stockInfo && stockDisponible !== null && cantidad > stockDisponible) {
-                    stockInfo.innerHTML = `⚠️ <span class="critico">Cantidad (${cantidad}) supera el stock disponible (${stockDisponible})</span>`;
-                    stockInfo.className = 'stock-disponible';
-                }
             }
-
             actualizarResumenVenta();
             calcularCambio();
         }
@@ -1296,7 +952,6 @@
             const detalles = detallesVenta.filter(d => d !== null && d.producto_id);
             const totalBruto = detalles.reduce((sum, d) => sum + (d.total || 0), 0);
             const { subtotal, igv, total } = calcularMontosConIgvIncluido(totalBruto);
-
             document.getElementById("ventaSubtotal").textContent = `S/ ${subtotal.toFixed(2)}`;
             document.getElementById("ventaIgv").textContent = `S/ ${igv.toFixed(2)}`;
             document.getElementById("ventaTotal").textContent = `S/ ${total.toFixed(2)}`;
@@ -1308,7 +963,6 @@
             const total = parseFloat(totalText.replace('S/ ', '')) || 0;
             const montoRecibido = parseFloat(document.getElementById("ventaMontoRecibido")?.value) || 0;
             const cambio = montoRecibido - total;
-
             document.getElementById("ventaCambio").value = cambio >= 0 ? `S/ ${cambio.toFixed(2)}` : 'S/ 0.00';
         }
 
@@ -1317,118 +971,44 @@
             e.preventDefault();
             const id = document.getElementById("editVentaId").value;
             const isEdit = !!id;
-
-            const detalles = detallesVenta
-                .filter(d => d !== null && d.producto_id)
-                .map(d => {
-                    const detalle = {
-                        producto_id: parseInt(d.producto_id),
-                        cantidad: parseInt(d.cantidad) || 0,
-                        precio_unitario: parseFloat(d.precio_unitario) || 0,
-                        descuento: 0,
-                        inventario_id: parseInt(d.inventario_id),
-                        lote: d.lote || ''
-                    };
-                    if (d.fecha_vencimiento) {
-                        detalle.fecha_vencimiento = d.fecha_vencimiento;
-                    }
-                    return detalle;
-                });
-
-            if (detalles.length === 0) {
-                mostrarToast("Agregue al menos un producto a la venta", "error");
-                return;
-            }
-
+            const detalles = detallesVenta.filter(d => d !== null && d.producto_id).map(d => ({
+                producto_id: parseInt(d.producto_id), cantidad: parseInt(d.cantidad) || 0,
+                precio_unitario: parseFloat(d.precio_unitario) || 0, descuento: 0,
+                inventario_id: parseInt(d.inventario_id), lote: d.lote || '',
+                fecha_vencimiento: d.fecha_vencimiento || undefined
+            }));
+            if (detalles.length === 0) { mostrarToast("Agregue al menos un producto", "error"); return; }
             const sucursalId = parseInt(document.getElementById("ventaSucursal").value);
-
             for (const d of detalles) {
-                if (d.cantidad <= 0) {
-                    mostrarToast("La cantidad de productos debe ser mayor a 0", "error");
-                    return;
-                }
-                if (d.precio_unitario <= 0) {
-                    mostrarToast("El precio unitario debe ser mayor a 0", "error");
-                    return;
-                }
-                if (!d.inventario_id) {
-                    mostrarToast("No hay stock disponible para uno de los productos. Verifique la sucursal seleccionada.", "error");
-                    return;
-                }
+                if (d.cantidad <= 0) { mostrarToast("Cantidad debe ser > 0", "error"); return; }
+                if (d.precio_unitario <= 0) { mostrarToast("Precio debe ser > 0", "error"); return; }
+                if (!d.inventario_id) { mostrarToast("No hay stock para uno de los productos. Verifique la sucursal.", "error"); return; }
                 const stockData = await consultarStockDisponible(d.producto_id, sucursalId);
                 if (!stockData || stockData.total_stock < d.cantidad) {
                     const producto = productosData.find(p => p.id === d.producto_id);
-                    const nombre = producto ? producto.nombre : `ID ${d.producto_id}`;
-                    mostrarToast(`Stock insuficiente para "${nombre}". Disponible: ${stockData?.total_stock ?? 0}`, "error");
-                    return;
+                    mostrarToast(`Stock insuficiente para "${producto?.nombre || d.producto_id}". Disp: ${stockData?.total_stock ?? 0}`, "error"); return;
                 }
             }
             const metodoPagoId = parseInt(document.getElementById("ventaMetodoPago").value);
             const clienteId = parseInt(document.getElementById("ventaCliente").value) || null;
             const montoRecibido = parseFloat(document.getElementById("ventaMontoRecibido").value) || 0;
             const observaciones = document.getElementById("ventaObservaciones").value.trim();
-
-            if (!sucursalId) {
-                mostrarToast("Seleccione una sucursal", "error");
-                return;
-            }
-            if (!metodoPagoId) {
-                mostrarToast("Seleccione un método de pago", "error");
-                return;
-            }
-
+            if (!sucursalId) { mostrarToast("Seleccione una sucursal", "error"); return; }
+            if (!metodoPagoId) { mostrarToast("Seleccione un método de pago", "error"); return; }
             const totalBruto = detalles.reduce((sum, d) => sum + d.cantidad * d.precio_unitario, 0);
             const { subtotal, igv, total } = calcularMontosConIgvIncluido(totalBruto);
-
-            const data = {
-                sucursal_id: sucursalId,
-                cliente_id: clienteId,
-                metodo_pago_id: metodoPagoId,
-                descuento: 0,
-                monto_recibido: montoRecibido,
-                observaciones: observaciones,
-                subtotal: subtotal,
-                igv: igv,
-                total: total,
-                detalles: detalles
-            };
-
+            const data = { sucursal_id: sucursalId, cliente_id: clienteId, metodo_pago_id: metodoPagoId, descuento: 0, monto_recibido: montoRecibido, observaciones, subtotal, igv, total, detalles };
             if (isEdit) data.estado = document.getElementById("ventaEstado").value;
-
             const submitBtn = document.getElementById("ventaSubmitBtn");
-            submitBtn.disabled = true;
-            submitBtn.textContent = isEdit ? "Actualizando..." : "Registrando...";
-
+            submitBtn.disabled = true; submitBtn.textContent = isEdit ? "Actualizando..." : "Registrando...";
             try {
                 const url = isEdit ? `${API_GATEWAY}/ventas/ventas/${id}` : `${API_GATEWAY}/ventas/ventas`;
-                const method = isEdit ? "PUT" : "POST";
-                
-                const response = await fetch(url, { 
-                    method, 
-                    headers: getHeaders(), 
-                    body: JSON.stringify(data) 
-                });
-                
+                const response = await fetch(url, { method: isEdit ? "PUT" : "POST", headers: getHeaders(), body: JSON.stringify(data) });
                 const result = await response.json();
-                
-                if (!response.ok) {
-                    const errorMsg = result.message || result.errors?.map(e => e.msg).join(', ') || "Error al registrar la venta";
-                    throw new Error(errorMsg);
-                }
-                if (result.success) {
-                    mostrarToast(isEdit ? "Venta actualizada exitosamente" : "✅ Venta registrada exitosamente", "success");
-                    closeVentaModal();
-                    cargarVentas();
-                } else {
-                    throw new Error(result.message || "Error al registrar la venta");
-                }
-            } catch (error) {
-                console.error("Error:", error);
-                mostrarToast(error.message || "Error al registrar la venta", "error");
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.textContent = isEdit ? "Actualizar" : "Registrar Venta";
-            }
+                if (!response.ok) throw new Error(result.message || result.errors?.map(e => e.msg).join(', ') || "Error al registrar");
+                if (result.success) { mostrarToast(isEdit ? "Venta actualizada" : "✅ Venta registrada exitosamente", "success"); closeVentaModal(); cargarVentas(); }
+            } catch (error) { mostrarToast(error.message || "Error al registrar", "error"); }
+            finally { submitBtn.disabled = false; submitBtn.textContent = isEdit ? "Actualizar" : "Registrar Venta"; }
         }
 
         // ============ CLIENTE RÁPIDO ============
@@ -1438,114 +1018,65 @@
             document.body.style.overflow = "hidden";
             document.getElementById("clienteRapidoForm").reset();
         }
-
         function closeClienteRapidoModal() {
             document.getElementById("clienteRapidoModalOverlay").classList.add("hidden");
             document.getElementById("clienteRapidoModalOverlay").classList.remove("flex");
             document.body.style.overflow = "";
         }
-
         async function handleClienteRapidoSubmit(e) {
             e.preventDefault();
-
             const data = {
                 tipo_documento: document.getElementById("clienteRapidoTipoDoc").value,
                 numero_documento: document.getElementById("clienteRapidoDoc").value.trim(),
                 nombres: document.getElementById("clienteRapidoNombres").value.trim(),
                 apellidos: document.getElementById("clienteRapidoApellidos").value.trim(),
-                email: document.getElementById("clienteRapidoEmail").value.trim(),
-                telefono: document.getElementById("clienteRapidoTelefono").value.trim(),
+                email: document.getElementById("clienteRapidoEmail").value.trim() || null,
+                telefono: document.getElementById("clienteRapidoTelefono").value.trim() || null,
             };
-
             if (!data.nombres || !data.apellidos || !data.numero_documento) {
-                mostrarToast("Complete los campos obligatorios", "error");
-                return;
+                mostrarToast("Complete los campos obligatorios (Nombres, Apellidos, Documento)", "error"); return;
             }
-
             try {
-                const response = await fetch(`${API_GATEWAY}/clientes/clientes`, {
-                    method: "POST",
-                    headers: getHeaders(),
-                    body: JSON.stringify(data)
-                });
+                const response = await fetch(`${API_GATEWAY}/clientes`, { method: "POST", headers: getHeaders(), body: JSON.stringify(data) });
                 const result = await response.json();
                 if (!response.ok) throw new Error(result.message || "Error al crear cliente");
                 if (result.success) {
                     mostrarToast("✅ Cliente creado exitosamente", "success");
                     closeClienteRapidoModal();
-                    cargarDatosAuxiliares();
-                    if (!document.getElementById("ventaModalOverlay").classList.contains("hidden")) {
-                        const clienteSelect = document.getElementById("ventaCliente");
-                        const clientesRes = await fetch(`${API_GATEWAY}/clientes/clientes?estado=true`, { headers: getHeaders() });
-                        if (clientesRes.ok) {
-                            const dataClientes = await clientesRes.json();
-                            if (dataClientes.success) {
-                                clientesData = dataClientes.data || [];
-                                actualizarSelectores();
-                                const ultimoCliente = clientesData[clientesData.length - 1];
-                                if (ultimoCliente) {
-                                    clienteSelect.value = ultimoCliente.id;
-                                }
+                    const clientesRes = await fetch(`${API_GATEWAY}/clientes`, { headers: getHeaders() });
+                    if (clientesRes.ok) {
+                        const dataClientes = await clientesRes.json();
+                        if (dataClientes.success) {
+                            clientesData = dataClientes.data || [];
+                            actualizarSelectores();
+                            const ultimoCliente = clientesData[clientesData.length - 1];
+                            if (ultimoCliente && !document.getElementById("ventaModalOverlay").classList.contains("hidden")) {
+                                document.getElementById("ventaCliente").value = ultimoCliente.id;
                             }
                         }
                     }
                 }
-            } catch (error) {
-                console.error("Error:", error);
-                mostrarToast(error.message || "Error al crear cliente", "error");
-            }
+            } catch (error) { mostrarToast(error.message || "Error al crear cliente", "error"); }
         }
-
-        // ============ ESCUCHAR CAMBIOS DE SUCURSAL ============
-        document.addEventListener('change', function(e) {
-            if (e.target.id === 'ventaSucursal') {
-                const sucursalId = e.target.value;
-                document.querySelectorAll('.producto-select-venta').forEach((select, index) => {
-                    const productoId = select.value;
-                    if (productoId && sucursalId) {
-                        actualizarStockDetalle(index, productoId, sucursalId);
-                    } else if (!sucursalId) {
-                        const stockInfo = document.getElementById(`stock-info-${index}`);
-                        if (stockInfo) {
-                            stockInfo.textContent = '⚠️ Seleccione una sucursal primero';
-                            stockInfo.className = 'stock-disponible text-yellow-600';
-                        }
-                    }
-                });
-            }
-        });
 
         // ============ TOAST ============
         function mostrarToast(mensaje, tipo = "info", duracion = 4000) {
             const container = document.getElementById("toastContainer");
-            const colors = {
-                success: "bg-green-500",
-                error: "bg-red-500",
-                warning: "bg-yellow-500",
-                info: "bg-blue-500"
-            };
+            const colors = { success: "bg-green-500", error: "bg-red-500", warning: "bg-yellow-500", info: "bg-blue-500" };
             const icons = { success: "✅", error: "❌", warning: "⚠️", info: "ℹ️" };
             const toast = document.createElement("div");
             toast.className = `toast-slide px-5 py-3 rounded-lg text-white text-sm font-medium shadow-lg flex items-center gap-3 min-w-[280px] ${colors[tipo] || colors.info}`;
-            toast.innerHTML = `
-                <span>${icons[tipo] || "ℹ️"}</span>
-                <span>${mensaje}</span>
-                <button class="ml-auto text-white/80 hover:text-white" onclick="this.parentElement.remove()">×</button>
-            `;
+            toast.innerHTML = `<span>${icons[tipo] || "ℹ️"}</span><span>${mensaje}</span><button class="ml-auto text-white/80 hover:text-white" onclick="this.parentElement.remove()">×</button>`;
             container.appendChild(toast);
-            setTimeout(() => {
-                if (toast.parentElement) {
-                    toast.style.opacity = "0";
-                    toast.style.transform = "translateX(20px)";
-                    setTimeout(() => toast.remove(), 300);
-                }
-            }, duracion);
+            setTimeout(() => { if (toast.parentElement) { toast.style.opacity = "0"; toast.style.transform = "translateX(20px)"; setTimeout(() => toast.remove(), 300); } }, duracion);
         }
 
+        // ============ EVENT LISTENERS ============
         document.addEventListener("keydown", (e) => {
             if (e.key === "Escape") {
                 closeVentaModal();
                 closeClienteRapidoModal();
+                closeDetalleVentaModal();
             }
         });
         document.getElementById("ventaModalOverlay").addEventListener("click", (e) => {
@@ -1554,8 +1085,10 @@
         document.getElementById("clienteRapidoModalOverlay").addEventListener("click", (e) => {
             if (e.target === e.currentTarget) closeClienteRapidoModal();
         });
+        document.getElementById("detalleVentaModalOverlay").addEventListener("click", (e) => {
+            if (e.target === e.currentTarget) closeDetalleVentaModal();
+        });
 
-        // ============ INICIALIZAR ============
         document.addEventListener("DOMContentLoaded", () => {
             const auth = checkAuth();
             if (!auth) return;

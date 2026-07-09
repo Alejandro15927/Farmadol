@@ -8,21 +8,7 @@ module.exports = (sequelize) => {
       primaryKey: true
     },
     tipo: {
-      type: DataTypes.ENUM(
-        'ventas_diarias',
-        'ventas_mensuales',
-        'productos_mas_vendidos',
-        'stock_bajo',
-        'productos_vencer',
-        'rotacion_inventario',
-        'clientes_frecuentes',
-        'compras_proveedores',
-        'ventas_sucursal',
-        'ventas_vendedor',
-        'productos_menos_vendidos',
-        'margen_ganancia',
-        'resumen_general'
-      ),
+      type: DataTypes.ENUM('ventas_diarias', 'ventas_mensuales', 'productos_mas_vendidos', 'stock_bajo', 'productos_vencer', 'rotacion_inventario', 'clientes_frecuentes', 'compras_proveedores', 'ventas_sucursal', 'ventas_vendedor', 'productos_menos_vendidos', 'margen_ganancia', 'resumen_general'),
       allowNull: false
     },
     nombre: {
@@ -35,23 +21,20 @@ module.exports = (sequelize) => {
     },
     parametros: {
       type: DataTypes.JSON,
-      allowNull: true,
-      comment: 'Parámetros usados para generar el reporte'
+      allowNull: true
     },
     formato: {
       type: DataTypes.ENUM('pdf', 'excel', 'csv', 'json'),
-      allowNull: false,
       defaultValue: 'pdf'
     },
     ruta_archivo: {
       type: DataTypes.STRING(500),
-      allowNull: true,
-      comment: 'Ruta donde se almacena el archivo'
+      allowNull: true
     },
     usuario_id: {
       type: DataTypes.BIGINT,
       allowNull: false,
-      comment: 'ID del usuario que generó el reporte'
+      comment: 'ID del usuario que generó el reporte (referencia a auth_db)'
     },
     sucursal_id: {
       type: DataTypes.BIGINT,

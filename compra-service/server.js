@@ -6,7 +6,7 @@ const { sequelize } = require('./models');
 const compraRoutes = require('./routes/compraRoutes');
 
 const app = express();
-const PORT = process.env.PORT || 3003;
+const PORT = process.env.PORT || 3006;
 
 // Middlewares
 app.use(cors());
@@ -30,20 +30,26 @@ sequelize.sync()
   .then(() => {
     console.log('📦 Base de datos sincronizada');
     app.listen(PORT, () => {
-      console.log(`🛒 Compra Service corriendo en http://localhost:${PORT}`);
+      console.log(`📦 Compra Service corriendo en http://localhost:${PORT}`);
       console.log(`📋 Endpoints disponibles:`);
-      console.log(`  # Proveedores`);
+      console.log(`  # Proveedores (Protegido)`);
       console.log(`  GET    /api/compras/proveedores`);
+      console.log(`  GET    /api/compras/proveedores/activos`);
       console.log(`  GET    /api/compras/proveedores/:id`);
-      console.log(`  POST   /api/compras/proveedores (ADMIN/GERENTE/ALMACENERO)`);
-      console.log(`  PUT    /api/compras/proveedores/:id (ADMIN/GERENTE/ALMACENERO)`);
+      console.log(`  POST   /api/compras/proveedores (ADMIN/GERENTE)`);
+      console.log(`  PUT    /api/compras/proveedores/:id (ADMIN/GERENTE)`);
       console.log(`  DELETE /api/compras/proveedores/:id (ADMIN/GERENTE)`);
+      console.log(`  PUT    /api/compras/proveedores/:id/enable (ADMIN/GERENTE)`);
       console.log(`  # Compras`);
-      console.log(`  POST   /api/compras/compras (ADMIN/GERENTE/ALMACENERO)`);
-      console.log(`  GET    /api/compras/compras`);
-      console.log(`  GET    /api/compras/compras/:id`);
-      console.log(`  PUT    /api/compras/compras/:id/estado (ADMIN/GERENTE/ALMACENERO)`);
-      console.log(`  GET    /api/compras/compras/proveedor/:proveedor_id`);
+      console.log(`  POST   /api/compras (ADMIN/GERENTE/ALMACENERO)`);
+      console.log(`  GET    /api/compras`);
+      console.log(`  GET    /api/compras/dia/resumen`);
+      console.log(`  GET    /api/compras/proveedor/:proveedor_id`);
+      console.log(`  GET    /api/compras/estadisticas (ADMIN/GERENTE)`);
+      console.log(`  GET    /api/compras/:id`);
+      console.log(`  PUT    /api/compras/:id (ADMIN/GERENTE)`);
+      console.log(`  PUT    /api/compras/:id/anular (ADMIN/GERENTE)`);
+      console.log(`  PUT    /api/compras/:id/confirmar (ADMIN/GERENTE/ALMACENERO)`);
     });
   })
   .catch(error => {

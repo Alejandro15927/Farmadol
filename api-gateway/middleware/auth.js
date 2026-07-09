@@ -5,17 +5,42 @@ const JWT_SECRET = process.env.JWT_SECRET || 'farmadol_secret_key_2024';
 
 // Rutas públicas que no requieren autenticación
 const PUBLIC_ROUTES = [
-  '/auth/login',
-  '/auth/register',
-  '/auth/verify',
+  '/api/auth/login',
+  '/api/auth/register',
+  '/api/auth/init-admin',
   '/health',
   '/'
 ];
 
 // Middleware de autenticación
 const authMiddleware = (req, res, next) => {
-  // Verificar si es una ruta pública
-  if (PUBLIC_ROUTES.some(route => req.path.startsWith(route))) {
+  // ✅ Verificar usando req.originalUrl (la ruta completa original)
+  const originalUrl = req.originalUrl || req.url;
+  
+  // ✅ Verificar si es una ruta pública
+  const isPublicRoute = PUBLIC_ROUTES.some(route => {
+    // Comparación exacta con la ruta original
+    if (originalUrl === route) return true;
+    if (originalUrl.startsWith(route + '?')) return true; // Con query params
+    // Si la ruta pública termina con /*, verificar inicio
+    if (route.endsWith('/*')) {
+      const baseRoute = route.replace('/*', '');
+      return originalUrl.startsWith(baseRoute);
+    }
+    return false;
+  });
+
+  // ✅ También verificar con req.path (sin query params)
+  const isPublicPath = PUBLIC_ROUTES.some(route => {
+    if (req.path === route) return true;
+    if (route.endsWith('/*')) {
+      const baseRoute = route.replace('/*', '');
+      return req.path.startsWith(baseRoute);
+    }
+    return false;
+  });
+
+  if (isPublicRoute || isPublicPath) {
     return next();
   }
 

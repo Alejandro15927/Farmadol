@@ -1,668 +1,1315 @@
 <!-- frontend/public/inventario.html -->
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Farmadol - Inventario</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💊</text></svg>" />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💊</text></svg>"
+    />
     <style>
-        .sidebar-transition {
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      .sidebar-transition {
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .sidebar::-webkit-scrollbar {
+        width: 4px;
+      }
+      .sidebar::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 4px;
+      }
+      .modal-transition {
+        animation: modalIn 0.3s ease;
+      }
+      @keyframes modalIn {
+        from {
+          opacity: 0;
+          transform: scale(0.95) translateY(10px);
         }
-        .sidebar::-webkit-scrollbar {
-            width: 4px;
+        to {
+          opacity: 1;
+          transform: scale(1) translateY(0);
         }
-        .sidebar::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
+      }
+      .toast-slide {
+        animation: slideIn 0.3s ease;
+      }
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateX(20px);
         }
-        .modal-transition {
-            animation: modalIn 0.3s ease;
+        to {
+          opacity: 1;
+          transform: translateX(0);
         }
-        @keyframes modalIn {
-            from { opacity: 0; transform: scale(0.95) translateY(10px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
+      }
+      .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #22c55e;
+        display: inline-block;
+        animation: pulse-dot 2s infinite;
+      }
+      @keyframes pulse-dot {
+        0%,
+        100% {
+          opacity: 1;
         }
-        .toast-slide {
-            animation: slideIn 0.3s ease;
+        50% {
+          opacity: 0.4;
         }
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(20px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #22c55e;
-            display: inline-block;
-            animation: pulse-dot 2s infinite;
-        }
-        @keyframes pulse-dot {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
-        }
-        .tab-active {
-            border-bottom: 2px solid #2563eb;
-            color: #2563eb;
-        }
-        .stock-bajo {
-            background: #fef2f2;
-        }
-        .stock-bajo td {
-            color: #dc2626;
-        }
-        .proximo-vencer {
-            background: #fffbeb;
-        }
-        .proximo-vencer td {
-            color: #d97706;
-        }
+      }
+      .tab-active {
+        border-bottom: 2px solid #2563eb;
+        color: #2563eb;
+      }
+      .badge-estado {
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 500;
+      }
+      .badge-activo {
+        background: #d1fae5;
+        color: #065f46;
+      }
+      .badge-inactivo {
+        background: #fee2e2;
+        color: #991b1b;
+      }
+      .badge-stock-bajo {
+        background: #fee2e2;
+        color: #991b1b;
+      }
+      .badge-stock-normal {
+        background: #d1fae5;
+        color: #065f46;
+      }
+      .badge-vencer {
+        background: #fef3c7;
+        color: #92400e;
+      }
+      .badge-vencido {
+        background: #fee2e2;
+        color: #991b1b;
+      }
     </style>
-</head>
-<body>
-
+  </head>
+  <body>
     <!-- Sidebar Overlay (mobile) -->
-    <div class="fixed inset-0 bg-black/30 backdrop-blur-sm z-40 hidden" id="sidebarOverlay"></div>
+    <div
+      class="fixed inset-0 bg-black/30 backdrop-blur-sm z-40 hidden"
+      id="sidebarOverlay"
+    ></div>
 
     <!-- ============ SIDEBAR ============ -->
-    <aside class="sidebar fixed left-0 top-0 h-full w-[280px] bg-white border-r border-gray-200 flex flex-col z-50 shadow-lg transform -translate-x-full md:translate-x-0 sidebar-transition" id="sidebar">
-        <div class="px-6 py-6 border-b border-gray-100 flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-bold text-lg">F</div>
-            <div>
-                <h1 class="text-xl font-bold text-gray-900">Farmadol</h1>
-                <p class="text-xs text-gray-500">Sistema de Gestión</p>
-            </div>
+    <aside
+      class="sidebar fixed left-0 top-0 h-full w-[280px] bg-white border-r border-gray-200 flex flex-col z-50 shadow-lg transform -translate-x-full md:translate-x-0 sidebar-transition"
+      id="sidebar"
+    >
+      <div class="px-6 py-6 border-b border-gray-100 flex items-center gap-3">
+        <div
+          class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-bold text-lg"
+        >
+          F
         </div>
-
-        <nav class="flex-1 px-3 py-4 overflow-y-auto">
-            <p class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Navegación</p>
-            
-            <a href="/dashboard" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
-                <span class="text-lg">📊</span>
-                Dashboard
-            </a>
-            
-            <a href="/ventas" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
-                <span class="text-lg">💳</span>
-                Ventas
-            </a>
-            
-            <a href="/inventario" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium bg-blue-50 text-blue-600">
-                <span class="text-lg">📦</span>
-                Inventario
-            </a>
-            
-            <a href="/compras" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
-                <span class="text-lg">🛒</span>
-                Compras
-            </a>
-            
-            <a href="/clientes" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
-                <span class="text-lg">👤</span>
-                Clientes
-            </a>
-            
-            <a href="/usuarios" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
-                <span class="text-lg">🔐</span>
-                Usuarios
-            </a>
-            
-            <a href="/sucursales" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
-                <span class="text-lg">🏢</span>
-                Sucursales
-            </a>
-            
-            <a href="/reportes" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1">
-                <span class="text-lg">📄</span>
-                Reportes
-            </a>
-        </nav>
-
-        <div class="px-4 py-4 border-t border-gray-100">
-            <div class="flex items-center gap-3 mb-3">
-                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-semibold text-sm" id="userAvatar">A</div>
-                <div>
-                    <p class="text-sm font-semibold text-gray-900" id="userName">Administrador</p>
-                    <p class="text-xs text-gray-500" id="userEmail">admin@farmadol.com</p>
-                    <span class="text-xs text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full inline-block mt-0.5" id="userRole">Administrador</span>
-                </div>
-            </div>
-            <button class="w-full flex items-center gap-2 px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition-all" id="logoutBtn">
-                <span>🚪</span>
-                Cerrar Sesión
-            </button>
+        <div>
+          <h1 class="text-xl font-bold text-gray-900">Farmadol</h1>
+          <p class="text-xs text-gray-500">Sistema de Gestión</p>
         </div>
+      </div>
+
+      <nav class="flex-1 px-3 py-4 overflow-y-auto">
+        <p
+          class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3"
+        >
+          Navegación
+        </p>
+
+        <a
+          href="/dashboard"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1"
+        >
+          <span class="text-lg">📊</span>
+          Dashboard
+        </a>
+
+        <a
+          href="/ventas"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1"
+        >
+          <span class="text-lg">💳</span>
+          Ventas
+        </a>
+
+        <a
+          href="/inventario"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium bg-blue-50 text-blue-600"
+        >
+          <span class="text-lg">📦</span>
+          Inventario
+        </a>
+
+        <a
+          href="/compras"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1"
+        >
+          <span class="text-lg">🛒</span>
+          Compras
+        </a>
+
+        <a
+          href="/clientes"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1"
+        >
+          <span class="text-lg">👤</span>
+          Clientes
+        </a>
+
+        <a
+          href="/usuarios"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1"
+        >
+          <span class="text-lg">🔐</span>
+          Usuarios
+        </a>
+
+        <a
+          href="/sucursales"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1"
+        >
+          <span class="text-lg">🏢</span>
+          Sucursales
+        </a>
+
+        <a
+          href="/reportes"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all mt-1"
+        >
+          <span class="text-lg">📄</span>
+          Reportes
+        </a>
+      </nav>
+
+      <div class="px-4 py-4 border-t border-gray-100">
+        <div class="flex items-center gap-3 mb-3">
+          <div
+            class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-semibold text-sm"
+            id="userAvatar"
+          >
+            A
+          </div>
+          <div>
+            <p class="text-sm font-semibold text-gray-900" id="userName">
+              Administrador
+            </p>
+            <p class="text-xs text-gray-500" id="userEmail">
+              admin@farmadol.com
+            </p>
+            <span
+              class="text-xs text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full inline-block mt-0.5"
+              id="userRole"
+              >Administrador</span
+            >
+          </div>
+        </div>
+        <button
+          class="w-full flex items-center gap-2 px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition-all"
+          id="logoutBtn"
+        >
+          <span>🚪</span>
+          Cerrar Sesión
+        </button>
+      </div>
     </aside>
 
     <!-- ============ MAIN CONTENT ============ -->
     <div class="md:ml-[280px] min-h-screen bg-gray-50">
-        <header class="bg-white border-b border-gray-200 sticky top-0 z-30">
-            <div class="flex items-center justify-between px-4 md:px-8 py-4">
-                <div class="flex items-center gap-4">
-                    <button class="md:hidden text-2xl text-gray-600" id="hamburgerBtn">☰</button>
-                    <div>
-                        <h1 class="text-xl font-bold text-gray-900">Inventario</h1>
-                        <p class="text-sm text-gray-500">Gestión de productos y stock</p>
-                    </div>
-                </div>
-                <div class="flex items-center gap-4">
-                    <div class="flex items-center gap-2 text-sm text-gray-500">
-                        <span class="status-dot"></span>
-                        <span>Conectado</span>
-                    </div>
-                    <span class="text-sm text-gray-500" id="currentDateTime"></span>
-                </div>
+      <header class="bg-white border-b border-gray-200 sticky top-0 z-30">
+        <div class="flex items-center justify-between px-4 md:px-8 py-4">
+          <div class="flex items-center gap-4">
+            <button class="md:hidden text-2xl text-gray-600" id="hamburgerBtn">
+              ☰
+            </button>
+            <div>
+              <h1 class="text-xl font-bold text-gray-900">Inventario</h1>
+              <p class="text-sm text-gray-500">Gestión de productos y stock</p>
             </div>
-        </header>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2 text-sm text-gray-500">
+              <span class="status-dot"></span>
+              <span>Conectado</span>
+            </div>
+            <span class="text-sm text-gray-500" id="currentDateTime"></span>
+          </div>
+        </div>
+      </header>
 
-        <main class="p-4 md:p-8">
-            <!-- Tabs -->
-            <div class="flex flex-wrap gap-2 border-b border-gray-200 mb-6">
-                <button class="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-gray-900 border-b-2 border-transparent hover:border-gray-300 transition-all tab-active" data-tab="productos" onclick="switchTab('productos')">
-                    📦 Productos
+      <main class="p-4 md:p-8">
+        <!-- Tabs -->
+        <div class="flex flex-wrap gap-2 border-b border-gray-200 mb-6">
+          <button
+            class="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-gray-900 border-b-2 border-transparent hover:border-gray-300 transition-all tab-active"
+            data-tab="productos"
+            onclick="switchTab('productos')"
+          >
+            📦 Productos
+          </button>
+          <button
+            class="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-gray-900 border-b-2 border-transparent hover:border-gray-300 transition-all"
+            data-tab="stock"
+            onclick="switchTab('stock')"
+          >
+            📊 Stock
+          </button>
+          <button
+            class="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-gray-900 border-b-2 border-transparent hover:border-gray-300 transition-all"
+            data-tab="transferencias"
+            onclick="switchTab('transferencias')"
+          >
+            🔄 Transferencias
+          </button>
+          <button
+            class="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-gray-900 border-b-2 border-transparent hover:border-gray-300 transition-all"
+            data-tab="movimientos"
+            onclick="switchTab('movimientos')"
+          >
+            📋 Movimientos
+          </button>
+          <button
+            class="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-gray-900 border-b-2 border-transparent hover:border-gray-300 transition-all"
+            data-tab="alertas"
+            onclick="switchTab('alertas')"
+          >
+            ⚠️ Alertas
+          </button>
+        </div>
+
+        <!-- ============ TAB: PRODUCTOS ============ -->
+        <div id="tab-productos" class="tab-content">
+          <!-- Toolbar -->
+          <div
+            class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6"
+          >
+            <div
+              class="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full sm:w-auto"
+            >
+              <div class="relative flex-1 sm:flex-initial">
+                <input
+                  type="text"
+                  id="searchProducto"
+                  placeholder="Buscar producto..."
+                  oninput="filterProductos()"
+                  class="w-full sm:w-72 px-4 py-2.5 pl-10 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                />
+                <span class="absolute left-3 top-2.5 text-gray-400">🔍</span>
+              </div>
+
+              <select
+                id="categoriaFilter"
+                onchange="filterProductos()"
+                class="w-full sm:w-auto px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+              >
+                <option value="todos">Todas las categorías</option>
+              </select>
+
+              <select
+                id="estadoProductoFilter"
+                onchange="filterProductos()"
+                class="w-full sm:w-auto px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+              >
+                <option value="todos">Todos los estados</option>
+                <option value="1">Activos</option>
+                <option value="0">Inactivos</option>
+              </select>
+
+              <button
+                class="px-4 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg transition-all border border-gray-200"
+                onclick="cargarProductos()"
+              >
+                🔄 Actualizar
+              </button>
+            </div>
+            <div class="flex gap-2">
+              <button
+                class="w-full sm:w-auto px-5 py-2.5 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg transition-all flex items-center justify-center gap-2 shadow-sm"
+                onclick="abrirTransferenciaStock()"
+              >
+                🔄 Transferir Stock
+              </button>
+              <button
+                class="w-full sm:w-auto px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-all flex items-center justify-center gap-2 shadow-sm"
+                onclick="openProductoModal()"
+              >
+                ➕ Nuevo Producto
+              </button>
+            </div>
+          </div>
+
+          <!-- Stats Productos -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <div class="bg-white rounded-xl border border-gray-200 px-4 py-3">
+              <p class="text-xs text-gray-500">Total Productos</p>
+              <p class="text-xl font-bold text-gray-900" id="totalProductos">
+                0
+              </p>
+            </div>
+            <div class="bg-white rounded-xl border border-gray-200 px-4 py-3">
+              <p class="text-xs text-gray-500">Activos</p>
+              <p
+                class="text-xl font-bold text-green-600"
+                id="totalProductosActivos"
+              >
+                0
+              </p>
+            </div>
+            <div class="bg-white rounded-xl border border-gray-200 px-4 py-3">
+              <p class="text-xs text-gray-500">Inactivos</p>
+              <p
+                class="text-xl font-bold text-red-600"
+                id="totalProductosInactivos"
+              >
+                0
+              </p>
+            </div>
+            <div class="bg-white rounded-xl border border-gray-200 px-4 py-3">
+              <p class="text-xs text-gray-500">Categorías</p>
+              <p class="text-xl font-bold text-blue-600" id="totalCategorias">
+                0
+              </p>
+            </div>
+          </div>
+
+          <!-- Table Productos -->
+          <div
+            class="bg-white rounded-xl border border-gray-200 overflow-hidden"
+          >
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead>
+                  <tr class="bg-gray-50 border-b border-gray-200">
+                    <th
+                      class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider"
+                    >
+                      Código
+                    </th>
+                    <th
+                      class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider"
+                    >
+                      Nombre
+                    </th>
+                    <th
+                      class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden md:table-cell"
+                    >
+                      Categoría
+                    </th>
+                    <th
+                      class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden lg:table-cell"
+                    >
+                      Precio Venta
+                    </th>
+                    <th
+                      class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden xl:table-cell"
+                    >
+                      Stock Mín
+                    </th>
+                    <th
+                      class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider"
+                    >
+                      Estado
+                    </th>
+                    <th
+                      class="text-center px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider"
+                    >
+                      Acciones
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="productosTableBody">
+                  <tr>
+                    <td colspan="7" class="text-center py-12 text-gray-400">
+                      <div
+                        class="inline-block w-6 h-6 border-2 border-gray-200 border-t-blue-600 rounded-full animate-spin"
+                      ></div>
+                      <p class="mt-2">Cargando productos...</p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============ TAB: STOCK ============ -->
+        <div id="tab-stock" class="tab-content hidden">
+          <div class="bg-white rounded-xl border border-gray-200 p-6">
+            <div class="flex flex-col sm:flex-row gap-4 mb-6">
+              <div class="flex-1">
+                <label class="block text-sm font-medium text-gray-700 mb-1.5"
+                  >Producto</label
+                >
+                <select
+                  id="stockProducto"
+                  class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="">Seleccionar producto...</option>
+                </select>
+              </div>
+              <div class="flex-1">
+                <label class="block text-sm font-medium text-gray-700 mb-1.5"
+                  >Sucursal</label
+                >
+                <select
+                  id="stockSucursal"
+                  class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="">Seleccionar sucursal...</option>
+                </select>
+              </div>
+              <div class="flex items-end">
+                <button
+                  onclick="consultarStock()"
+                  class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-all shadow-sm"
+                >
+                  🔍 Consultar Stock
                 </button>
-                <button class="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-gray-900 border-b-2 border-transparent hover:border-gray-300 transition-all" data-tab="stock" onclick="switchTab('stock')">
-                    📊 Stock
+              </div>
+            </div>
+            <div id="stockResultado" class="mt-4">
+              <div class="text-center py-8 text-gray-400">
+                Seleccione un producto y una sucursal para consultar el stock
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============ TAB: TRANSFERENCIAS (CORREGIDO) ============ -->
+<div id="tab-transferencias" class="tab-content hidden">
+    <div class="bg-white rounded-xl border border-gray-200 p-6">
+        <div class="text-center mb-6">
+            <h3 class="text-lg font-semibold text-gray-900">🔄 Transferencia de Stock entre Sucursales</h3>
+            <p class="text-sm text-gray-500 mt-1">Transfiera productos de una sucursal a otra de forma rápida</p>
+        </div>
+        <form id="transferenciaForm" onsubmit="handleTransferenciaSubmit(event)">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Producto <span class="text-red-500">*</span></label>
+                    <select id="transferenciaProducto" required 
+                        class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                        onchange="cargarLotesTransferencia()">
+                        <option value="">Seleccionar producto...</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Lote <span class="text-red-500">*</span></label>
+                    <select id="transferenciaLote" required 
+                        class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                        onchange="actualizarInfoTransferencia()">
+                        <option value="">Primero seleccione producto y origen</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Sucursal Origen <span class="text-red-500">*</span></label>
+                    <select id="transferenciaOrigen" required 
+                        class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                        onchange="cargarLotesTransferencia()">
+                        <option value="">Seleccionar origen...</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Sucursal Destino <span class="text-red-500">*</span></label>
+                    <select id="transferenciaDestino" required 
+                        class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                        onchange="actualizarInfoTransferencia()">
+                        <option value="">Seleccionar destino...</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Cantidad a Transferir <span class="text-red-500">*</span></label>
+                    <input type="number" id="transferenciaCantidad" required min="1" placeholder="0" 
+                        class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <p class="text-xs text-gray-500 mt-1" id="transferenciaStockDisponible">Stock disponible: -</p>
+                </div>
+                <!-- ✅ NUEVO: Ubicación en estante de destino -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                        📍 Ubicación en Destino (Estante)
+                        <span class="text-xs text-gray-400 font-normal">(opcional)</span>
+                    </label>
+                    <input type="text" id="transferenciaUbicacionDestino" 
+                        placeholder="Ej: B-02-05" 
+                        class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <p class="text-xs text-gray-400 mt-1">Ubicación física donde se almacenará en la sucursal destino</p>
+                </div>
+            </div>
+            <!-- Observaciones en fila completa -->
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Observaciones</label>
+                <textarea id="transferenciaObservaciones" rows="2" 
+                    placeholder="Motivo de la transferencia..." 
+                    class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
+            </div>
+            
+            <div id="transferenciaInfo" class="bg-blue-50 rounded-lg p-4 mb-4 hidden">
+                <h4 class="font-medium text-blue-900 mb-2">📋 Resumen de Transferencia</h4>
+                <div class="grid grid-cols-2 gap-2 text-sm" id="transferenciaResumen"></div>
+            </div>
+            <div class="flex justify-end">
+                <button type="submit" class="px-6 py-3 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg transition-all shadow-sm flex items-center gap-2">
+                    🔄 Realizar Transferencia
                 </button>
-                <button class="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-gray-900 border-b-2 border-transparent hover:border-gray-300 transition-all" data-tab="movimientos" onclick="switchTab('movimientos')">
-                    📋 Movimientos
+            </div>
+        </form>
+    </div>
+</div>
+
+        <!-- ============ TAB: MOVIMIENTOS ============ -->
+        <div id="tab-movimientos" class="tab-content hidden">
+          <div
+            class="bg-white rounded-xl border border-gray-200 overflow-hidden"
+          >
+            <div
+              class="p-4 border-b border-gray-200 flex flex-col sm:flex-row gap-4"
+            >
+              <div class="flex-1">
+                <label class="block text-sm font-medium text-gray-700 mb-1.5"
+                  >Producto</label
+                >
+                <select
+                  id="movimientoProducto"
+                  class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="">Todos los productos</option>
+                </select>
+              </div>
+              <div class="flex-1">
+                <label class="block text-sm font-medium text-gray-700 mb-1.5"
+                  >Sucursal</label
+                >
+                <select
+                  id="movimientoSucursal"
+                  class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="">Todas las sucursales</option>
+                </select>
+              </div>
+              <div class="flex-1">
+                <label class="block text-sm font-medium text-gray-700 mb-1.5"
+                  >Tipo</label
+                >
+                <select
+                  id="movimientoTipo"
+                  class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="">Todos</option>
+                  <option value="entrada">Entrada</option>
+                  <option value="salida">Salida</option>
+                  <option value="transferencia_origen">
+                    Transferencia (Origen)
+                  </option>
+                  <option value="transferencia_destino">
+                    Transferencia (Destino)
+                  </option>
+                  <option value="ajuste">Ajuste</option>
+                </select>
+              </div>
+              <div class="flex items-end">
+                <button
+                  onclick="cargarMovimientos()"
+                  class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-all shadow-sm"
+                >
+                  🔍 Buscar
                 </button>
-                <button class="px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-gray-900 border-b-2 border-transparent hover:border-gray-300 transition-all" data-tab="alertas" onclick="switchTab('alertas')">
-                    ⚠️ Alertas
-                </button>
+              </div>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead>
+                  <tr class="bg-gray-50 border-b border-gray-200">
+                    <th
+                      class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider"
+                    >
+                      Fecha
+                    </th>
+                    <th
+                      class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider"
+                    >
+                      Tipo
+                    </th>
+                    <th
+                      class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider"
+                    >
+                      Producto
+                    </th>
+                    <th
+                      class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider"
+                    >
+                      Cantidad
+                    </th>
+                    <th
+                      class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden md:table-cell"
+                    >
+                      Sucursal
+                    </th>
+                    <th
+                      class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden lg:table-cell"
+                    >
+                      Observaciones
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="movimientosTableBody">
+                  <tr>
+                    <td colspan="6" class="text-center py-12 text-gray-400">
+                      <p>Seleccione filtros y presione "Buscar"</p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============ TAB: ALERTAS ============ -->
+        <div id="tab-alertas" class="tab-content hidden">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Stock Bajo -->
+            <div class="bg-white rounded-xl border border-gray-200">
+              <div
+                class="px-6 py-4 border-b border-gray-100 flex items-center justify-between"
+              >
+                <h3 class="font-semibold text-gray-900">⚠️ Stock Bajo</h3>
+                <span
+                  class="text-xs bg-red-100 text-red-700 px-2.5 py-1 rounded-full"
+                  id="stockBajoCount"
+                  >0</span
+                >
+              </div>
+              <div class="p-4" id="stockBajoList">
+                <div class="text-center py-8 text-gray-400">
+                  Cargando alertas...
+                </div>
+              </div>
             </div>
 
-            <!-- ============ TAB: PRODUCTOS ============ -->
-            <div id="tab-productos" class="tab-content">
-                <!-- Toolbar -->
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-                    <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full sm:w-auto">
-                        <div class="relative flex-1 sm:flex-initial">
-                            <input type="text" id="searchProducto" placeholder="Buscar producto..." oninput="filterProductos()" class="w-full sm:w-72 px-4 py-2.5 pl-10 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white">
-                            <span class="absolute left-3 top-2.5 text-gray-400">🔍</span>
-                        </div>
-                        
-                        <select id="categoriaFilter" onchange="filterProductos()" class="w-full sm:w-auto px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white">
-                            <option value="todos">Todas las categorías</option>
-                        </select>
-                        
-                        <select id="estadoProductoFilter" onchange="filterProductos()" class="w-full sm:w-auto px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white">
-                            <option value="todos">Todos los estados</option>
-                            <option value="1">Activos</option>
-                            <option value="0">Inactivos</option>
-                        </select>
-                        
-                        <button class="px-4 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg transition-all border border-gray-200" onclick="cargarProductos()">
-                            🔄 Actualizar
-                        </button>
-                    </div>
-                    <button class="w-full sm:w-auto px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-all flex items-center justify-center gap-2 shadow-sm" onclick="openProductoModal()">
-                        ➕ Nuevo Producto
-                    </button>
+            <!-- Próximos a Vencer -->
+            <div class="bg-white rounded-xl border border-gray-200">
+              <div
+                class="px-6 py-4 border-b border-gray-100 flex items-center justify-between"
+              >
+                <h3 class="font-semibold text-gray-900">
+                  📅 Próximos a Vencer
+                </h3>
+                <span
+                  class="text-xs bg-yellow-100 text-yellow-700 px-2.5 py-1 rounded-full"
+                  id="proximoVencerCount"
+                  >0</span
+                >
+              </div>
+              <div class="p-4" id="proximoVencerList">
+                <div class="text-center py-8 text-gray-400">
+                  Cargando alertas...
                 </div>
-
-                <!-- Stats Productos -->
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                    <div class="bg-white rounded-xl border border-gray-200 px-4 py-3">
-                        <p class="text-xs text-gray-500">Total Productos</p>
-                        <p class="text-xl font-bold text-gray-900" id="totalProductos">0</p>
-                    </div>
-                    <div class="bg-white rounded-xl border border-gray-200 px-4 py-3">
-                        <p class="text-xs text-gray-500">Activos</p>
-                        <p class="text-xl font-bold text-green-600" id="totalProductosActivos">0</p>
-                    </div>
-                    <div class="bg-white rounded-xl border border-gray-200 px-4 py-3">
-                        <p class="text-xs text-gray-500">Inactivos</p>
-                        <p class="text-xl font-bold text-red-600" id="totalProductosInactivos">0</p>
-                    </div>
-                    <div class="bg-white rounded-xl border border-gray-200 px-4 py-3">
-                        <p class="text-xs text-gray-500">Categorías</p>
-                        <p class="text-xl font-bold text-blue-600" id="totalCategorias">0</p>
-                    </div>
-                </div>
-
-                <!-- Table Productos -->
-                <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-sm">
-                            <thead>
-                                <tr class="bg-gray-50 border-b border-gray-200">
-                                    <th class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Código</th>
-                                    <th class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Nombre</th>
-                                    <th class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden md:table-cell">Categoría</th>
-                                    <th class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden lg:table-cell">Precio Venta</th>
-                                    <th class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden xl:table-cell">Stock Mín</th>
-                                    <th class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Estado</th>
-                                    <th class="text-center px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody id="productosTableBody">
-                                <tr>
-                                    <td colspan="7" class="text-center py-12 text-gray-400">
-                                        <div class="inline-block w-6 h-6 border-2 border-gray-200 border-t-blue-600 rounded-full animate-spin"></div>
-                                        <p class="mt-2">Cargando productos...</p>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+              </div>
             </div>
-
-            <!-- ============ TAB: STOCK ============ -->
-            <div id="tab-stock" class="tab-content hidden">
-                <div class="bg-white rounded-xl border border-gray-200 p-6">
-                    <div class="flex flex-col sm:flex-row gap-4 mb-6">
-                        <div class="flex-1">
-                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Producto</label>
-                            <select id="stockProducto" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                <option value="">Seleccionar producto...</option>
-                            </select>
-                        </div>
-                        <div class="flex-1">
-                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Sucursal</label>
-                            <select id="stockSucursal" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                <option value="">Seleccionar sucursal...</option>
-                            </select>
-                        </div>
-                        <div class="flex items-end">
-                            <button onclick="consultarStock()" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-all shadow-sm">
-                                🔍 Consultar Stock
-                            </button>
-                        </div>
-                    </div>
-                    <div id="stockResultado" class="mt-4">
-                        <div class="text-center py-8 text-gray-400">Seleccione un producto y una sucursal para consultar el stock</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ============ TAB: MOVIMIENTOS ============ -->
-            <div id="tab-movimientos" class="tab-content hidden">
-                <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
-                    <div class="p-4 border-b border-gray-200 flex flex-col sm:flex-row gap-4">
-                        <div class="flex-1">
-                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Producto</label>
-                            <select id="movimientoProducto" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                <option value="">Todos los productos</option>
-                            </select>
-                        </div>
-                        <div class="flex-1">
-                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Sucursal</label>
-                            <select id="movimientoSucursal" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                <option value="">Todas las sucursales</option>
-                            </select>
-                        </div>
-                        <div class="flex items-end">
-                            <button onclick="cargarMovimientos()" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-all shadow-sm">
-                                🔍 Buscar
-                            </button>
-                        </div>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-sm">
-                            <thead>
-                                <tr class="bg-gray-50 border-b border-gray-200">
-                                    <th class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Fecha</th>
-                                    <th class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Tipo</th>
-                                    <th class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Producto</th>
-                                    <th class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Cantidad</th>
-                                    <th class="text-left px-4 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden md:table-cell">Usuario</th>
-                                </tr>
-                            </thead>
-                            <tbody id="movimientosTableBody">
-                                <tr>
-                                    <td colspan="5" class="text-center py-12 text-gray-400">
-                                        <p>Seleccione filtros y presione "Buscar"</p>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ============ TAB: ALERTAS ============ -->
-            <div id="tab-alertas" class="tab-content hidden">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <!-- Stock Bajo -->
-                    <div class="bg-white rounded-xl border border-gray-200">
-                        <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-                            <h3 class="font-semibold text-gray-900">⚠️ Stock Bajo</h3>
-                            <span class="text-xs bg-red-100 text-red-700 px-2.5 py-1 rounded-full" id="stockBajoCount">0</span>
-                        </div>
-                        <div class="p-4" id="stockBajoList">
-                            <div class="text-center py-8 text-gray-400">Cargando alertas...</div>
-                        </div>
-                    </div>
-
-                    <!-- Próximos a Vencer -->
-                    <div class="bg-white rounded-xl border border-gray-200">
-                        <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-                            <h3 class="font-semibold text-gray-900">📅 Próximos a Vencer</h3>
-                            <span class="text-xs bg-yellow-100 text-yellow-700 px-2.5 py-1 rounded-full" id="proximoVencerCount">0</span>
-                        </div>
-                        <div class="p-4" id="proximoVencerList">
-                            <div class="text-center py-8 text-gray-400">Cargando alertas...</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
+          </div>
+        </div>
+      </main>
     </div>
 
     <!-- ============ MODAL PRODUCTO ============ -->
-    <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden items-center justify-center p-4" id="productoModalOverlay">
-        <div class="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto modal-transition">
-            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100 sticky top-0 bg-white z-10">
-                <h3 class="text-lg font-semibold text-gray-900" id="productoModalTitle">Nuevo Producto</h3>
-                <button class="text-gray-400 hover:text-gray-600 text-2xl" onclick="closeProductoModal()">&times;</button>
-            </div>
-            <form id="productoForm" onsubmit="handleProductoSubmit(event)">
-                <div class="p-6 space-y-4">
-                    <input type="hidden" id="editProductoId" value="" />
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Código <span class="text-red-500">*</span></label>
-                            <input type="text" id="productoCodigo" placeholder="MED-001" required class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Nombre <span class="text-red-500">*</span></label>
-                            <input type="text" id="productoNombre" placeholder="Paracetamol 500mg" required class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Descripción</label>
-                        <textarea id="productoDescripcion" rows="2" placeholder="Descripción del producto..." class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Categoría <span class="text-red-500">*</span></label>
-                            <select id="productoCategoria" required class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                <option value="">Seleccionar...</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Unidad de Medida</label>
-                            <select id="productoUnidad" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                <option value="unidad">Unidad</option>
-                                <option value="caja">Caja</option>
-                                <option value="frasco">Frasco</option>
-                                <option value="ampolla">Ampolla</option>
-                                <option value="blister">Blister</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Precio Compra</label>
-                            <input type="number" id="productoPrecioCompra" placeholder="0.00" step="0.01" min="0" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Precio Venta</label>
-                            <input type="number" id="productoPrecioVenta" placeholder="0.00" step="0.01" min="0" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Stock Mínimo</label>
-                            <input type="number" id="productoStockMinimo" placeholder="10" min="0" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Stock Máximo</label>
-                            <input type="number" id="productoStockMaximo" placeholder="500" min="0" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="flex items-center gap-2 text-sm text-gray-700">
-                            <input type="checkbox" id="productoRequiereReceta" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
-                            Requiere Receta Médica
-                        </label>
-                    </div>
-
-                    <div id="productoEstadoGroup" style="display: none;">
-                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Estado</label>
-                        <select id="productoEstado" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                            <option value="1">Activo</option>
-                            <option value="0">Inactivo</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="flex flex-col sm:flex-row justify-end gap-3 px-6 py-4 border-t border-gray-100 sticky bottom-0 bg-white">
-                    <button type="button" class="px-5 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg transition-all" onclick="closeProductoModal()">Cancelar</button>
-                    <button type="submit" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-all shadow-sm" id="productoSubmitBtn">Guardar</button>
-                </div>
-            </form>
+    <div
+      class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden items-center justify-center p-4"
+      id="productoModalOverlay"
+    >
+      <div
+        class="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto modal-transition"
+      >
+        <div
+          class="flex items-center justify-between px-6 py-4 border-b border-gray-100 sticky top-0 bg-white z-10"
+        >
+          <h3
+            class="text-lg font-semibold text-gray-900"
+            id="productoModalTitle"
+          >
+            Nuevo Producto
+          </h3>
+          <button
+            class="text-gray-400 hover:text-gray-600 text-2xl"
+            onclick="closeProductoModal()"
+          >
+            &times;
+          </button>
         </div>
+        <form id="productoForm" onsubmit="handleProductoSubmit(event)">
+          <div class="p-6 space-y-4">
+            <input type="hidden" id="editProductoId" value="" />
+
+            <!-- ✅ FILA 1: SKU y Código -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5"
+                  >SKU <span class="text-red-500">*</span></label
+                >
+                <input
+                  type="text"
+                  id="productoSku"
+                  placeholder="SKU-001"
+                  required
+                  class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+                <p class="text-xs text-gray-400 mt-1">
+                  Código único interno del producto
+                </p>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5"
+                  >Código <span class="text-red-500">*</span></label
+                >
+                <input
+                  type="text"
+                  id="productoCodigo"
+                  placeholder="MED-001"
+                  required
+                  class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+                <p class="text-xs text-gray-400 mt-1">
+                  Código de barras o identificador
+                </p>
+              </div>
+            </div>
+
+            <!-- ✅ FILA 2: Nombre (ocupa todo el ancho para nombres largos) -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1.5"
+                >Nombre <span class="text-red-500">*</span></label
+              >
+              <input
+                type="text"
+                id="productoNombre"
+                placeholder="Paracetamol 500mg"
+                required
+                class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1.5"
+                >Descripción</label
+              >
+              <textarea
+                id="productoDescripcion"
+                rows="2"
+                placeholder="Descripción del producto..."
+                class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              ></textarea>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5"
+                  >Categoría <span class="text-red-500">*</span></label
+                >
+                <select
+                  id="productoCategoria"
+                  required
+                  class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="">Seleccionar...</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5"
+                  >Unidad de Medida</label
+                >
+                <select
+                  id="productoUnidad"
+                  class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="unidad">Unidad</option>
+                  <option value="caja">Caja</option>
+                  <option value="frasco">Frasco</option>
+                  <option value="ampolla">Ampolla</option>
+                  <option value="blister">Blister</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5"
+                  >Precio Compra (S/)</label
+                >
+                <input
+                  type="number"
+                  id="productoPrecioCompra"
+                  placeholder="0.00"
+                  step="0.01"
+                  min="0"
+                  class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5"
+                  >Precio Venta (S/)</label
+                >
+                <input
+                  type="number"
+                  id="productoPrecioVenta"
+                  placeholder="0.00"
+                  step="0.01"
+                  min="0"
+                  class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5"
+                  >Stock Mínimo</label
+                >
+                <input
+                  type="number"
+                  id="productoStockMinimo"
+                  placeholder="10"
+                  min="0"
+                  class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5"
+                  >Stock Máximo</label
+                >
+                <input
+                  type="number"
+                  id="productoStockMaximo"
+                  placeholder="500"
+                  min="0"
+                  class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label
+                class="flex items-center gap-2 text-sm text-gray-700 cursor-pointer"
+              >
+                <input
+                  type="checkbox"
+                  id="productoRequiereReceta"
+                  class="rounded border-gray-300 text-blue-600 focus:ring-blue-500 w-4 h-4"
+                />
+                <span>Requiere Receta Médica</span>
+              </label>
+            </div>
+
+            <div id="productoEstadoGroup" style="display: none">
+              <label class="block text-sm font-medium text-gray-700 mb-1.5"
+                >Estado</label
+              >
+              <select
+                id="productoEstado"
+                class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="1">Activo</option>
+                <option value="0">Inactivo</option>
+              </select>
+            </div>
+          </div>
+          <div
+            class="flex flex-col sm:flex-row justify-end gap-3 px-6 py-4 border-t border-gray-100 sticky bottom-0 bg-white"
+          >
+            <button
+              type="button"
+              class="px-5 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg transition-all"
+              onclick="closeProductoModal()"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-all shadow-sm"
+              id="productoSubmitBtn"
+            >
+              Guardar
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
 
     <!-- ============ MODAL ENTRADA STOCK ============ -->
-    <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden items-center justify-center p-4" id="entradaModalOverlay">
-        <div class="bg-white rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto modal-transition">
-            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-                <h3 class="text-lg font-semibold text-gray-900">📥 Registrar Entrada de Stock</h3>
-                <button class="text-gray-400 hover:text-gray-600 text-2xl" onclick="closeEntradaModal()">&times;</button>
-            </div>
-            <form id="entradaForm" onsubmit="handleEntradaSubmit(event)">
-                <div class="p-6 space-y-4">
-                    <input type="hidden" id="entradaProductoId" value="" />
-                    <input type="hidden" id="entradaSucursalId" value="" />
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Producto</label>
-                        <p class="text-sm font-medium text-gray-900" id="entradaProductoNombre">-</p>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Sucursal</label>
-                        <p class="text-sm font-medium text-gray-900" id="entradaSucursalNombre">-</p>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Lote <span class="text-red-500">*</span></label>
-                        <input type="text" id="entradaLote" placeholder="L-2024-001" required class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Cantidad <span class="text-red-500">*</span></label>
-                            <input type="number" id="entradaCantidad" placeholder="0" min="1" required class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Costo Unitario</label>
-                            <input type="number" id="entradaCosto" placeholder="0.00" step="0.01" min="0" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Fecha Vencimiento <span class="text-red-500">*</span></label>
-                        <input type="date" id="entradaVencimiento" required class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Referencia ID</label>
-                        <input type="text" id="entradaReferencia" placeholder="ID de compra o referencia" class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Observaciones</label>
-                        <textarea id="entradaObservaciones" rows="2" placeholder="Observaciones..." class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
-                    </div>
-                </div>
-                <div class="flex flex-col sm:flex-row justify-end gap-3 px-6 py-4 border-t border-gray-100">
-                    <button type="button" class="px-5 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg transition-all" onclick="closeEntradaModal()">Cancelar</button>
-                    <button type="submit" class="px-5 py-2.5 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg transition-all shadow-sm">Registrar Entrada</button>
-                </div>
-            </form>
+    <div
+      class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden items-center justify-center p-4"
+      id="entradaModalOverlay"
+    >
+      <div
+        class="bg-white rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto modal-transition"
+      >
+        <div
+          class="flex items-center justify-between px-6 py-4 border-b border-gray-100"
+        >
+          <h3 class="text-lg font-semibold text-gray-900">
+            📥 Registrar Entrada de Stock
+          </h3>
+          <button
+            class="text-gray-400 hover:text-gray-600 text-2xl"
+            onclick="closeEntradaModal()"
+          >
+            &times;
+          </button>
         </div>
+        <form id="entradaForm" onsubmit="handleEntradaSubmit(event)">
+          <div class="p-6 space-y-4">
+            <input type="hidden" id="entradaProductoId" value="" />
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1.5"
+                >Producto</label
+              >
+              <p
+                class="text-sm font-medium text-gray-900"
+                id="entradaProductoNombre"
+              >
+                -
+              </p>
+            </div>
+
+            <!-- ✅ SELECTOR DE SUCURSAL -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1.5"
+                >Sucursal <span class="text-red-500">*</span></label
+              >
+              <select
+                id="entradaSucursal"
+                required
+                class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="">Seleccionar sucursal...</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1.5"
+                >Lote <span class="text-red-500">*</span></label
+              >
+              <input
+                type="text"
+                id="entradaLote"
+                placeholder="L-2024-001"
+                required
+                class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5"
+                  >Cantidad <span class="text-red-500">*</span></label
+                >
+                <input
+                  type="number"
+                  id="entradaCantidad"
+                  placeholder="0"
+                  min="1"
+                  required
+                  class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5"
+                  >Costo Unitario</label
+                >
+                <input
+                  type="number"
+                  id="entradaCosto"
+                  placeholder="0.00"
+                  step="0.01"
+                  min="0"
+                  class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1.5"
+                >Fecha Vencimiento <span class="text-red-500">*</span></label
+              >
+              <input
+                type="date"
+                id="entradaVencimiento"
+                required
+                class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1.5"
+                >Ubicación (Estante)</label
+              >
+              <input
+                type="text"
+                id="entradaUbicacion"
+                placeholder="Ej: A-01-03"
+                class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1.5"
+                >Referencia ID</label
+              >
+              <input
+                type="text"
+                id="entradaReferencia"
+                placeholder="ID de compra o referencia"
+                class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1.5"
+                >Observaciones</label
+              >
+              <textarea
+                id="entradaObservaciones"
+                rows="2"
+                placeholder="Observaciones..."
+                class="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              ></textarea>
+            </div>
+          </div>
+          <div
+            class="flex flex-col sm:flex-row justify-end gap-3 px-6 py-4 border-t border-gray-100"
+          >
+            <button
+              type="button"
+              class="px-5 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg transition-all"
+              onclick="closeEntradaModal()"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              class="px-5 py-2.5 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg transition-all shadow-sm"
+            >
+              Registrar Entrada
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
 
     <!-- ============ TOAST CONTAINER ============ -->
     <div class="fixed top-4 right-4 z-50 space-y-2" id="toastContainer"></div>
 
     <script>
-        const API_GATEWAY = "http://localhost:3000/api";
-        let token = localStorage.getItem("token");
-        let productosData = [];
-        let filteredProductos = [];
-        let categoriasData = [];
-        let sucursalesData = [];
-        let currentTab = 'productos';
+      const API_GATEWAY = "http://localhost:3000/api";
+      let token = localStorage.getItem("token");
+      let productosData = [];
+      let filteredProductos = [];
+      let categoriasData = [];
+      let sucursalesData = [];
+      let inventarioData = []; // Para almacenar datos de inventario
+      let currentTab = "productos";
 
-        // ============ HEADERS ============
-        function getHeaders() {
-            return {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-            };
+      // ============ HEADERS ============
+      function getHeaders() {
+        return {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        };
+      }
+
+      // ============ VERIFICAR AUTENTICACIÓN ============
+      function checkAuth() {
+        token = localStorage.getItem("token");
+        const user = JSON.parse(localStorage.getItem("user") || "null");
+        if (!token || !user) {
+          window.location.href = "/";
+          return false;
         }
+        return { token, user };
+      }
 
-        // ============ VERIFICAR AUTENTICACIÓN ============
-        function checkAuth() {
-            token = localStorage.getItem("token");
-            const user = JSON.parse(localStorage.getItem("user") || "null");
-            if (!token || !user) {
-                window.location.href = "/";
-                return false;
-            }
-            return { token, user };
+      // ============ CARGAR DATOS DEL USUARIO ============
+      function loadUserData() {
+        const auth = checkAuth();
+        if (!auth) return;
+        const { user } = auth;
+        document.getElementById("userName").textContent =
+          user.username || "Usuario";
+        document.getElementById("userEmail").textContent =
+          user.email || "usuario@farmadol.com";
+        document.getElementById("userAvatar").textContent = (user.username ||
+          "U")[0].toUpperCase();
+        const roles = user.roles || ["Usuario"];
+        document.getElementById("userRole").textContent = roles
+          .map((r) => r.charAt(0).toUpperCase() + r.slice(1).toLowerCase())
+          .join(", ");
+      }
+
+      // ============ RELOJ ============
+      function updateDateTime() {
+        const now = new Date();
+        const options = {
+          weekday: "short",
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        };
+        document.getElementById("currentDateTime").textContent =
+          now.toLocaleDateString("es-ES", options);
+      }
+      setInterval(updateDateTime, 60000);
+      updateDateTime();
+
+      // ============ SIDEBAR TOGGLE ============
+      const sidebar = document.getElementById("sidebar");
+      const overlay = document.getElementById("sidebarOverlay");
+      const hamburger = document.getElementById("hamburgerBtn");
+
+      function toggleSidebar() {
+        sidebar.classList.toggle("translate-x-0");
+        sidebar.classList.toggle("-translate-x-full");
+        overlay.classList.toggle("hidden");
+      }
+      hamburger.addEventListener("click", toggleSidebar);
+      overlay.addEventListener("click", toggleSidebar);
+
+      // ============ CERRAR SESIÓN ============
+      document.getElementById("logoutBtn").addEventListener("click", () => {
+        if (confirm("¿Estás seguro de que deseas cerrar sesión?")) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
+          window.location.href = "/";
         }
+      });
 
-        // ============ CARGAR DATOS DEL USUARIO ============
-        function loadUserData() {
-            const auth = checkAuth();
-            if (!auth) return;
-            const { user } = auth;
-            document.getElementById("userName").textContent = user.username || "Usuario";
-            document.getElementById("userEmail").textContent = user.email || "usuario@farmadol.com";
-            document.getElementById("userAvatar").textContent = (user.username || "U")[0].toUpperCase();
-            const roles = user.roles || ["Usuario"];
-            document.getElementById("userRole").textContent = roles.map(r => r.charAt(0).toUpperCase() + r.slice(1).toLowerCase()).join(", ");
-        }
-
-        // ============ RELOJ ============
-        function updateDateTime() {
-            const now = new Date();
-            const options = { weekday: "short", day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" };
-            document.getElementById("currentDateTime").textContent = now.toLocaleDateString("es-ES", options);
-        }
-        setInterval(updateDateTime, 60000);
-        updateDateTime();
-
-        // ============ SIDEBAR TOGGLE ============
-        const sidebar = document.getElementById("sidebar");
-        const overlay = document.getElementById("sidebarOverlay");
-        const hamburger = document.getElementById("hamburgerBtn");
-
-        function toggleSidebar() {
-            sidebar.classList.toggle("translate-x-0");
-            sidebar.classList.toggle("-translate-x-full");
-            overlay.classList.toggle("hidden");
-        }
-        hamburger.addEventListener("click", toggleSidebar);
-        overlay.addEventListener("click", toggleSidebar);
-
-        // ============ CERRAR SESIÓN ============
-        document.getElementById("logoutBtn").addEventListener("click", () => {
-            if (confirm("¿Estás seguro de que deseas cerrar sesión?")) {
-                localStorage.removeItem("token");
-                localStorage.removeItem("user");
-                window.location.href = "/";
-            }
+      // ============ TABS ============
+      function switchTab(tab) {
+        currentTab = tab;
+        document
+          .querySelectorAll(".tab-content")
+          .forEach((el) => el.classList.add("hidden"));
+        document.getElementById(`tab-${tab}`).classList.remove("hidden");
+        document.querySelectorAll("[data-tab]").forEach((el) => {
+          el.classList.remove("tab-active");
+          if (el.dataset.tab === tab) el.classList.add("tab-active");
         });
 
-        // ============ TABS ============
-        function switchTab(tab) {
-            currentTab = tab;
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.getElementById(`tab-${tab}`).classList.remove('hidden');
-            document.querySelectorAll('[data-tab]').forEach(el => {
-                el.classList.remove('tab-active');
-                if (el.dataset.tab === tab) el.classList.add('tab-active');
-            });
-            
-            if (tab === 'alertas') cargarAlertas();
-            if (tab === 'stock') cargarSelectoresStock();
-            if (tab === 'movimientos') cargarSelectoresMovimientos();
-        }
+        if (tab === "alertas") cargarAlertas();
+        if (tab === "stock") cargarSelectoresStock();
+        if (tab === "movimientos") cargarSelectoresMovimientos();
+        if (tab === "transferencias") cargarSelectoresTransferencia();
+      }
 
-        // ============ CATEGORÍAS ============
-        async function cargarCategorias() {
-            try {
-                const response = await fetch(`${API_GATEWAY}/inventario/categorias`, { headers: getHeaders() });
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data.success) {
-                        categoriasData = data.data || [];
-                        actualizarSelectoresCategoria();
-                    }
-                }
-            } catch (error) {
-                console.error("Error cargando categorías:", error);
+      // ============ CATEGORÍAS ============
+      async function cargarCategorias() {
+        try {
+          const response = await fetch(`${API_GATEWAY}/inventario/categorias`, {
+            headers: getHeaders(),
+          });
+          if (response.ok) {
+            const data = await response.json();
+            if (data.success) {
+              categoriasData = data.data || [];
+              actualizarSelectoresCategoria();
             }
+          }
+        } catch (error) {
+          console.error("Error cargando categorías:", error);
         }
+      }
 
-        function actualizarSelectoresCategoria() {
-            const selects = ['productoCategoria', 'categoriaFilter'];
-            selects.forEach(id => {
-                const select = document.getElementById(id);
-                if (!select) return;
-                const currentValue = select.value;
-                select.innerHTML = '<option value="">Seleccionar...</option>';
-                categoriasData.forEach(c => {
-                    select.innerHTML += `<option value="${c.id}">${c.nombre}</option>`;
-                });
-                if (id === 'categoriaFilter') {
-                    select.innerHTML = '<option value="todos">Todas las categorías</option>' + select.innerHTML.slice(1);
-                }
-                if (currentValue) select.value = currentValue;
-            });
-        }
+      function actualizarSelectoresCategoria() {
+        const selects = ["productoCategoria", "categoriaFilter"];
+        selects.forEach((id) => {
+          const select = document.getElementById(id);
+          if (!select) return;
+          const currentValue = select.value;
+          select.innerHTML = '<option value="">Seleccionar...</option>';
+          categoriasData.forEach((c) => {
+            select.innerHTML += `<option value="${c.id}">${c.nombre}</option>`;
+          });
+          if (id === "categoriaFilter") {
+            select.innerHTML =
+              '<option value="todos">Todas las categorías</option>' +
+              select.innerHTML.slice(1);
+          }
+          if (currentValue) select.value = currentValue;
+        });
+      }
 
-        // ============ SUCURSALES ============
-        async function cargarSucursales() {
-            try {
-                const response = await fetch(`${API_GATEWAY}/sucursales/sucursales`, { headers: getHeaders() });
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data.success) {
-                        sucursalesData = data.data || [];
-                        actualizarSelectoresSucursal();
-                    }
-                }
-            } catch (error) {
-                console.error("Error cargando sucursales:", error);
+      // ============ SUCURSALES ============
+      async function cargarSucursales() {
+        try {
+          const response = await fetch(`${API_GATEWAY}/sucursales`, {
+            headers: getHeaders(),
+          });
+          if (response.ok) {
+            const data = await response.json();
+            if (data.success) {
+              sucursalesData = data.data || [];
+              actualizarSelectoresSucursal();
             }
+          }
+        } catch (error) {
+          console.error("Error cargando sucursales:", error);
         }
+      }
 
-        function actualizarSelectoresSucursal() {
-            const selects = ['stockSucursal', 'movimientoSucursal'];
-            selects.forEach(id => {
-                const select = document.getElementById(id);
-                if (!select) return;
-                const currentValue = select.value;
-                select.innerHTML = id === 'stockSucursal' ? '<option value="">Seleccionar sucursal...</option>' : '<option value="">Todas las sucursales</option>';
-                sucursalesData.filter(s => s.estado).forEach(s => {
-                    select.innerHTML += `<option value="${s.id}">${s.nombre}</option>`;
-                });
-                if (currentValue) select.value = currentValue;
+      function actualizarSelectoresSucursal() {
+        const selects = [
+          "stockSucursal",
+          "movimientoSucursal",
+          "entradaSucursal",
+          "transferenciaOrigen",
+          "transferenciaDestino",
+        ];
+        selects.forEach((id) => {
+          const select = document.getElementById(id);
+          if (!select) return;
+          const currentValue = select.value;
+
+          let defaultOption = '<option value="">Seleccionar...</option>';
+          if (id === "movimientoSucursal")
+            defaultOption = '<option value="">Todas las sucursales</option>';
+          if (id === "transferenciaOrigen")
+            defaultOption = '<option value="">Seleccionar origen...</option>';
+          if (id === "transferenciaDestino")
+            defaultOption = '<option value="">Seleccionar destino...</option>';
+
+          select.innerHTML = defaultOption;
+          sucursalesData
+            .filter((s) => s.estado)
+            .forEach((s) => {
+              select.innerHTML += `<option value="${s.id}">${s.nombre}</option>`;
             });
-        }
+          if (
+            currentValue &&
+            [...select.options].some((o) => o.value === currentValue)
+          ) {
+            select.value = currentValue;
+          }
+        });
+      }
 
-        // ============ CRUD PRODUCTOS ============
+      // ============ CRUD PRODUCTOS ============
 
-        async function cargarProductos() {
-            const tbody = document.getElementById("productosTableBody");
-            tbody.innerHTML = `
+      async function cargarProductos() {
+        const tbody = document.getElementById("productosTableBody");
+        tbody.innerHTML = `
                 <tr>
                     <td colspan="7" class="text-center py-12 text-gray-400">
                         <div class="inline-block w-6 h-6 border-2 border-gray-200 border-t-blue-600 rounded-full animate-spin"></div>
@@ -671,18 +1318,20 @@
                 </tr>
             `;
 
-            try {
-                const response = await fetch(`${API_GATEWAY}/inventario/productos`, { headers: getHeaders() });
-                if (!response.ok) throw new Error("Error al cargar productos");
-                const data = await response.json();
-                if (data.success) {
-                    productosData = data.data || [];
-                    filterProductos();
-                    actualizarSelectoresProductos();
-                }
-            } catch (error) {
-                console.error("Error:", error);
-                tbody.innerHTML = `
+        try {
+          const response = await fetch(`${API_GATEWAY}/inventario/productos`, {
+            headers: getHeaders(),
+          });
+          if (!response.ok) throw new Error("Error al cargar productos");
+          const data = await response.json();
+          if (data.success) {
+            productosData = data.data || [];
+            filterProductos();
+            actualizarSelectoresProductos();
+          }
+        } catch (error) {
+          console.error("Error:", error);
+          tbody.innerHTML = `
                     <tr>
                         <td colspan="7" class="text-center py-12 text-red-500">
                             <p class="text-4xl mb-2">⚠️</p>
@@ -691,48 +1340,69 @@
                         </td>
                     </tr>
                 `;
-                mostrarToast("Error al cargar productos", "error");
-            }
+          mostrarToast("Error al cargar productos", "error");
         }
+      }
 
-        function actualizarSelectoresProductos() {
-            const selects = ['stockProducto', 'movimientoProducto'];
-            selects.forEach(id => {
-                const select = document.getElementById(id);
-                if (!select) return;
-                const currentValue = select.value;
-                select.innerHTML = id === 'stockProducto' ? '<option value="">Seleccionar producto...</option>' : '<option value="">Todos los productos</option>';
-                productosData.filter(p => p.estado).forEach(p => {
-                    select.innerHTML += `<option value="${p.id}">${p.codigo} - ${p.nombre}</option>`;
-                });
-                if (currentValue) select.value = currentValue;
+      function actualizarSelectoresProductos() {
+        const selects = [
+          "stockProducto",
+          "movimientoProducto",
+          "transferenciaProducto",
+        ];
+        selects.forEach((id) => {
+          const select = document.getElementById(id);
+          if (!select) return;
+          const currentValue = select.value;
+          let defaultOption =
+            '<option value="">Seleccionar producto...</option>';
+          if (id === "movimientoProducto")
+            defaultOption = '<option value="">Todos los productos</option>';
+          select.innerHTML = defaultOption;
+          productosData
+            .filter((p) => p.estado)
+            .forEach((p) => {
+              select.innerHTML += `<option value="${p.id}">${p.codigo} - ${p.nombre}</option>`;
             });
-        }
+          if (
+            currentValue &&
+            [...select.options].some((o) => o.value === currentValue)
+          ) {
+            select.value = currentValue;
+          }
+        });
+      }
 
-        function updateProductoStats(data) {
-            const total = data.length;
-            const activos = data.filter(p => p.estado === true || p.estado === 1).length;
-            const inactivos = data.filter(p => p.estado === false || p.estado === 0).length;
-            
-            document.getElementById("totalProductos").textContent = total;
-            document.getElementById("totalProductosActivos").textContent = activos;
-            document.getElementById("totalProductosInactivos").textContent = inactivos;
-            document.getElementById("totalCategorias").textContent = categoriasData.length;
-        }
+      function updateProductoStats(data) {
+        const total = data.length;
+        const activos = data.filter(
+          (p) => p.estado === true || p.estado === 1,
+        ).length;
+        const inactivos = data.filter(
+          (p) => p.estado === false || p.estado === 0,
+        ).length;
 
-        function getEstadoBadge(estado) {
-            return estado ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700';
-        }
+        document.getElementById("totalProductos").textContent = total;
+        document.getElementById("totalProductosActivos").textContent = activos;
+        document.getElementById("totalProductosInactivos").textContent =
+          inactivos;
+        document.getElementById("totalCategorias").textContent =
+          categoriasData.length;
+      }
 
-        function getEstadoText(estado) {
-            return estado ? 'Activo' : 'Inactivo';
-        }
+      function getEstadoBadge(estado) {
+        return estado ? "badge-activo" : "badge-inactivo";
+      }
 
-        function renderProductos(data) {
-            const tbody = document.getElementById("productosTableBody");
+      function getEstadoText(estado) {
+        return estado ? "Activo" : "Inactivo";
+      }
 
-            if (!data || data.length === 0) {
-                tbody.innerHTML = `
+      function renderProductos(data) {
+        const tbody = document.getElementById("productosTableBody");
+
+        if (!data || data.length === 0) {
+          tbody.innerHTML = `
                     <tr>
                         <td colspan="7" class="text-center py-12 text-gray-400">
                             <p class="text-4xl mb-2">📦</p>
@@ -740,24 +1410,27 @@
                         </td>
                     </tr>
                 `;
-                updateProductoStats(data);
-                return;
-            }
+          updateProductoStats(data);
+          return;
+        }
 
-            updateProductoStats(data);
+        updateProductoStats(data);
 
-            tbody.innerHTML = data.map(p => {
-                const isActive = p.estado === true || p.estado === 1;
-                const categoria = categoriasData.find(c => c.id === p.categoria_id);
-                return `
-                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors ${!isActive ? 'opacity-70 bg-gray-50/50' : ''}">
-                    <td class="px-4 py-3.5 font-medium ${isActive ? 'text-gray-900' : 'text-gray-500'}">${p.codigo || "-"}</td>
-                    <td class="px-4 py-3.5 ${isActive ? 'text-gray-900' : 'text-gray-500'}">${p.nombre || "-"}</td>
-                    <td class="px-4 py-3.5 hidden md:table-cell ${isActive ? 'text-gray-900' : 'text-gray-500'}">${categoria?.nombre || "-"}</td>
-                    <td class="px-4 py-3.5 hidden lg:table-cell ${isActive ? 'text-gray-900' : 'text-gray-500'}">S/ ${parseFloat(p.precio_venta || 0).toFixed(2)}</td>
-                    <td class="px-4 py-3.5 hidden xl:table-cell ${isActive ? 'text-gray-900' : 'text-gray-500'}">${p.stock_minimo || 0}</td>
+        tbody.innerHTML = data
+          .map((p) => {
+            const isActive = p.estado === true || p.estado === 1;
+            const categoria = categoriasData.find(
+              (c) => c.id === p.categoria_id,
+            );
+            return `
+                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors ${!isActive ? "opacity-70 bg-gray-50/50" : ""}">
+                    <td class="px-4 py-3.5 font-medium ${isActive ? "text-gray-900" : "text-gray-500"}">${p.codigo || "-"}</td>
+                    <td class="px-4 py-3.5 ${isActive ? "text-gray-900" : "text-gray-500"}">${p.nombre || "-"}</td>
+                    <td class="px-4 py-3.5 hidden md:table-cell ${isActive ? "text-gray-900" : "text-gray-500"}">${categoria?.nombre || "-"}</td>
+                    <td class="px-4 py-3.5 hidden lg:table-cell ${isActive ? "text-gray-900" : "text-gray-500"}">S/ ${parseFloat(p.precio_venta || 0).toFixed(2)}</td>
+                    <td class="px-4 py-3.5 hidden xl:table-cell ${isActive ? "text-gray-900" : "text-gray-500"}">${p.stock_minimo || 0}</td>
                     <td class="px-4 py-3.5">
-                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${getEstadoBadge(isActive)}">
+                        <span class="badge-estado ${getEstadoBadge(isActive)}">
                             ${getEstadoText(isActive)}
                         </span>
                     </td>
@@ -765,332 +1438,748 @@
                         <div class="flex items-center justify-center gap-1">
                             <button onclick="abrirEntradaStock(${p.id})" class="p-1.5 text-gray-500 hover:text-green-600 hover:bg-green-50 rounded-lg transition-all" title="Entrada de stock">📥</button>
                             <button onclick="editarProducto(${p.id})" class="p-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all" title="Editar">✏️</button>
-                            <button onclick="eliminarProducto(${p.id})" class="p-1.5 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all" title="${isActive ? 'Desactivar' : 'Eliminar'}">
-                                ${isActive ? '🔴' : '🗑️'}
+                            <button onclick="toggleEstadoProducto(${p.id})" class="p-1.5 text-gray-500 ${isActive ? "hover:text-red-600 hover:bg-red-50" : "hover:text-green-600 hover:bg-green-50"} rounded-lg transition-all" title="${isActive ? "Desactivar" : "Activar"}">
+                                ${isActive ? "🔴" : "🟢"}
                             </button>
                         </div>
                     </td>
                 </tr>
-            `}).join("");
+            `;
+          })
+          .join("");
+      }
+
+      function filterProductos() {
+        const search = document
+          .getElementById("searchProducto")
+          .value.toLowerCase()
+          .trim();
+        const categoriaFilter =
+          document.getElementById("categoriaFilter").value;
+        const estadoFilter = document.getElementById(
+          "estadoProductoFilter",
+        ).value;
+
+        let filtered = [...productosData];
+
+        if (categoriaFilter !== "todos") {
+          filtered = filtered.filter((p) => p.categoria_id == categoriaFilter);
         }
 
-        function filterProductos() {
-            const search = document.getElementById("searchProducto").value.toLowerCase().trim();
-            const categoriaFilter = document.getElementById("categoriaFilter").value;
-            const estadoFilter = document.getElementById("estadoProductoFilter").value;
-
-            let filtered = [...productosData];
-
-            if (categoriaFilter !== "todos") {
-                filtered = filtered.filter(p => p.categoria_id == categoriaFilter);
-            }
-
-            if (estadoFilter !== "todos") {
-                const estadoBool = estadoFilter === "1";
-                filtered = filtered.filter(p => (p.estado === true || p.estado === 1) === estadoBool);
-            }
-
-            if (search) {
-                filtered = filtered.filter(p =>
-                    p.nombre?.toLowerCase().includes(search) ||
-                    p.codigo?.toLowerCase().includes(search) ||
-                    p.descripcion?.toLowerCase().includes(search)
-                );
-            }
-
-            filteredProductos = filtered;
-            renderProductos(filtered);
+        if (estadoFilter !== "todos") {
+          const estadoBool = estadoFilter === "1";
+          filtered = filtered.filter(
+            (p) => (p.estado === true || p.estado === 1) === estadoBool,
+          );
         }
 
-        // ============ MODAL PRODUCTO ============
-        function openProductoModal(data = null) {
-            const overlay = document.getElementById("productoModalOverlay");
-            const title = document.getElementById("productoModalTitle");
-            const submitBtn = document.getElementById("productoSubmitBtn");
-            const estadoGroup = document.getElementById("productoEstadoGroup");
+        if (search) {
+          filtered = filtered.filter(
+            (p) =>
+              p.nombre?.toLowerCase().includes(search) ||
+              p.codigo?.toLowerCase().includes(search) ||
+              p.descripcion?.toLowerCase().includes(search),
+          );
+        }
 
-            if (!categoriasData.length) cargarCategorias();
+        filteredProductos = filtered;
+        renderProductos(filtered);
+      }
 
-            if (data) {
-                title.textContent = "Editar Producto";
-                submitBtn.textContent = "Actualizar";
-                estadoGroup.style.display = "block";
-                document.getElementById("editProductoId").value = data.id;
-                document.getElementById("productoCodigo").value = data.codigo || "";
-                document.getElementById("productoNombre").value = data.nombre || "";
-                document.getElementById("productoDescripcion").value = data.descripcion || "";
-                document.getElementById("productoCategoria").value = data.categoria_id || "";
-                document.getElementById("productoUnidad").value = data.unidad_medida || "unidad";
-                document.getElementById("productoPrecioCompra").value = data.precio_compra || "";
-                document.getElementById("productoPrecioVenta").value = data.precio_venta || "";
-                document.getElementById("productoStockMinimo").value = data.stock_minimo || "";
-                document.getElementById("productoStockMaximo").value = data.stock_maximo || "";
-                document.getElementById("productoRequiereReceta").checked = data.requiere_receta || false;
-                document.getElementById("productoEstado").value = data.estado ? "1" : "0";
+      // ============ MODAL PRODUCTO ============
+      function openProductoModal(data = null) {
+        const overlay = document.getElementById("productoModalOverlay");
+        const title = document.getElementById("productoModalTitle");
+        const submitBtn = document.getElementById("productoSubmitBtn");
+        const estadoGroup = document.getElementById("productoEstadoGroup");
+
+        if (!categoriasData.length) cargarCategorias();
+
+        if (data) {
+          title.textContent = "Editar Producto";
+          submitBtn.textContent = "Actualizar";
+          estadoGroup.style.display = "block";
+          document.getElementById("editProductoId").value = data.id;
+          document.getElementById("productoSku").value = data.sku || ""; // ✅ Agregado
+          document.getElementById("productoCodigo").value = data.codigo || "";
+          document.getElementById("productoNombre").value = data.nombre || "";
+          document.getElementById("productoDescripcion").value =
+            data.descripcion || "";
+          document.getElementById("productoCategoria").value =
+            data.categoria_id || "";
+          document.getElementById("productoUnidad").value =
+            data.unidad_medida || "unidad";
+          document.getElementById("productoPrecioCompra").value =
+            data.precio_compra || "";
+          document.getElementById("productoPrecioVenta").value =
+            data.precio_venta || "";
+          document.getElementById("productoStockMinimo").value =
+            data.stock_minimo || "";
+          document.getElementById("productoStockMaximo").value =
+            data.stock_maximo || "";
+          document.getElementById("productoRequiereReceta").checked =
+            data.requiere_receta || false;
+          document.getElementById("productoEstado").value = data.estado
+            ? "1"
+            : "0";
+        } else {
+          title.textContent = "Nuevo Producto";
+          submitBtn.textContent = "Guardar";
+          estadoGroup.style.display = "none";
+          document.getElementById("editProductoId").value = "";
+          document.getElementById("productoForm").reset();
+          document.getElementById("productoUnidad").value = "unidad";
+          document.getElementById("productoRequiereReceta").checked = false;
+          document.getElementById("productoEstado").value = "1";
+        }
+        overlay.classList.add("flex");
+        overlay.classList.remove("hidden");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeProductoModal() {
+        document.getElementById("productoModalOverlay").classList.add("hidden");
+        document
+          .getElementById("productoModalOverlay")
+          .classList.remove("flex");
+        document.body.style.overflow = "";
+        document.getElementById("productoForm").reset();
+        document.getElementById("editProductoId").value = "";
+      }
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          closeProductoModal();
+          closeEntradaModal();
+        }
+      });
+      document
+        .getElementById("productoModalOverlay")
+        .addEventListener("click", (e) => {
+          if (e.target === e.currentTarget) closeProductoModal();
+        });
+      document
+        .getElementById("entradaModalOverlay")
+        .addEventListener("click", (e) => {
+          if (e.target === e.currentTarget) closeEntradaModal();
+        });
+
+      // ============ GUARDAR PRODUCTO ============
+      async function handleProductoSubmit(e) {
+        e.preventDefault();
+        const id = document.getElementById("editProductoId").value;
+        const isEdit = !!id;
+
+        const data = {
+          sku: document.getElementById("productoSku").value.trim(), // ✅ Campo SKU independiente
+          codigo: document.getElementById("productoCodigo").value.trim(),
+          nombre: document.getElementById("productoNombre").value.trim(),
+          descripcion: document
+            .getElementById("productoDescripcion")
+            .value.trim(),
+          categoria_id: parseInt(
+            document.getElementById("productoCategoria").value,
+          ),
+          unidad_medida: document.getElementById("productoUnidad").value,
+          precio_compra:
+            parseFloat(document.getElementById("productoPrecioCompra").value) ||
+            0,
+          precio_venta:
+            parseFloat(document.getElementById("productoPrecioVenta").value) ||
+            0,
+          stock_minimo:
+            parseInt(document.getElementById("productoStockMinimo").value) ||
+            10,
+          stock_maximo:
+            parseInt(document.getElementById("productoStockMaximo").value) ||
+            500,
+          requiere_receta: document.getElementById("productoRequiereReceta")
+            .checked,
+        };
+        if (isEdit)
+          data.estado = document.getElementById("productoEstado").value === "1";
+
+        // ✅ Validación adicional
+        if (!data.sku || !data.codigo || !data.nombre) {
+          mostrarToast("SKU, Código y Nombre son campos obligatorios", "error");
+          return;
+        }
+
+        const submitBtn = document.getElementById("productoSubmitBtn");
+        submitBtn.disabled = true;
+        submitBtn.textContent = isEdit ? "Actualizando..." : "Guardando...";
+
+        try {
+          const url = isEdit
+            ? `${API_GATEWAY}/inventario/productos/${id}`
+            : `${API_GATEWAY}/inventario/productos`;
+          const method = isEdit ? "PUT" : "POST";
+          const response = await fetch(url, {
+            method,
+            headers: getHeaders(),
+            body: JSON.stringify(data),
+          });
+          const result = await response.json();
+          if (!response.ok)
+            throw new Error(result.message || "Error al guardar el producto");
+          if (result.success) {
+            mostrarToast(
+              isEdit
+                ? "Producto actualizado exitosamente"
+                : "Producto creado exitosamente",
+              "success",
+            );
+            closeProductoModal();
+            cargarProductos();
+          } else {
+            throw new Error(result.message || "Error al guardar el producto");
+          }
+        } catch (error) {
+          console.error("Error:", error);
+          mostrarToast(
+            error.message || "Error al guardar el producto",
+            "error",
+          );
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = isEdit ? "Actualizar" : "Guardar";
+        }
+      }
+
+      // ============ EDITAR PRODUCTO ============
+      function editarProducto(id) {
+        const producto = productosData.find((p) => p.id === id);
+        if (producto) openProductoModal(producto);
+        else mostrarToast("Producto no encontrado", "error");
+      }
+
+      // ============ TOGGLE ESTADO PRODUCTO ============
+      async function toggleEstadoProducto(id) {
+        const producto = productosData.find((p) => p.id === id);
+        if (!producto) {
+          mostrarToast("Producto no encontrado", "error");
+          return;
+        }
+
+        const isActive = producto.estado === true || producto.estado === 1;
+        const mensaje = isActive
+          ? `¿Desactivar el producto "${producto.nombre}"?`
+          : `¿Activar el producto "${producto.nombre}"?`;
+
+        if (!confirm(mensaje)) return;
+
+        try {
+          const response = await fetch(
+            `${API_GATEWAY}/inventario/productos/${id}`,
+            {
+              method: "PUT",
+              headers: getHeaders(),
+              body: JSON.stringify({ ...producto, estado: !isActive }),
+            },
+          );
+          const result = await response.json();
+          if (!response.ok)
+            throw new Error(result.message || "Error al cambiar estado");
+          if (result.success) {
+            mostrarToast(
+              isActive ? "Producto desactivado" : "Producto activado",
+              "success",
+            );
+            cargarProductos();
+          } else {
+            throw new Error(result.message || "Error al cambiar estado");
+          }
+        } catch (error) {
+          console.error("Error:", error);
+          mostrarToast(error.message || "Error al cambiar estado", "error");
+        }
+      }
+
+      // ============ ENTRADA DE STOCK ============
+      async function abrirEntradaStock(productoId) {
+        const producto = productosData.find((p) => p.id === productoId);
+        if (!producto) {
+          mostrarToast("Producto no encontrado", "error");
+          return;
+        }
+
+        if (!sucursalesData.length) await cargarSucursales();
+
+        document.getElementById("entradaProductoId").value = productoId;
+        document.getElementById("entradaProductoNombre").textContent =
+          `${producto.codigo} - ${producto.nombre}`;
+        document.getElementById("entradaForm").reset();
+
+        // ✅ Cargar selector de sucursales
+        const sucursalSelect = document.getElementById("entradaSucursal");
+        sucursalSelect.innerHTML =
+          '<option value="">Seleccionar sucursal...</option>';
+        sucursalesData
+          .filter((s) => s.estado)
+          .forEach((s) => {
+            sucursalSelect.innerHTML += `<option value="${s.id}">${s.nombre}</option>`;
+          });
+
+        document.getElementById("entradaModalOverlay").classList.add("flex");
+        document
+          .getElementById("entradaModalOverlay")
+          .classList.remove("hidden");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeEntradaModal() {
+        document.getElementById("entradaModalOverlay").classList.add("hidden");
+        document.getElementById("entradaModalOverlay").classList.remove("flex");
+        document.body.style.overflow = "";
+      }
+
+      // ============ GUARDAR ENTRADA STOCK ============
+      async function handleEntradaSubmit(e) {
+        e.preventDefault();
+
+        const productoId = document.getElementById("entradaProductoId").value;
+        const sucursalId = document.getElementById("entradaSucursal").value;
+        const lote = document.getElementById("entradaLote").value.trim();
+        const cantidad = parseInt(
+          document.getElementById("entradaCantidad").value,
+        );
+        const costo =
+          parseFloat(document.getElementById("entradaCosto").value) || 0;
+        const fechaVencimiento =
+          document.getElementById("entradaVencimiento").value;
+        const ubicacion = document
+          .getElementById("entradaUbicacion")
+          .value.trim();
+        const referencia = document
+          .getElementById("entradaReferencia")
+          .value.trim();
+        const observaciones = document
+          .getElementById("entradaObservaciones")
+          .value.trim();
+
+        if (
+          !productoId ||
+          !sucursalId ||
+          !lote ||
+          !cantidad ||
+          !fechaVencimiento
+        ) {
+          mostrarToast(
+            "Todos los campos obligatorios deben estar completos",
+            "error",
+          );
+          return;
+        }
+
+        const submitBtn = document
+          .getElementById("entradaModalOverlay")
+          .querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Procesando...";
+
+        try {
+          const data = {
+            producto_id: parseInt(productoId),
+            sucursal_id: parseInt(sucursalId),
+            lote: lote,
+            cantidad: cantidad,
+            fecha_vencimiento: fechaVencimiento,
+            costo_unitario: costo,
+            ubicacion_estante: ubicacion || null,
+            referencia_id: parseInt(referencia) || Date.now(),
+            observaciones:
+              observaciones ||
+              `Entrada de stock de ${productosData.find((p) => p.id == productoId)?.nombre || "producto"}`,
+          };
+
+          const response = await fetch(`${API_GATEWAY}/inventario/entrada`, {
+            method: "POST",
+            headers: getHeaders(),
+            body: JSON.stringify(data),
+          });
+
+          const result = await response.json();
+          if (!response.ok)
+            throw new Error(result.message || "Error al registrar la entrada");
+          if (result.success) {
+            mostrarToast(
+              "✅ Entrada de stock registrada exitosamente en la sucursal seleccionada",
+              "success",
+            );
+            closeEntradaModal();
+          } else {
+            throw new Error(result.message || "Error al registrar la entrada");
+          }
+        } catch (error) {
+          console.error("Error:", error);
+          mostrarToast(
+            error.message || "Error al registrar la entrada",
+            "error",
+          );
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Registrar Entrada";
+        }
+      }
+
+      // ============ TRANSFERENCIA DE STOCK ============
+      function cargarSelectoresTransferencia() {
+        if (!productosData.length) cargarProductos();
+        if (!sucursalesData.length) cargarSucursales();
+      }
+
+      function abrirTransferenciaStock() {
+        switchTab("transferencias");
+        cargarSelectoresTransferencia();
+        // Limpiar el formulario
+        document.getElementById("transferenciaForm").reset();
+        document.getElementById("transferenciaInfo").classList.add("hidden");
+        document.getElementById("transferenciaStockDisponible").textContent =
+          "Stock disponible: -";
+        document.getElementById("transferenciaLote").innerHTML =
+          '<option value="">Primero seleccione producto y origen</option>';
+      }
+
+      async function cargarLotesTransferencia() {
+        const productoId = document.getElementById(
+          "transferenciaProducto",
+        ).value;
+        const origenId = document.getElementById("transferenciaOrigen").value;
+        const loteSelect = document.getElementById("transferenciaLote");
+
+        console.log(
+          "🔄 Cargando lotes - Producto:",
+          productoId,
+          "Origen:",
+          origenId,
+        );
+
+        // ✅ Validar que ambos estén seleccionados
+        if (!productoId || !origenId || productoId === "" || origenId === "") {
+          loteSelect.innerHTML =
+            '<option value="">Primero seleccione producto y origen</option>';
+          document.getElementById("transferenciaStockDisponible").textContent =
+            "Stock disponible: -";
+          document.getElementById("transferenciaInfo").classList.add("hidden");
+          return;
+        }
+
+        loteSelect.innerHTML = '<option value="">⏳ Cargando lotes...</option>';
+        loteSelect.disabled = true;
+
+        try {
+          const url = `${API_GATEWAY}/inventario/stock?producto_id=${productoId}&sucursal_id=${origenId}`;
+          console.log("📡 Consultando:", url);
+
+          const response = await fetch(url, {
+            headers: getHeaders(),
+          });
+
+          console.log("📡 Respuesta status:", response.status);
+
+          if (!response.ok) {
+            const errorText = await response.text();
+            console.error("❌ Error response:", errorText);
+            throw new Error(
+              `Error ${response.status}: ${errorText.substring(0, 100)}`,
+            );
+          }
+
+          const data = await response.json();
+          console.log("📦 Datos recibidos:", data);
+
+          if (
+            data.success &&
+            data.data &&
+            data.data.lotes &&
+            data.data.lotes.length > 0
+          ) {
+            // ✅ Filtrar solo lotes con stock disponible
+            const lotes = data.data.lotes.filter(
+              (l) => l.cantidad_disponible > 0,
+            );
+
+            if (lotes.length === 0) {
+              loteSelect.innerHTML =
+                '<option value="">No hay stock disponible en esta sucursal</option>';
+              document.getElementById(
+                "transferenciaStockDisponible",
+              ).textContent = "Stock disponible: 0 unidades";
+              mostrarToast(
+                "No hay stock disponible para este producto en la sucursal seleccionada",
+                "warning",
+              );
             } else {
-                title.textContent = "Nuevo Producto";
-                submitBtn.textContent = "Guardar";
-                estadoGroup.style.display = "none";
-                document.getElementById("editProductoId").value = "";
-                document.getElementById("productoForm").reset();
-                document.getElementById("productoUnidad").value = "unidad";
-                document.getElementById("productoRequiereReceta").checked = false;
-                document.getElementById("productoEstado").value = "1";
+              loteSelect.innerHTML =
+                '<option value="">Seleccionar lote...</option>';
+              lotes.forEach((l) => {
+                const fechaVence = l.fecha_vencimiento
+                  ? new Date(l.fecha_vencimiento).toLocaleDateString("es-ES")
+                  : "Sin fecha";
+                const costo = parseFloat(l.costo_unitario || 0).toFixed(2);
+                loteSelect.innerHTML += `<option value="${l.lote}" 
+                        data-cantidad="${l.cantidad_disponible}" 
+                        data-vencimiento="${l.fecha_vencimiento || ""}" 
+                        data-costo="${costo}">
+                        📦 ${l.lote} | Disp: ${l.cantidad_disponible} | Vence: ${fechaVence} | Costo: S/${costo}
+                    </option>`;
+              });
+              console.log(`✅ ${lotes.length} lotes cargados`);
             }
-            overlay.classList.add("flex");
-            overlay.classList.remove("hidden");
-            document.body.style.overflow = "hidden";
+          } else {
+            console.log("ℹ️ No se encontraron lotes");
+            loteSelect.innerHTML =
+              '<option value="">No hay lotes disponibles en esta sucursal</option>';
+            document.getElementById(
+              "transferenciaStockDisponible",
+            ).textContent = "Stock disponible: 0 unidades";
+          }
+        } catch (error) {
+          console.error("❌ Error al cargar lotes:", error);
+          loteSelect.innerHTML =
+            '<option value="">Error al cargar lotes</option>';
+          mostrarToast("Error al cargar los lotes: " + error.message, "error");
+        } finally {
+          loteSelect.disabled = false;
         }
 
-        function closeProductoModal() {
-            document.getElementById("productoModalOverlay").classList.add("hidden");
-            document.getElementById("productoModalOverlay").classList.remove("flex");
-            document.body.style.overflow = "";
-            document.getElementById("productoForm").reset();
-            document.getElementById("editProductoId").value = "";
-        }
+        // Actualizar info después de cargar lotes
+        actualizarInfoTransferencia();
+      }
 
-        document.addEventListener("keydown", (e) => {
-            if (e.key === "Escape") {
-                closeProductoModal();
-                closeEntradaModal();
-            }
+      function actualizarInfoTransferencia() {
+    const loteSelect = document.getElementById("transferenciaLote");
+    const selectedOption = loteSelect.options[loteSelect.selectedIndex];
+    const cantidadDisponible = selectedOption?.dataset?.cantidad || 0;
+    const vencimiento = selectedOption?.dataset?.vencimiento || '';
+    const costo = selectedOption?.dataset?.costo || '0';
+    
+    document.getElementById("transferenciaStockDisponible").textContent = 
+        `Stock disponible: ${cantidadDisponible} unidades`;
+    document.getElementById("transferenciaCantidad").max = cantidadDisponible;
+    
+    // Obtener nombres para el resumen
+    const productoId = document.getElementById("transferenciaProducto").value;
+    const origenId = document.getElementById("transferenciaOrigen").value;
+    const destinoId = document.getElementById("transferenciaDestino").value;
+    const ubicacionDestino = document.getElementById("transferenciaUbicacionDestino").value.trim();
+    
+    const producto = productosData.find(p => p.id == productoId);
+    const origen = sucursalesData.find(s => s.id == origenId);
+    const destino = sucursalesData.find(s => s.id == destinoId);
+    
+    // ✅ Mostrar resumen si todos los campos están completos
+    if (producto && origen && destino && selectedOption?.value && destinoId) {
+        document.getElementById("transferenciaInfo").classList.remove("hidden");
+        document.getElementById("transferenciaResumen").innerHTML = `
+            <div class="flex items-center gap-2">
+                <span class="text-blue-600">📦</span>
+                <span><strong>Producto:</strong> ${producto.nombre} (${producto.codigo || 'N/A'})</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="text-blue-600">🏷️</span>
+                <span><strong>Lote:</strong> ${selectedOption.value}</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="text-red-600">📤</span>
+                <span><strong>Origen:</strong> ${origen.nombre}</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="text-green-600">📥</span>
+                <span><strong>Destino:</strong> ${destino.nombre}</span>
+            </div>
+            ${ubicacionDestino ? `
+            <div class="flex items-center gap-2">
+                <span class="text-purple-600">📍</span>
+                <span><strong>Ubicación Destino:</strong> ${ubicacionDestino}</span>
+            </div>
+            ` : ''}
+            <div class="flex items-center gap-2">
+                <span class="text-yellow-600">📅</span>
+                <span><strong>Vencimiento:</strong> ${vencimiento ? new Date(vencimiento).toLocaleDateString('es-ES') : 'N/A'}</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="text-purple-600">💰</span>
+                <span><strong>Costo Unitario:</strong> S/ ${parseFloat(costo).toFixed(2)}</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="text-indigo-600">📊</span>
+                <span><strong>Stock Disponible:</strong> ${cantidadDisponible} unidades</span>
+            </div>
+        `;
+    } else {
+        document.getElementById("transferenciaInfo").classList.add("hidden");
+    }
+}
+
+      async function handleTransferenciaSubmit(e) {
+    e.preventDefault();
+    
+    const productoId = document.getElementById("transferenciaProducto").value;
+    const loteSelect = document.getElementById("transferenciaLote");
+    const lote = loteSelect.value;
+    const origenId = document.getElementById("transferenciaOrigen").value;
+    const destinoId = document.getElementById("transferenciaDestino").value;
+    const cantidad = parseInt(document.getElementById("transferenciaCantidad").value);
+    const ubicacionDestino = document.getElementById("transferenciaUbicacionDestino").value.trim();
+    const observaciones = document.getElementById("transferenciaObservaciones").value.trim();
+    
+    // ✅ Validaciones
+    if (!productoId || !lote || !origenId || !destinoId || !cantidad) {
+        mostrarToast("⚠️ Todos los campos obligatorios deben estar completos", "error");
+        return;
+    }
+    
+    if (origenId === destinoId) {
+        mostrarToast("⚠️ La sucursal origen y destino no pueden ser la misma", "error");
+        return;
+    }
+    
+    const cantidadDisponible = parseInt(loteSelect.options[loteSelect.selectedIndex]?.dataset?.cantidad || 0);
+    if (cantidad > cantidadDisponible) {
+        mostrarToast(`⚠️ Stock insuficiente. Disponible: ${cantidadDisponible} unidades`, "error");
+        return;
+    }
+    
+    if (cantidad <= 0) {
+        mostrarToast("⚠️ La cantidad debe ser mayor a 0", "error");
+        return;
+    }
+    
+    const producto = productosData.find(p => p.id == productoId);
+    const origen = sucursalesData.find(s => s.id == origenId);
+    const destino = sucursalesData.find(s => s.id == destinoId);
+    
+    let mensaje = `¿Confirma la transferencia?\n\n` +
+        `📦 Producto: ${producto?.nombre}\n` +
+        `🏷️ Lote: ${lote}\n` +
+        `📤 Origen: ${origen?.nombre}\n` +
+        `📥 Destino: ${destino?.nombre}\n` +
+        `📊 Cantidad: ${cantidad} unidades`;
+    
+    if (ubicacionDestino) {
+        mensaje += `\n📍 Ubicación Destino: ${ubicacionDestino}`;
+    }
+    
+    if (!confirm(mensaje)) return;
+    
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '⏳ Procesando transferencia...';
+    
+    try {
+        const data = {
+            producto_id: parseInt(productoId),
+            sucursal_origen_id: parseInt(origenId),
+            sucursal_destino_id: parseInt(destinoId),
+            cantidad: cantidad,
+            lote: lote,
+            ubicacion_destino: ubicacionDestino || null, // ✅ Enviar ubicación destino
+            observaciones: observaciones || `Transferencia de ${origen?.nombre} a ${destino?.nombre}${ubicacionDestino ? ' - Ubicación: ' + ubicacionDestino : ''}`
+        };
+        
+        console.log("📤 Enviando transferencia:", data);
+        
+        const response = await fetch(`${API_GATEWAY}/inventario/transferencia`, {
+            method: "POST",
+            headers: getHeaders(),
+            body: JSON.stringify(data)
         });
-        document.getElementById("productoModalOverlay").addEventListener("click", (e) => {
-            if (e.target === e.currentTarget) closeProductoModal();
-        });
-        document.getElementById("entradaModalOverlay").addEventListener("click", (e) => {
-            if (e.target === e.currentTarget) closeEntradaModal();
-        });
+        
+        const result = await response.json();
+        
+        if (!response.ok) {
+            throw new Error(result.message || "Error al realizar la transferencia");
+        }
+        
+        if (result.success) {
+            mostrarToast("✅ Transferencia realizada exitosamente", "success");
+            // Limpiar formulario
+            document.getElementById("transferenciaForm").reset();
+            document.getElementById("transferenciaInfo").classList.add("hidden");
+            document.getElementById("transferenciaStockDisponible").textContent = "Stock disponible: -";
+            document.getElementById("transferenciaLote").innerHTML = '<option value="">Primero seleccione producto y origen</option>';
+            
+            // Recargar productos para actualizar stock
+            await cargarProductos();
+        } else {
+            throw new Error(result.message || "Error al realizar la transferencia");
+        }
+    } catch (error) {
+        console.error("❌ Error:", error);
+        mostrarToast("❌ " + (error.message || "Error al realizar la transferencia"), "error");
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '🔄 Realizar Transferencia';
+    }
+}
 
-        // ============ GUARDAR PRODUCTO ============
-        async function handleProductoSubmit(e) {
-            e.preventDefault();
-            const id = document.getElementById("editProductoId").value;
-            const isEdit = !!id;
+      // ============ CONSULTAR STOCK ============
+      function cargarSelectoresStock() {
+        if (!productosData.length) cargarProductos();
+        if (!sucursalesData.length) cargarSucursales();
+      }
 
-            const data = {
-                codigo: document.getElementById("productoCodigo").value.trim(),
-                nombre: document.getElementById("productoNombre").value.trim(),
-                descripcion: document.getElementById("productoDescripcion").value.trim(),
-                categoria_id: parseInt(document.getElementById("productoCategoria").value),
-                unidad_medida: document.getElementById("productoUnidad").value,
-                precio_compra: parseFloat(document.getElementById("productoPrecioCompra").value) || 0,
-                precio_venta: parseFloat(document.getElementById("productoPrecioVenta").value) || 0,
-                stock_minimo: parseInt(document.getElementById("productoStockMinimo").value) || 10,
-                stock_maximo: parseInt(document.getElementById("productoStockMaximo").value) || 500,
-                requiere_receta: document.getElementById("productoRequiereReceta").checked,
-            };
-            if (isEdit) data.estado = document.getElementById("productoEstado").value === "1";
+      async function consultarStock() {
+        const productoId = document.getElementById("stockProducto").value;
+        const sucursalId = document.getElementById("stockSucursal").value;
+        const resultado = document.getElementById("stockResultado");
 
-            const submitBtn = document.getElementById("productoSubmitBtn");
-            submitBtn.disabled = true;
-            submitBtn.textContent = isEdit ? "Actualizando..." : "Guardando...";
-
-            try {
-                const url = isEdit ? `${API_GATEWAY}/inventario/productos/${id}` : `${API_GATEWAY}/inventario/productos`;
-                const method = isEdit ? "PUT" : "POST";
-                const response = await fetch(url, { method, headers: getHeaders(), body: JSON.stringify(data) });
-                const result = await response.json();
-                if (!response.ok) throw new Error(result.message || "Error al guardar el producto");
-                if (result.success) {
-                    mostrarToast(isEdit ? "Producto actualizado exitosamente" : "Producto creado exitosamente", "success");
-                    closeProductoModal();
-                    cargarProductos();
-                } else {
-                    throw new Error(result.message || "Error al guardar el producto");
-                }
-            } catch (error) {
-                console.error("Error:", error);
-                mostrarToast(error.message || "Error al guardar el producto", "error");
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.textContent = isEdit ? "Actualizar" : "Guardar";
-            }
+        if (!productoId || !sucursalId) {
+          resultado.innerHTML =
+            '<div class="text-center py-8 text-yellow-600">⚠️ Seleccione un producto y una sucursal</div>';
+          return;
         }
 
-        // ============ EDITAR PRODUCTO ============
-        function editarProducto(id) {
-            const producto = productosData.find(p => p.id === id);
-            if (producto) openProductoModal(producto);
-            else mostrarToast("Producto no encontrado", "error");
-        }
-
-        // ============ ELIMINAR/DESACTIVAR PRODUCTO ============
-        async function eliminarProducto(id) {
-            const producto = productosData.find(p => p.id === id);
-            if (!producto) { mostrarToast("Producto no encontrado", "error"); return; }
-
-            const isActive = producto.estado === true || producto.estado === 1;
-            const mensaje = isActive 
-                ? `¿Estás seguro de desactivar el producto "${producto.nombre}"?` 
-                : `¿Estás seguro de eliminar permanentemente el producto "${producto.nombre}"?`;
-
-            if (!confirm(mensaje)) return;
-
-            try {
-                if (isActive) {
-                    const response = await fetch(`${API_GATEWAY}/inventario/productos/${id}`, { 
-                        method: "DELETE", 
-                        headers: getHeaders() 
-                    });
-                    const result = await response.json();
-                    if (!response.ok) throw new Error(result.message || "Error al desactivar el producto");
-                    if (result.success) {
-                        mostrarToast("Producto desactivado exitosamente", "success");
-                        cargarProductos();
-                    } else {
-                        throw new Error(result.message || "Error al desactivar el producto");
-                    }
-                } else {
-                    mostrarToast("Este producto ya está inactivo", "warning");
-                }
-            } catch (error) {
-                console.error("Error:", error);
-                mostrarToast(error.message || "Error al procesar la solicitud", "error");
-            }
-        }
-
-        // ============ ENTRADA DE STOCK ============
-        async function abrirEntradaStock(productoId) {
-            const producto = productosData.find(p => p.id === productoId);
-            if (!producto) { mostrarToast("Producto no encontrado", "error"); return; }
-
-            if (!sucursalesData.length) await cargarSucursales();
-
-            document.getElementById("entradaProductoId").value = productoId;
-            document.getElementById("entradaProductoNombre").textContent = `${producto.codigo} - ${producto.nombre}`;
-            document.getElementById("entradaForm").reset();
-
-            // Primera sucursal activa por defecto
-            const primeraSucursal = sucursalesData.find(s => s.estado);
-            if (primeraSucursal) {
-                document.getElementById("entradaSucursalId").value = primeraSucursal.id;
-                document.getElementById("entradaSucursalNombre").textContent = primeraSucursal.nombre;
-            }
-
-            document.getElementById("entradaModalOverlay").classList.add("flex");
-            document.getElementById("entradaModalOverlay").classList.remove("hidden");
-            document.body.style.overflow = "hidden";
-        }
-
-        function closeEntradaModal() {
-            document.getElementById("entradaModalOverlay").classList.add("hidden");
-            document.getElementById("entradaModalOverlay").classList.remove("flex");
-            document.body.style.overflow = "";
-        }
-
-        // ============ GUARDAR ENTRADA STOCK ============
-        async function handleEntradaSubmit(e) {
-            e.preventDefault();
-
-            const productoId = document.getElementById("entradaProductoId").value;
-            const sucursalId = document.getElementById("entradaSucursalId").value;
-            const lote = document.getElementById("entradaLote").value.trim();
-            const cantidad = parseInt(document.getElementById("entradaCantidad").value);
-            const costo = parseFloat(document.getElementById("entradaCosto").value) || 0;
-            const fechaVencimiento = document.getElementById("entradaVencimiento").value;
-            const referencia = document.getElementById("entradaReferencia").value.trim();
-            const observaciones = document.getElementById("entradaObservaciones").value.trim();
-
-            if (!productoId || !sucursalId || !lote || !cantidad || !fechaVencimiento) {
-                mostrarToast("Todos los campos obligatorios deben estar completos", "error");
-                return;
-            }
-
-            const submitBtn = document.getElementById("entradaModalOverlay").querySelector('button[type="submit"]');
-            submitBtn.disabled = true;
-            submitBtn.textContent = "Procesando...";
-
-            try {
-                const data = {
-                    producto_id: parseInt(productoId),
-                    sucursal_id: parseInt(sucursalId),
-                    lote: lote,
-                    cantidad: cantidad,
-                    fecha_vencimiento: fechaVencimiento,
-                    costo_unitario: costo,
-                    referencia_id: parseInt(referencia) || Date.now(),
-                    observaciones: observaciones || `Entrada de stock de ${productosData.find(p => p.id == productoId)?.nombre || 'producto'}`
-                };
-
-                const response = await fetch(`${API_GATEWAY}/inventario/entrada`, {
-                    method: "POST",
-                    headers: getHeaders(),
-                    body: JSON.stringify(data)
-                });
-
-                const result = await response.json();
-                if (!response.ok) throw new Error(result.message || "Error al registrar la entrada");
-                if (result.success) {
-                    mostrarToast("✅ Entrada de stock registrada exitosamente", "success");
-                    closeEntradaModal();
-                } else {
-                    throw new Error(result.message || "Error al registrar la entrada");
-                }
-            } catch (error) {
-                console.error("Error:", error);
-                mostrarToast(error.message || "Error al registrar la entrada", "error");
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.textContent = "Registrar Entrada";
-            }
-        }
-
-        // ============ CONSULTAR STOCK ============
-        function cargarSelectoresStock() {
-            if (!productosData.length) cargarProductos();
-            if (!sucursalesData.length) cargarSucursales();
-        }
-
-        async function consultarStock() {
-            const productoId = document.getElementById("stockProducto").value;
-            const sucursalId = document.getElementById("stockSucursal").value;
-            const resultado = document.getElementById("stockResultado");
-
-            if (!productoId || !sucursalId) {
-                resultado.innerHTML = '<div class="text-center py-8 text-yellow-600">⚠️ Seleccione un producto y una sucursal</div>';
-                return;
-            }
-
-            resultado.innerHTML = `
+        resultado.innerHTML = `
                 <div class="text-center py-8">
                     <div class="inline-block w-6 h-6 border-2 border-gray-200 border-t-blue-600 rounded-full animate-spin"></div>
                     <p class="mt-2 text-gray-400">Consultando stock...</p>
                 </div>
             `;
 
-            try {
-                const response = await fetch(`${API_GATEWAY}/inventario/stock?producto_id=${productoId}&sucursal_id=${sucursalId}`, {
-                    headers: getHeaders()
-                });
-                if (!response.ok) throw new Error("Error al consultar stock");
-                const data = await response.json();
-                if (data.success) {
-                    const stockData = data.data;
-                    const producto = productosData.find(p => p.id == productoId);
-                    const sucursal = sucursalesData.find(s => s.id == sucursalId);
+        try {
+          const response = await fetch(
+            `${API_GATEWAY}/inventario/stock?producto_id=${productoId}&sucursal_id=${sucursalId}`,
+            {
+              headers: getHeaders(),
+            },
+          );
+          if (!response.ok) throw new Error("Error al consultar stock");
+          const data = await response.json();
+          if (data.success) {
+            const stockData = data.data;
+            const producto = productosData.find((p) => p.id == productoId);
+            const sucursal = sucursalesData.find((s) => s.id == sucursalId);
 
-                    if (!stockData || !stockData.lotes || stockData.lotes.length === 0) {
-                        resultado.innerHTML = `
+            if (
+              !stockData ||
+              !stockData.lotes ||
+              stockData.lotes.length === 0
+            ) {
+              resultado.innerHTML = `
                             <div class="text-center py-8 text-gray-400">
                                 <p class="text-4xl mb-2">📭</p>
-                                <p>No hay stock disponible para este producto en ${sucursal?.nombre || 'la sucursal'}</p>
+                                <p>No hay stock disponible para este producto en ${sucursal?.nombre || "la sucursal"}</p>
                             </div>
                         `;
-                        return;
-                    }
+              return;
+            }
 
-                    resultado.innerHTML = `
+            resultado.innerHTML = `
                         <div class="bg-blue-50 rounded-lg p-4 mb-4">
-                            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                                 <div>
                                     <p class="text-xs text-gray-500">Producto</p>
-                                    <p class="font-medium text-gray-900">${producto?.nombre || 'N/A'}</p>
+                                    <p class="font-medium text-gray-900">${producto?.nombre || "N/A"}</p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-500">Sucursal</p>
+                                    <p class="font-medium text-gray-900">${sucursal?.nombre || "N/A"}</p>
                                 </div>
                                 <div>
                                     <p class="text-xs text-gray-500">Código</p>
-                                    <p class="font-medium text-gray-900">${producto?.codigo || 'N/A'}</p>
+                                    <p class="font-medium text-gray-900">${producto?.codigo || "N/A"}</p>
                                 </div>
                                 <div>
                                     <p class="text-xs text-gray-500">Stock Total</p>
@@ -1107,269 +2196,297 @@
                                         <th class="text-left px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">Disponible</th>
                                         <th class="text-left px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">Vencimiento</th>
                                         <th class="text-left px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">Costo</th>
+                                        <th class="text-left px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">Ubicación</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    ${stockData.lotes.map(l => `
+                                    ${stockData.lotes
+                                      .map(
+                                        (l) => `
                                         <tr class="border-b border-gray-100">
-                                            <td class="px-4 py-2.5 font-medium">${l.lote || '-'}</td>
+                                            <td class="px-4 py-2.5 font-medium">${l.lote || "-"}</td>
                                             <td class="px-4 py-2.5">${l.cantidad || 0}</td>
                                             <td class="px-4 py-2.5">${l.cantidad_disponible || 0}</td>
-                                            <td class="px-4 py-2.5 ${new Date(l.fecha_vencimiento) < new Date() ? 'text-red-600 font-medium' : ''}">
-                                                ${l.fecha_vencimiento ? new Date(l.fecha_vencimiento).toLocaleDateString('es-ES') : '-'}
-                                                ${new Date(l.fecha_vencimiento) < new Date() ? ' ⚠️ Vencido' : ''}
+                                            <td class="px-4 py-2.5 ${new Date(l.fecha_vencimiento) < new Date() ? "text-red-600 font-medium" : ""}">
+                                                ${l.fecha_vencimiento ? new Date(l.fecha_vencimiento).toLocaleDateString("es-ES") : "-"}
+                                                ${new Date(l.fecha_vencimiento) < new Date() ? " ⚠️ Vencido" : ""}
                                             </td>
                                             <td class="px-4 py-2.5">S/ ${parseFloat(l.costo_unitario || 0).toFixed(2)}</td>
+                                            <td class="px-4 py-2.5">${l.ubicacion_estante || "-"}</td>
                                         </tr>
-                                    `).join('')}
+                                    `,
+                                      )
+                                      .join("")}
                                 </tbody>
                             </table>
                         </div>
                     `;
-                }
-            } catch (error) {
-                console.error("Error:", error);
-                resultado.innerHTML = `
+          }
+        } catch (error) {
+          console.error("Error:", error);
+          resultado.innerHTML = `
                     <div class="text-center py-8 text-red-500">
                         <p>⚠️ Error al consultar el stock</p>
                         <button onclick="consultarStock()" class="mt-2 text-sm text-blue-600 hover:text-blue-800">Reintentar</button>
                     </div>
                 `;
-            }
         }
+      }
 
-        // ============ MOVIMIENTOS ============
-        function cargarSelectoresMovimientos() {
-            if (!productosData.length) cargarProductos();
-            if (!sucursalesData.length) cargarSucursales();
-        }
+      // ============ MOVIMIENTOS ============
+      function cargarSelectoresMovimientos() {
+        if (!productosData.length) cargarProductos();
+        if (!sucursalesData.length) cargarSucursales();
+      }
 
-        async function cargarMovimientos() {
-            const tbody = document.getElementById("movimientosTableBody");
-            const productoId = document.getElementById("movimientoProducto").value;
-            const sucursalId = document.getElementById("movimientoSucursal").value;
+      async function cargarMovimientos() {
+        const tbody = document.getElementById("movimientosTableBody");
+        const productoId = document.getElementById("movimientoProducto").value;
+        const sucursalId = document.getElementById("movimientoSucursal").value;
+        const tipoMovimiento = document.getElementById("movimientoTipo").value;
 
-            tbody.innerHTML = `
+        tbody.innerHTML = `
                 <tr>
-                    <td colspan="5" class="text-center py-8">
+                    <td colspan="6" class="text-center py-8">
                         <div class="inline-block w-6 h-6 border-2 border-gray-200 border-t-blue-600 rounded-full animate-spin"></div>
                         <p class="mt-2 text-gray-400">Cargando movimientos...</p>
                     </td>
                 </tr>
             `;
 
-            try {
-                let url = `${API_GATEWAY}/inventario/movimientos`;
-                const params = new URLSearchParams();
-                if (productoId) params.append('producto_id', productoId);
-                if (sucursalId) params.append('sucursal_id', sucursalId);
-                if (params.toString()) url += `?${params.toString()}`;
+        try {
+          let url = `${API_GATEWAY}/inventario/movimientos`;
+          const params = new URLSearchParams();
+          if (productoId) params.append("producto_id", productoId);
+          if (sucursalId) params.append("sucursal_id", sucursalId);
+          if (tipoMovimiento) params.append("tipo_movimiento", tipoMovimiento);
+          if (params.toString()) url += `?${params.toString()}`;
 
-                const response = await fetch(url, { headers: getHeaders() });
-                if (!response.ok) throw new Error("Error al cargar movimientos");
-                const data = await response.json();
-                if (data.success && data.data) {
-                    const movimientos = data.data;
-                    if (movimientos.length === 0) {
-                        tbody.innerHTML = `
+          const response = await fetch(url, { headers: getHeaders() });
+          if (!response.ok) throw new Error("Error al cargar movimientos");
+          const data = await response.json();
+          if (data.success && data.data) {
+            const movimientos = data.data;
+            if (movimientos.length === 0) {
+              tbody.innerHTML = `
                             <tr>
-                                <td colspan="5" class="text-center py-8 text-gray-400">
+                                <td colspan="6" class="text-center py-8 text-gray-400">
                                     <p>No hay movimientos registrados</p>
                                 </td>
                             </tr>
                         `;
-                        return;
-                    }
+              return;
+            }
 
-                    const tipoIconos = {
-                        'entrada': '📥',
-                        'salida': '📤',
-                        'ajuste': '⚙️',
-                        'transferencia_origen': '🔄',
-                        'transferencia_destino': '🔄'
-                    };
+            const tipoIconos = {
+              entrada: "📥 Entrada",
+              salida: "📤 Salida",
+              ajuste: "⚙️ Ajuste",
+              transferencia_origen: "🔄 Transf. Origen",
+              transferencia_destino: "🔄 Transf. Destino",
+            };
 
-                    const tipoColores = {
-                        'entrada': 'text-green-600 bg-green-50',
-                        'salida': 'text-red-600 bg-red-50',
-                        'ajuste': 'text-yellow-600 bg-yellow-50',
-                        'transferencia_origen': 'text-blue-600 bg-blue-50',
-                        'transferencia_destino': 'text-purple-600 bg-purple-50'
-                    };
+            const tipoColores = {
+              entrada: "text-green-700 bg-green-50",
+              salida: "text-red-700 bg-red-50",
+              ajuste: "text-yellow-700 bg-yellow-50",
+              transferencia_origen: "text-orange-700 bg-orange-50",
+              transferencia_destino: "text-blue-700 bg-blue-50",
+            };
 
-                    tbody.innerHTML = movimientos.map(m => `
+            tbody.innerHTML = movimientos
+              .map((m) => {
+                const sucursal = sucursalesData.find(
+                  (s) => s.id == m.inventario?.sucursal_id,
+                );
+                return `
                         <tr class="border-b border-gray-100 hover:bg-gray-50">
-                            <td class="px-4 py-3 text-sm">${m.fecha_movimiento ? new Date(m.fecha_movimiento).toLocaleString('es-ES') : '-'}</td>
+                            <td class="px-4 py-3 text-sm">${m.fecha_movimiento ? new Date(m.fecha_movimiento).toLocaleString("es-ES") : "-"}</td>
                             <td class="px-4 py-3 text-sm">
-                                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium ${tipoColores[m.tipo_movimiento] || 'bg-gray-100 text-gray-600'}">
-                                    ${tipoIconos[m.tipo_movimiento] || '📋'} ${m.tipo_movimiento?.replace('_', ' ')}
+                                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium ${tipoColores[m.tipo_movimiento] || "bg-gray-100 text-gray-600"}">
+                                    ${tipoIconos[m.tipo_movimiento] || "📋 " + m.tipo_movimiento}
                                 </span>
                             </td>
-                            <td class="px-4 py-3 text-sm">${m.inventario?.producto?.nombre || '-'}</td>
+                            <td class="px-4 py-3 text-sm">${m.inventario?.producto?.nombre || "-"}</td>
                             <td class="px-4 py-3 text-sm font-medium">${m.cantidad || 0}</td>
-                            <td class="px-4 py-3 text-sm hidden md:table-cell">${m.usuario_id || '-'}</td>
+                            <td class="px-4 py-3 text-sm hidden md:table-cell">${sucursal?.nombre || "-"}</td>
+                            <td class="px-4 py-3 text-sm hidden lg:table-cell text-gray-500">${m.observaciones || "-"}</td>
                         </tr>
-                    `).join('');
-                }
-            } catch (error) {
-                console.error("Error:", error);
-                tbody.innerHTML = `
+                    `;
+              })
+              .join("");
+          }
+        } catch (error) {
+          console.error("Error:", error);
+          tbody.innerHTML = `
                     <tr>
-                        <td colspan="5" class="text-center py-8 text-red-500">
+                        <td colspan="6" class="text-center py-8 text-red-500">
                             <p>⚠️ Error al cargar los movimientos</p>
                             <button onclick="cargarMovimientos()" class="mt-2 text-sm text-blue-600 hover:text-blue-800">Reintentar</button>
                         </td>
                     </tr>
                 `;
-            }
         }
+      }
 
-        // ============ ALERTAS ============
-        async function cargarAlertas() {
-            await Promise.all([
-                cargarStockBajo(),
-                cargarProximoVencer()
-            ]);
-        }
+      // ============ ALERTAS ============
+      async function cargarAlertas() {
+        await Promise.all([cargarStockBajo(), cargarProximoVencer()]);
+      }
 
-        async function cargarStockBajo() {
-            const container = document.getElementById("stockBajoList");
-            const countEl = document.getElementById("stockBajoCount");
+      async function cargarStockBajo() {
+        const container = document.getElementById("stockBajoList");
+        const countEl = document.getElementById("stockBajoCount");
 
-            try {
-                const response = await fetch(`${API_GATEWAY}/inventario/stock-bajo`, { headers: getHeaders() });
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data.success && data.data) {
-                        const items = data.data;
-                        countEl.textContent = items.length;
+        try {
+          const response = await fetch(
+            `${API_GATEWAY}/inventario/alertas/stock-bajo`,
+            { headers: getHeaders() },
+          );
+          if (response.ok) {
+            const data = await response.json();
+            if (data.success && data.data) {
+              const items = data.data;
+              countEl.textContent = items.length;
 
-                        if (items.length === 0) {
-                            container.innerHTML = `
+              if (items.length === 0) {
+                container.innerHTML = `
                                 <div class="text-center py-8 text-gray-400">
                                     <p class="text-2xl mb-2">✅</p>
                                     <p>No hay productos con stock bajo</p>
                                 </div>
                             `;
-                            return;
-                        }
+                return;
+              }
 
-                        container.innerHTML = items.map(item => `
+              container.innerHTML = items
+                .map(
+                  (item) => `
                             <div class="flex items-center justify-between py-3 border-b border-gray-100 last:border-0">
                                 <div>
-                                    <p class="text-sm font-medium text-gray-900">${item.producto?.nombre || 'Producto'}</p>
-                                    <p class="text-xs text-gray-500">Código: ${item.producto?.codigo || '-'} | Stock: ${item.cantidad_disponible || 0}</p>
+                                    <p class="text-sm font-medium text-gray-900">${item.producto?.nombre || "Producto"}</p>
+                                    <p class="text-xs text-gray-500">Código: ${item.producto?.codigo || "-"}</p>
                                 </div>
                                 <div class="text-right">
                                     <span class="text-xs font-medium text-red-600 bg-red-50 px-2.5 py-1 rounded-full">
-                                        Mín: ${item.producto?.stock_minimo || 0}
+                                        Stock: ${item.total_stock || 0} / Mín: ${item.stock_minimo || 0}
                                     </span>
-                                    <p class="text-xs text-gray-400 mt-1">Sucursal: ${item.sucursal_id || '-'}</p>
                                 </div>
                             </div>
-                        `).join('');
-                    }
-                }
-            } catch (error) {
-                console.error("Error cargando stock bajo:", error);
-                container.innerHTML = `
+                        `,
+                )
+                .join("");
+            }
+          }
+        } catch (error) {
+          console.error("Error cargando stock bajo:", error);
+          container.innerHTML = `
                     <div class="text-center py-8 text-red-500">
                         <p>⚠️ Error al cargar alertas</p>
                     </div>
                 `;
-            }
         }
+      }
 
-        async function cargarProximoVencer() {
-            const container = document.getElementById("proximoVencerList");
-            const countEl = document.getElementById("proximoVencerCount");
+      async function cargarProximoVencer() {
+        const container = document.getElementById("proximoVencerList");
+        const countEl = document.getElementById("proximoVencerCount");
 
-            try {
-                const response = await fetch(`${API_GATEWAY}/inventario/proximos-vencer?dias=30`, { headers: getHeaders() });
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data.success && data.data) {
-                        const items = data.data;
-                        countEl.textContent = items.length;
+        try {
+          const response = await fetch(
+            `${API_GATEWAY}/inventario/alertas/por-vencer?dias=30`,
+            { headers: getHeaders() },
+          );
+          if (response.ok) {
+            const data = await response.json();
+            if (data.success && data.data) {
+              const items = data.data;
+              countEl.textContent = items.length;
 
-                        if (items.length === 0) {
-                            container.innerHTML = `
+              if (items.length === 0) {
+                container.innerHTML = `
                                 <div class="text-center py-8 text-gray-400">
                                     <p class="text-2xl mb-2">✅</p>
                                     <p>No hay productos próximos a vencer</p>
                                 </div>
                             `;
-                            return;
-                        }
+                return;
+              }
 
-                        container.innerHTML = items.map(item => {
-                            const dias = Math.ceil((new Date(item.fecha_vencimiento) - new Date()) / (1000 * 60 * 60 * 24));
-                            const esCritico = dias <= 15;
-                            return `
-                            <div class="flex items-center justify-between py-3 border-b border-gray-100 last:border-0 ${esCritico ? 'bg-red-50 -mx-2 px-2 rounded' : ''}">
+              container.innerHTML = items
+                .map((item) => {
+                  const dias = Math.ceil(
+                    (new Date(item.fecha_vencimiento) - new Date()) /
+                      (1000 * 60 * 60 * 24),
+                  );
+                  const esCritico = dias <= 15;
+                  return `
+                            <div class="flex items-center justify-between py-3 border-b border-gray-100 last:border-0 ${esCritico ? "bg-red-50 -mx-2 px-2 rounded" : ""}">
                                 <div>
-                                    <p class="text-sm font-medium ${esCritico ? 'text-red-700' : 'text-gray-900'}">
-                                        ${item.producto?.nombre || 'Producto'}
-                                        ${esCritico ? '⚠️' : ''}
+                                    <p class="text-sm font-medium ${esCritico ? "text-red-700" : "text-gray-900"}">
+                                        ${item.producto?.nombre || "Producto"}
+                                        ${esCritico ? "⚠️" : ""}
                                     </p>
-                                    <p class="text-xs text-gray-500">Lote: ${item.lote || '-'} | ${item.cantidad || 0} unidades</p>
+                                    <p class="text-xs text-gray-500">Lote: ${item.lote || "-"} | ${item.cantidad || 0} unidades</p>
                                 </div>
                                 <div class="text-right">
-                                    <span class="text-xs font-medium ${esCritico ? 'text-red-600 bg-red-100' : 'text-yellow-600 bg-yellow-100'} px-2.5 py-1 rounded-full">
+                                    <span class="text-xs font-medium ${esCritico ? "text-red-600 bg-red-100" : "text-yellow-600 bg-yellow-100"} px-2.5 py-1 rounded-full">
                                         ${dias} días
                                     </span>
-                                    <p class="text-xs text-gray-400 mt-1">${item.fecha_vencimiento ? new Date(item.fecha_vencimiento).toLocaleDateString('es-ES') : '-'}</p>
+                                    <p class="text-xs text-gray-400 mt-1">${item.fecha_vencimiento ? new Date(item.fecha_vencimiento).toLocaleDateString("es-ES") : "-"}</p>
                                 </div>
                             </div>
-                        `}).join('');
-                    }
-                }
-            } catch (error) {
-                console.error("Error cargando próximos a vencer:", error);
-                container.innerHTML = `
+                        `;
+                })
+                .join("");
+            }
+          }
+        } catch (error) {
+          console.error("Error cargando próximos a vencer:", error);
+          container.innerHTML = `
                     <div class="text-center py-8 text-red-500">
                         <p>⚠️ Error al cargar alertas</p>
                     </div>
                 `;
-            }
         }
+      }
 
-        // ============ TOAST ============
-        function mostrarToast(mensaje, tipo = "info") {
-            const container = document.getElementById("toastContainer");
-            const colors = {
-                success: "bg-green-500",
-                error: "bg-red-500",
-                warning: "bg-yellow-500",
-                info: "bg-blue-500"
-            };
-            const icons = { success: "✅", error: "❌", warning: "⚠️", info: "ℹ️" };
-            const toast = document.createElement("div");
-            toast.className = `toast-slide px-5 py-3 rounded-lg text-white text-sm font-medium shadow-lg flex items-center gap-3 min-w-[280px] ${colors[tipo] || colors.info}`;
-            toast.innerHTML = `
+      // ============ TOAST ============
+      function mostrarToast(mensaje, tipo = "info") {
+        const container = document.getElementById("toastContainer");
+        const colors = {
+          success: "bg-green-500",
+          error: "bg-red-500",
+          warning: "bg-yellow-500",
+          info: "bg-blue-500",
+        };
+        const icons = { success: "✅", error: "❌", warning: "⚠️", info: "ℹ️" };
+        const toast = document.createElement("div");
+        toast.className = `toast-slide px-5 py-3 rounded-lg text-white text-sm font-medium shadow-lg flex items-center gap-3 min-w-[280px] ${colors[tipo] || colors.info}`;
+        toast.innerHTML = `
                 <span>${icons[tipo] || "ℹ️"}</span>
                 <span>${mensaje}</span>
                 <button class="ml-auto text-white/80 hover:text-white" onclick="this.parentElement.remove()">×</button>
             `;
-            container.appendChild(toast);
-            setTimeout(() => {
-                if (toast.parentElement) {
-                    toast.style.opacity = "0";
-                    toast.style.transform = "translateX(20px)";
-                    setTimeout(() => toast.remove(), 300);
-                }
-            }, 4000);
-        }
+        container.appendChild(toast);
+        setTimeout(() => {
+          if (toast.parentElement) {
+            toast.style.opacity = "0";
+            toast.style.transform = "translateX(20px)";
+            setTimeout(() => toast.remove(), 300);
+          }
+        }, 4000);
+      }
 
-        // ============ INICIALIZAR ============
-        document.addEventListener("DOMContentLoaded", () => {
-            const auth = checkAuth();
-            if (!auth) return;
-            loadUserData();
-            cargarCategorias();
-            cargarSucursales();
-            cargarProductos();
-        });
+      // ============ INICIALIZAR ============
+      document.addEventListener("DOMContentLoaded", () => {
+        const auth = checkAuth();
+        if (!auth) return;
+        loadUserData();
+        cargarCategorias();
+        cargarSucursales();
+        cargarProductos();
+      });
     </script>
-</body>
+  </body>
 </html>

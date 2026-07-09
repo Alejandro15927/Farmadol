@@ -25,10 +25,7 @@ module.exports = (sequelize) => {
     cliente_id: {
       type: DataTypes.BIGINT,
       allowNull: true,
-      references: {
-        model: 'clientes',
-        key: 'id'
-      }
+      comment: 'ID del cliente (referencia a cliente_db)'
     },
     metodo_pago_id: {
       type: DataTypes.BIGINT,

@@ -31,17 +31,17 @@ module.exports = (sequelize) => {
     },
     email: {
       type: DataTypes.STRING(100),
-      allowNull: true,
+      allowNull: false,
       validate: {
         isEmail: true
       }
     },
     telefono: {
       type: DataTypes.STRING(20),
-      allowNull: true
+      allowNull: false
     },
-    direccion: {
-      type: DataTypes.TEXT,
+    telefono_alternativo: {
+      type: DataTypes.STRING(20),
       allowNull: true
     },
     fecha_nacimiento: {
@@ -52,9 +52,49 @@ module.exports = (sequelize) => {
       type: DataTypes.ENUM('M', 'F', 'OTRO'),
       allowNull: true
     },
+    estado_civil: {
+      type: DataTypes.ENUM('soltero', 'casado', 'divorciado', 'viudo'),
+      allowNull: true
+    },
+    ocupacion: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+    fecha_registro: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW
+    },
+    ultima_compra: {
+      type: DataTypes.DATE,
+      allowNull: true
+    },
+    total_compras: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    },
+    total_gastado: {
+      type: DataTypes.DECIMAL(10, 2),
+      defaultValue: 0
+    },
+    promedio_gasto: {
+      type: DataTypes.DECIMAL(10, 2),
+      defaultValue: 0
+    },
+    puntos: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    },
+    nivel: {
+      type: DataTypes.ENUM('bronce', 'plata', 'oro', 'platino', 'diamante'),
+      defaultValue: 'bronce'
+    },
     estado: {
       type: DataTypes.BOOLEAN,
       defaultValue: true
+    },
+    observaciones: {
+      type: DataTypes.TEXT,
+      allowNull: true
     },
     fecha_creacion: {
       type: DataTypes.DATE,

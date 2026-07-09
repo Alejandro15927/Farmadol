@@ -7,15 +7,28 @@ const sequelize = new Sequelize(config.database, config.username, config.passwor
   logging: false
 });
 
-const User = require('./User')(sequelize);
-const Role = require('./Role')(sequelize);
+const Usuario = require('./Usuario')(sequelize);
+const Rol = require('./Rol')(sequelize);
+const UsuarioRol = require('./UsuarioRol')(sequelize);
 
-// Relaciones
-User.belongsToMany(Role, { through: 'usuario_roles', foreignKey: 'usuario_id', timestamps: false });
-Role.belongsToMany(User, { through: 'usuario_roles', foreignKey: 'rol_id', timestamps: false });
+// Relaciones Many-to-Many
+Usuario.belongsToMany(Rol, {
+  through: UsuarioRol,
+  foreignKey: 'usuario_id',
+  otherKey: 'rol_id',
+  as: 'roles'
+});
+
+Rol.belongsToMany(Usuario, {
+  through: UsuarioRol,
+  foreignKey: 'rol_id',
+  otherKey: 'usuario_id',
+  as: 'usuarios'
+});
 
 module.exports = {
   sequelize,
-  User,
-  Role
+  Usuario,
+  Rol,
+  UsuarioRol
 };

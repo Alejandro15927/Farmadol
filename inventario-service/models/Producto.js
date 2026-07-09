@@ -7,6 +7,12 @@ module.exports = (sequelize) => {
       autoIncrement: true,
       primaryKey: true
     },
+    sku: {
+      type: DataTypes.STRING(50),
+      allowNull: false,
+      unique: true,
+      comment: 'Código SKU único del producto'
+    },
     codigo: {
       type: DataTypes.STRING(50),
       allowNull: false,
@@ -30,12 +36,10 @@ module.exports = (sequelize) => {
     },
     precio_compra: {
       type: DataTypes.DECIMAL(10, 2),
-      allowNull: false,
       defaultValue: 0
     },
     precio_venta: {
       type: DataTypes.DECIMAL(10, 2),
-      allowNull: false,
       defaultValue: 0
     },
     requiere_receta: {
@@ -44,12 +48,10 @@ module.exports = (sequelize) => {
     },
     stock_minimo: {
       type: DataTypes.INTEGER,
-      allowNull: false,
       defaultValue: 10
     },
     stock_maximo: {
       type: DataTypes.INTEGER,
-      allowNull: false,
       defaultValue: 500
     },
     unidad_medida: {

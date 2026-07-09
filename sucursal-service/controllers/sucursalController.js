@@ -1,10 +1,30 @@
-const { Sucursal, Transferencia } = require('../models');
+const { Sucursal } = require('../models');
 const { validationResult } = require('express-validator');
+const { Op } = require('sequelize');
+
+// ============ SUCURSALES ============
 
 // Obtener todas las sucursales
 const getSucursales = async (req, res) => {
   try {
+    const { search, estado } = req.query;
+
+    let where = {};
+    if (estado !== undefined) where.estado = estado === 'true';
+    if (search) {
+      where = {
+        ...where,
+        [Op.or]: [
+          { nombre: { [Op.like]: `%${search}%` } },
+          { codigo: { [Op.like]: `%${search}%` } },
+          { direccion: { [Op.like]: `%${search}%` } },
+          { encargado: { [Op.like]: `%${search}%` } }
+        ]
+      };
+    }
+
     const sucursales = await Sucursal.findAll({
+      where,
       order: [['nombre', 'ASC']]
     });
 
@@ -21,11 +41,11 @@ const getSucursales = async (req, res) => {
   }
 };
 
-
-// Obtener una sucursal por ID
+// Obtener sucursal por ID
 const getSucursalById = async (req, res) => {
   try {
     const { id } = req.params;
+
     const sucursal = await Sucursal.findByPk(id);
 
     if (!sucursal) {
@@ -48,7 +68,7 @@ const getSucursalById = async (req, res) => {
   }
 };
 
-// Crear nueva sucursal
+// Crear sucursal
 const createSucursal = async (req, res) => {
   try {
     const errors = validationResult(req);
@@ -59,22 +79,31 @@ const createSucursal = async (req, res) => {
       });
     }
 
-    const { nombre, codigo, direccion, telefono, email, horario_atencion, encargado } = req.body;
+    const { 
+      nombre, 
+      codigo, 
+      direccion, 
+      telefono, 
+      email, 
+      horario_atencion, 
+      encargado 
+    } = req.body;
 
-    // Verificar si ya existe una sucursal con el mismo nombre o código
-    const existing = await Sucursal.findOne({
-      where: {
-        [require('sequelize').Op.or]: [
-          { nombre },
-          { codigo }
-        ]
-      }
-    });
-
-    if (existing) {
+    // Verificar nombre único
+    const existingNombre = await Sucursal.findOne({ where: { nombre } });
+    if (existingNombre) {
       return res.status(400).json({
         success: false,
-        message: 'Ya existe una sucursal con ese nombre o código'
+        message: 'Ya existe una sucursal con ese nombre'
+      });
+    }
+
+    // Verificar código único
+    const existingCodigo = await Sucursal.findOne({ where: { codigo } });
+    if (existingCodigo) {
+      return res.status(400).json({
+        success: false,
+        message: 'Ya existe una sucursal con ese código'
       });
     }
 
@@ -115,7 +144,16 @@ const updateSucursal = async (req, res) => {
     }
 
     const { id } = req.params;
-    const { nombre, codigo, direccion, telefono, email, horario_atencion, encargado, estado } = req.body;
+    const { 
+      nombre, 
+      codigo, 
+      direccion, 
+      telefono, 
+      email, 
+      horario_atencion, 
+      encargado, 
+      estado 
+    } = req.body;
 
     const sucursal = await Sucursal.findByPk(id);
     if (!sucursal) {
@@ -125,35 +163,41 @@ const updateSucursal = async (req, res) => {
       });
     }
 
-    // Verificar duplicados
-    if (nombre !== sucursal.nombre || codigo !== sucursal.codigo) {
-      const existing = await Sucursal.findOne({
-        where: {
-          [require('sequelize').Op.or]: [
-            { nombre },
-            { codigo }
-          ],
-          id: { [require('sequelize').Op.ne]: id }
-        }
+    // Verificar nombre único
+    if (nombre && nombre !== sucursal.nombre) {
+      const existingNombre = await Sucursal.findOne({
+        where: { nombre, id: { [Op.ne]: id } }
       });
-
-      if (existing) {
+      if (existingNombre) {
         return res.status(400).json({
           success: false,
-          message: 'Ya existe otra sucursal con ese nombre o código'
+          message: 'Ya existe otra sucursal con ese nombre'
+        });
+      }
+    }
+
+    // Verificar código único
+    if (codigo && codigo !== sucursal.codigo) {
+      const existingCodigo = await Sucursal.findOne({
+        where: { codigo, id: { [Op.ne]: id } }
+      });
+      if (existingCodigo) {
+        return res.status(400).json({
+          success: false,
+          message: 'Ya existe otra sucursal con ese código'
         });
       }
     }
 
     await sucursal.update({
-      nombre,
-      codigo,
-      direccion,
-      telefono,
-      email,
-      horario_atencion,
-      encargado,
-      estado,
+      nombre: nombre || sucursal.nombre,
+      codigo: codigo || sucursal.codigo,
+      direccion: direccion || sucursal.direccion,
+      telefono: telefono || sucursal.telefono,
+      email: email || sucursal.email,
+      horario_atencion: horario_atencion !== undefined ? horario_atencion : sucursal.horario_atencion,
+      encargado: encargado !== undefined ? encargado : sucursal.encargado,
+      estado: estado !== undefined ? estado : sucursal.estado,
       fecha_actualizacion: new Date()
     });
 
@@ -171,7 +215,7 @@ const updateSucursal = async (req, res) => {
   }
 };
 
-// Eliminar sucursal (lógica)
+// Eliminar sucursal (deshabilitar)
 const deleteSucursal = async (req, res) => {
   try {
     const { id } = req.params;
@@ -184,14 +228,14 @@ const deleteSucursal = async (req, res) => {
       });
     }
 
-    await sucursal.update({
+    await sucursal.update({ 
       estado: false,
       fecha_actualizacion: new Date()
     });
 
     res.json({
       success: true,
-      message: 'Sucursal eliminada exitosamente'
+      message: 'Sucursal deshabilitada exitosamente'
     });
   } catch (error) {
     console.error('Error en deleteSucursal:', error);
@@ -202,182 +246,30 @@ const deleteSucursal = async (req, res) => {
   }
 };
 
-// Solicitar transferencia entre sucursales
-const solicitarTransferencia = async (req, res) => {
-  try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({
-        success: false,
-        errors: errors.array()
-      });
-    }
-
-    const { sucursal_origen_id, sucursal_destino_id, producto_id, cantidad, lote, fecha_vencimiento, observaciones } = req.body;
-    const usuario_solicita = req.user.id;
-
-    // Verificar que las sucursales existen
-    const origen = await Sucursal.findByPk(sucursal_origen_id);
-    const destino = await Sucursal.findByPk(sucursal_destino_id);
-
-    if (!origen || !destino) {
-      return res.status(404).json({
-        success: false,
-        message: 'Sucursal origen o destino no encontrada'
-      });
-    }
-
-    if (sucursal_origen_id === sucursal_destino_id) {
-      return res.status(400).json({
-        success: false,
-        message: 'La sucursal origen y destino no pueden ser la misma'
-      });
-    }
-
-    const transferencia = await Transferencia.create({
-      sucursal_origen_id,
-      sucursal_destino_id,
-      producto_id,
-      cantidad,
-      lote,
-      fecha_vencimiento,
-      estado: 'pendiente',
-      usuario_solicita,
-      observaciones,
-      fecha_solicitud: new Date()
-    });
-
-    res.status(201).json({
-      success: true,
-      message: 'Transferencia solicitada exitosamente',
-      data: transferencia
-    });
-  } catch (error) {
-    console.error('Error en solicitarTransferencia:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Error interno del servidor'
-    });
-  }
-};
-
-// Obtener transferencias
-const getTransferencias = async (req, res) => {
-  try {
-    const { estado, sucursal_id } = req.query;
-    const where = {};
-
-    if (estado) where.estado = estado;
-    if (sucursal_id) {
-      where[require('sequelize').Op.or] = [
-        { sucursal_origen_id: sucursal_id },
-        { sucursal_destino_id: sucursal_id }
-      ];
-    }
-
-    const transferencias = await Transferencia.findAll({
-      where,
-      include: [
-        { model: Sucursal, as: 'origen', attributes: ['id', 'nombre', 'codigo'] },
-        { model: Sucursal, as: 'destino', attributes: ['id', 'nombre', 'codigo'] }
-      ],
-      order: [['fecha_solicitud', 'DESC']]
-    });
-
-    res.json({
-      success: true,
-      data: transferencias
-    });
-  } catch (error) {
-    console.error('Error en getTransferencias:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Error interno del servidor'
-    });
-  }
-};
-
-// Autorizar transferencia
-const autorizarTransferencia = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { observaciones } = req.body;
-    const usuario_autoriza = req.user.id;
-
-    const transferencia = await Transferencia.findByPk(id);
-    if (!transferencia) {
-      return res.status(404).json({
-        success: false,
-        message: 'Transferencia no encontrada'
-      });
-    }
-
-    if (transferencia.estado !== 'pendiente') {
-      return res.status(400).json({
-        success: false,
-        message: `La transferencia ya está en estado ${transferencia.estado}`
-      });
-    }
-
-    await transferencia.update({
-      estado: 'en_proceso',
-      usuario_autoriza,
-      fecha_autorizacion: new Date(),
-      observaciones: observaciones || transferencia.observaciones
-    });
-
-    // Aquí se integraría con el servicio de Inventario para reservar stock
-    // Por ahora solo actualizamos el estado
-
-    res.json({
-      success: true,
-      message: 'Transferencia autorizada exitosamente',
-      data: transferencia
-    });
-  } catch (error) {
-    console.error('Error en autorizarTransferencia:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Error interno del servidor'
-    });
-  }
-};
-
-// Completar transferencia
-const completarTransferencia = async (req, res) => {
+// Habilitar sucursal
+const enableSucursal = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const transferencia = await Transferencia.findByPk(id);
-    if (!transferencia) {
+    const sucursal = await Sucursal.findByPk(id);
+    if (!sucursal) {
       return res.status(404).json({
         success: false,
-        message: 'Transferencia no encontrada'
+        message: 'Sucursal no encontrada'
       });
     }
 
-    if (transferencia.estado !== 'en_proceso') {
-      return res.status(400).json({
-        success: false,
-        message: `La transferencia está en estado ${transferencia.estado}, no se puede completar`
-      });
-    }
-
-    await transferencia.update({
-      estado: 'completada',
-      fecha_completada: new Date()
+    await sucursal.update({ 
+      estado: true,
+      fecha_actualizacion: new Date()
     });
-
-    // Aquí se integraría con Inventario para ejecutar la transferencia
-    // Descontar en origen y sumar en destino
 
     res.json({
       success: true,
-      message: 'Transferencia completada exitosamente',
-      data: transferencia
+      message: 'Sucursal habilitada exitosamente'
     });
   } catch (error) {
-    console.error('Error en completarTransferencia:', error);
+    console.error('Error en enableSucursal:', error);
     res.status(500).json({
       success: false,
       message: 'Error interno del servidor'
@@ -385,39 +277,52 @@ const completarTransferencia = async (req, res) => {
   }
 };
 
-// Cancelar transferencia
-const cancelarTransferencia = async (req, res) => {
+// Obtener sucursales activas (para dropdowns)
+const getSucursalesActivas = async (req, res) => {
   try {
-    const { id } = req.params;
-    const { observaciones } = req.body;
-
-    const transferencia = await Transferencia.findByPk(id);
-    if (!transferencia) {
-      return res.status(404).json({
-        success: false,
-        message: 'Transferencia no encontrada'
-      });
-    }
-
-    if (transferencia.estado === 'completada') {
-      return res.status(400).json({
-        success: false,
-        message: 'No se puede cancelar una transferencia completada'
-      });
-    }
-
-    await transferencia.update({
-      estado: 'cancelada',
-      observaciones: observaciones || transferencia.observaciones
+    const sucursales = await Sucursal.findAll({
+      where: { estado: true },
+      attributes: ['id', 'nombre', 'codigo'],
+      order: [['nombre', 'ASC']]
     });
 
     res.json({
       success: true,
-      message: 'Transferencia cancelada exitosamente',
-      data: transferencia
+      data: sucursales
     });
   } catch (error) {
-    console.error('Error en cancelarTransferencia:', error);
+    console.error('Error en getSucursalesActivas:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error interno del servidor'
+    });
+  }
+};
+
+// Verificar existencia de sucursal
+const checkSucursalExists = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const sucursal = await Sucursal.findByPk(id, {
+      attributes: ['id', 'nombre', 'codigo', 'estado']
+    });
+
+    if (!sucursal) {
+      return res.status(404).json({
+        success: false,
+        exists: false,
+        message: 'Sucursal no encontrada'
+      });
+    }
+
+    res.json({
+      success: true,
+      exists: true,
+      data: sucursal
+    });
+  } catch (error) {
+    console.error('Error en checkSucursalExists:', error);
     res.status(500).json({
       success: false,
       message: 'Error interno del servidor'
@@ -431,9 +336,7 @@ module.exports = {
   createSucursal,
   updateSucursal,
   deleteSucursal,
-  solicitarTransferencia,
-  getTransferencias,
-  autorizarTransferencia,
-  completarTransferencia,
-  cancelarTransferencia
+  enableSucursal,
+  getSucursalesActivas,
+  checkSucursalExists
 };

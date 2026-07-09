@@ -26,27 +26,15 @@ module.exports = (sequelize) => {
     },
     cantidad: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 0,
-      validate: {
-        min: 0
-      }
+      defaultValue: 0
     },
     cantidad_reservada: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 0,
-      validate: {
-        min: 0
-      }
+      defaultValue: 0
     },
     cantidad_disponible: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 0,
-      validate: {
-        min: 0
-      }
+      defaultValue: 0
     },
     fecha_vencimiento: {
       type: DataTypes.DATE,
@@ -54,8 +42,12 @@ module.exports = (sequelize) => {
     },
     costo_unitario: {
       type: DataTypes.DECIMAL(10, 2),
-      allowNull: false,
       defaultValue: 0
+    },
+    ubicacion_estante: {
+      type: DataTypes.STRING(100),
+      allowNull: true,
+      comment: 'Ubicación física del medicamento en el estante o almacén'
     },
     estado: {
       type: DataTypes.ENUM('activo', 'agotado', 'vencido', 'bloqueado'),

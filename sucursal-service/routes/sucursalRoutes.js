@@ -1,5 +1,5 @@
 const express = require('express');
-const { body, param } = require('express-validator');
+const { body, param, query } = require('express-validator');
 const { authMiddleware, checkRole } = require('../middleware/auth');
 const { validate } = require('../middleware/validation');
 const {
@@ -8,19 +8,18 @@ const {
   createSucursal,
   updateSucursal,
   deleteSucursal,
-  solicitarTransferencia,
-  getTransferencias,
-  autorizarTransferencia,
-  completarTransferencia,
-  cancelarTransferencia
+  enableSucursal,
+  getSucursalesActivas,
+  checkSucursalExists
 } = require('../controllers/sucursalController');
 
 const router = express.Router();
 
-// Validaciones
+// ============ VALIDACIONES ============
+
 const createSucursalValidation = [
-  body('nombre').notEmpty().withMessage('Nombre requerido').isLength({ max: 100 }),
-  body('codigo').notEmpty().withMessage('Código requerido').isLength({ max: 20 }),
+  body('nombre').notEmpty().withMessage('Nombre requerido'),
+  body('codigo').notEmpty().withMessage('Código requerido'),
   body('direccion').notEmpty().withMessage('Dirección requerida'),
   body('telefono').notEmpty().withMessage('Teléfono requerido'),
   body('email').isEmail().withMessage('Email inválido'),
@@ -30,39 +29,41 @@ const createSucursalValidation = [
 
 const updateSucursalValidation = [
   param('id').isInt().withMessage('ID inválido'),
-  body('nombre').notEmpty().withMessage('Nombre requerido').isLength({ max: 100 }),
-  body('codigo').notEmpty().withMessage('Código requerido').isLength({ max: 20 }),
-  body('direccion').notEmpty().withMessage('Dirección requerida'),
-  body('telefono').notEmpty().withMessage('Teléfono requerido'),
-  body('email').isEmail().withMessage('Email inválido'),
+  body('nombre').optional().notEmpty().withMessage('Nombre requerido'),
+  body('codigo').optional().notEmpty().withMessage('Código requerido'),
+  body('direccion').optional().notEmpty().withMessage('Dirección requerida'),
+  body('telefono').optional().notEmpty().withMessage('Teléfono requerido'),
+  body('email').optional().isEmail().withMessage('Email inválido'),
   body('estado').optional().isBoolean().withMessage('Estado debe ser booleano')
 ];
 
-const transferenciaValidation = [
-  body('sucursal_origen_id').isInt().withMessage('ID de sucursal origen inválido'),
-  body('sucursal_destino_id').isInt().withMessage('ID de sucursal destino inválido'),
-  body('producto_id').isInt().withMessage('ID de producto inválido'),
-  body('cantidad').isInt({ min: 1 }).withMessage('Cantidad debe ser mayor a 0'),
-  body('lote').optional().isString(),
-  body('fecha_vencimiento').optional().isDate().withMessage('Fecha de vencimiento inválida'),
-  body('observaciones').optional().isString()
-];
+// ============ RUTAS ============
 
-// Rutas protegidas
+// Todas las rutas requieren autenticación
 router.use(authMiddleware);
 
-// Sucursales
-router.get('/sucursales', getSucursales);
-router.get('/sucursales/:id', param('id').isInt(), validate, getSucursalById);
-router.post('/sucursales', checkRole(['ADMIN', 'GERENTE']), createSucursalValidation, validate, createSucursal);
-router.put('/sucursales/:id', checkRole(['ADMIN', 'GERENTE']), updateSucursalValidation, validate, updateSucursal);
-router.delete('/sucursales/:id', checkRole(['ADMIN']), param('id').isInt(), validate, deleteSucursal);
+// Obtener sucursales (con filtros)
+router.get('/', getSucursales);
 
-// Transferencias
-router.post('/transferencias/solicitar', checkRole(['GERENTE', 'ADMIN']), transferenciaValidation, validate, solicitarTransferencia);
-router.get('/transferencias', getTransferencias);
-router.put('/transferencias/:id/autorizar', checkRole(['GERENTE', 'ADMIN']), param('id').isInt(), validate, autorizarTransferencia);
-router.put('/transferencias/:id/completar', checkRole(['GERENTE', 'ADMIN']), param('id').isInt(), validate, completarTransferencia);
-router.put('/transferencias/:id/cancelar', checkRole(['GERENTE', 'ADMIN']), param('id').isInt(), validate, cancelarTransferencia);
+// Obtener sucursales activas (para dropdowns)
+router.get('/activas', getSucursalesActivas);
+
+// Verificar existencia
+router.get('/check/:id', param('id').isInt(), validate, checkSucursalExists);
+
+// Obtener por ID
+router.get('/:id', param('id').isInt(), validate, getSucursalById);
+
+// Crear sucursal (ADMIN)
+router.post('/', checkRole(['ADMIN']), createSucursalValidation, validate, createSucursal);
+
+// Actualizar sucursal (ADMIN)
+router.put('/:id', checkRole(['ADMIN']), updateSucursalValidation, validate, updateSucursal);
+
+// Deshabilitar sucursal (ADMIN)
+router.delete('/:id', checkRole(['ADMIN']), param('id').isInt(), validate, deleteSucursal);
+
+// Habilitar sucursal (ADMIN)
+router.put('/:id/enable', checkRole(['ADMIN']), param('id').isInt(), validate, enableSucursal);
 
 module.exports = router;

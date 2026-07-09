@@ -18,7 +18,7 @@ module.exports = (sequelize) => {
     producto_id: {
       type: DataTypes.BIGINT,
       allowNull: false,
-      comment: 'ID del producto (referencia a inventario_db)'
+      comment: 'ID de producto (referencia a inventario_db)'
     },
     lote: {
       type: DataTypes.STRING(50),

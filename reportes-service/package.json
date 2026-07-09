@@ -1,20 +1,20 @@
 {
   "name": "reportes-service",
   "version": "1.0.0",
-  "description": "Servicio de reportes para Farmadol ERP - Utility Service",
+  "description": "Servicio de reportes y alertas para Farmadol ERP - Utility Service",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js"
   },
   "dependencies": {
-    "axios": "^1.6.7",
     "cors": "^2.8.6",
     "dotenv": "^16.6.1",
     "express": "^4.22.2",
     "express-validator": "^7.3.2",
     "jsonwebtoken": "^9.0.3",
     "mysql2": "^3.22.3",
+    "pdfkit": "^0.19.1",
     "sequelize": "^6.37.8"
   },
   "devDependencies": {
@@ -24,6 +24,7 @@
     "farmadol",
     "erp",
     "reportes",
+    "alertas",
     "microservice"
   ],
   "author": "",
