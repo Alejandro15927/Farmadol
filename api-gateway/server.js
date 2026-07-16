@@ -1,3 +1,4 @@
+// api-gateway/server.js
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
@@ -6,6 +7,7 @@ const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 const { authMiddleware } = require('./middleware/auth');
+const logger = require('../logs/logger'); // Ruta relativa a logs
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -71,6 +73,7 @@ app.use('/api', authMiddleware);
 
 // ==================== RUTAS PÚBLICAS ====================
 app.get('/health', (req, res) => {
+  logger.info('API-GATEWAY', '✅ Health check', { status: 'OK' });
   res.status(200).json({
     status: 'OK',
     service: 'api-gateway',
@@ -107,14 +110,16 @@ app.get('/', (req, res) => {
 
 // ==================== PROXY CONFIGURACIÓN ====================
 
-const createServiceProxy = (target, pathRewrite = {}) => {
+const createServiceProxy = (target, serviceName, pathRewrite = {}) => {
+  logger.info('API-GATEWAY', `🔗 Registrando proxy para ${serviceName} → ${target}`);
+  
   return createProxyMiddleware({
     target,
     changeOrigin: true,
     pathRewrite,
     logLevel: 'debug',
     onError: (err, req, res) => {
-      console.error(`❌ Error en proxy ${target}:`, err.message);
+      logger.error('API-GATEWAY', `❌ Error en proxy ${serviceName}`, { error: err.message, url: req.url });
       res.status(503).json({
         success: false,
         message: 'Servicio no disponible temporalmente',
@@ -122,7 +127,9 @@ const createServiceProxy = (target, pathRewrite = {}) => {
       });
     },
     onProxyReq: (proxyReq, req) => {
-      console.log(`🔄 Proxy: ${req.method} ${req.originalUrl} -> ${target}${req.path}`);
+      const startTime = Date.now();
+      req._startTime = startTime;
+      
       if (req.headers.authorization) {
         proxyReq.setHeader('Authorization', req.headers.authorization);
       }
@@ -132,8 +139,19 @@ const createServiceProxy = (target, pathRewrite = {}) => {
         proxyReq.setHeader('X-User-Username', req.user.username || '');
       }
     },
-    onProxyRes: (proxyRes) => {
+    onProxyRes: (proxyRes, req, res) => {
+      const duration = Date.now() - (req._startTime || Date.now());
       proxyRes.headers['X-Service'] = target;
+      proxyRes.headers['X-Duration'] = duration;
+      
+      logger.request(
+        'API-GATEWAY',
+        req.method,
+        req.originalUrl,
+        proxyRes.statusCode,
+        duration,
+        { service: serviceName, user: req.user?.username || 'anonymous' }
+      );
     }
   });
 };
@@ -141,43 +159,44 @@ const createServiceProxy = (target, pathRewrite = {}) => {
 // ==================== SERVICIOS ====================
 
 // Auth Service (puerto 3001)
-app.use('/api/auth', createServiceProxy(process.env.AUTH_SERVICE_URL, {
+app.use('/api/auth', createServiceProxy(process.env.AUTH_SERVICE_URL, 'auth-service', {
   '^/api/auth': '/api/auth'
 }));
 
 // Sucursal Service (puerto 3002)
-app.use('/api/sucursales', createServiceProxy(process.env.SUCURSAL_SERVICE_URL, {
+app.use('/api/sucursales', createServiceProxy(process.env.SUCURSAL_SERVICE_URL, 'sucursal-service', {
   '^/api/sucursales': '/api/sucursales'
 }));
 
 // Cliente Service (puerto 3003)
-app.use('/api/clientes', createServiceProxy(process.env.CLIENTE_SERVICE_URL, {
+app.use('/api/clientes', createServiceProxy(process.env.CLIENTE_SERVICE_URL, 'cliente-service', {
   '^/api/clientes': '/api/clientes'
 }));
 
 // Inventario Service (puerto 3004)
-app.use('/api/inventario', createServiceProxy(process.env.INVENTARIO_SERVICE_URL, {
+app.use('/api/inventario', createServiceProxy(process.env.INVENTARIO_SERVICE_URL, 'inventario-service', {
   '^/api/inventario': '/api/inventario'
 }));
 
 // Ventas Service (puerto 3005)
-app.use('/api/ventas', createServiceProxy(process.env.VENTAS_SERVICE_URL, {
+app.use('/api/ventas', createServiceProxy(process.env.VENTAS_SERVICE_URL, 'ventas-service', {
   '^/api/ventas': '/api/ventas'
 }));
 
 // Compra Service (puerto 3006)
-app.use('/api/compras', createServiceProxy(process.env.COMPRA_SERVICE_URL, {
+app.use('/api/compras', createServiceProxy(process.env.COMPRA_SERVICE_URL, 'compra-service', {
   '^/api/compras': '/api/compras'
 }));
 
 // Reportes Service (puerto 3007)
-app.use('/api/reportes', createServiceProxy(process.env.REPORTES_SERVICE_URL, {
+app.use('/api/reportes', createServiceProxy(process.env.REPORTES_SERVICE_URL, 'reportes-service', {
   '^/api/reportes': '/api/reportes'
 }));
 
 // ==================== MANEJO DE ERRORES ====================
 
 app.use((req, res) => {
+  logger.warn('API-GATEWAY', `⚠️ Ruta no encontrada: ${req.method} ${req.originalUrl}`);
   res.status(404).json({
     success: false,
     message: 'Ruta no encontrada',
@@ -187,7 +206,7 @@ app.use((req, res) => {
 });
 
 app.use((err, req, res, next) => {
-  console.error('❌ Error en API Gateway:', err);
+  logger.error('API-GATEWAY', `❌ Error interno: ${err.message}`, { stack: err.stack });
   
   if (err.message === 'Origen no permitido por CORS') {
     return res.status(403).json({
@@ -218,17 +237,17 @@ app.listen(PORT, () => {
   console.log(`  🛒 Compra     → ${process.env.COMPRA_SERVICE_URL}`);
   console.log(`  📊 Reportes   → ${process.env.REPORTES_SERVICE_URL}`);
   console.log('========================================');
-  console.log(`🌐 CORS habilitado para frontend en puerto 3010`);
-  console.log(`🔒 Rate limiting: 1000 requests/15min`);
-  console.log('========================================');
+  
+  logger.serviceStart('API-GATEWAY', PORT);
+  logger.info('API-GATEWAY', '🌉 API Gateway iniciado correctamente');
 });
 
 process.on('SIGTERM', () => {
-  console.log('SIGTERM recibido, cerrando servidor...');
+  logger.info('API-GATEWAY', '🛑 SIGTERM recibido, cerrando servidor...');
   process.exit(0);
 });
 
 process.on('SIGINT', () => {
-  console.log('SIGINT recibido, cerrando servidor...');
+  logger.info('API-GATEWAY', '🛑 SIGINT recibido, cerrando servidor...');
   process.exit(0);
 });

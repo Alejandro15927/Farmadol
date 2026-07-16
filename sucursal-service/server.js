@@ -1,7 +1,9 @@
+// sucursal-service/server.js
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const { sequelize } = require('./models');
+const logger = require('../logs/logger');
 
 const sucursalRoutes = require('./routes/sucursalRoutes');
 
@@ -18,6 +20,7 @@ app.use('/api/sucursales', sucursalRoutes);
 
 // Health check
 app.get('/health', (req, res) => {
+  logger.info('SUCURSAL-SERVICE', '✅ Health check');
   res.status(200).json({ 
     status: 'OK', 
     service: 'sucursal-service',
@@ -28,22 +31,13 @@ app.get('/health', (req, res) => {
 // Sincronizar base de datos
 sequelize.sync()
   .then(() => {
-    console.log('📦 Base de datos sincronizada');
+    logger.dbSync('SUCURSAL-SERVICE');
     app.listen(PORT, () => {
       console.log(`🏢 Sucursal Service corriendo en http://localhost:${PORT}`);
-      console.log(`📋 Endpoints disponibles:`);
-      console.log(`  # Sucursales (Protegido)`);
-      console.log(`  GET    /api/sucursales`);
-      console.log(`  GET    /api/sucursales/activas`);
-      console.log(`  GET    /api/sucursales/check/:id`);
-      console.log(`  GET    /api/sucursales/:id`);
-      console.log(`  POST   /api/sucursales (ADMIN)`);
-      console.log(`  PUT    /api/sucursales/:id (ADMIN)`);
-      console.log(`  DELETE /api/sucursales/:id (ADMIN)`);
-      console.log(`  PUT    /api/sucursales/:id/enable (ADMIN)`);
+      logger.serviceStart('SUCURSAL-SERVICE', PORT);
     });
   })
   .catch(error => {
-    console.error('❌ Error al conectar la BD:', error);
+    logger.error('SUCURSAL-SERVICE', '❌ Error al conectar la BD', { error: error.message });
     process.exit(1);
   });

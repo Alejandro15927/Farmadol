@@ -1,7 +1,9 @@
+// auth-service/server.js
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const { sequelize } = require('./models');
+const logger = require('../logs/logger');
 
 const authRoutes = require('./routes/authRoutes');
 
@@ -18,6 +20,7 @@ app.use('/api/auth', authRoutes);
 
 // Health check
 app.get('/health', (req, res) => {
+  logger.info('AUTH-SERVICE', '✅ Health check');
   res.status(200).json({ 
     status: 'OK', 
     service: 'auth-service',
@@ -28,30 +31,13 @@ app.get('/health', (req, res) => {
 // Sincronizar base de datos
 sequelize.sync()
   .then(() => {
-    console.log('📦 Base de datos sincronizada');
+    logger.dbSync('AUTH-SERVICE');
     app.listen(PORT, () => {
       console.log(`🔐 Auth Service corriendo en http://localhost:${PORT}`);
-      console.log(`📋 Endpoints disponibles:`);
-      console.log(`  # Autenticación (Público)`);
-      console.log(`  POST   /api/auth/login`);
-      console.log(`  # Autenticación (Protegido)`);
-      console.log(`  POST   /api/auth/logout`);
-      console.log(`  GET    /api/auth/verify`);
-      console.log(`  # Usuarios (ADMIN)`);
-      console.log(`  GET    /api/auth/usuarios`);
-      console.log(`  GET    /api/auth/usuarios/:id`);
-      console.log(`  POST   /api/auth/usuarios`);
-      console.log(`  PUT    /api/auth/usuarios/:id`);
-      console.log(`  DELETE /api/auth/usuarios/:id`);
-      console.log(`  PUT    /api/auth/usuarios/:id/enable`);
-      console.log(`  # Roles (ADMIN)`);
-      console.log(`  GET    /api/auth/roles`);
-      console.log(`  POST   /api/auth/roles`);
-      console.log(`  PUT    /api/auth/roles/:id`);
-      console.log(`  DELETE /api/auth/roles/:id`);
+      logger.serviceStart('AUTH-SERVICE', PORT);
     });
   })
   .catch(error => {
-    console.error('❌ Error al conectar la BD:', error);
+    logger.error('AUTH-SERVICE', '❌ Error al conectar la BD', { error: error.message });
     process.exit(1);
   });

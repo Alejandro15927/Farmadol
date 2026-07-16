@@ -3,13 +3,13 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const logger = require('../logs/logger');
 
 const app = express();
 const PORT = process.env.PORT || 3010;
 
 // ==================== MIDDLEWARES ====================
 
-// CORS configurado para permitir el API Gateway
 app.use(cors({
   origin: ['http://localhost:3000', 'http://localhost:3010'],
   credentials: true,
@@ -21,71 +21,69 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // ==================== ARCHIVOS ESTÁTICOS ====================
-
-// Servir archivos estáticos del frontend (CSS, JS, imágenes)
 app.use(express.static(path.join(__dirname, 'public')));
 
 // ==================== RUTAS DE PÁGINAS ====================
 
-// Página principal - Login
 app.get('/', (req, res) => {
+  logger.info('FRONTEND', '📄 Página Login servida');
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Dashboard
 app.get('/dashboard', (req, res) => {
+  logger.info('FRONTEND', '📄 Página Dashboard servida');
   res.sendFile(path.join(__dirname, 'public', 'dashboard.html'));
 });
 
-// Sucursales
 app.get('/sucursales', (req, res) => {
+  logger.info('FRONTEND', '📄 Página Sucursales servida');
   res.sendFile(path.join(__dirname, 'public', 'sucursales.html'));
 });
 
-// Clientes
 app.get('/clientes', (req, res) => {
+  logger.info('FRONTEND', '📄 Página Clientes servida');
   res.sendFile(path.join(__dirname, 'public', 'clientes.html'));
 });
 
-// Usuarios
 app.get('/usuarios', (req, res) => {
+  logger.info('FRONTEND', '📄 Página Usuarios servida');
   res.sendFile(path.join(__dirname, 'public', 'usuarios.html'));
 });
 
-// Inventario
 app.get('/inventario', (req, res) => {
+  logger.info('FRONTEND', '📄 Página Inventario servida');
   res.sendFile(path.join(__dirname, 'public', 'inventario.html'));
 });
 
-// Compras
 app.get('/compras', (req, res) => {
+  logger.info('FRONTEND', '📄 Página Compras servida');
   res.sendFile(path.join(__dirname, 'public', 'compras.html'));
 });
 
-// Ventas
 app.get('/ventas', (req, res) => {
+  logger.info('FRONTEND', '📄 Página Ventas servida');
   res.sendFile(path.join(__dirname, 'public', 'ventas.html'));
 });
 
-// Reportes
 app.get('/reportes', (req, res) => {
+  logger.info('FRONTEND', '📄 Página Reportes servida');
   res.sendFile(path.join(__dirname, 'public', 'reportes.html'));
 });
 
-// Perfil (opcional)
 app.get('/perfil', (req, res) => {
+  logger.info('FRONTEND', '📄 Página Perfil servida');
   res.sendFile(path.join(__dirname, 'public', 'perfil.html'));
 });
 
-// Configuración (opcional)
 app.get('/configuracion', (req, res) => {
+  logger.info('FRONTEND', '📄 Página Configuración servida');
   res.sendFile(path.join(__dirname, 'public', 'configuracion.html'));
 });
 
 // ==================== RUTAS DE API (PROXY) ====================
 
-// Health check del frontend
 app.get('/health', (req, res) => {
+  logger.info('FRONTEND', '✅ Health check');
   res.status(200).json({
     status: 'OK',
     service: 'farmadol-frontend',
@@ -107,10 +105,9 @@ app.get('/health', (req, res) => {
 
 // ==================== MANEJO DE ERRORES 404 ====================
 
-// Capturar rutas no encontradas y redirigir al login
 app.use((req, res) => {
-  // Si es una solicitud de API, devolver JSON
   if (req.path.startsWith('/api/')) {
+    logger.warn('FRONTEND', `⚠️ API no encontrada: ${req.path}`);
     return res.status(404).json({
       success: false,
       message: 'Endpoint no encontrado',
@@ -118,7 +115,7 @@ app.use((req, res) => {
     });
   }
   
-  // Si es una página HTML, redirigir al login
+  logger.warn('FRONTEND', `⚠️ Página no encontrada: ${req.path}, redirigiendo a login`);
   res.status(404).sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
@@ -131,29 +128,17 @@ app.listen(PORT, () => {
   console.log(`🌐 Frontend corriendo en: http://localhost:${PORT}`);
   console.log(`🔗 API Gateway: http://localhost:3000`);
   console.log('========================================');
-  console.log('📄 Páginas disponibles:');
-  console.log(`   🔐 Login      → http://localhost:${PORT}/`);
-  console.log(`   📊 Dashboard  → http://localhost:${PORT}/dashboard`);
-  console.log(`   🏢 Sucursales → http://localhost:${PORT}/sucursales`);
-  console.log(`   👤 Clientes   → http://localhost:${PORT}/clientes`);
-  console.log(`   👥 Usuarios   → http://localhost:${PORT}/usuarios`);
-  console.log(`   📦 Inventario → http://localhost:${PORT}/inventario`);
-  console.log(`   🛒 Compras    → http://localhost:${PORT}/compras`);
-  console.log(`   💳 Ventas     → http://localhost:${PORT}/ventas`);
-  console.log(`   📊 Reportes   → http://localhost:${PORT}/reportes`);
-  console.log('========================================');
-  console.log(`🟢 Servidor listo en el puerto ${PORT}`);
-  console.log('========================================');
+  
+  logger.serviceStart('FRONTEND', PORT);
+  logger.info('FRONTEND', '🎨 Frontend iniciado correctamente');
 });
 
-// ==================== MANEJO DE CIERRE ====================
-
 process.on('SIGTERM', () => {
-  console.log('SIGTERM recibido, cerrando servidor...');
+  logger.info('FRONTEND', '🛑 SIGTERM recibido, cerrando servidor...');
   process.exit(0);
 });
 
 process.on('SIGINT', () => {
-  console.log('SIGINT recibido, cerrando servidor...');
+  logger.info('FRONTEND', '🛑 SIGINT recibido, cerrando servidor...');
   process.exit(0);
 });

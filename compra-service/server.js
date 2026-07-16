@@ -1,7 +1,9 @@
+// compra-service/server.js
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const { sequelize } = require('./models');
+const logger = require('../logs/logger');
 
 const compraRoutes = require('./routes/compraRoutes');
 
@@ -18,6 +20,7 @@ app.use('/api/compras', compraRoutes);
 
 // Health check
 app.get('/health', (req, res) => {
+  logger.info('COMPRA-SERVICE', '✅ Health check');
   res.status(200).json({ 
     status: 'OK', 
     service: 'compra-service',
@@ -28,31 +31,13 @@ app.get('/health', (req, res) => {
 // Sincronizar base de datos
 sequelize.sync()
   .then(() => {
-    console.log('📦 Base de datos sincronizada');
+    logger.dbSync('COMPRA-SERVICE');
     app.listen(PORT, () => {
       console.log(`📦 Compra Service corriendo en http://localhost:${PORT}`);
-      console.log(`📋 Endpoints disponibles:`);
-      console.log(`  # Proveedores (Protegido)`);
-      console.log(`  GET    /api/compras/proveedores`);
-      console.log(`  GET    /api/compras/proveedores/activos`);
-      console.log(`  GET    /api/compras/proveedores/:id`);
-      console.log(`  POST   /api/compras/proveedores (ADMIN/GERENTE)`);
-      console.log(`  PUT    /api/compras/proveedores/:id (ADMIN/GERENTE)`);
-      console.log(`  DELETE /api/compras/proveedores/:id (ADMIN/GERENTE)`);
-      console.log(`  PUT    /api/compras/proveedores/:id/enable (ADMIN/GERENTE)`);
-      console.log(`  # Compras`);
-      console.log(`  POST   /api/compras (ADMIN/GERENTE/ALMACENERO)`);
-      console.log(`  GET    /api/compras`);
-      console.log(`  GET    /api/compras/dia/resumen`);
-      console.log(`  GET    /api/compras/proveedor/:proveedor_id`);
-      console.log(`  GET    /api/compras/estadisticas (ADMIN/GERENTE)`);
-      console.log(`  GET    /api/compras/:id`);
-      console.log(`  PUT    /api/compras/:id (ADMIN/GERENTE)`);
-      console.log(`  PUT    /api/compras/:id/anular (ADMIN/GERENTE)`);
-      console.log(`  PUT    /api/compras/:id/confirmar (ADMIN/GERENTE/ALMACENERO)`);
+      logger.serviceStart('COMPRA-SERVICE', PORT);
     });
   })
   .catch(error => {
-    console.error('❌ Error al conectar la BD:', error);
+    logger.error('COMPRA-SERVICE', '❌ Error al conectar la BD', { error: error.message });
     process.exit(1);
   });

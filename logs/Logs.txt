@@ -1,0 +1,207 @@
+[2026-07-13 16:16:53] [INFO] [API-GATEWAY] 🔗 Registrando proxy para auth-service → http://localhost:3001
+[2026-07-13 16:16:53] [INFO] [API-GATEWAY] 🔗 Registrando proxy para sucursal-service → http://localhost:3002
+[2026-07-13 16:16:53] [INFO] [API-GATEWAY] 🔗 Registrando proxy para cliente-service → http://localhost:3003
+[2026-07-13 16:16:53] [INFO] [API-GATEWAY] 🔗 Registrando proxy para inventario-service → http://localhost:3004
+[2026-07-13 16:16:53] [INFO] [API-GATEWAY] 🔗 Registrando proxy para ventas-service → http://localhost:3005
+[2026-07-13 16:16:53] [INFO] [API-GATEWAY] 🔗 Registrando proxy para compra-service → http://localhost:3006
+[2026-07-13 16:16:53] [INFO] [API-GATEWAY] 🔗 Registrando proxy para reportes-service → http://localhost:3007
+[2026-07-13 16:16:53] [INFO] [API-GATEWAY] 🔐 Servicio iniciado en puerto 3000 | {"port":"3000"}
+[2026-07-13 16:16:53] [INFO] [API-GATEWAY] 🌉 API Gateway iniciado correctamente
+[2026-07-13 16:17:04] [INFO] [AUTH-SERVICE] 📦 Base de datos sincronizada
+[2026-07-13 16:17:04] [INFO] [AUTH-SERVICE] 🔐 Servicio iniciado en puerto 3001 | {"port":"3001"}
+[2026-07-13 16:17:38] [INFO] [API-GATEWAY] ✅ Health check | {"status":"OK"}
+[2026-07-13 16:17:44] [INFO] [API-GATEWAY] 📨 POST /api/auth/init-admin → 200 | {"method":"POST","path":"/api/auth/init-admin","status":200,"duration":"63ms","data":{"service":"auth-service","user":"anonymous"}}
+[2026-07-13 16:17:51] [INFO] [API-GATEWAY] 📨 POST /api/auth/login → 401 | {"method":"POST","path":"/api/auth/login","status":401,"duration":"108ms","data":{"service":"auth-service","user":"anonymous"}}
+[2026-07-13 16:17:51] [INFO] [API-GATEWAY] 📨 POST /api/auth/init-admin → 200 | {"method":"POST","path":"/api/auth/init-admin","status":200,"duration":"5ms","data":{"service":"auth-service","user":"anonymous"}}
+[2026-07-13 16:17:52] [INFO] [API-GATEWAY] 📨 POST /api/auth/login → 401 | {"method":"POST","path":"/api/auth/login","status":401,"duration":"75ms","data":{"service":"auth-service","user":"anonymous"}}
+[2026-07-13 16:17:57] [INFO] [API-GATEWAY] 📨 POST /api/auth/login → 401 | {"method":"POST","path":"/api/auth/login","status":401,"duration":"69ms","data":{"service":"auth-service","user":"anonymous"}}
+[2026-07-13 16:17:57] [INFO] [API-GATEWAY] 📨 POST /api/auth/init-admin → 200 | {"method":"POST","path":"/api/auth/init-admin","status":200,"duration":"4ms","data":{"service":"auth-service","user":"anonymous"}}
+[2026-07-13 16:17:58] [INFO] [API-GATEWAY] 📨 POST /api/auth/login → 401 | {"method":"POST","path":"/api/auth/login","status":401,"duration":"66ms","data":{"service":"auth-service","user":"anonymous"}}
+[2026-07-13 16:18:01] [INFO] [API-GATEWAY] 📨 POST /api/auth/login → 200 | {"method":"POST","path":"/api/auth/login","status":200,"duration":"73ms","data":{"service":"auth-service","user":"anonymous"}}
+[2026-07-13 16:18:03] [INFO] [API-GATEWAY] ✅ Health check | {"status":"OK"}
+[2026-07-13 16:18:03] [ERROR] [API-GATEWAY] ❌ Error en proxy ventas-service | {"error":"","url":"/api/ventas/ventas/dia/resumen"}
+[2026-07-13 16:18:03] [ERROR] [API-GATEWAY] ❌ Error en proxy inventario-service | {"error":"","url":"/api/inventario/productos"}
+[2026-07-13 16:18:03] [ERROR] [API-GATEWAY] ❌ Error en proxy cliente-service | {"error":"","url":"/api/clientes?estado=true"}
+[2026-07-13 16:18:03] [ERROR] [API-GATEWAY] ❌ Error en proxy ventas-service | {"error":"","url":"/api/ventas/ventas?limit=5"}
+[2026-07-13 16:18:03] [INFO] [API-GATEWAY] 📨 GET /api/auth/usuarios → 200 | {"method":"GET","path":"/api/auth/usuarios","status":200,"duration":"25ms","data":{"service":"auth-service","user":"admin"}}
+[2026-07-13 16:18:03] [ERROR] [API-GATEWAY] ❌ Error en proxy compra-service | {"error":"","url":"/api/compras?estado=pendiente"}
+[2026-07-13 16:18:03] [ERROR] [API-GATEWAY] ❌ Error en proxy sucursal-service | {"error":"","url":"/api/sucursales"}
+[2026-07-13 16:18:03] [ERROR] [API-GATEWAY] ❌ Error en proxy compra-service | {"error":"","url":"/api/compras?estado=pendiente&limit=3"}
+[2026-07-13 16:18:03] [ERROR] [API-GATEWAY] ❌ Error en proxy inventario-service | {"error":"","url":"/api/inventario/alertas/stock-bajo?limit=3"}
+[2026-07-13 16:18:43] [ERROR] [API-GATEWAY] ❌ Error en proxy sucursal-service | {"error":"","url":"/api/sucursales"}
+[2026-07-13 16:18:43] [INFO] [API-GATEWAY] 📨 GET /api/auth/usuarios → 304 | {"method":"GET","path":"/api/auth/usuarios","status":304,"duration":"10ms","data":{"service":"auth-service","user":"admin"}}
+[2026-07-13 16:18:52] [INFO] [API-GATEWAY] 📨 PUT /api/auth/usuarios/1 → 400 | {"method":"PUT","path":"/api/auth/usuarios/1","status":400,"duration":"6ms","data":{"service":"auth-service","user":"admin"}}
+[2026-07-13 16:18:54] [INFO] [API-GATEWAY] 📨 PUT /api/auth/usuarios/1 → 400 | {"method":"PUT","path":"/api/auth/usuarios/1","status":400,"duration":"3ms","data":{"service":"auth-service","user":"admin"}}
+[2026-07-13 16:19:03] [INFO] [API-GATEWAY] 📨 PUT /api/auth/usuarios/1 → 400 | {"method":"PUT","path":"/api/auth/usuarios/1","status":400,"duration":"8ms","data":{"service":"auth-service","user":"admin"}}
+[2026-07-13 16:19:19] [ERROR] [API-GATEWAY] ❌ Error en proxy cliente-service | {"error":"","url":"/api/clientes"}
+[2026-07-13 16:19:21] [ERROR] [API-GATEWAY] ❌ Error en proxy sucursal-service | {"error":"","url":"/api/sucursales"}
+[2026-07-13 16:19:21] [INFO] [API-GATEWAY] 📨 GET /api/auth/usuarios → 304 | {"method":"GET","path":"/api/auth/usuarios","status":304,"duration":"11ms","data":{"service":"auth-service","user":"admin"}}
+[2026-07-13 16:19:25] [INFO] [API-GATEWAY] 📨 PUT /api/auth/usuarios/4 → 400 | {"method":"PUT","path":"/api/auth/usuarios/4","status":400,"duration":"2ms","data":{"service":"auth-service","user":"admin"}}
+[2026-07-13 16:19:33] [INFO] [API-GATEWAY] 📨 PUT /api/auth/usuarios/3 → 200 | {"method":"PUT","path":"/api/auth/usuarios/3","status":200,"duration":"132ms","data":{"service":"auth-service","user":"admin"}}
+[2026-07-13 16:19:33] [INFO] [API-GATEWAY] 📨 GET /api/auth/usuarios → 200 | {"method":"GET","path":"/api/auth/usuarios","status":200,"duration":"4ms","data":{"service":"auth-service","user":"admin"}}
+[2026-07-13 16:19:39] [INFO] [API-GATEWAY] 📨 PUT /api/auth/usuarios/3 → 200 | {"method":"PUT","path":"/api/auth/usuarios/3","status":200,"duration":"69ms","data":{"service":"auth-service","user":"admin"}}
+[2026-07-13 16:19:39] [INFO] [API-GATEWAY] 📨 GET /api/auth/usuarios → 200 | {"method":"GET","path":"/api/auth/usuarios","status":200,"duration":"5ms","data":{"service":"auth-service","user":"admin"}}
+[2026-07-13 16:19:51] [INFO] [API-GATEWAY] 📨 PUT /api/auth/usuarios/3 → 200 | {"method":"PUT","path":"/api/auth/usuarios/3","status":200,"duration":"83ms","data":{"service":"auth-service","user":"admin"}}
+[2026-07-13 16:19:51] [INFO] [API-GATEWAY] 📨 GET /api/auth/usuarios → 200 | {"method":"GET","path":"/api/auth/usuarios","status":200,"duration":"3ms","data":{"service":"auth-service","user":"admin"}}
+[2026-07-13 16:20:09] [INFO] [API-GATEWAY] 📨 PUT /api/auth/usuarios/3 → 400 | {"method":"PUT","path":"/api/auth/usuarios/3","status":400,"duration":"2ms","data":{"service":"auth-service","user":"admin"}}
+[2026-07-13 16:20:57] [INFO] [API-GATEWAY] 🔗 Registrando proxy para auth-service → http://localhost:3001
+[2026-07-13 16:20:57] [INFO] [API-GATEWAY] 🔗 Registrando proxy para sucursal-service → http://localhost:3002
+[2026-07-13 16:20:57] [INFO] [API-GATEWAY] 🔗 Registrando proxy para cliente-service → http://localhost:3003
+[2026-07-13 16:20:57] [INFO] [API-GATEWAY] 🔗 Registrando proxy para inventario-service → http://localhost:3004
+[2026-07-13 16:20:57] [INFO] [API-GATEWAY] 🔗 Registrando proxy para ventas-service → http://localhost:3005
+[2026-07-13 16:20:57] [INFO] [API-GATEWAY] 🔗 Registrando proxy para compra-service → http://localhost:3006
+[2026-07-13 16:20:57] [INFO] [API-GATEWAY] 🔗 Registrando proxy para reportes-service → http://localhost:3007
+[2026-07-13 16:20:57] [INFO] [API-GATEWAY] 🔐 Servicio iniciado en puerto 3000 | {"port":"3000"}
+[2026-07-13 16:20:57] [INFO] [API-GATEWAY] 🌉 API Gateway iniciado correctamente
+[2026-07-13 16:21:26] [INFO] [AUTH-SERVICE] 📦 Base de datos sincronizada
+[2026-07-13 16:21:26] [INFO] [AUTH-SERVICE] 🔐 Servicio iniciado en puerto 3001 | {"port":"3001"}
+[2026-07-13 16:21:39] [ERROR] [API-GATEWAY] ❌ Error en proxy sucursal-service | {"error":"","url":"/api/sucursales"}
+[2026-07-13 16:21:39] [INFO] [API-GATEWAY] 📨 GET /api/auth/usuarios → 304 | {"method":"GET","path":"/api/auth/usuarios","status":304,"duration":"34ms","data":{"service":"auth-service","user":"admin"}}
+[2026-07-13 16:22:05] [INFO] [API-GATEWAY] 📨 PUT /api/auth/usuarios/1 → 400 | {"method":"PUT","path":"/api/auth/usuarios/1","status":400,"duration":"22ms","data":{"service":"auth-service","user":"admin"}}
+[2026-07-13 16:22:09] [INFO] [API-GATEWAY] 📨 PUT /api/auth/usuarios/1 → 400 | {"method":"PUT","path":"/api/auth/usuarios/1","status":400,"duration":"5ms","data":{"service":"auth-service","user":"admin"}}
+[2026-07-13 16:22:35] [INFO] [API-GATEWAY] 📨 PUT /api/auth/usuarios/1 → 400 | {"method":"PUT","path":"/api/auth/usuarios/1","status":400,"duration":"3ms","data":{"service":"auth-service","user":"admin"}}
+[2026-07-13 16:22:38] [INFO] [API-GATEWAY] 📨 PUT /api/auth/usuarios/1 → 400 | {"method":"PUT","path":"/api/auth/usuarios/1","status":400,"duration":"3ms","data":{"service":"auth-service","user":"admin"}}
+[2026-07-13 16:23:56] [INFO] [API-GATEWAY] 📨 PUT /api/auth/usuarios/1 → 400 | {"method":"PUT","path":"/api/auth/usuarios/1","status":400,"duration":"4ms","data":{"service":"auth-service","user":"admin"}}
+[2026-07-13 16:23:58] [INFO] [API-GATEWAY] 📨 GET /api/auth/usuarios → 304 | {"method":"GET","path":"/api/auth/usuarios","status":304,"duration":"9ms","data":{"service":"auth-service","user":"admin"}}
+[2026-07-13 16:23:58] [INFO] [API-GATEWAY] 📨 GET /api/sucursales → 200 | {"method":"GET","path":"/api/sucursales","status":200,"duration":"28ms","data":{"service":"sucursal-service","user":"admin"}}
+[2026-07-13 16:24:04] [INFO] [API-GATEWAY] 📨 PUT /api/auth/usuarios/1 → 200 | {"method":"PUT","path":"/api/auth/usuarios/1","status":200,"duration":"58ms","data":{"service":"auth-service","user":"admin"}}
+[2026-07-13 16:24:04] [INFO] [API-GATEWAY] 📨 GET /api/auth/usuarios → 200 | {"method":"GET","path":"/api/auth/usuarios","status":200,"duration":"5ms","data":{"service":"auth-service","user":"admin"}}
+[2026-07-13 16:24:08] [INFO] [API-GATEWAY] 📨 PUT /api/auth/usuarios/1 → 200 | {"method":"PUT","path":"/api/auth/usuarios/1","status":200,"duration":"28ms","data":{"service":"auth-service","user":"admin"}}
+[2026-07-13 16:24:08] [INFO] [API-GATEWAY] 📨 GET /api/auth/usuarios → 200 | {"method":"GET","path":"/api/auth/usuarios","status":200,"duration":"4ms","data":{"service":"auth-service","user":"admin"}}
+[2026-07-13 16:24:11] [INFO] [API-GATEWAY] 📨 PUT /api/auth/usuarios/1 → 200 | {"method":"PUT","path":"/api/auth/usuarios/1","status":200,"duration":"24ms","data":{"service":"auth-service","user":"admin"}}
+[2026-07-13 16:24:11] [INFO] [API-GATEWAY] 📨 GET /api/auth/usuarios → 200 | {"method":"GET","path":"/api/auth/usuarios","status":200,"duration":"4ms","data":{"service":"auth-service","user":"admin"}}
+[2026-07-16 06:06:34] [INFO] [API-GATEWAY] 🔗 Registrando proxy para auth-service → http://localhost:3001
+[2026-07-16 06:06:34] [INFO] [API-GATEWAY] 🔗 Registrando proxy para sucursal-service → http://localhost:3002
+[2026-07-16 06:06:34] [INFO] [API-GATEWAY] 🔗 Registrando proxy para cliente-service → http://localhost:3003
+[2026-07-16 06:06:34] [INFO] [API-GATEWAY] 🔗 Registrando proxy para inventario-service → http://localhost:3004
+[2026-07-16 06:06:34] [INFO] [API-GATEWAY] 🔗 Registrando proxy para ventas-service → http://localhost:3005
+[2026-07-16 06:06:34] [INFO] [API-GATEWAY] 🔗 Registrando proxy para compra-service → http://localhost:3006
+[2026-07-16 06:06:34] [INFO] [API-GATEWAY] 🔗 Registrando proxy para reportes-service → http://localhost:3007
+[2026-07-16 06:06:34] [INFO] [API-GATEWAY] 🔐 Servicio iniciado en puerto 3000 | {"port":"3000"}
+[2026-07-16 06:06:34] [INFO] [API-GATEWAY] 🌉 API Gateway iniciado correctamente
+[2026-07-16 06:06:40] [INFO] [AUTH-SERVICE] 📦 Base de datos sincronizada
+[2026-07-16 06:06:40] [INFO] [AUTH-SERVICE] 🔐 Servicio iniciado en puerto 3001 | {"port":"3001"}
+[2026-07-16 06:06:45] [INFO] [CLIENTE-SERVICE] 📦 Base de datos sincronizada
+[2026-07-16 06:06:45] [INFO] [CLIENTE-SERVICE] 🔐 Servicio iniciado en puerto 3003 | {"port":"3003"}
+[2026-07-16 06:06:52] [INFO] [COMPRA-SERVICE] 📦 Base de datos sincronizada
+[2026-07-16 06:06:52] [INFO] [COMPRA-SERVICE] 🔐 Servicio iniciado en puerto 3006 | {"port":"3006"}
+[2026-07-16 06:07:10] [INFO] [INVENTARIO-SERVICE] 📦 Base de datos sincronizada
+[2026-07-16 06:07:10] [INFO] [INVENTARIO-SERVICE] 🔐 Servicio iniciado en puerto 3004 | {"port":"3004"}
+[2026-07-16 06:07:26] [INFO] [REPORTES-SERVICE] 📦 Base de datos sincronizada
+[2026-07-16 06:07:26] [INFO] [REPORTES-SERVICE] 🔐 Servicio iniciado en puerto 3007 | {"port":"3007"}
+[2026-07-16 06:08:12] [INFO] [SUCURSAL-SERVICE] 📦 Base de datos sincronizada
+[2026-07-16 06:08:12] [INFO] [SUCURSAL-SERVICE] 🔐 Servicio iniciado en puerto 3002 | {"port":"3002"}
+[2026-07-16 06:08:18] [INFO] [VENTAS-SERVICE] 📦 Base de datos sincronizada
+[2026-07-16 06:08:18] [INFO] [VENTAS-SERVICE] 🔐 Servicio iniciado en puerto 3005 | {"port":"3005"}
+[2026-07-16 06:08:41] [INFO] [FRONTEND] 🔐 Servicio iniciado en puerto 3010 | {"port":3010}
+[2026-07-16 06:08:41] [INFO] [FRONTEND] 🎨 Frontend iniciado correctamente
+[2026-07-16 06:08:53] [INFO] [FRONTEND] 📄 Página Dashboard servida
+[2026-07-16 06:08:53] [INFO] [API-GATEWAY] ✅ Health check | {"status":"OK"}
+[2026-07-16 06:08:56] [INFO] [API-GATEWAY] 📨 POST /api/auth/init-admin → 200 | {"method":"POST","path":"/api/auth/init-admin","status":200,"duration":"111ms","data":{"service":"auth-service","user":"anonymous"}}
+[2026-07-16 06:08:58] [INFO] [API-GATEWAY] 📨 POST /api/auth/login → 401 | {"method":"POST","path":"/api/auth/login","status":401,"duration":"94ms","data":{"service":"auth-service","user":"anonymous"}}
+[2026-07-16 06:08:58] [INFO] [API-GATEWAY] 📨 POST /api/auth/init-admin → 200 | {"method":"POST","path":"/api/auth/init-admin","status":200,"duration":"3ms","data":{"service":"auth-service","user":"anonymous"}}
+[2026-07-16 06:08:58] [INFO] [API-GATEWAY] 📨 POST /api/auth/login → 401 | {"method":"POST","path":"/api/auth/login","status":401,"duration":"66ms","data":{"service":"auth-service","user":"anonymous"}}
+[2026-07-16 06:09:00] [INFO] [API-GATEWAY] 📨 POST /api/auth/login → 200 | {"method":"POST","path":"/api/auth/login","status":200,"duration":"68ms","data":{"service":"auth-service","user":"anonymous"}}
+[2026-07-16 06:09:01] [INFO] [FRONTEND] 📄 Página Dashboard servida
+[2026-07-16 06:09:02] [INFO] [API-GATEWAY] ✅ Health check | {"status":"OK"}
+[2026-07-16 06:09:02] [INFO] [API-GATEWAY] 📨 GET /api/auth/usuarios → 304 | {"method":"GET","path":"/api/auth/usuarios","status":304,"duration":"13ms","data":{"service":"auth-service","user":"admin"}}
+[2026-07-16 06:09:02] [INFO] [API-GATEWAY] 📨 GET /api/sucursales → 200 | {"method":"GET","path":"/api/sucursales","status":200,"duration":"40ms","data":{"service":"sucursal-service","user":"admin"}}
+[2026-07-16 06:09:02] [INFO] [API-GATEWAY] 📨 GET /api/inventario/productos → 200 | {"method":"GET","path":"/api/inventario/productos","status":200,"duration":"56ms","data":{"service":"inventario-service","user":"admin"}}
+[2026-07-16 06:09:02] [INFO] [API-GATEWAY] 📨 GET /api/ventas/ventas?limit=5 → 200 | {"method":"GET","path":"/api/ventas/ventas?limit=5","status":200,"duration":"38ms","data":{"service":"ventas-service","user":"admin"}}
+[2026-07-16 06:09:02] [INFO] [API-GATEWAY] 📨 GET /api/ventas/ventas/dia/resumen → 200 | {"method":"GET","path":"/api/ventas/ventas/dia/resumen","status":200,"duration":"71ms","data":{"service":"ventas-service","user":"admin"}}
+[2026-07-16 06:09:02] [INFO] [API-GATEWAY] 📨 GET /api/compras?estado=pendiente → 200 | {"method":"GET","path":"/api/compras?estado=pendiente","status":200,"duration":"71ms","data":{"service":"compra-service","user":"admin"}}
+[2026-07-16 06:09:02] [INFO] [API-GATEWAY] 📨 GET /api/compras?estado=pendiente&limit=3 → 200 | {"method":"GET","path":"/api/compras?estado=pendiente&limit=3","status":200,"duration":"24ms","data":{"service":"compra-service","user":"admin"}}
+[2026-07-16 06:09:02] [INFO] [API-GATEWAY] 📨 GET /api/inventario/alertas/stock-bajo?limit=3 → 200 | {"method":"GET","path":"/api/inventario/alertas/stock-bajo?limit=3","status":200,"duration":"20ms","data":{"service":"inventario-service","user":"admin"}}
+[2026-07-16 06:09:02] [INFO] [API-GATEWAY] 📨 GET /api/clientes?estado=true → 200 | {"method":"GET","path":"/api/clientes?estado=true","status":200,"duration":"136ms","data":{"service":"cliente-service","user":"admin"}}
+[2026-07-16 06:09:06] [INFO] [FRONTEND] 📄 Página Compras servida
+[2026-07-16 06:09:06] [INFO] [API-GATEWAY] 📨 GET /api/compras/proveedores → 200 | {"method":"GET","path":"/api/compras/proveedores","status":200,"duration":"11ms","data":{"service":"compra-service","user":"admin"}}
+[2026-07-16 06:09:06] [INFO] [API-GATEWAY] 📨 GET /api/compras → 200 | {"method":"GET","path":"/api/compras","status":200,"duration":"20ms","data":{"service":"compra-service","user":"admin"}}
+[2026-07-16 06:09:06] [INFO] [API-GATEWAY] 📨 GET /api/compras/proveedores → 304 | {"method":"GET","path":"/api/compras/proveedores","status":304,"duration":"7ms","data":{"service":"compra-service","user":"admin"}}
+[2026-07-16 06:09:06] [INFO] [API-GATEWAY] 📨 GET /api/sucursales → 304 | {"method":"GET","path":"/api/sucursales","status":304,"duration":"4ms","data":{"service":"sucursal-service","user":"admin"}}
+[2026-07-16 06:09:07] [INFO] [API-GATEWAY] 📨 GET /api/inventario/productos → 304 | {"method":"GET","path":"/api/inventario/productos","status":304,"duration":"6ms","data":{"service":"inventario-service","user":"admin"}}
+[2026-07-16 06:09:07] [INFO] [FRONTEND] 📄 Página Ventas servida
+[2026-07-16 06:09:07] [INFO] [API-GATEWAY] 📨 GET /api/ventas/ventas → 200 | {"method":"GET","path":"/api/ventas/ventas","status":200,"duration":"9ms","data":{"service":"ventas-service","user":"admin"}}
+[2026-07-16 06:09:07] [INFO] [API-GATEWAY] 📨 GET /api/clientes → 200 | {"method":"GET","path":"/api/clientes","status":200,"duration":"78ms","data":{"service":"cliente-service","user":"admin"}}
+[2026-07-16 06:09:07] [INFO] [API-GATEWAY] 📨 GET /api/ventas/ventas/dia/resumen → 304 | {"method":"GET","path":"/api/ventas/ventas/dia/resumen","status":304,"duration":"6ms","data":{"service":"ventas-service","user":"admin"}}
+[2026-07-16 06:09:07] [INFO] [API-GATEWAY] 📨 GET /api/sucursales → 304 | {"method":"GET","path":"/api/sucursales","status":304,"duration":"5ms","data":{"service":"sucursal-service","user":"admin"}}
+[2026-07-16 06:09:07] [INFO] [API-GATEWAY] 📨 GET /api/inventario/productos → 304 | {"method":"GET","path":"/api/inventario/productos","status":304,"duration":"5ms","data":{"service":"inventario-service","user":"admin"}}
+[2026-07-16 06:09:07] [INFO] [API-GATEWAY] 📨 GET /api/ventas/metodos-pago → 200 | {"method":"GET","path":"/api/ventas/metodos-pago","status":200,"duration":"5ms","data":{"service":"ventas-service","user":"admin"}}
+[2026-07-16 06:09:08] [INFO] [FRONTEND] 📄 Página Usuarios servida
+[2026-07-16 06:09:09] [INFO] [API-GATEWAY] 📨 GET /api/sucursales → 304 | {"method":"GET","path":"/api/sucursales","status":304,"duration":"6ms","data":{"service":"sucursal-service","user":"admin"}}
+[2026-07-16 06:09:09] [INFO] [API-GATEWAY] 📨 GET /api/auth/usuarios → 304 | {"method":"GET","path":"/api/auth/usuarios","status":304,"duration":"7ms","data":{"service":"auth-service","user":"admin"}}
+[2026-07-16 06:09:09] [INFO] [FRONTEND] 📄 Página Sucursales servida
+[2026-07-16 06:09:10] [INFO] [API-GATEWAY] 📨 GET /api/sucursales → 304 | {"method":"GET","path":"/api/sucursales","status":304,"duration":"6ms","data":{"service":"sucursal-service","user":"admin"}}
+[2026-07-16 06:09:10] [INFO] [FRONTEND] 📄 Página Reportes servida
+[2026-07-16 06:09:10] [INFO] [API-GATEWAY] 📨 GET /api/sucursales → 304 | {"method":"GET","path":"/api/sucursales","status":304,"duration":"5ms","data":{"service":"sucursal-service","user":"admin"}}
+[2026-07-16 06:09:10] [INFO] [API-GATEWAY] 📨 GET /api/reportes → 200 | {"method":"GET","path":"/api/reportes","status":200,"duration":"28ms","data":{"service":"reportes-service","user":"admin"}}
+[2026-07-16 06:09:31] [INFO] [FRONTEND] 📄 Página Reportes servida
+[2026-07-16 06:09:32] [INFO] [API-GATEWAY] 📨 GET /api/sucursales → 304 | {"method":"GET","path":"/api/sucursales","status":304,"duration":"9ms","data":{"service":"sucursal-service","user":"admin"}}
+[2026-07-16 06:09:32] [INFO] [API-GATEWAY] 📨 GET /api/reportes → 304 | {"method":"GET","path":"/api/reportes","status":304,"duration":"11ms","data":{"service":"reportes-service","user":"admin"}}
+[2026-07-16 06:09:44] [INFO] [FRONTEND] 📄 Página Reportes servida
+[2026-07-16 06:09:45] [INFO] [API-GATEWAY] 📨 GET /api/sucursales → 304 | {"method":"GET","path":"/api/sucursales","status":304,"duration":"10ms","data":{"service":"sucursal-service","user":"admin"}}
+[2026-07-16 06:09:45] [INFO] [API-GATEWAY] 📨 GET /api/reportes → 304 | {"method":"GET","path":"/api/reportes","status":304,"duration":"19ms","data":{"service":"reportes-service","user":"admin"}}
+[2026-07-16 06:09:57] [INFO] [API-GATEWAY] 📨 POST /api/reportes/generar/ventas → 201 | {"method":"POST","path":"/api/reportes/generar/ventas","status":201,"duration":"385ms","data":{"service":"reportes-service","user":"admin"}}
+[2026-07-16 06:09:57] [INFO] [API-GATEWAY] 📨 GET /api/reportes → 200 | {"method":"GET","path":"/api/reportes","status":200,"duration":"9ms","data":{"service":"reportes-service","user":"admin"}}
+[2026-07-16 06:09:57] [INFO] [API-GATEWAY] 📨 GET /api/reportes → 304 | {"method":"GET","path":"/api/reportes","status":304,"duration":"8ms","data":{"service":"reportes-service","user":"admin"}}
+[2026-07-16 06:10:00] [INFO] [API-GATEWAY] 📨 GET /api/reportes/descargar/52 → 200 | {"method":"GET","path":"/api/reportes/descargar/52","status":200,"duration":"6ms","data":{"service":"reportes-service","user":"admin"}}
+[2026-07-16 06:10:03] [INFO] [API-GATEWAY] 📨 GET /api/reportes/52 → 200 | {"method":"GET","path":"/api/reportes/52","status":200,"duration":"3ms","data":{"service":"reportes-service","user":"admin"}}
+[2026-07-16 06:10:08] [INFO] [FRONTEND] 📄 Página Reportes servida
+[2026-07-16 06:10:08] [INFO] [API-GATEWAY] 📨 GET /api/sucursales → 304 | {"method":"GET","path":"/api/sucursales","status":304,"duration":"8ms","data":{"service":"sucursal-service","user":"admin"}}
+[2026-07-16 06:10:08] [INFO] [API-GATEWAY] 📨 GET /api/reportes → 304 | {"method":"GET","path":"/api/reportes","status":304,"duration":"9ms","data":{"service":"reportes-service","user":"admin"}}
+[2026-07-16 06:10:16] [INFO] [API-GATEWAY] 📨 POST /api/reportes/generar/ventas → 201 | {"method":"POST","path":"/api/reportes/generar/ventas","status":201,"duration":"42ms","data":{"service":"reportes-service","user":"admin"}}
+[2026-07-16 06:10:16] [INFO] [API-GATEWAY] 📨 GET /api/reportes → 200 | {"method":"GET","path":"/api/reportes","status":200,"duration":"8ms","data":{"service":"reportes-service","user":"admin"}}
+[2026-07-16 06:10:16] [INFO] [API-GATEWAY] 📨 GET /api/reportes → 304 | {"method":"GET","path":"/api/reportes","status":304,"duration":"6ms","data":{"service":"reportes-service","user":"admin"}}
+[2026-07-16 06:10:17] [INFO] [API-GATEWAY] 📨 GET /api/reportes/descargar/53 → 200 | {"method":"GET","path":"/api/reportes/descargar/53","status":200,"duration":"6ms","data":{"service":"reportes-service","user":"admin"}}
+[2026-07-16 06:10:30] [INFO] [FRONTEND] 📄 Página Dashboard servida
+[2026-07-16 06:10:30] [INFO] [API-GATEWAY] ✅ Health check | {"status":"OK"}
+[2026-07-16 06:10:30] [INFO] [API-GATEWAY] 📨 GET /api/sucursales → 304 | {"method":"GET","path":"/api/sucursales","status":304,"duration":"14ms","data":{"service":"sucursal-service","user":"admin"}}
+[2026-07-16 06:10:30] [INFO] [API-GATEWAY] 📨 GET /api/ventas/ventas/dia/resumen → 304 | {"method":"GET","path":"/api/ventas/ventas/dia/resumen","status":304,"duration":"22ms","data":{"service":"ventas-service","user":"admin"}}
+[2026-07-16 06:10:30] [INFO] [API-GATEWAY] 📨 GET /api/inventario/productos → 304 | {"method":"GET","path":"/api/inventario/productos","status":304,"duration":"23ms","data":{"service":"inventario-service","user":"admin"}}
+[2026-07-16 06:10:30] [INFO] [API-GATEWAY] 📨 GET /api/auth/usuarios → 304 | {"method":"GET","path":"/api/auth/usuarios","status":304,"duration":"20ms","data":{"service":"auth-service","user":"admin"}}
+[2026-07-16 06:10:30] [INFO] [API-GATEWAY] 📨 GET /api/compras?estado=pendiente → 304 | {"method":"GET","path":"/api/compras?estado=pendiente","status":304,"duration":"23ms","data":{"service":"compra-service","user":"admin"}}
+[2026-07-16 06:10:30] [INFO] [API-GATEWAY] 📨 GET /api/compras?estado=pendiente&limit=3 → 304 | {"method":"GET","path":"/api/compras?estado=pendiente&limit=3","status":304,"duration":"9ms","data":{"service":"compra-service","user":"admin"}}
+[2026-07-16 06:10:30] [INFO] [API-GATEWAY] 📨 GET /api/inventario/alertas/stock-bajo?limit=3 → 304 | {"method":"GET","path":"/api/inventario/alertas/stock-bajo?limit=3","status":304,"duration":"11ms","data":{"service":"inventario-service","user":"admin"}}
+[2026-07-16 06:10:30] [INFO] [API-GATEWAY] 📨 GET /api/ventas/ventas?limit=5 → 304 | {"method":"GET","path":"/api/ventas/ventas?limit=5","status":304,"duration":"19ms","data":{"service":"ventas-service","user":"admin"}}
+[2026-07-16 06:10:30] [INFO] [API-GATEWAY] 📨 GET /api/clientes?estado=true → 304 | {"method":"GET","path":"/api/clientes?estado=true","status":304,"duration":"71ms","data":{"service":"cliente-service","user":"admin"}}
+[2026-07-16 06:11:31] [INFO] [API-GATEWAY] 📨 GET /api/ventas/ventas/dia/resumen → 304 | {"method":"GET","path":"/api/ventas/ventas/dia/resumen","status":304,"duration":"8ms","data":{"service":"ventas-service","user":"admin"}}
+[2026-07-16 06:11:31] [INFO] [API-GATEWAY] 📨 GET /api/sucursales → 304 | {"method":"GET","path":"/api/sucursales","status":304,"duration":"15ms","data":{"service":"sucursal-service","user":"admin"}}
+[2026-07-16 06:11:31] [INFO] [API-GATEWAY] 📨 GET /api/inventario/productos → 304 | {"method":"GET","path":"/api/inventario/productos","status":304,"duration":"23ms","data":{"service":"inventario-service","user":"admin"}}
+[2026-07-16 06:11:31] [INFO] [API-GATEWAY] 📨 GET /api/compras?estado=pendiente → 304 | {"method":"GET","path":"/api/compras?estado=pendiente","status":304,"duration":"19ms","data":{"service":"compra-service","user":"admin"}}
+[2026-07-16 06:11:31] [INFO] [API-GATEWAY] 📨 GET /api/auth/usuarios → 304 | {"method":"GET","path":"/api/auth/usuarios","status":304,"duration":"22ms","data":{"service":"auth-service","user":"admin"}}
+[2026-07-16 06:11:31] [INFO] [API-GATEWAY] 📨 GET /api/ventas/ventas?limit=5 → 304 | {"method":"GET","path":"/api/ventas/ventas?limit=5","status":304,"duration":"21ms","data":{"service":"ventas-service","user":"admin"}}
+[2026-07-16 06:11:31] [INFO] [API-GATEWAY] 📨 GET /api/compras?estado=pendiente&limit=3 → 304 | {"method":"GET","path":"/api/compras?estado=pendiente&limit=3","status":304,"duration":"12ms","data":{"service":"compra-service","user":"admin"}}
+[2026-07-16 06:11:31] [INFO] [API-GATEWAY] 📨 GET /api/inventario/alertas/stock-bajo?limit=3 → 304 | {"method":"GET","path":"/api/inventario/alertas/stock-bajo?limit=3","status":304,"duration":"22ms","data":{"service":"inventario-service","user":"admin"}}
+[2026-07-16 06:11:31] [INFO] [API-GATEWAY] 📨 GET /api/clientes?estado=true → 304 | {"method":"GET","path":"/api/clientes?estado=true","status":304,"duration":"67ms","data":{"service":"cliente-service","user":"admin"}}
+[2026-07-16 06:11:42] [INFO] [FRONTEND] 📄 Página Sucursales servida
+[2026-07-16 06:11:42] [INFO] [API-GATEWAY] 📨 GET /api/sucursales → 304 | {"method":"GET","path":"/api/sucursales","status":304,"duration":"8ms","data":{"service":"sucursal-service","user":"admin"}}
+[2026-07-16 06:11:44] [INFO] [FRONTEND] 📄 Página Reportes servida
+[2026-07-16 06:11:45] [INFO] [API-GATEWAY] 📨 GET /api/sucursales → 304 | {"method":"GET","path":"/api/sucursales","status":304,"duration":"5ms","data":{"service":"sucursal-service","user":"admin"}}
+[2026-07-16 06:11:45] [INFO] [API-GATEWAY] 📨 GET /api/reportes → 304 | {"method":"GET","path":"/api/reportes","status":304,"duration":"9ms","data":{"service":"reportes-service","user":"admin"}}
+[2026-07-16 06:11:50] [INFO] [API-GATEWAY] 📨 GET /api/reportes → 304 | {"method":"GET","path":"/api/reportes","status":304,"duration":"4ms","data":{"service":"reportes-service","user":"admin"}}
+[2026-07-16 06:13:03] [INFO] [FRONTEND] 📄 Página Reportes servida
+[2026-07-16 06:13:03] [INFO] [API-GATEWAY] 📨 GET /api/sucursales → 304 | {"method":"GET","path":"/api/sucursales","status":304,"duration":"8ms","data":{"service":"sucursal-service","user":"admin"}}
+[2026-07-16 06:13:03] [INFO] [API-GATEWAY] 📨 GET /api/reportes → 304 | {"method":"GET","path":"/api/reportes","status":304,"duration":"11ms","data":{"service":"reportes-service","user":"admin"}}
+[2026-07-16 06:13:21] [INFO] [FRONTEND] 📄 Página Reportes servida
+[2026-07-16 06:13:21] [INFO] [API-GATEWAY] 📨 GET /api/sucursales → 304 | {"method":"GET","path":"/api/sucursales","status":304,"duration":"7ms","data":{"service":"sucursal-service","user":"admin"}}
+[2026-07-16 06:13:21] [INFO] [API-GATEWAY] 📨 GET /api/reportes → 304 | {"method":"GET","path":"/api/reportes","status":304,"duration":"10ms","data":{"service":"reportes-service","user":"admin"}}
+[2026-07-16 06:14:26] [INFO] [FRONTEND] 📄 Página Ventas servida
+[2026-07-16 06:14:27] [INFO] [API-GATEWAY] 📨 GET /api/ventas/ventas → 304 | {"method":"GET","path":"/api/ventas/ventas","status":304,"duration":"13ms","data":{"service":"ventas-service","user":"admin"}}
+[2026-07-16 06:14:27] [INFO] [API-GATEWAY] 📨 GET /api/clientes → 304 | {"method":"GET","path":"/api/clientes","status":304,"duration":"65ms","data":{"service":"cliente-service","user":"admin"}}
+[2026-07-16 06:14:27] [INFO] [API-GATEWAY] 📨 GET /api/ventas/ventas/dia/resumen → 304 | {"method":"GET","path":"/api/ventas/ventas/dia/resumen","status":304,"duration":"4ms","data":{"service":"ventas-service","user":"admin"}}
+[2026-07-16 06:14:27] [INFO] [API-GATEWAY] 📨 GET /api/sucursales → 304 | {"method":"GET","path":"/api/sucursales","status":304,"duration":"9ms","data":{"service":"sucursal-service","user":"admin"}}
+[2026-07-16 06:14:27] [INFO] [API-GATEWAY] 📨 GET /api/inventario/productos → 304 | {"method":"GET","path":"/api/inventario/productos","status":304,"duration":"12ms","data":{"service":"inventario-service","user":"admin"}}
+[2026-07-16 06:14:27] [INFO] [API-GATEWAY] 📨 GET /api/ventas/metodos-pago → 304 | {"method":"GET","path":"/api/ventas/metodos-pago","status":304,"duration":"3ms","data":{"service":"ventas-service","user":"admin"}}
+[2026-07-16 06:14:28] [INFO] [FRONTEND] 📄 Página Sucursales servida
+[2026-07-16 06:14:28] [INFO] [API-GATEWAY] 📨 GET /api/sucursales → 304 | {"method":"GET","path":"/api/sucursales","status":304,"duration":"3ms","data":{"service":"sucursal-service","user":"admin"}}
+[2026-07-16 06:15:18] [INFO] [FRONTEND] 📄 Página Dashboard servida
+[2026-07-16 06:15:18] [INFO] [API-GATEWAY] ✅ Health check | {"status":"OK"}
+[2026-07-16 06:15:18] [INFO] [API-GATEWAY] 📨 GET /api/ventas/ventas/dia/resumen → 304 | {"method":"GET","path":"/api/ventas/ventas/dia/resumen","status":304,"duration":"18ms","data":{"service":"ventas-service","user":"admin"}}
+[2026-07-16 06:15:18] [INFO] [API-GATEWAY] 📨 GET /api/sucursales → 304 | {"method":"GET","path":"/api/sucursales","status":304,"duration":"13ms","data":{"service":"sucursal-service","user":"admin"}}
+[2026-07-16 06:15:18] [INFO] [API-GATEWAY] 📨 GET /api/compras?estado=pendiente → 304 | {"method":"GET","path":"/api/compras?estado=pendiente","status":304,"duration":"18ms","data":{"service":"compra-service","user":"admin"}}
+[2026-07-16 06:15:18] [INFO] [API-GATEWAY] 📨 GET /api/inventario/productos → 304 | {"method":"GET","path":"/api/inventario/productos","status":304,"duration":"23ms","data":{"service":"inventario-service","user":"admin"}}
+[2026-07-16 06:15:18] [INFO] [API-GATEWAY] 📨 GET /api/auth/usuarios → 304 | {"method":"GET","path":"/api/auth/usuarios","status":304,"duration":"19ms","data":{"service":"auth-service","user":"admin"}}
+[2026-07-16 06:15:18] [INFO] [API-GATEWAY] 📨 GET /api/compras?estado=pendiente&limit=3 → 304 | {"method":"GET","path":"/api/compras?estado=pendiente&limit=3","status":304,"duration":"8ms","data":{"service":"compra-service","user":"admin"}}
+[2026-07-16 06:15:18] [INFO] [API-GATEWAY] 📨 GET /api/inventario/alertas/stock-bajo?limit=3 → 304 | {"method":"GET","path":"/api/inventario/alertas/stock-bajo?limit=3","status":304,"duration":"7ms","data":{"service":"inventario-service","user":"admin"}}
+[2026-07-16 06:15:18] [INFO] [API-GATEWAY] 📨 GET /api/ventas/ventas?limit=5 → 304 | {"method":"GET","path":"/api/ventas/ventas?limit=5","status":304,"duration":"21ms","data":{"service":"ventas-service","user":"admin"}}
+[2026-07-16 06:15:18] [INFO] [API-GATEWAY] 📨 GET /api/clientes?estado=true → 304 | {"method":"GET","path":"/api/clientes?estado=true","status":304,"duration":"63ms","data":{"service":"cliente-service","user":"admin"}}
+[2026-07-16 06:15:20] [INFO] [API-GATEWAY] 📨 POST /api/auth/init-admin → 200 | {"method":"POST","path":"/api/auth/init-admin","status":200,"duration":"4ms","data":{"service":"auth-service","user":"anonymous"}}
